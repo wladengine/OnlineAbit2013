@@ -1,0 +1,591 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using OnlineAbit2013.Models;
+using System.Data;
+using System.Web.Routing;
+
+namespace OnlineAbit2013.Controllers
+{
+    public class ApplicationController : Controller
+    {
+        //
+        // GET: /Application/
+
+        public ActionResult Index(string id)
+        {
+            Guid personId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out personId))
+                return RedirectToAction("LogOn", "Account");
+
+            Guid appId = new Guid();
+            if (!Guid.TryParse(id, out appId))
+                return RedirectToAction("Main", "Abiturient");
+
+            Dictionary<string, object> prms = new Dictionary<string, object>()
+            {
+                { "@PersonId", personId },
+                { "@Id", appId }
+            };
+
+            DataTable tbl =
+                Util.AbitDB.GetDataTable("SELECT [Application].Id, LicenseProgramName, Priority, ObrazProgramName, ProfileName, [Entry].StudyFormName, " +
+                " [Entry].StudyBasisName, Enabled, DateOfDisable, EntryType, Entry.StudyLevelId, Comission.Address AS ComAddress, Comission.YaMapCoord, [Application].IsImported, Person.AbiturientTypeId " +
+                " FROM [Application] INNER JOIN Entry ON [Application].EntryId = Entry.Id INNER JOIN Person ON Person.Id = [Application].PersonId " +
+                " LEFT JOIN ComissionInEntry ON ComissionInEntry.EntryId = [Application].EntryId " +
+                " LEFT JOIN Comission ON Comission.Id = ComissionInEntry.ComissionId " +
+                " WHERE PersonId=@PersonId AND [Application].Id=@Id", prms);
+
+            if (tbl.Rows.Count == 0)
+                return RedirectToAction("Main", "Abiturient");
+
+            DataRow rw = tbl.Rows[0];
+            var app = new
+            {
+                Id = rw.Field<Guid>("Id"),
+                Profession = rw.Field<string>("LicenseProgramName"),
+                Priority = rw.Field<int>("Priority"),
+                ObrazProgram = rw.Field<string>("ObrazProgramName"),
+                Specialization = rw.Field<string>("ProfileName"),
+                StudyForm = rw.Field<string>("StudyFormName"),
+                StudyBasis = rw.Field<string>("StudyBasisName"),
+                Enabled = rw.Field<bool?>("Enabled"),
+                DateOfDisable = rw.Field<DateTime?>("DateOfDisable"),
+                EntryTypeId = rw.Field<int?>("StudyLevelId") == 17 ? 2 : 1,
+                ComissionAddress = rw.Field<string>("ComAddress"),
+                ComissionYaCoord = rw.Field<string>("YaMapCoord"),
+                AbiturientTypeId = rw.Field<int?>("AbiturientTypeId")
+            };
+
+            string query = "SELECT DISTINCT Exam FROM AbitMark INNER JOIN Student ON Student.Id = AbitMark.AbiturientId WHERE " +
+                "Profession=@Profession AND ObrazProgram=@ObrazProgram AND Specialization=@Specialization AND StudyBasisId=@StudyBasisId AND StudyFormId=@StudyFormId";
+
+            //prms.Clear();
+            //prms.Add("@Profession", app.Profession);
+            //prms.Add("@ObrazProgram", app.ObrazProgram);
+            //prms.Add("@Specialization", app.Specialization == null ? "" : app.Specialization);
+            //prms.Add("@StudyBasisId", app.StudyBasisId);
+            //prms.Add("@StudyFormId", app.StudyFormId);
+
+            //tbl = Util.StudDB.GetDataTable(query, prms);
+
+            //var exams = (from DataRow row in tbl.Rows
+            //             select row.Field<string>("Exam")
+            //             ).ToList();
+
+
+            query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM ApplicationFile WHERE ApplicationId=@AppId";
+            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
+            var lFiles =
+                (from DataRow row in tbl.Rows
+                 select new AppendedFile()
+                 {
+                     Id = row.Field<Guid>("Id"),
+                     FileName = row.Field<string>("FileName"),
+                     FileSize = row.Field<int>("FileSize"),
+                     Comment = row.Field<string>("Comment"),
+                     IsShared = false,
+                     IsApproved = row.Field<bool?>("IsApproved").HasValue ?
+                        row.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
+                 }).ToList();
+
+            query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM PersonFile WHERE PersonId=@PersonId";
+            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", personId } });
+            var lSharedFiles =
+                (from DataRow row in tbl.Rows
+                 select new AppendedFile()
+                 {
+                     Id = row.Field<Guid>("Id"),
+                     FileName = row.Field<string>("FileName"),
+                     FileSize = row.Field<int>("FileSize"),
+                     Comment = row.Field<string>("Comment"),
+                     IsShared = true,
+                     IsApproved = row.Field<bool?>("IsApproved").HasValue ?
+                        row.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
+                 }).ToList();
+
+            var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
+
+            query = "SELECT Id, MailText FROM MotivationMail WHERE ApplicationId=@AppId";
+            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", app.Id } });
+
+            string motivMail = "";
+            Guid motivId = Guid.Empty;
+            if (tbl.Rows.Count > 0)
+            {
+                motivMail = tbl.Rows[0].Field<string>("MailText");
+                motivId = tbl.Rows[0].Field<Guid>("Id");
+            }
+
+
+
+            ExtApplicationModel model = new ExtApplicationModel()
+            {
+                Id = app.Id,
+                Priority = app.Priority.ToString(),
+                Profession = app.Profession,
+                ObrazProgram = app.ObrazProgram,
+                Specialization = app.Specialization,
+                StudyForm = app.StudyForm,
+                StudyBasis = app.StudyBasis,
+                Enabled = app.Enabled.HasValue ? app.Enabled.Value : false,
+                Exams = new List<string>(),
+                Files = AllFiles,
+                DateOfDisable = app.DateOfDisable.HasValue ? app.DateOfDisable.Value.ToString("dd.MM.yyyy HH:mm:ss") : "",
+                MotivateEditText = motivMail,
+                MotivateEditId = motivId,
+                EntryTypeId = app.EntryTypeId,
+                ComissionAddress = app.ComissionAddress,
+                ComissionYaCoord = app.ComissionYaCoord,
+                AbiturientTypeId = app.AbiturientTypeId ?? 1
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddFile()
+        {
+            string id = Request.Form["id"];
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            Guid ApplicationId = new Guid();
+            if (!Guid.TryParse(id, out ApplicationId))
+                return RedirectToAction("Main", "Abiturient");
+
+            if (Request.Files["File"] == null || Request.Files["File"].ContentLength == 0 || string.IsNullOrEmpty(Request.Files["File"].FileName))
+                return Json(Resources.ServerMessages.EmptyFileError);
+
+            string fileName = Request.Files["File"].FileName;
+            string fileComment = Request.Form["Comment"];
+            int fileSize = Convert.ToInt32(Request.Files["File"].InputStream.Length);
+            byte[] fileData = new byte[fileSize];
+            //читаем данные из ПОСТа
+            Request.Files["File"].InputStream.Read(fileData, 0, fileSize);
+            string fileext = "";
+            try
+            {
+                fileext = fileName.Substring(fileName.LastIndexOf('.'));
+            }
+            catch
+            {
+                fileext = "";
+            }
+
+            try
+            {
+                string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
+                    " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 1)";
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("@Id", Guid.NewGuid());
+                dic.Add("@ApplicationId", ApplicationId);
+                dic.Add("@FileName", fileName);
+                dic.Add("@FileData", fileData);
+                dic.Add("@FileSize", fileSize);
+                dic.Add("@FileExtention", fileext);
+                dic.Add("@IsReadOnly", false);
+                dic.Add("@LoadDate", DateTime.Now);
+                dic.Add("@Comment", fileComment);
+                dic.Add("@MimeType", Util.GetMimeFromExtention(fileext));
+
+                Util.AbitDB.ExecuteQuery(query, dic);
+            }
+            catch
+            {
+                return Json("Ошибка при записи файла");
+            }
+
+            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+        }
+
+        public ActionResult GetFile(string id)
+        {
+            Guid FileId = new Guid();
+            if (!Guid.TryParse(id, out FileId))
+                return Content("Некорректный идентификатор файла");
+
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Content("Authorization required");
+
+            DataTable tbl = Util.AbitDB.GetDataTable("SELECT FileName, FileData, MimeType, FileExtention FROM AllFiles WHERE Id=@Id",
+                new Dictionary<string, object>() { { "@Id", FileId } });
+
+            if (tbl.Rows.Count == 0)
+                return Content("Файл не найден");
+
+            string fileName = tbl.Rows[0].Field<string>("FileName");
+            string contentType = tbl.Rows[0].Field<string>("MimeType");
+            byte[] content = tbl.Rows[0].Field<byte[]>("FileData");
+            string ext = tbl.Rows[0].Field<string>("FileExtention");
+
+
+            if (string.IsNullOrEmpty(contentType))
+            {
+                if (string.IsNullOrEmpty(ext))
+                    contentType = "application/octet-stream";
+                else
+                    contentType = Util.GetMimeFromExtention(ext);
+            }
+            bool openMenu = true;
+            if (ext.IndexOf("jpg", StringComparison.OrdinalIgnoreCase) != -1)
+                openMenu = false;
+            if (ext.IndexOf("jpeg", StringComparison.OrdinalIgnoreCase) != -1)
+                openMenu = false;
+            if (ext.IndexOf("gif", StringComparison.OrdinalIgnoreCase) != -1)
+                openMenu = false;
+            if (ext.IndexOf("png", StringComparison.OrdinalIgnoreCase) != -1)
+                openMenu = false;
+
+            try
+            {
+                if (openMenu)
+                    return File(content, contentType, fileName);
+                else
+                    return File(content, contentType);
+            }
+            catch
+            {
+                return Content("Ошибка при чтении файла");
+            }
+        }
+
+        public ActionResult GetPrint(string id)
+        {
+            Guid personId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out personId))
+                return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Authentification Error"), "text/plain");
+
+            Guid appId;
+            if (!Guid.TryParse(id, out appId))
+                return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Ошибка идентификатора заявления"), "text/plain");
+
+            string query = "SELECT COUNT(Id) FROM Application WHERE Id=@Id AND PersonId=@PersonId";
+            int cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
+            if (cnt == 0)
+            {
+                query = "SELECT COUNT(Id) FROM AG_Application WHERE Id=@Id AND PersonId=@PersonId";
+                cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
+                if (cnt == 0)
+                    return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");
+            }
+
+            byte[] bindata; 
+            int abitTypeId = Util.CheckAbitType(personId);
+
+            switch (abitTypeId)
+            {
+                case 1: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/")); break; }
+                case 2: { bindata = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/")); break; }
+                case 3: { bindata = PDFUtils.GetApplicationPDFTransfer(appId, Server.MapPath("~/Templates/")); break; }
+                case 4: { bindata = PDFUtils.GetApplicationPDFTransferForeign(appId, Server.MapPath("~/Templates/")); break; }
+                case 5: { bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/")); break; }
+                case 6: { bindata = PDFUtils.GetApplicationPDFChangeStudyForm(appId, Server.MapPath("~/Templates/")); break; }
+                case 7: { bindata = PDFUtils.GetApplicationPDFChangeObrazProgram(appId, Server.MapPath("~/Templates/")); break; }
+                case 8: { bindata = PDFUtils.GetApplicationPDF_AG(appId, Server.MapPath("~/Templates/")); break; }
+                case 9: { bindata = PDFUtils.GetApplicationPDF_SPO(appId, Server.MapPath("~/Templates/")); break; }
+                case 10: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+                case 11: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+                default: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/")); break; }
+            }
+            
+            return new FileContentResult(bindata, "application/pdf") { FileDownloadName = "Application.pdf" };
+        }
+
+        public ActionResult Disable(string id)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+            {
+                var res = new { IsOk = false, ErrorMessage = "Ошибка авторизации! Пожалуйста, повторите вход." };
+                return Json(res);
+            }
+
+            if (PersonId == Guid.Empty)
+            {
+                var res = new { IsOk = false, ErrorMessage = "Ошибка авторизации! Пожалуйста, повторите вход." };
+                return Json(res);
+            }
+
+            Guid AppId;
+            if (!Guid.TryParse(id, out AppId))
+            {
+                var res = new { IsOk = false, ErrorMessage = "Некорректный идентификатор. Попробуйте обновить страницу" };
+                return Json(res);
+            }
+
+            bool? isEnabled = (bool?)Util.AbitDB.GetValue("SELECT Enabled FROM [Application] WHERE Id=@Id AND PersonId=@PersonId",
+                new Dictionary<string, object>() { { "@Id", AppId }, { "@PersonId", PersonId } });
+
+            //var app = Util.ABDB.Application.Where(x => x.Id == AppId && x.PersonId == PersonId).FirstOrDefault();
+            if (!isEnabled.HasValue)
+            {
+                var res = new { IsOk = false, ErrorMessage = "Ошибка при поиске заявления. Попробуйте обновить страницу" };
+                return Json(res);
+            }
+
+            if (isEnabled.HasValue && isEnabled.Value == false)
+            {
+                var res = new { IsOk = false, ErrorMessage = "Заявление уже было отозвано" };
+                return Json(res);
+            }
+
+            try
+            {
+                string query = "UPDATE [Application] SET Enabled=@Enabled, DateOfDisable=@DateOfDisable, Priority=@Priority WHERE Id=@Id";
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("@Id", AppId);
+                dic.Add("@DateOfDisable", DateTime.Now);
+                dic.Add("@Priority", 0);
+                dic.Add("@Enabled", false);
+
+                Util.AbitDB.ExecuteQuery(query, dic);
+
+                var res = new { IsOk = true, Enabled = false };
+                return Json(res);
+            }
+            catch
+            {
+                var res = new { IsOk = false, ErrorMessage = "Ошибка при поиске заявления. Попробуйте обновить страницу" };
+                return Json(res);
+            }
+        }
+
+        public ActionResult MotivatePost()
+        {
+            string id = Request.Form["id"];
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            Guid ApplicationId = new Guid();
+            if (!Guid.TryParse(id, out ApplicationId))
+                return RedirectToAction("Main", "Abiturient");
+
+            if (Request.Files["File"] == null || Request.Files["File"].ContentLength == 0 || string.IsNullOrEmpty(Request.Files["File"].FileName))
+                return Json(Resources.ServerMessages.EmptyFileError);
+
+            string fileName = Request.Files["File"].FileName;
+            string fileComment = Request.Form["Comment"];
+            int fileSize = Convert.ToInt32(Request.Files["File"].InputStream.Length);
+            byte[] fileData = new byte[fileSize];
+            //читаем данные из ПОСТа
+            Request.Files["File"].InputStream.Read(fileData, 0, fileSize);
+            string fileext = "";
+            try
+            {
+                fileext = fileName.Substring(fileName.LastIndexOf('.'));
+            }
+            catch
+            {
+                fileext = "";
+            }
+
+            try
+            {
+                string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
+                    " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 2)";
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("@Id", Guid.NewGuid());
+                dic.Add("@ApplicationId", ApplicationId);
+                dic.Add("@FileName", fileName);
+                dic.Add("@FileData", fileData);
+                dic.Add("@FileSize", fileSize);
+                dic.Add("@FileExtention", fileext);
+                dic.Add("@IsReadOnly", false);
+                dic.Add("@LoadDate", DateTime.Now);
+                dic.Add("@Comment", "Мотивационное письмо");
+                dic.Add("@MimeType", Util.GetMimeFromExtention(fileext));
+
+                Util.AbitDB.ExecuteQuery(query, dic);
+            }
+            catch
+            {
+                return Json("Ошибка при записи файла");
+            }
+
+            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+        }
+
+        public ActionResult EssayPost()
+        {
+            string id = Request.Form["id"];
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            Guid ApplicationId = new Guid();
+            if (!Guid.TryParse(id, out ApplicationId))
+                return RedirectToAction("Main", "Abiturient");
+
+            if (Request.Files["File"] == null || Request.Files["File"].ContentLength == 0 || string.IsNullOrEmpty(Request.Files["File"].FileName))
+                return Json(Resources.ServerMessages.EmptyFileError);
+
+            string fileName = Request.Files["File"].FileName;
+            if (fileName.IndexOf('\\') > 0 && fileName.LastIndexOf('\\') < fileName.Length)
+                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+
+            string fileComment = Request.Form["Comment"];
+            int fileSize = Convert.ToInt32(Request.Files["File"].InputStream.Length);
+            byte[] fileData = new byte[fileSize];
+            //читаем данные из ПОСТа
+            Request.Files["File"].InputStream.Read(fileData, 0, fileSize);
+            string fileext = "";
+            try
+            {
+                fileext = fileName.Substring(fileName.LastIndexOf('.'));
+            }
+            catch
+            {
+                fileext = "";
+            }
+
+            try
+            {
+                string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
+                    " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 3)";
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("@Id", Guid.NewGuid());
+                dic.Add("@ApplicationId", ApplicationId);
+                dic.Add("@FileName", fileName);
+                dic.Add("@FileData", fileData);
+                dic.Add("@FileSize", fileSize);
+                dic.Add("@FileExtention", fileext);
+                dic.Add("@IsReadOnly", false);
+                dic.Add("@LoadDate", DateTime.Now);
+                dic.Add("@Comment", "Эссе");
+                dic.Add("@MimeType", Util.GetMimeFromExtention(fileext));
+
+                Util.AbitDB.ExecuteQuery(query, dic);
+            }
+            catch
+            {
+                return Json("Ошибка при записи файла");
+            }
+
+            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+        }
+
+        //public ActionResult MotivatePost()
+        //{
+        //    string appid = Request.Form["AppId"];
+        //    string mailid = Request.Form["MailId"];
+        //    string MailText = Request.Form["MailText"];
+
+        //    bool isNewApp = string.IsNullOrEmpty(mailid) ? true : false;
+
+        //    Guid ApplicationId;
+        //    Guid MailId;
+        //    if (!Guid.TryParse(appid, out ApplicationId))
+        //        return RedirectToAction("Main", "Abiturient");
+        //    if (string.IsNullOrEmpty(MailText))
+        //        return RedirectToAction("Index", new RouteValueDictionary() { { "id", appid } });
+
+        //    Guid.TryParse(mailid, out MailId);
+        //    if (MailId == Guid.Empty)//some false conditions
+        //    {
+        //        isNewApp = true;
+        //        MailId = Guid.NewGuid();
+        //    }
+
+        //    string query = "";
+        //    Dictionary<string, object> dic = new Dictionary<string, object>();
+        //    if (isNewApp)
+        //    {
+        //        query = "INSERT INTO MotivationMail (Id, ApplicationId, MailText) VALUES (@Id, @ApplicationId, @MailText)";
+        //        dic.Add("@Id", MailId);
+        //        dic.Add("@ApplicationId", ApplicationId);
+        //        dic.Add("@MailText", MailText);
+        //    }
+        //    else
+        //    {
+        //        query = "UPDATE MotivationMail SET MailText=@MailText WHERE ApplicationId=@ApplicationId";
+        //        dic.Add("@Id", MailId);
+        //        dic.Add("@ApplicationId", ApplicationId);
+        //        dic.Add("@MailText", MailText);
+        //    }
+        //    Util.AbitDB.ExecuteQuery(query, dic);
+        //    return RedirectToAction("Index", new RouteValueDictionary() { { "id", appid } });
+        //}
+
+        //ajax
+        public JsonResult ChangePriority(string id, string pr)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Json(new { IsOk = false, ErrorMessage = "Ошибка авторизации" });
+
+            Guid ApplicationId;
+            if (!Guid.TryParse(id, out ApplicationId))
+                return Json(new { IsOk = false, ErrorMessage = "" });
+
+            try
+            {
+                Util.AbitDB.ExecuteQuery("UPDATE Application SET Priority=@Priority WHERE Id=@Id",
+                    new Dictionary<string, object>() { { "@Id", ApplicationId }, { "@Priority", pr } });
+                return Json(new { IsOk = true });
+            }
+            catch
+            {
+                return Json(new { IsOk = false, ErrorMessage = "Ошибка при обновлении данных" });
+            }
+            //using (AbitDB db = new AbitDB())
+            //{
+            //    var app = db.Application.Where(x => x.Id == ApplicationId).FirstOrDefault();
+            //    if (app == null)
+            //        return Json(new { IsOk = false, ErrorMessage = "Ошибка идентификатора заявления" });
+
+            //    app.Priority = pr;
+            //    db.SaveChanges();
+            //}
+
+        }
+
+        [HttpPost]
+        public ActionResult DeleteFile(string id)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+            {
+                var res = new { IsOk = false, ErrorMessage = "Authorization required" };
+                return Json(res);
+            }
+
+            string uiLang = Util.GetUILang(PersonId);
+
+            Guid fileId;
+            if (!Guid.TryParse(id, out fileId))
+            {
+                var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID };
+                return Json(res);
+            }
+            string attr = Util.AbitDB.GetStringValue("SELECT IsReadOnly FROM ApplicationFile WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", fileId } });
+            if (string.IsNullOrEmpty(attr))
+            {
+                var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.FileNotFound };
+                return Json(res);
+            }
+            if (attr == "True")
+            {
+                var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.ReadOnlyFile };
+                return Json(res);
+            }
+            try
+            {
+                Util.AbitDB.ExecuteQuery("DELETE FROM ApplicationFile WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", fileId } });
+            }
+            catch
+            {
+                var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.ErrorWhileDeleting };
+                return Json(res);
+            }
+
+            var result = new { IsOk = true, ErrorMessage = "" };
+            return Json(result);
+        }
+    }
+}

@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApprovalStatus_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="ApprovalStatus_Header" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="ApprovalStatus_NotSet" xml:space="preserve">
+    <value>Not reviewed</value>
+  </data>
+  <data name="ApprovalStatus_Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="BigFileMessage" xml:space="preserve">
+    <value>Too big file for uploading (4Mb - max)</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>File type</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>Shared files</value>
+  </data>
+  <data name="HelpMessage" xml:space="preserve">
+    <value>This is the shared files folder. &lt;br /&gt;
+    Here you can attach the documents that are required for all applications, for example, scans the passport, educational documents, translations, etc.</value>
+  </data>
+  <data name="HelpMessage_AG" xml:space="preserve">
+    <value>This is the &lt;b&gt;shared files&lt;/b&gt; folder. &lt;br /&gt;
+    Here you can attach the documents that are required for all applications, for example, scans the passport, educational documents, translations, etc.</value>
+  </data>
+  <data name="HelpMessage_Foreign" xml:space="preserve">
+    <value>This is the &lt;b&gt;shared files&lt;/b&gt; folder. &lt;br /&gt;
+    Here you can attach the documents that are required for all applications, for example, scans the passport, educational documents, translations, etc.</value>
+  </data>
+  <data name="LoadDate" xml:space="preserve">
+    <value>Uploading date</value>
+  </data>
+  <data name="LoadedFiles" xml:space="preserve">
+    <value>Loaded files:</value>
+  </data>
+  <data name="NoFiles" xml:space="preserve">
+    <value>No files</value>
+  </data>
+  <data name="PassportLoad" xml:space="preserve">
+    <value>Here you can attach only scans of the passport</value>
+  </data>
+  <data name="PersonalOffice_Passport" xml:space="preserve">
+    <value>Сюда вы можете прикрепить сканы паспорта. &lt;/br&gt;
+Остальные документы можно прикрепить в окне Общие документы. &lt;/br&gt;</value>
+  </data>
+  <data name="RulesInformation" xml:space="preserve">
+    <value>&lt;h3&gt;Information for applicants:&lt;/h3&gt;
+In accordance with paragraph 2.21 of the Rules of admission to the St. Petersburg State University on basic educational programs of higher education (bachelor's degree programs, training programs, graduate programs) in 2012 (hereinafter - the Rules of admission) to participate in the competition for the basic educational program you graduate must submit the following documents:
+    &lt;ul&gt;
+        &lt;li&gt; a copy of the document certifying identity and citizenship coming;&lt;/li&gt;
+        &lt;li&gt; application for admission to an educational program on the form prescribed by the Admissions Committee;&lt;/li&gt;
+        &lt;li&gt; Six (6) 3x4 cm photos (photos must be made in the current calendar year);&lt;/li&gt;
+        &lt;li&gt; certificate of education (or a certificate from the University of the successful exploration the educational programs of higher education and the passage of the final state certification).&lt;/li&gt;
+    &lt;/ul&gt;&lt;br/&gt;
+In accordance with paragraph 7.15 of the Rules of admission as the documents considered by the Admissions Committee the competition documents (portfolio) arriving at the basic educational program graduate may be considered the following documents:
+    &lt;ul&gt;
+        &lt;li&gt;a motivation letter prepared and signed by coming into compliance with the requirements set forth in the competition documents Criteria (portfolio), up to 600 words;&lt;/li&gt;
+        &lt;li&gt;diplomas to the winners of competitions of scientific, design work and student competitions at various levels;&lt;/li&gt;
+        &lt;li&gt;documents confirming the appointment of nominal Fellowship Ministries, agencies, foundations, educational institutions and others;&lt;/li&gt;
+        &lt;li&gt;documents showing the improvement of professional skills, knowledge of foreign languages​​;&lt;/li&gt;
+        &lt;li&gt;applicant research or creative work (depending on the orientation of the educational program);&lt;/li&gt;
+        &lt;li&gt;documents proving the existence of experience in practice.&lt;/li&gt;
+    &lt;/ul&gt;</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>File size</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+</root>

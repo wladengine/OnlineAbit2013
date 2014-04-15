@@ -1,0 +1,66 @@
+#page-header h1, #main-nav, #page-subheader h2{
+    padding-left: 115px;
+}
+.Red {
+    color: Red;
+}
+.Green
+{
+    color: Green;
+}
+input[type="text"],input[type="password"]
+{
+    min-width:185px;
+}
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000 !important;
+    background-color: #ffeeee !important;
+}
+
+.validation-summary-errors  {
+	border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-weight: bold;
+    color: #ff0000;
+	background: -moz-linear-gradient(center top , #FAE2E2, #F2CACB) repeat scroll 0 0 transparent;
+    border: 1px solid #EEB7BA;
+    /*color: #BE4741;*/
+    text-shadow: 0 1px 0 #FFFFFF;
+	
+}
+a.MenuButton
+{
+	display: block;
+	padding: 4px 0;
+}
+
+a.MenuButton:hover
+{
+	display: block;
+	padding: 4px 0;
+	background-color: #E1E1E1;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+textarea.noresize
+{
+    resize: none;
+}
+span.link
+{
+    cursor: pointer;
+}

@@ -7,6 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
 <% if (1 == 0)/* типа затычка, чтобы VS видела скрипты */
    {
 %>
@@ -62,7 +63,7 @@
         var regexp = /^[А-Яа-яё\-\'\s]+$/i;
         function CheckSurname() {
             var ret = true;
-            var val = $('#PersonInfo_Surname').val().trim(); 
+            var val = $('#PersonInfo_Surname').val().trim();
             if (val == '') {
                 ret = false;
                 $('#PersonInfo_Surname').addClass('input-validation-error');
@@ -87,7 +88,7 @@
         }
         function CheckName() {
             var ret = true;
-            var val = $('#PersonInfo_Name').val().trim(); 
+            var val = $('#PersonInfo_Name').val().trim();
             if (val == '') {
                 ret = false;
                 $('#PersonInfo_Name').addClass('input-validation-error');
@@ -167,17 +168,21 @@
                 <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                 <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                 <input name="Enabled" type="hidden" value="<%= Model.Enabled %>" />
-                <fieldset>
+                <fieldset> 
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.Surname, GetGlobalResourceObject("PersonInfo", "Surname").ToString())%>
+                        <label for="PersonInfo_Surname" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonInfo, Surname %>"></asp:Literal><asp:Literal ID="Literal2" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Surname)%>
                         <br /><p></p>
                         <span id="PersonInfo_Surname_Message" class="Red" style="display:none">
-                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_Surname_Message").ToString()%>
+                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_Surname_Message").ToString()%> 
                         </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.Name, GetGlobalResourceObject("PersonInfo", "Name").ToString())%>
+                        <label for="PersonInfo_Name" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal3" runat="server" Text="<%$Resources:PersonInfo, Name %>"></asp:Literal><asp:Literal ID="Literal4" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Name)%>
                         <br /><p></p>
                         <span id="PersonInfo_Name_Message" class="Red" style="display:none">
@@ -192,11 +197,15 @@
                         </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.Sex, GetGlobalResourceObject("PersonInfo", "Sex").ToString())%>
+                        <label for="PersonInfo_Sex" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal5" runat="server" Text="<%$Resources:PersonInfo, Sex %>"></asp:Literal><asp:Literal ID="Literal6" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.DropDownListFor(x => x.PersonInfo.Sex, Model.PersonInfo.SexList)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.BirthDate, GetGlobalResourceObject("PersonInfo", "BirthDate").ToString())%>
+                        <label for="PersonInfo_BirthDate" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal7" runat="server" Text="<%$Resources:PersonInfo, BirthDate %>"></asp:Literal><asp:Literal ID="Literal8" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.BirthDate)%>
                         <br /><p></p>
                         <span id="PersonInfo_BirthDate_Message" class="Red" style="display:none">
@@ -204,7 +213,9 @@
                         </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.BirthPlace, GetGlobalResourceObject("PersonInfo", "BirthPlace").ToString())%>
+                        <label for="PersonInfo_BirthPlace" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal9" runat="server" Text="<%$Resources:PersonInfo, BirthPlace %>"></asp:Literal><asp:Literal ID="Literal10" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.BirthPlace)%>
                         <br /><p></p>
                         <span id="PersonInfo_BirthPlace_Message" class="Red" style="display:none">
@@ -212,19 +223,26 @@
                         </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.Nationality, GetGlobalResourceObject("PersonInfo", "Nationality").ToString())%>
+                        <label for="PersonInfo_Nationality" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal11" runat="server" Text="<%$Resources:PersonInfo, Nationality %>"></asp:Literal><asp:Literal ID="Literal12" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.DropDownListFor(x => x.PersonInfo.Nationality, Model.PersonInfo.NationalityList)%>
                     </div>
                      <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.Country, GetGlobalResourceObject("PersonInfo", "Country").ToString())%>
-                        <%= Html.DropDownListFor(x => x.ContactsInfo.CountryId, Model.PersonInfo.CountryList)%>
+                        <label for="ContactsInfo_CountryId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal ID="Literal13" runat="server" Text="<%$Resources:PersonInfo, Country %>"></asp:Literal><asp:Literal ID="Literal14" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
+                        <%= Html.DropDownListFor(x => x.ContactsInfo.CountryId, Model.ContactsInfo.CountryList)%>
                     </div>
                 </fieldset>
                 <hr />
                 <div class="clearfix">
                     <input id="btnSubmit" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
                 </div>
-            </form>
+                <div> 
+                <asp:Literal ID="Literal15" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal> - <asp:Literal ID="Literal16" runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>  
+                </div>
+            </form> 
             </div>
             <div class="grid_2">
                     <ol>

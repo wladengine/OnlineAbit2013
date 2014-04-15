@@ -127,7 +127,7 @@ namespace OnlineAbit2013.Controllers
                     model.PersonInfo.BirthDate = Person.BirthDate.HasValue ? Person.BirthDate.Value.ToString("dd.MM.yyyy") : "";
 
                     model.PersonInfo.NationalityList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.PersonInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.ContactsInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
                     model.PersonInfo.SexList = new List<SelectListItem>()
                     {
                         new SelectListItem() { Text = LangPack.GetValue(5, model.Lang), Value = "M" }, 

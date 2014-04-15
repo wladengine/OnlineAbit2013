@@ -166,10 +166,8 @@ namespace OnlineAbit2013.Models
         public string BirthDate { get; set; }
 
         public string Nationality { get; set; }
-        public string Country { get; set; }
 
         public List<SelectListItem> NationalityList { get; set; }
-        public List<SelectListItem> CountryList { get; set; }
         public string Sex { get; set; }
         public List<SelectListItem> SexList { get; set; }
 

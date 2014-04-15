@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Дата рождения*.
+        ///   Ищет локализованную строку, такую же, как Дата рождения.
         /// </summary>
         internal static string BirthDate {
             get {
@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Место рождения*.
+        ///   Ищет локализованную строку, такую же, как Место рождения.
         /// </summary>
         internal static string BirthPlace {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Страна проживания*.
+        ///   Ищет локализованную строку, такую же, как Страна проживания.
         /// </summary>
         internal static string Country {
             get {
@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Имя*.
+        ///   Ищет локализованную строку, такую же, как Имя.
         /// </summary>
         internal static string Name {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Гражданство*.
+        ///   Ищет локализованную строку, такую же, как Гражданство.
         /// </summary>
         internal static string Nationality {
             get {
@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Необходимое поле .
+        /// </summary>
+        internal static string RequiredField {
+            get {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Отчество.
         /// </summary>
         internal static string SecondName {
@@ -192,6 +201,15 @@ namespace Resources {
         internal static string Sex {
             get {
                 return ResourceManager.GetString("Sex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как &lt;span class=&quot;Red&quot;&gt;*&lt;/span&gt;.
+        /// </summary>
+        internal static string Star {
+            get {
+                return ResourceManager.GetString("Star", resourceCulture);
             }
         }
         
@@ -250,7 +268,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Фамилия*.
+        ///   Ищет локализованную строку, такую же, как Фамилия.
         /// </summary>
         internal static string Surname {
             get {

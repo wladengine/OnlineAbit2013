@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BirthDate" xml:space="preserve">
-    <value>Дата рождения*</value>
+    <value>Дата рождения</value>
   </data>
   <data name="BirthPlace" xml:space="preserve">
-    <value>Место рождения*</value>
+    <value>Место рождения</value>
   </data>
   <data name="ButtonSubmitText" xml:space="preserve">
     <value>Далее</value>
   </data>
   <data name="Country" xml:space="preserve">
-    <value>Страна проживания*</value>
+    <value>Страна проживания</value>
   </data>
   <data name="HeaderPersonalInfo" xml:space="preserve">
     <value>Личные данные</value>
@@ -136,10 +136,10 @@
     <value>Я желаю принимать участие в равном конкурсе с гражданами РФ</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Имя*</value>
+    <value>Имя</value>
   </data>
   <data name="Nationality" xml:space="preserve">
-    <value>Гражданство*</value>
+    <value>Гражданство</value>
   </data>
   <data name="PersonInfo_BirthDate_Message" xml:space="preserve">
     <value>Введите дату рождения</value>
@@ -157,7 +157,7 @@
     <value>Отчество</value>
   </data>
   <data name="Sex" xml:space="preserve">
-    <value>Пол*</value>
+    <value>Пол</value>
   </data>
   <data name="Step1" xml:space="preserve">
     <value>Личные данные</value>
@@ -178,7 +178,7 @@
     <value>Дополнительные сведения</value>
   </data>
   <data name="Surname" xml:space="preserve">
-    <value>Фамилия*</value>
+    <value>Фамилия</value>
   </data>
   <data name="ValidationSummaryHeader" xml:space="preserve">
     <value>При сохранении информации произошли следующие ошибки:</value>

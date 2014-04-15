@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.
 
 # Build results
 
@@ -77,6 +78,7 @@ build/
 *.pidb
 *.log
 *.scc
+*.csproj
 
 # Visual C++ cache files
 ipch/
@@ -214,14 +216,6 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 Scripts/jquery-ui-1.8.20.min.js
-Images/orderedList0.png
-Images/orderedList2.png
-Images/orderedList3.png
-Images/orderedList4.png
-Images/orderedList5.png
-Images/orderedList6.png
-Images/orderedList7.png
-App_Start/WebApiConfig.cs
 Web.config
 Views/Web.config
 OnlineAbit2013.csproj
@@ -235,3 +229,6 @@ Scripts/_references.js
 Content/themes/base/minified.rar
 OnlineAbit2013.csproj
 Views/Web.config
+OnlineAbit2013.csproj
+Web.config
+OnlineAbit2013.csproj

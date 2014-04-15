@@ -213,3 +213,23 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+Scripts/jquery-ui-1.8.20.min.js
+Images/orderedList0.png
+Images/orderedList2.png
+Images/orderedList3.png
+Images/orderedList4.png
+Images/orderedList5.png
+Images/orderedList6.png
+Images/orderedList7.png
+App_Start/WebApiConfig.cs
+Web.config
+Views/Web.config
+OnlineAbit2013.csproj
+OnlineAbit.Designer.cs
+OnlineAbit.Designer.cs
+OnlineAbit.Designer.cs
+*.png
+Controllers/ConstClass.cs
+Content/themes/base/minified/jquery.ui.theme.min.css
+Scripts/_references.js
+Content/themes/base/minified.rar

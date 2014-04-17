@@ -18,7 +18,7 @@
         Согласно данным анкеты, Вы поступаете в <strong><%= Model.EntryClassName %></strong>
     </div>
     <br />
-    <%= Html.HiddenFor(x => x.EntryClassId) %>
+    
 <% 
    }
 %>

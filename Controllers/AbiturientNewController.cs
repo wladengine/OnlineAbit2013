@@ -928,28 +928,38 @@ namespace OnlineAbit2013.Controllers
                 else
                 {
                     // ссылка на объект  и пр., когда SchoolExitClassId = null
-                    int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonEducationDocument WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
-                    // "SELECT ExitClassNum FROM AG_EntryClass"
-                    if ((iAG_EntryClassId == 5) || (iAG_EntryClassId == null) || (iAG_EntryClassId == 4))
+                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                    if (tbl.Rows.Count == 0)
                     {
-                        model.Enabled = false; 
+                        model.Enabled = false;
                     }
                     else
                     {
-                        model.Enabled = true;
-                        string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
-                        Dictionary<string, object> dic = new Dictionary<string, object>();
-                        dic.Add("@PersonId", PersonId);
-                        dic.Add("@ClassId", iAG_EntryClassId);
-                        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-                        model.Professions = (from DataRow rw in tbl.Rows
-                                             select new SelectListItem()
-                                             {
-                                                 Value = rw.Field<int>("ProgramId").ToString(),
-                                                 Text = rw.Field<string>("ProgramName")
-                                             }).ToList();
-                        model.EntryClassId = iAG_EntryClassId;
-                        model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
+                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+
+                        if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
+                        {
+                            model.Enabled = false;
+                        }
+                        else
+                        {
+                            model.Enabled = true;
+                            string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
+                            Dictionary<string, object> dic = new Dictionary<string, object>();
+                            dic.Add("@PersonId", PersonId);
+                            dic.Add("@ClassId", iAG_EntryClassId);
+                            tbl = Util.AbitDB.GetDataTable(query, dic);
+                            model.Professions = (from DataRow rw in tbl.Rows
+                                                 select new SelectListItem()
+                                                 {
+                                                     Value = rw.Field<int>("ProgramId").ToString(),
+                                                     Text = rw.Field<string>("ProgramName")
+                                                 }).ToList();
+                            model.EntryClassId = iAG_EntryClassId;
+                            model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
+                        }
                     }
                 }
                 return View("NewApplication_AG", model);

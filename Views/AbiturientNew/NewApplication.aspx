@@ -63,30 +63,10 @@
 </script>
  
     <%= Html.ValidationSummary() %>
-    <% if (Model.EntryType == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
-       { %>
-       <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
-    <% } %>
-    
-    <% if (Model.EntryType != 1)
-       { %>
-        <%= Html.HiddenFor(x => x.EntryType) %>
-        <select id="Entry" name="Entry" onchange="ChangeEType()">
-            <option value="2">Магистратура</option>
-            <option value="3">Первый курс</option>
-        </select>
-    <% }
-       else
-       { %>
-        <div class="message info">Согласно данным анкеты, вы поступаете на <strong>первый курс</strong></div>
-        <input type="hidden" id="hEntryType" name="EntryType" value="1" />
-        <input type="hidden" id="EntryType" name="Entry" value="1" />
-    <% } %>
-     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
-      <input name="val_h" id="val_h" type="hidden" value="1" />
+    <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
+    <input name="val_h" id="val_h" type="hidden" value="1" />
     <!--ag-->
     <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
-    //////////////////////
     <!-- 1 курс -->
     <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
     <!-- 1 курс иностр граждане -->

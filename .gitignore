@@ -232,3 +232,5 @@ Views/Web.config
 OnlineAbit2013.csproj
 Web.config
 OnlineAbit2013.csproj
+Web.config
+*.config

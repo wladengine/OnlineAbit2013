@@ -7,8 +7,8 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{25EC54AC-3AC2-49C7-9003-1806AC2595E0}</ProjectGuid>
-    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{E083211C-E1CF-45DD-8E88-34449A4657C5}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OnlineAbit2013</RootNamespace>
@@ -16,6 +16,15 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,35 +44,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="HibernateKLADR, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\HibernateKLADR.dll</HintPath>
+      <HintPath>..\..\OlympOnline\OlympOnline\bin\HibernateKLADR.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\OlympOnline\OlympOnline\bin\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.0.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\OlympOnline\OlympOnline\bin\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Recaptcha, Version=1.0.5.0, Culture=neutral, PublicKeyToken=9afc4d65b28c38c2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Recaptcha.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -71,107 +91,8 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.20710.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.AspNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.0.3.12153\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGrease">
-      <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\AddSharedFiles.designer.cs">
@@ -369,7 +290,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOfficeForeign.ru-RU.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step1.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step1.resx</DependentUpon>
@@ -379,32 +300,27 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step1.en-US.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step2.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step2.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step3.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step3.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step3.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PersonalOffice_Step3.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step4.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step4.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step4.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step5.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step5.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step5.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOffice_Step6.designer.cs">
+    <Compile Include="App_GlobalResources\PersonalOffice_Step6.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step6.resx</DependentUpon>
@@ -429,7 +345,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonInfo.ru-RU.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonStartPage.designer.cs">
+    <Compile Include="App_GlobalResources\PersonStartPage.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonStartPage.resx</DependentUpon>
@@ -486,9 +402,6 @@
     </Compile>
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AbiturientController.cs" />
     <Compile Include="Controllers\AbiturientNewController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -498,7 +411,6 @@
     <Compile Include="Controllers\AspirantController.cs" />
     <Compile Include="Controllers\ChangeObrazProgramController.cs" />
     <Compile Include="Controllers\ChangeStudyFormController.cs" />
-    <Compile Include="Controllers\ConstClass.cs" />
     <Compile Include="Controllers\DormsController.cs" />
     <Compile Include="Controllers\ForeignAbiturientController.cs" />
     <Compile Include="Controllers\ForeignApplicationController.cs" />
@@ -529,6 +441,13 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLClass.cs" />
+    <Compile Include="Views\Shared\SiteForeign.Master.cs">
+      <DependentUpon>SiteForeign.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\SiteForeign.Master.designer.cs">
+      <DependentUpon>SiteForeign.Master</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -544,7 +463,6 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
@@ -559,49 +477,17 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.7.1.js" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.20.js" />
-    <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.5.1.js" />
+    <Content Include="Scripts\jquery-1.5.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.1.0.debug.js" />
-    <Content Include="Scripts\knockout-2.1.0.js" />
-    <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\modernizr-1.7.js" />
+    <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Views\AbiturientNew\AddFiles.aspx" />
     <Content Include="Views\AbiturientNew\AddSharedFiles.aspx" />
     <Content Include="Views\AbiturientNew\CheckEqualWithRussia.aspx" />
@@ -621,6 +507,132 @@
     <Content Include="Views\AbiturientNew\PersonStartPage.aspx" />
     <Content Include="Views\AbiturientNew\PriorityChanger.aspx" />
     <Content Include="Views\AbiturientNew\SetEqualWithRussia_Success.aspx" />
+    <Content Include="Views\Abiturient\AddFiles.aspx" />
+    <Content Include="Views\Abiturient\AddSharedFiles.aspx" />
+    <Content Include="Views\Abiturient\CheckEqualWithRussia.aspx" />
+    <Content Include="Views\Abiturient\Main.aspx" />
+    <Content Include="Views\Abiturient\MotivateMail.aspx" />
+    <Content Include="Views\Abiturient\NewApplication.aspx" />
+    <Content Include="Views\Abiturient\NewApplicationRectorScholarshipSuccess.aspx" />
+    <Content Include="Views\Abiturient\NewApplicationRectorScholarship.aspx" />
+    <Content Include="Views\Abiturient\NotOpened.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page1.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page2.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page3.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page4.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page5.aspx" />
+    <Content Include="Views\Abiturient\PersonalOffice_Page6.aspx" />
+    <Content Include="Views\Abiturient\PersonStartPage.aspx" />
+    <Content Include="Views\Abiturient\PriorityChanger.aspx" />
+    <Content Include="Views\Abiturient\SetEqualWithRussia_Success.aspx" />
+    <Content Include="Views\Account\Captcha.aspx" />
+    <Content Include="Views\Account\ChangePassword.aspx" />
+    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Views\Account\Data.aspx" />
+    <Content Include="Views\Account\EmailConfirmation.aspx" />
+    <Content Include="Views\Account\Error.aspx" />
+    <Content Include="Views\Account\ForgotPassword.aspx" />
+    <Content Include="Views\Account\LogOn.aspx" />
+    <Content Include="Views\Account\LogOnForeign.aspx" />
+    <Content Include="Views\Account\Register.aspx" />
+    <Content Include="Views\Account\RegisterForeign.aspx" />
+    <Content Include="Views\Admin\AbitCountList.aspx" />
+    <Content Include="Views\Admin\EntryList.aspx" />
+    <Content Include="Views\Admin\Index.aspx" />
+    <Content Include="Views\Admin\Restricted.aspx" />
+    <Content Include="Views\AG\AddSharedFiles.aspx" />
+    <Content Include="Views\AG\Application.aspx" />
+    <Content Include="Views\AG\Main.aspx" />
+    <Content Include="Views\AG\MotivateMail.aspx" />
+    <Content Include="Views\AG\NewApplication.aspx" />
+    <Content Include="Views\AG\PersonalOffice.aspx" />
+    <Content Include="Views\AG\PriorityChanger.aspx" />
+    <Content Include="Views\Application\Index.aspx" />
+    <Content Include="Views\Aspirant\AddFiles.aspx" />
+    <Content Include="Views\Aspirant\AddSharedFiles.aspx" />
+    <Content Include="Views\Aspirant\Main.aspx" />
+    <Content Include="Views\Aspirant\MotivateMail.aspx" />
+    <Content Include="Views\Aspirant\NewApplication.aspx" />
+    <Content Include="Views\Aspirant\NotOpened.aspx" />
+    <Content Include="Views\Aspirant\PersonalOffice.aspx" />
+    <Content Include="Views\Aspirant\PriorityChanger.aspx" />
+    <Content Include="Views\ChangeObrazProgram\AddFiles.aspx" />
+    <Content Include="Views\ChangeObrazProgram\AddSharedFiles.aspx" />
+    <Content Include="Views\ChangeObrazProgram\Main.aspx" />
+    <Content Include="Views\ChangeObrazProgram\MotivateMail.aspx" />
+    <Content Include="Views\ChangeObrazProgram\NewApplication.aspx" />
+    <Content Include="Views\ChangeObrazProgram\PersonalOffice.aspx" />
+    <Content Include="Views\ChangeObrazProgram\PriorityChanger.aspx" />
+    <Content Include="Views\ChangeStudyForm\AddFiles.aspx" />
+    <Content Include="Views\ChangeStudyForm\AddSharedFiles.aspx" />
+    <Content Include="Views\ChangeStudyForm\Main.aspx" />
+    <Content Include="Views\ChangeStudyForm\MotivateMail.aspx" />
+    <Content Include="Views\ChangeStudyForm\NewApplication.aspx" />
+    <Content Include="Views\ChangeStudyForm\PersonalOffice.aspx" />
+    <Content Include="Views\ChangeStudyForm\PriorityChanger.aspx" />
+    <Content Include="Views\Dorms\Index.aspx" />
+    <Content Include="Views\ForeignAbiturient\AddFiles.aspx" />
+    <Content Include="Views\ForeignAbiturient\AddSharedFiles.aspx" />
+    <Content Include="Views\ForeignAbiturient\Main.aspx" />
+    <Content Include="Views\ForeignAbiturient\MotivateMail.aspx" />
+    <Content Include="Views\ForeignAbiturient\NewApplication.aspx" />
+    <Content Include="Views\ForeignAbiturient\NotOpened.aspx" />
+    <Content Include="Views\ForeignAbiturient\PersonalOffice.aspx" />
+    <Content Include="Views\ForeignAbiturient\PersonalOfficeForeign.aspx" />
+    <Content Include="Views\ForeignAbiturient\PriorityChanger.aspx" />
+    <Content Include="Views\ForeignAbiturient\PriorityChangerForeign.aspx" />
+    <Content Include="Views\ForeignApplication\Index.aspx" />
+    <Content Include="Views\ForeignApplication\NewApplication.aspx" />
+    <Content Include="Views\ForeignAspirant\AddFiles.aspx" />
+    <Content Include="Views\ForeignAspirant\AddSharedFiles.aspx" />
+    <Content Include="Views\ForeignAspirant\Main - копия.aspx" />
+    <Content Include="Views\ForeignAspirant\Main.aspx" />
+    <Content Include="Views\ForeignAspirant\MotivateMail.aspx" />
+    <Content Include="Views\ForeignAspirant\NewApplication.aspx" />
+    <Content Include="Views\ForeignAspirant\NotOpened.aspx" />
+    <Content Include="Views\ForeignAspirant\PersonalOffice.aspx" />
+    <Content Include="Views\ForeignAspirant\PersonalOfficeForeign.aspx" />
+    <Content Include="Views\ForeignAspirant\PriorityChanger.aspx" />
+    <Content Include="Views\ForeignAspirant\PriorityChangerForeign.aspx" />
+    <Content Include="Views\Home\About.aspx" />
+    <Content Include="Views\Home\AboutRussianCitizens.aspx" />
+    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Home\IndexEng.aspx" />
+    <Content Include="Views\Recover\AddFiles.aspx" />
+    <Content Include="Views\Recover\AddSharedFiles.aspx" />
+    <Content Include="Views\Recover\Main.aspx" />
+    <Content Include="Views\Recover\MotivateMail.aspx" />
+    <Content Include="Views\Recover\NewApplication.aspx" />
+    <Content Include="Views\Recover\PersonalOffice.aspx" />
+    <Content Include="Views\Recover\PriorityChanger.aspx" />
+    <Content Include="Views\Shared\Error.aspx" />
+    <Content Include="Views\Shared\LogOnUserControl.ascx" />
+    <Content Include="Views\Shared\LogOnUserControlForeign.ascx" />
+    <Content Include="Views\SPO\AddSharedFiles.aspx" />
+    <Content Include="Views\SPO\Main.aspx" />
+    <Content Include="Views\SPO\MotivateMail.aspx" />
+    <Content Include="Views\SPO\NewApplication.aspx" />
+    <Content Include="Views\SPO\PersonalOffice.aspx" />
+    <Content Include="Views\SPO\PriorityChanger.aspx" />
+    <Content Include="Views\TransferForeign\AddFiles.aspx" />
+    <Content Include="Views\TransferForeign\AddSharedFiles.aspx" />
+    <Content Include="Views\TransferForeign\Main.aspx" />
+    <Content Include="Views\TransferForeign\MotivateMail.aspx" />
+    <Content Include="Views\TransferForeign\NewApplication.aspx" />
+    <Content Include="Views\TransferForeign\NotOpened.aspx" />
+    <Content Include="Views\TransferForeign\PersonalOffice.aspx" />
+    <Content Include="Views\TransferForeign\PersonStartPage.aspx" />
+    <Content Include="Views\TransferForeign\PriorityChanger.aspx" />
+    <Content Include="Views\Transfer\AddFiles.aspx" />
+    <Content Include="Views\Transfer\AddSharedFiles.aspx" />
+    <Content Include="Views\Transfer\Main.aspx" />
+    <Content Include="Views\Transfer\MotivateMail.aspx" />
+    <Content Include="Views\Transfer\NewApplication.aspx" />
+    <Content Include="Views\Transfer\NotOpened.aspx" />
+    <Content Include="Views\Transfer\PersonalOffice.aspx" />
+    <Content Include="Views\Transfer\PersonStartPage.aspx" />
+    <Content Include="Views\Transfer\PriorityChanger.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -629,51 +641,24 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
-    <Content Include="Views\Account\_ChangePasswordPartial.aspx" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.aspx" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.aspx" />
-    <Content Include="Views\Account\_SetPasswordPartial.aspx" />
-    <Content Include="Views\Account\Login.aspx" />
-    <Content Include="Views\Account\Manage.aspx" />
-    <Content Include="Views\Account\Register.aspx" />
-    <Content Include="Views\Account\ExternalLoginFailure.aspx" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.aspx" />
-    <Content Include="Views\Home\About.aspx" />
-    <Content Include="Views\Home\Contact.aspx" />
-    <Content Include="Views\Home\Index.aspx" />
-    <Content Include="Views\Shared\Error.aspx" />
-    <Content Include="Views\Shared\_LoginPartial.aspx" />
-    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\GGPower\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="OnlineAbit.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OnlineAbit.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AbiturientNew\PersonalOffice.Master" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\AddSharedFiles.en-US.resx">
@@ -724,17 +709,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Common.ru-RU.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\ContactsInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ContactsInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\ContactsInfo.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ContactsInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\EducationInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EducationInfo.en-US.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\EducationInfo.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -808,10 +785,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>NewApplication.ru-RU.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\PassportInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PassportInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\PassportInfo.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PassportInfo.designer.cs</LastGenOutput>
@@ -832,42 +805,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOfficeForeign.ru-RU.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step1.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step1.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step1.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step1.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step2.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step2.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step3.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step3.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step3.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step3.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step4.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step4.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step5.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step5.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step6.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step6.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOffice_Step6.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOffice_Step6.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\PersonInfo.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonInfo.en-US.designer.cs</LastGenOutput>
@@ -879,18 +816,6 @@
     <Content Include="App_GlobalResources\PersonInfo.ru-RU.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonInfo.ru-RU.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonStartPage.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonStartPage.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonStartPage.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonStartPage.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonStartPage.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonStartPage.ru-RU.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\PriorityChangerForeign.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -925,6 +850,140 @@
       <LastGenOutput>ServerMessages.ru-RU.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\Shared\SiteForeign.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Abiturient\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ForeignAbiturient\PersonalOfficeForeign.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="OnlineAbit.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OnlineAbit.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Recover\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Transfer\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TransferForeign\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ChangeObrazProgram\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ChangeStudyForm\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ForeignAbiturient\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonStartPage.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonStartPage.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonStartPage.ru-RU.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonStartPage.ru-RU.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonStartPage.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonStartPage.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step1.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step1.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step2.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step2.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step3.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step3.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step4.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step4.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step5.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step5.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step6.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step6.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PassportInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PassportInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ContactsInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ContactsInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\EducationInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EducationInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step6.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step6.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PersonalOffice_Step1.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step1.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AG\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SPO\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Aspirant\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ForeignAspirant\PersonalOffice.Master" />
+    <Content Include="Views\ForeignAspirant\PersonalOfficeForeign.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\AbiturientNew\PersonalOffice.Master" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -932,6 +991,12 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
@@ -941,7 +1006,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>5523</DevelopmentServerPort>
+          <DevelopmentServerPort>62568</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -954,10 +1019,4 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>

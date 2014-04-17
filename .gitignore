@@ -234,3 +234,4 @@ Content/themes/base/minified/jquery.ui.theme.min.css
 Scripts/_references.js
 Content/themes/base/minified.rar
 Controllers/Util.Connections.cs
+*.csproj

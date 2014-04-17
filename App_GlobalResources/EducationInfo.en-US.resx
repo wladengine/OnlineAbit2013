@@ -192,4 +192,10 @@
   <data name="IsEqual" xml:space="preserve">
     <value>Have equality document</value>
   </data>
+  <data name="VuzAdditionalTypeId" xml:space="preserve">
+    <value>Select entry type</value>
+  </data>
+  <data name="RegionEducId" xml:space="preserve">
+    <value>Select the region</value>
+  </data>
 </root>

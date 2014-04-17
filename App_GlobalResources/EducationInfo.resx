@@ -201,4 +201,10 @@
   <data name="SchoolExitYear_Message" xml:space="preserve">
     <value>Укажите год окончания обучения</value>
   </data>
+  <data name="RegionEducId" xml:space="preserve">
+    <value>Выберите регион</value>
+  </data>
+  <data name="VuzAdditionalTypeId" xml:space="preserve">
+    <value>Выберите тип поступления</value>
+  </data>
 </root>

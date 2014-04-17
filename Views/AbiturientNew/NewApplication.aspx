@@ -13,284 +13,80 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">
-    var entry;
-    $(function () {
-        $('#UILink').hide();
-        entry = $('#Entry').val();
-        GetProfessions();
-        $('#FinishBtn').hide();
-    <% if (Model.EntryType == 1)
-       { %>
-        $('#Second').show();
-        $('#Parallel').show();
-        $('#Reduced').show();
-    <% } %>
-    });
-
-    function GetFaculties() {
-        $('#Profs').hide();
-        $('#ObrazPrograms').hide();
-        $('#Specs').hide();
-        $('#Facs').show();
-        $.post('/Abiturient/GetFacs', { studyform: $('#StudyFormId').val(), studybasis: $('#StudyBasisId').val(), entry: $('#Entry').val() }, function (json_data) {
-            var options = '';
-            for (var i = 0; i < json_data.length; i++) {
-                options += '<option value="' + json_data[i].Id + '">' + json_data[i].Name + '</option>';
-            }
-            if (json_data.length == 0) {
-                options = '<option value="none">На данный факультет нет приёма по указанным форме и основе обучения</option>';
-                $('#lFaculty').attr('disabled', 'disabled');
-                $('#FinishBtn').hide();
-            }
-            else {
-                $('#lFaculty').removeAttr('disabled');
-            }
-            $('#lFaculty').html(options);
-            $('#lProfession').html('');
-            $('#lObrazProgram').html('');
-            $('#lSpecialization').html('');
-        }, 'json');
+    //$(document).ready(function () {
+    function Submit1() {
+        $('#val_h').val("1");
+        document.forms['form'].submit();
     }
-
-    function GetProfessions() {
-        $('#Profs').show();
-        $('#ObrazPrograms').hide();
-        $('#Specs').hide();
-        $('#FinishBtn').hide();
-        $.post('/Abiturient/GetProfs', { studyform: $('#StudyFormId').val(), studybasis: $('#StudyBasisId').val(),
-            entry: $('#EntryType').val(), isSecond: $('#IsSecondHidden').val(), isParallel: $('#IsParallelHidden').val(), isReduced : $('#IsReducedHidden').val() }, function (json_data) 
-        {
-            var options = '';
-            if (json_data.NoFree) {
-                $('#ObrazProgramsErrors').text('Нет направлений, на которые можно подать заявление').show();
-                $('#lProfession').attr('disabled', 'disabled').hide();
-                $('#lObrazProgram').html('');
-                $('#Profs').hide();
-            }
-            else {
-                $('#Profs').show();
-                $('#ObrazProgramsErrors').text('').hide();
-                for (var i = 0; i < json_data.length; i++) {
-                    options += '<option value="' + json_data[i].Id + '">' + json_data[i].Name + '</option>';
-                }
-                $('#lProfession').html(options).removeAttr('disabled').show();
-                $('#lObrazProgram').html('');
-                $('#lSpecialization').html('');
-            }
-        }, 'json');
+    function Submit2() {
+        $('#val_h').val("2");
+        document.forms['form'].submit();
     }
-
-    function GetObrazPrograms() {
-        var profId = $('#lProfession').val();
-        var sfId = $('#StudyFormId').val();
-
-        if (profId == null){
-            return;
-        }
-        
-        $('#Profs').show();
-        $('#ObrazPrograms').show();
-        $('#Specs').hide();
-        $('#FinishBtn').hide();
-
-        $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId').val(), 
-            entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden').val(), isReduced : $('#IsReducedHidden').val(), 
-            semesterId : $('#SemesterId').val() }, function (json_data) {
-            var options = '';
-            if (json_data.NoFree) {
-                $('#ObrazProgramsErrors').text('Заявление уже подавалось').show();;
-                $('#lObrazProgram').attr('disabled', 'disabled').hide();
-                $('#lSpecialization').html('');
-            }
-            else {
-                $('#ObrazProgramsErrors').text('').hide();
-                for (var i = 0; i < json_data.List.length; i++) {
-                    options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
-                }
-                $('#lObrazProgram').html(options).removeAttr('disabled');
-                $('#lSpecialization').html('');
-            }
-        }, 'json');
+    function Submit3() {
+        $('#val_h').val("3");
+        document.forms['form'].submit();
     }
-
-    function GetSpecializations() {
-        var profId = $('#lProfession').val();
-        var opId = $('#lObrazProgram').val();
-        var sfId = $('#StudyFormId').val();
-
-        if (profId == null || opId == null){
-            return;
-        }
-        
-        $('#Profs').show();
-        $('#ObrazPrograms').show();
-        $('#Specs').hide();
-        $('#FinishBtn').hide();
-        $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId').val(), 
-            studybasis: $('#StudyBasisId').val(), entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden').val(), 
-            isReduced : $('#IsReducedHidden').val(), semesterId : $('#SemesterId').val() }, function (json_data) {
-            var options = '';
-            if (json_data.List.length == 1 && json_data.List[0].Name == 'нет') {
-                $('#FinishBtn').show();
-                $('#ObrazProgramsErrors').text('').hide();
-            }
-            else {
-                if (json_data.NoFree) {
-                    $('#ObrazProgramsErrors').text('Заявление уже подавалось').show();
-                    $('#lSpecialization').attr('disabled', 'disabled').hide();
-                }
-                else {
-                    for (var i = 0; i < json_data.List.length; i++) {
-                        options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
-                    }
-                    $('#ObrazProgramsErrors').text('').hide();
-                    $('#lSpecialization').html(options).removeAttr('disabled').show();
-                    $('#Specs').show();
-                }
-            }
-        }, 'json');
+    function Submit4() {
+        $('#val_h').val("4");
+        document.forms['form'].submit();
     }
-
-    function MkBtn() {
-        $('#FinishBtn').show();
+    function Submit5() {
+        $('#val_h').val("5");
+        document.forms['form'].submit();
     }
-    function ChangeEType() {
-        entry = $('#Entry').val();
-        $('#EntryType').val(entry);
-        if (entry == 3) {
-            $('#Second').show();
-            $('#Parallel').show();
-            $('#Reduced').show();
-            $('#StudyBasisId').html('<option value="2">Договорная</option>');
-            $('#SBasis').hide();
-            GetProfessions();
-        }
-        else {
-            $('#IsSecond').removeAttr('checked');
-            $('#IsSecondHidden').val('0');
-            $('#Second').hide();
-            $('#Profs').show();
-            $('#StudyBasisId').html('<option value="1">Госбюджетная</option><option value="2">Договорная</option>');
-            $('#SBasis').show();
-            GetProfessions();
-        }
+    function Submit6() {
+        $('#val_h').val("6");
+        document.forms['form'].submit();
     }
-    function ChangeIsSecond() {
-        if ($('#IsSecond').is(':checked')) {
-            $('#IsSecondHidden').val('1');
-            $('#SBasis').hide();
-            $('#StudyBasisId').html('<option value="2">Договорная</option>');
-        }
-        else {
-            $('#IsSecondHidden').val('0');
-            if (!$('#IsParallel').is(':checked') && !$('#IsReduced').is(':checked') && $('#Entry').val() != 3)
-            {
-                $('#StudyBasisId').html('<option value="1">Госбюджетная</option><option value="2">Договорная</option>');
-                $('#SBasis').show();
-            }
-        }
-        GetProfessions();
+    function Submit7() {
+        $('#val_h').val("7");
+        document.forms['form'].submit();
     }
-    function ChangeIsParallel() {
-        if ($('#IsParallel').is(':checked')) {
-            $('#IsParallelHidden').val('1');
-            $('#SBasis').hide();
-            $('#StudyBasisId').html('<option value="2">Договорная</option>');
-        }
-        else {
-            $('#IsParallelHidden').val('0');
-            if (!$('#IsReduced').is(':checked') && !$('#IsSecond').is(':checked') && $('#Entry').val() != 3)
-            {
-                $('#StudyBasisId').html('<option value="1">Госбюджетная</option><option value="2">Договорная</option>');
-                $('#SBasis').show();
-            }
-        }
-        GetProfessions();
+    function Submit8() {
+        $('#val_h').val("8");
+        document.forms['form'].submit();
     }
-    function ChangeIsReduced() {
-        if ($('#IsReduced').is(':checked')) {
-            $('#IsReducedHidden').val('1');
-            $('#SBasis').hide();
-            $('#StudyBasisId').html('<option value="2">Договорная</option>');
-        }
-        else {
-            $('#IsReducedHidden').val('0');
-            if (!$('#IsParallel').is(':checked') && !$('#IsSecond').is(':checked') && $('#Entry').val() != 3)
-            {
-                $('#StudyBasisId').html('<option value="1">Госбюджетная</option><option value="2">Договорная</option>');
-                $('#SBasis').show();
-            }
-        }
-        GetProfessions();
+    function Submit9() {
+        $('#val_h').val("9");
+        document.forms['form'].submit();
     }
-</script>
-<% using (Html.BeginForm("NewApp", "Abiturient", FormMethod.Post))
-   { 
-%> 
-    <%= Html.ValidationSummary() %>
-    <% if (Model.EntryType == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
-       { %>
-       <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
-    <% } %>
+    function Submit10() {
+        $('#val_h').val("10");
+        document.forms['form'].submit();
+    }
+    function Submit11() {
+        $('#val_h').val("11");
+        document.forms['form'].submit();
+    }
+    //});
     
-    <% if (Model.EntryType != 1)
-       { %>
-        <%= Html.HiddenFor(x => x.EntryType) %>
-        <select id="Entry" name="Entry" onchange="ChangeEType()">
-            <option value="2">Магистратура</option>
-            <option value="3">Первый курс</option>
-        </select>
-    <% }
-       else
-       { %>
-        <div class="message info">Согласно данным анкеты, вы поступаете на <strong>первый курс</strong></div>
-        <input type="hidden" id="hEntryType" name="EntryType" value="1" />
-        <input type="hidden" id="EntryType" name="Entry" value="1" />
-    <% } %>
-    <p id="SForm">
-        <span>Форма обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
-    </p>
-    <p id="SBasis">
-        <span>Основа обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
-    </p>
-    <p id="Reduced" style="display:none; border-collapse:collapse;">
-        <input type="checkbox" id="IsReduced" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced()"/><span style="font-size:13px">Второе высшее</span><br />
-        <input type="hidden" name="IsReducedHidden" id="IsReducedHidden" value="0"/>
-    </p>
-    <p id="Parallel" style="display:none; border-collapse:collapse;">
-        <input type="checkbox" id="IsParallel" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel()"/><span style="font-size:13px">Параллельное обучение</span><br />
-        <input type="hidden" name="IsParallelHidden" id="IsParallelHidden" value="0"/>
-    </p>
-    <p id="Second" style="display:none; border-collapse:collapse;">
-        <input type="checkbox" id="IsSecond" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond()"/><span style="font-size:13px">Для лиц, имеющих ВО</span><br />
-        <input type="hidden" name="IsSecondHidden" id="IsSecondHidden" value="0"/>
-    </p>
-    <p id="Profs" style="border-collapse:collapse;">
-        <span>Выберите направление(специальность)</span><br />
-        <select id="lProfession" size="12" name="lProfession" style="min-width:500px;" onchange="GetObrazPrograms()"></select>
-    </p>
-    <p id="ObrazPrograms" style="border-collapse:collapse;">
-        <span>Выберите образовательную программу</span><br />
-        <select id="lObrazProgram" size="5" name="lObrazProgram" style="min-width:500px;" onchange="GetSpecializations()"></select>
-    </p>
-    <p id="Specs" style="border-collapse:collapse;">
-        <span>Выберите профиль</span><br />
-        <select id="lSpecialization" size="5" name="lSpecialization" style="min-width:500px;" onchange="MkBtn()"></select>
-        <br /><br /><span id="SpecsErrors" class="Red"></span>
-    </p>
-    <p id="Facs" style="display:none; border-collapse:collapse;">
-        <span>Факультет</span><br />
-        <select id="lFaculty" size="2" name="lFaculty" onchange="GetProfessions()"></select>
-    </p>
-    <p id="FinishBtn" style="border-collapse:collapse;">
-        <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
-        <input id="Submit" type="submit" value="Подать заявление" class="button button-green"/>
-    </p>
-    <span id="ObrazProgramsErrors" class="message error" style="display:none;"></span>
-<% 
-   }
-%>
-
+</script>
+ 
+    <%= Html.ValidationSummary() %>
+    <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
+    <input name="val_h" id="val_h" type="hidden" value="1" />
+    <!--ag-->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
+    <!-- 1 курс -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
+    <!-- 1 курс иностр граждане -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit2()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType2") %>" /><br /><br />
+    <!-- Перевод РФ-спбгу -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br />
+    <!-- Перевод иностр-спбгу -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit4()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType4") %>" /><br /><br />
+    <!-- восстановление -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit5()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType5") %>" /><br /><br />
+    <!-- Перевод с платной на бюджет -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit6()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType6") %>" /><br /><br />
+    <!-- смена образ программы -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit7()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType7") %>" /><br /><br />
+    <!-- СПО --> 
+    <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
+    <!-- аспирантура рф -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit10()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType10") %>" /><br /><br />
+    <!-- аспирантура иностр -->
+    <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />
+</form>
+ 
 </asp:Content>

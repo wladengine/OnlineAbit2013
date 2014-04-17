@@ -710,6 +710,7 @@ namespace OnlineAbit2013.Models
 
     public class AG_ApplicationModel
     {
+        public bool Enabled { get; set; }
         public string EntryClassName { get; set; }
         public int EntryClassId { get; set; }
         public List<SelectListItem> Professions { get; set; }

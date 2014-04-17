@@ -271,7 +271,7 @@ namespace OnlineAbit2013.Controllers
                     model.EducationInfo.TRKICertificateNumber = PersonEducationDocument.TRKICertificateNumber;
                     model.EducationInfo.IsEqual = PersonEducationDocument.IsEqual ?? false;
                     model.EducationInfo.EqualityDocumentNumber = PersonEducationDocument.EqualDocumentNumber;
-
+                    // добавить сортировку по Name
                     model.EducationInfo.SchoolExitClassList = context.SchoolExitClass
                         .Select(x => new { x.Id, x.Name }).ToList()
                         .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
@@ -842,23 +842,6 @@ namespace OnlineAbit2013.Controllers
                 if (PersonInfo == null)
                     return RedirectToAction("Index");
 
-                //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
-                //switch (PersonInfo.AbiturientTypeId)
-                //{
-                //    case 1: { break; }
-                //    case 2: { return RedirectToAction("Main", "ForeignAbiturient"); }
-                //    case 3: { return RedirectToAction("Main", "Transfer"); }
-                //    case 4: { return RedirectToAction("Main", "TransferForeign"); }
-                //    case 5: { return RedirectToAction("Main", "Recover"); }
-                //    case 6: { return RedirectToAction("Main", "ChangeStudyForm"); }
-                //    case 7: { return RedirectToAction("Main", "ChangeObrazProgram"); }
-                //    case 8: { return RedirectToAction("Main", "AG"); }
-                //    case 9: { return RedirectToAction("Main", "SPO"); }
-                //    case 10: { return RedirectToAction("Main", "Aspirant"); }
-                //    case 11: { return RedirectToAction("Main", "ForeignAspirant"); }
-                //    default: { break; }
-                //}
-
                 int regStage = PersonInfo.RegistrationStage;
                 if (regStage < 100)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage.ToString() } });
@@ -910,6 +893,69 @@ namespace OnlineAbit2013.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult NewApplication_AG(params string[] errors)
+        {
+            if (errors != null && errors.Length > 0)
+            {
+                foreach (string er in errors)
+                    ModelState.AddModelError("", er);
+            }
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return RedirectToAction("Index");
+                  
+                AG_ApplicationModel model = new AG_ApplicationModel();
+
+                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
+                if (c != 100)
+                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
+
+                /*int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
+                    new Dictionary<string, object>() { { "@Id", PersonId } });*/
+                
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                   new Dictionary<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId == 4)
+                {
+                    model.Enabled = false; 
+                }
+                else
+                {
+                    // ссылка на объект  и пр., когда SchoolExitClassId = null
+                    int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonEducationDocument WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                    // "SELECT ExitClassNum FROM AG_EntryClass"
+                    if ((iAG_EntryClassId == 5) || (iAG_EntryClassId == null) || (iAG_EntryClassId == 4))
+                    {
+                        model.Enabled = false; 
+                    }
+                    else
+                    {
+                        model.Enabled = true;
+                        string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
+                        Dictionary<string, object> dic = new Dictionary<string, object>();
+                        dic.Add("@PersonId", PersonId);
+                        dic.Add("@ClassId", iAG_EntryClassId);
+                        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+                        model.Professions = (from DataRow rw in tbl.Rows
+                                             select new SelectListItem()
+                                             {
+                                                 Value = rw.Field<int>("ProgramId").ToString(),
+                                                 Text = rw.Field<string>("ProgramName")
+                                             }).ToList();
+                        model.EntryClassId = iAG_EntryClassId;
+                        model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
+                    }
+                }
+                return View("NewApplication_AG", model);
+            }
+        }
+
         public ActionResult NewApplication(params string[] errors)
         {
             if (errors != null && errors.Length > 0)
@@ -926,23 +972,6 @@ namespace OnlineAbit2013.Controllers
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
-
-                //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
-                //switch (PersonInfo.AbiturientTypeId)
-                //{
-                //    case 1: { break; }
-                //    case 2: { return RedirectToAction("NewApplication", "ForeignAbiturient"); }
-                //    case 3: { return RedirectToAction("NewApplication", "Transfer"); }
-                //    case 4: { return RedirectToAction("NewApplication", "TransferForeign"); }
-                //    case 5: { return RedirectToAction("NewApplication", "Recover"); }
-                //    case 6: { return RedirectToAction("NewApplication", "ChangeStudyForm"); }
-                //    case 7: { return RedirectToAction("NewApplication", "ChangeObrazProgram"); }
-                //    case 8: { return RedirectToAction("NewApplication", "AG"); }
-                //    case 9: { return RedirectToAction("NewApplication", "SPO"); }
-                //    case 10: { return RedirectToAction("NewApplication", "Aspirant"); }
-                //    case 11: { return RedirectToAction("NewApplication", "ForeignAspirant"); }
-                //    default: { break; }
-                //}
 
                 int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
@@ -986,6 +1015,32 @@ namespace OnlineAbit2013.Controllers
 
                 return View("NewApplication", model);
             }
+        }
+     
+        [HttpPost]
+        public ActionResult NewApplicationSelect()
+        { 
+            string val = Request.Form["val_h"]; 
+            switch (val)
+            {
+                case "1": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление на 1 курс гражданам РФ
+                case "2": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление на 1 курс иностранным гражданам
+                case "3": { return RedirectToAction("page404", "AbiturientNew"); } //Перевод из российского университета в СПбГУ
+                case "4": { return RedirectToAction("page404", "AbiturientNew"); } //Перевод из иностранного университета в СПбГУ
+                case "5": { return RedirectToAction("page404", "AbiturientNew"); } //Восстановление в СПбГУ
+                case "6": { return RedirectToAction("page404", "AbiturientNew"); } //Перевод с платной формы обучения на бюджетную
+                case "7": { return RedirectToAction("page404", "AbiturientNew"); } //Смена образовательной программы
+                case "8": { return RedirectToAction("NewApplication_AG", "AbiturientNew"); } //Поступление в Академическую Гимназию
+                case "9": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление в СПО
+                case "10": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление в аспирантуру гражданам РФ
+                case "11": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление в аспирантуру иностранным гражданам
+                default: { return RedirectToAction("page404", "AbiturientNew"); }
+            }  
+        }
+
+        public ActionResult page404(params string[] errors)
+        {
+            return View("page404"); 
         }
 
         [HttpPost]
@@ -1133,6 +1188,118 @@ namespace OnlineAbit2013.Controllers
             return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", appId.ToString("N") } });
         }
 
+        [HttpPost]
+        public ActionResult NewAppAG()
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+
+            string profession = Request.Form["Professions"];
+            string Entryclass = Request.Form["EntryClassId"];
+            bool needHostel = string.IsNullOrEmpty(Request.Form["NeedHostel"]) ? false : true;
+            string profileid = Request.Form["Profile"];
+            string manualExam = Request.Form["Exam"];
+
+            int iEntryClassId = Util.ParseSafe(Entryclass);
+            int iProfession = Util.ParseSafe(profession);
+            int iProfileId = Util.ParseSafe(profileid);
+            int iManualExamId = Util.ParseSafe(manualExam);
+
+            //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
+            string query = "SELECT Id, DateOfStartEntry, DateOfStopEntry FROM AG_Entry WHERE ProgramId=@ProgramId AND EntryClassId=@EntryClassId ";
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("@ProgramId", iProfession);
+            dic.Add("@EntryClassId", iEntryClassId);
+            if (iProfileId != 0)
+            {
+                query += " AND ProfileId=@ProfileId ";
+                dic.Add("@ProfileId", iProfileId);
+            }
+            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+            if (tbl.Rows.Count > 1)
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Неоднозначный выбор учебного плана (" + tbl.Rows.Count + ")" } });
+            if (tbl.Rows.Count == 0)
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Не найден учебный план" } });
+
+            Guid EntryId = tbl.Rows[0].Field<Guid>("Id");
+            DateTime? timeOfStart = tbl.Rows[0].Field<DateTime?>("DateOfStartEntry");
+            DateTime? timeOfStop = tbl.Rows[0].Field<DateTime?>("DateOfStopEntry");
+
+            if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём заявлений на данное направление ещё не открыт." } });
+
+            if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём заявлений на данное направление закрыт." } });
+
+            query = "SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL";
+            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            var eIds =
+                from DataRow rw in tbl.Rows
+                select rw.Field<Guid>("EntryId");
+            if (eIds.Contains(EntryId))
+                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Заявление на данную программу уже подано" } });
+
+            DataTable tblPriors = Util.AbitDB.GetDataTable("SELECT Priority FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled",
+                new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
+            int? PriorMax =
+                (from DataRow rw in tblPriors.Rows
+                 select rw.Field<int?>("Priority")).Max();
+
+            Guid appId = Guid.NewGuid();
+            query = "INSERT INTO [AG_Application] (Id, PersonId, EntryId, HostelEduc, Enabled, DateOfStart, ManualExamId, Priority) " +
+                "VALUES (@Id, @PersonId, @EntryId, @HostelEduc, @Enabled, @DateOfStart, @ManualExamId, @Priority)";
+            Dictionary<string, object> prms = new Dictionary<string, object>();
+            prms.Add("@Id", appId);
+            prms.Add("@PersonId", PersonId);
+            prms.Add("@EntryId", EntryId);
+            prms.Add("@HostelEduc", needHostel);
+            prms.Add("@Priority", PriorMax.HasValue ? PriorMax.Value + 1 : 1);
+            prms.Add("@Enabled", true);
+            prms.Add("@DateOfStart", DateTime.Now);
+            prms.AddItem("@ManualExamId", iManualExamId == 0 ? null : (int?)iManualExamId);
+
+            Util.AbitDB.ExecuteQuery(query, prms);
+
+            //query = "SELECT Person.Surname, Person.Name, Person.SecondName, AG_Entry.ProgramName, AG_Entry.ObrazProgramName " +
+            //    " FROM [AG_Application] INNER JOIN Person ON Person.Id=[AG_Application].PersonId " +
+            //    " INNER JOIN AG_qAG_Entry ON AG_Application.AG_EntryId=AG_qAG_Entry.Id WHERE AG_Application.Id=@AppId";
+            //DataTable Tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
+            //var fileInfo =
+            //    (from DataRow rw in Tbl.Rows
+            //     select new
+            //     {
+            //         Surname = rw.Field<string>("Surname"),
+            //         Name = rw.Field<string>("Name"),
+            //         SecondName = rw.Field<string>("SecondName"),
+            //         Profession = rw.Field<string>("ProgramName"),
+            //         ObrazProgram = rw.Field<string>("ObrazProgramName")
+            //     }).FirstOrDefault();
+
+            //byte[] pdfData = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"));
+            //DateTime dateTime = DateTime.Now;
+
+            //query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileExtention, FileData, FileSize, IsReadOnly, LoadDate, Comment, MimeType) " +
+            //    " VALUES (@Id, @PersonId, @FileName, @FileExtention, @FileData, @FileSize, @IsReadOnly, @LoadDate, @Comment, @MimeType)";
+            //prms.Clear();
+            //prms.Add("@Id", Guid.NewGuid());
+            //prms.Add("@PersonId", appId);
+            //prms.Add("@FileName", fileInfo.Surname + " " + fileInfo.Name.FirstOrDefault() + " - Заявление [" + dateTime.ToString("dd.MM.yyyy HH.mm.ss") + "].pdf");
+            //prms.Add("@FileExtention", ".pdf");
+            //prms.Add("@FileData", pdfData);
+            //prms.Add("@FileSize", pdfData.Length);
+            //prms.Add("@IsReadOnly", true);
+            //prms.Add("@LoadDate", dateTime);
+            //prms.Add("@Comment", "Заявление на направление " + fileInfo.Profession + ", " + fileInfo.ObrazProgram + " образовательная программа, " 
+            //    + " от " + dateTime.ToShortDateString());
+            //prms.Add("@MimeType", "[AG_Application]/pdf");
+            //Util.AbitDB.ExecuteQuery(query, prms);
+            return RedirectToAction("Main");
+        }
+
         public ActionResult MotivateMail()
         {
             Guid PersonId;
@@ -1173,21 +1340,7 @@ namespace OnlineAbit2013.Controllers
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
-
-                //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
-                //switch (PersonInfo.AbiturientTypeId)
-                //{
-                //    case 1: { break; }
-                //    case 2: { return RedirectToAction("PriorityChanger", "ForeignAbiturient"); }
-                //    //case 3: { return RedirectToAction("PriorityChanger", "Transfer"); }
-                //    //case 4: { return RedirectToAction("PriorityChanger", "TransferForeign"); }
-                //    //case 5: { return RedirectToAction("PriorityChanger", "Recover"); }
-                //    //case 6: { return RedirectToAction("PriorityChanger", "ChangeStudyForm"); }
-                //    //case 7: { return RedirectToAction("PriorityChanger", "ChangeObrazProgram"); }
-                //    //case 8: { return RedirectToAction("PriorityChanger", "AG"); }
-                //    default: { break; }
-                //}
-
+                 
                 string query = "(SELECT [Application].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [Application] " +
                     " INNER JOIN Entry ON [Application].EntryId=Entry.Id " +
                     " WHERE PersonId=@PersonId AND Enabled=@Enabled " +

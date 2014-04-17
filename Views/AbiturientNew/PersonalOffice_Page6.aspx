@@ -63,16 +63,15 @@
                         <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
                     </div>
                     <h4>Способ возврата поданых документов</h4>
-                <%--    <div class="clearfix">
-                        <span><%= Model.AddInfo.RetunDocumentTypeId_1Text %></span>
-                        <%= Html.RadioButtonFor(x => x.AddInfo.RetunDocumentTypeId_1, false, new Dictionary<string, object>() { { "class", "noresize" } } )%>
-                    </div>
                     <div class="clearfix">
-                        <span><%= Model.AddInfo.RetunDocumentTypeId_2Text %></span>
-                        <%= Html.RadioButtonFor(x => x.AddInfo.RetunDocumentTypeId_2, false, new Dictionary<string, object>() { { "class", "noresize" } } )%>
-                    </div>--%>
-                    <div class="clearfix">
-                        <%= Html.DropDownListFor(x => x.AddInfo.ReturnDocumentTypeId, Model.AddInfo.ReturnDocumentTypeList, new Dictionary<string, object>() { { "style", "width:400px" }, { "size", "3" } })%>
+                    <%
+                        foreach (SelectListItem SLI in Model.AddInfo.ReturnDocumentTypeList)
+                        { 
+                            %><input type="radio" name="AddInfo.ReturnDocumentTypeId" value= <%="\""+SLI.Value+"\"" %>
+                            <% if (SLI.Value==Model.AddInfo.ReturnDocumentTypeId) { %> checked="checked" <% } %>
+                            /> <%=SLI.Text%> <br /><p></p> <%
+                        }
+                    %>
                     </div>
                     <div class="clearfix">
                         <h4>Я подтверждаю, что предоставленная мной информация корректна и достоверна. Даю согласие на обработку предоставленных персональных данных в порядке, установленном Федеральным законом от 27 июля 2006 года № 152-ФЗ «О персональных данных».</h4>

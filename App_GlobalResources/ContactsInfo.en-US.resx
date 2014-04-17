@@ -126,38 +126,23 @@
   <data name="AddressData_Message" xml:space="preserve">
     <value>Enter address</value>
   </data>
-  <data name="AdFlat" xml:space="preserve">
-    <value>Flat</value>
-  </data>
-  <data name="AdHouse" xml:space="preserve">
-    <value>House</value>
-  </data>
-  <data name="AdKorpus" xml:space="preserve">
-    <value>Housing</value>
-  </data>
-  <data name="AdPostIndex" xml:space="preserve">
-    <value>Index</value>
-  </data>
-  <data name="AdStreet" xml:space="preserve">
-    <value>Street</value>
-  </data>
   <data name="ChangeCountry_Title" xml:space="preserve">
     <value>You can change country on the page "Personal data"</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>City*</value>
+    <value>City</value>
   </data>
   <data name="City_Message" xml:space="preserve">
     <value>Enter city</value>
   </data>
   <data name="CountryId" xml:space="preserve">
-    <value>Country*</value>
+    <value>Country</value>
   </data>
   <data name="Flat" xml:space="preserve">
     <value>Flat</value>
   </data>
   <data name="House" xml:space="preserve">
-    <value>House*</value>
+    <value>House</value>
   </data>
   <data name="House_Message" xml:space="preserve">
     <value>Enter house</value>
@@ -166,7 +151,7 @@
     <value>Housing</value>
   </data>
   <data name="MainPhone" xml:space="preserve">
-    <value>Main phone number*</value>
+    <value>Main phone number</value>
   </data>
   <data name="MainPhone_Message" xml:space="preserve">
     <value>Enter main phone</value>
@@ -175,13 +160,13 @@
     <value>Contact phone:</value>
   </data>
   <data name="PostIndex" xml:space="preserve">
-    <value>Index*</value>
+    <value>Index</value>
   </data>
   <data name="PostIndex_Message" xml:space="preserve">
     <value>Enter index</value>
   </data>
   <data name="RegionId" xml:space="preserve">
-    <value>Region*</value>
+    <value>Region</value>
   </data>
   <data name="RegistrationHeader" xml:space="preserve">
     <value>Registration address:</value>
@@ -190,9 +175,12 @@
     <value>Additional phone number</value>
   </data>
   <data name="Street" xml:space="preserve">
-    <value>Street*</value>
+    <value>Street</value>
   </data>
   <data name="Street_Message" xml:space="preserve">
     <value>Enter street</value>
+  </data>
+  <data name="Street_1" xml:space="preserve">
+    <value />
   </data>
 </root>

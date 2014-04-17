@@ -174,7 +174,9 @@
                     <h3><%= GetGlobalResourceObject("ContactsInfo", "PhonesHeader").ToString()%></h3>
                     <hr />
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.MainPhone, GetGlobalResourceObject("ContactsInfo", "MainPhone").ToString())%>
+                        <label for="ContactsInfo_MainPhone" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, MainPhone%>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.MainPhone) %>
                          <br /><p></p>
                          <span id="ContactsInfo_MainPhone_Message" class="Red" style="display:none"><%= GetGlobalResourceObject("ContactsInfo", "MainPhone_Message")%></span>
@@ -186,34 +188,46 @@
                     <h3><%= GetGlobalResourceObject("ContactsInfo", "RegistrationHeader").ToString()%></h3>
                     <hr />
                     <div class="clearfix">
-                        <input type="hidden" name="CountryId" value=" <%=Model.ContactsInfo.CountryId %> "/> 
-                        <%= Html.LabelFor(x => x.ContactsInfo.CountryId, GetGlobalResourceObject("ContactsInfo", "CountryId").ToString())%>
+                        <input type="hidden" name="CountryId" value=" <%=Model.ContactsInfo.CountryId %> "/>
+                        <label for="ContactsInfo_CountryId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, CountryId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.DropDownListFor(x => x.ContactsInfo.CountryId, Model.ContactsInfo.CountryList, new { disabled = "disabled", title = GetGlobalResourceObject("ContactsInfo", "ChangeCountry_Title").ToString() })%>
                     </div>
                     <div class="clearfix" id="Region">
-                        <%= Html.LabelFor(x => x.ContactsInfo.RegionId, GetGlobalResourceObject("ContactsInfo", "RegionId").ToString())%>
+                        <label for="ContactsInfo_RegionId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, RegionId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.DropDownListFor(x => x.ContactsInfo.RegionId, Model.ContactsInfo.RegionList) %>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.PostIndex, GetGlobalResourceObject("ContactsInfo", "PostIndex").ToString())%>
+                        <label for="ContactsInfo_PostIndex" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, PostIndex %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.PostIndex) %>
                          <br /><p></p>
                         <span id="ContactsInfo_PostIndex_Message" class="Red" style="display:none"> <%= GetGlobalResourceObject("ContactsInfo", "PostIndex_Message").ToString()%> </span> 
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.City, GetGlobalResourceObject("ContactsInfo", "City").ToString()) %>
+                        <label for="ContactsInfo_City" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, City %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.City) %> 
                         <br /><p></p>
                         <span id="ContactsInfo_City_Message" class="Red" style="display:none"><%= GetGlobalResourceObject("ContactsInfo", "City_Message").ToString()%> </span> 
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.Street, GetGlobalResourceObject("ContactsInfo", "Street").ToString()) %>
+                        <label for="ContactsInfo_Street" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal  runat="server" Text="<%$Resources:ContactsInfo, Street %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></asp:Literal><asp:Literal ID="Literal1" runat="server" Text="<%$Resources:ContactsInfo, Street_1 %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.Street)%>
                         <br /><p></p>
                         <span id="ContactsInfo_Street_Message" class="Red" style="display:none"><%= GetGlobalResourceObject("ContactsInfo", "Street_Message").ToString()%> </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.House, GetGlobalResourceObject("ContactsInfo", "House").ToString()) %>
+                        <label for="ContactsInfo_House" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:ContactsInfo, House %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.House) %> 
                         <br /><p></p>
                         <span id="ContactsInfo_House_Message" class="Red" style="display:none"><%= GetGlobalResourceObject("ContactsInfo", "House_Message").ToString()%> </span> 
@@ -231,33 +245,36 @@
                     <h3><%= GetGlobalResourceObject("ContactsInfo", "AdditionalAddress_Header").ToString()%> </h3>
                     <hr />
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.PostIndexReal, GetGlobalResourceObject("ContactsInfo", "AdPostIndex").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.PostIndexReal, GetGlobalResourceObject("ContactsInfo", "PostIndex").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.PostIndexReal)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.CityReal, GetGlobalResourceObject("ContactsInfo", "AdCity").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.CityReal, GetGlobalResourceObject("ContactsInfo", "City").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.CityReal)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.StreetReal, GetGlobalResourceObject("ContactsInfo", "AdStreet").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.StreetReal, GetGlobalResourceObject("ContactsInfo", "Street").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.StreetReal)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.HouseReal, GetGlobalResourceObject("ContactsInfo", "AdHouse").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.HouseReal, GetGlobalResourceObject("ContactsInfo", "House").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.HouseReal)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.KorpusReal, GetGlobalResourceObject("ContactsInfo", "AdKorpus").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.KorpusReal, GetGlobalResourceObject("ContactsInfo", "Korpus").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.KorpusReal)%>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.ContactsInfo.FlatReal, GetGlobalResourceObject("ContactsInfo", "AdFlat").ToString())%>
+                        <%= Html.LabelFor(x => x.ContactsInfo.FlatReal, GetGlobalResourceObject("ContactsInfo", "Flat").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.FlatReal)%>
                     </div>
                     <% } %>
                     <hr />
                     <div class="clearfix">
                         <input id="Submit2" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
+                    </div>
+                    <div> 
+                    <asp:Literal ID="Literal15" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal> - <asp:Literal ID="Literal16" runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>  
                     </div>
                 </form>
             </div>

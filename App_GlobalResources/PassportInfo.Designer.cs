@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Дата выдачи*.
+        ///   Ищет локализованную строку, такую же, как Дата выдачи.
         /// </summary>
         internal static string PassportDate {
             get {
@@ -142,7 +142,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Номер*.
+        ///   Ищет локализованную строку, такую же, как Номер.
         /// </summary>
         internal static string PassportNumber {
             get {
@@ -160,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Тип*.
+        ///   Ищет локализованную строку, такую же, как Тип.
         /// </summary>
         internal static string PassportType {
             get {

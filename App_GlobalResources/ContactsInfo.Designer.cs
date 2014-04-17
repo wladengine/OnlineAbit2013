@@ -88,51 +88,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Квартира.
-        /// </summary>
-        internal static string AdFlat {
-            get {
-                return ResourceManager.GetString("AdFlat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, такую же, как Дом.
-        /// </summary>
-        internal static string AdHouse {
-            get {
-                return ResourceManager.GetString("AdHouse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, такую же, как Корпус.
-        /// </summary>
-        internal static string AdKorpus {
-            get {
-                return ResourceManager.GetString("AdKorpus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, такую же, как Индекс.
-        /// </summary>
-        internal static string AdPostIndex {
-            get {
-                return ResourceManager.GetString("AdPostIndex", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, такую же, как Улица (микрорайон и пр.).
-        /// </summary>
-        internal static string AdStreet {
-            get {
-                return ResourceManager.GetString("AdStreet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, такую же, как Изменить страну проживания Вы можете на странице &quot;Личные Данные&quot;.
         /// </summary>
         internal static string ChangeCountry_Title {
@@ -142,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Город*.
+        ///   Ищет локализованную строку, такую же, как Город.
         /// </summary>
         internal static string City {
             get {
@@ -178,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Дом*.
+        ///   Ищет локализованную строку, такую же, как Дом.
         /// </summary>
         internal static string House {
             get {
@@ -205,7 +160,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Основной телефон*.
+        ///   Ищет локализованную строку, такую же, как Основной телефон.
         /// </summary>
         internal static string MainPhone {
             get {
@@ -232,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Индекс*.
+        ///   Ищет локализованную строку, такую же, как Индекс.
         /// </summary>
         internal static string PostIndex {
             get {
@@ -250,7 +205,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Регион*.
+        ///   Ищет локализованную строку, такую же, как Регион.
         /// </summary>
         internal static string RegionId {
             get {
@@ -277,11 +232,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Улица (микрорайон и пр.)*.
+        ///   Ищет локализованную строку, такую же, как Улица.
         /// </summary>
         internal static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как &lt;br/&gt; (микрорайон, квартал и пр.).
+        /// </summary>
+        internal static string Street_1 {
+            get {
+                return ResourceManager.GetString("Street_1", resourceCulture);
             }
         }
         

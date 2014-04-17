@@ -175,8 +175,8 @@
     <value>Here you can attach only scans of the passport</value>
   </data>
   <data name="PersonalOffice_Passport" xml:space="preserve">
-    <value>Сюда вы можете прикрепить сканы паспорта. &lt;/br&gt;
-Остальные документы можно прикрепить в окне Общие документы. &lt;/br&gt;</value>
+    <value>Here you can attach scans of the passport. &lt;/br&gt;
+The other documents might be  attached in the "Shared documents" folder.&lt;/br&gt;</value>
   </data>
   <data name="RulesInformation" xml:space="preserve">
     <value>&lt;h3&gt;Information for applicants:&lt;/h3&gt;

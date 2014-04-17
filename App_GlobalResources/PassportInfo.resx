@@ -130,7 +130,7 @@
     <value>Код подразделения</value>
   </data>
   <data name="PassportDate" xml:space="preserve">
-    <value>Дата выдачи*</value>
+    <value>Дата выдачи</value>
   </data>
   <data name="PassportInfo_PassportAuthor_Message" xml:space="preserve">
     <value>Введите, кем выдан паспорт</value>
@@ -145,13 +145,13 @@
     <value>Введите серию паспорта</value>
   </data>
   <data name="PassportNumber" xml:space="preserve">
-    <value>Номер*</value>
+    <value>Номер</value>
   </data>
   <data name="PassportSeries" xml:space="preserve">
     <value>Серия</value>
   </data>
   <data name="PassportType" xml:space="preserve">
-    <value>Тип*</value>
+    <value>Тип</value>
   </data>
   <data name="RF_Number_Message" xml:space="preserve">
     <value>Номер паспорта РФ должен состоять из 6 цифр без пробелов</value>

@@ -45,7 +45,7 @@
                 $("form").submit(function () {
                     return CheckForm();
                 });
-                $('#PassportInfo_PassportType').change(CheckSeries);
+                $('#PassportInfo_PassportType').change(SetRequiredFields);
                 //$('#PassportInfo_PassportSeries').change(function () { setTimeout(CheckSeries); });
                 $('#PassportInfo_PassportSeries').keyup(function () { setTimeout(CheckSeries); });
 
@@ -66,11 +66,29 @@
                 return CheckSeries() && CheckNumber() && CheckAuthor() && CheckDate();
             }
         </script>
-        <script type="text/javascript"> 
+        <script type="text/javascript">
+            function SetRequiredFields() {
+                var undo = $('#label_PassportInfo_PassportNumber').attr('title');
+                if ($('#PassportInfo_PassportType').val() != 1) {
+                    $('#label_PassportInfo_PassportSeries').attr("title", "");
+                    $('#label_PassportInfo_PassportAuthor').attr("title", "");
+                    $('#unrequiredfiled_1').hide(); $('#unrequiredfiled_2').hide();
+                }
+                else {
+                    $('#label_PassportInfo_PassportSeries').attr("title", undo);
+                    $('#label_PassportInfo_PassportAuthor').attr("title", undo);
+                    $('#unrequiredfiled_1').show(); $('#unrequiredfiled_2').show();
+                }
+                CheckSeries();
+                CheckNumber();
+                CheckAuthor();
+                CheckDate();
+            }
             function CheckSeries() {
                 var ret = true;
                 var val = $('#PassportInfo_PassportSeries').val();
-                var ruPassportRegex = /^\d{4}$/i; 
+                var ruPassportRegex = /^\d{4}$/i;
+                
                 $('#PassportInfo_PassportSeries').removeClass('input-validation-error');
                 $('#PassportInfo_PassportSeries_Message').hide();
                 $('#PassportInfo_PassportSeries_Message_2').hide();
@@ -217,12 +235,16 @@
                         <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                         <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                         <input name="Enabled" type="hidden" value="<%= Model.Enabled %>" />
-                        <div class="clearfix"> 
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportType, GetGlobalResourceObject("PassportInfo", "PassportType").ToString())%>
-                            <%= Html.DropDownListFor(x => x.PassportInfo.PassportType, Model.PassportInfo.PassportTypeList) %>
+                        <div class="clearfix">
+                            <label for="PassportInfo_PassportType" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportType %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label>
+                             <%= Html.DropDownListFor(x => x.PassportInfo.PassportType, Model.PassportInfo.PassportTypeList) %>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportSeries, GetGlobalResourceObject("PassportInfo", "PassportSeries").ToString())%>
+                            <label id="label_PassportInfo_PassportSeries"  for="PassportInfo_PassportSeries" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportSeries %>"></asp:Literal><span id="unrequiredfiled_1"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
+                            </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportSeries)%>
                             <br /><p></p> 
                             <span id="PassportInfo_PassportSeries_Message" class="Red" style="display:none">
@@ -236,7 +258,9 @@
                             </span> 
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportNumber, GetGlobalResourceObject("PassportInfo", "PassportNumber").ToString())%>
+                            <label id="label_PassportInfo_PassportNumber" for="PassportInfo_PassportNumber" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportNumber %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportNumber)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportNumber_Message" class="Red" style="display:none">
@@ -250,7 +274,9 @@
                             </span> 
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportAuthor, GetGlobalResourceObject("PassportInfo", "PassportAuthor").ToString())%>
+                            <label id="label_PassportInfo_PassportAuthor"   for="PassportInfo_PassportAuthor" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportAuthor %>"></asp:Literal><span id="unrequiredfiled_2"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
+                            </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportAuthor)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportAuthor_Message" class="Red" style="display:none">
@@ -258,8 +284,10 @@
                             </span>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportDate, GetGlobalResourceObject("PassportInfo", "PassportDate").ToString())%>
-                            <%= Html.TextBoxFor(x => x.PassportInfo.PassportDate)%>
+                            <label for="PassportInfo_PassportDate" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportDate %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label> 
+                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportDate)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportDate_Message" class="Red" style="display:none">
                                 <%= GetGlobalResourceObject("PassportInfo", "PassportInfo_PassportDate_Message").ToString()%>
@@ -307,6 +335,9 @@
                             <input id="Submit2" name = "SubmitSave" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSaveText").ToString()%>" />
                             <input id="Submit1" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
                         </div>
+                        <div> 
+                        <asp:Literal ID="Literal15" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal> - <asp:Literal ID="Literal16" runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>  
+                        </div>
                     </form>
  <!-- /////////////////////////////////////////////////////////////////// -->
                     <p class="message info">
@@ -325,7 +356,7 @@
                                 <%= Html.Label(GetGlobalResourceObject("AddSharedFiles", "FileType").ToString())%> 
                                 <br/><p></p>
                                 <div style="float: right;">
-                                     <%= Html.DropDownList("FileTypeId", Model.FileTypes, new { disabled="disabled" }) %>
+                                     <%= Html.DropDownList("FileTypeId", Model.FileTypes, new { disabled = "disabled"})%>
                                 </div> 
                             </div>
                             <div class="clearfix">

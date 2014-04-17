@@ -126,26 +126,11 @@
   <data name="AddressData_Message" xml:space="preserve">
     <value>Введите адрес</value>
   </data>
-  <data name="AdFlat" xml:space="preserve">
-    <value>Квартира</value>
-  </data>
-  <data name="AdHouse" xml:space="preserve">
-    <value>Дом</value>
-  </data>
-  <data name="AdKorpus" xml:space="preserve">
-    <value>Корпус</value>
-  </data>
-  <data name="AdPostIndex" xml:space="preserve">
-    <value>Индекс</value>
-  </data>
-  <data name="AdStreet" xml:space="preserve">
-    <value>Улица (микрорайон и пр.)</value>
-  </data>
   <data name="ChangeCountry_Title" xml:space="preserve">
     <value>Изменить страну проживания Вы можете на странице "Личные Данные"</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>Город*</value>
+    <value>Город</value>
   </data>
   <data name="City_Message" xml:space="preserve">
     <value>Введите город</value>
@@ -157,7 +142,7 @@
     <value>Квартира</value>
   </data>
   <data name="House" xml:space="preserve">
-    <value>Дом*</value>
+    <value>Дом</value>
   </data>
   <data name="House_Message" xml:space="preserve">
     <value>Введите дом</value>
@@ -166,7 +151,7 @@
     <value>Корпус</value>
   </data>
   <data name="MainPhone" xml:space="preserve">
-    <value>Основной телефон*</value>
+    <value>Основной телефон</value>
   </data>
   <data name="MainPhone_Message" xml:space="preserve">
     <value>Введите основной номер</value>
@@ -175,13 +160,13 @@
     <value>Контактные телефоны:</value>
   </data>
   <data name="PostIndex" xml:space="preserve">
-    <value>Индекс*</value>
+    <value>Индекс</value>
   </data>
   <data name="PostIndex_Message" xml:space="preserve">
     <value>Введите индекс</value>
   </data>
   <data name="RegionId" xml:space="preserve">
-    <value>Регион*</value>
+    <value>Регион</value>
   </data>
   <data name="RegistrationHeader" xml:space="preserve">
     <value>Адрес регистрации:</value>
@@ -190,9 +175,12 @@
     <value>Дополнительный</value>
   </data>
   <data name="Street" xml:space="preserve">
-    <value>Улица (микрорайон и пр.)*</value>
+    <value>Улица</value>
   </data>
   <data name="Street_Message" xml:space="preserve">
     <value>Введите улицу</value>
+  </data>
+  <data name="Street_1" xml:space="preserve">
+    <value>&lt;br/&gt; (микрорайон, квартал и пр.)</value>
   </data>
 </root>

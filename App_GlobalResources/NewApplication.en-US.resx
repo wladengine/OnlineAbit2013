@@ -186,4 +186,19 @@
   <data name="HeaderFirstCourse_2" xml:space="preserve">
     <value>first course</value>
   </data>
+  <data name="NewApp_2MoreEntry" xml:space="preserve">
+    <value>2 more entries are aviable</value>
+  </data>
+  <data name="NewApp_NoEntry" xml:space="preserve">
+    <value>No entry are aviable</value>
+  </data>
+  <data name="NewApp_NotOpenedEntry" xml:space="preserve">
+    <value>Entry is not opened yet</value>
+  </data>
+  <data name="NewApp_ClosedEntry" xml:space="preserve">
+    <value>Entry is closed</value>
+  </data>
+  <data name="NewApp_HasApplicationOnEntry" xml:space="preserve">
+    <value>Заявление на данную программу уже подано</value>
+  </data>
 </root>

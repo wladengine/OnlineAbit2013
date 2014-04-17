@@ -7,6 +7,16 @@
     <Schema Namespace="OnlinePriem2012Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="OnlinePriem2012ModelStoreContainer">
           <EntitySet Name="AbiturientType" EntityType="OnlinePriem2012Model.Store.AbiturientType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_Application" EntityType="OnlinePriem2012Model.Store.AG_Application" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_Entry" EntityType="OnlinePriem2012Model.Store.AG_Entry" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_EntryClass" EntityType="OnlinePriem2012Model.Store.AG_EntryClass" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_EntryGroup" EntityType="OnlinePriem2012Model.Store.AG_EntryGroup" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_EntryInEntryGroup" EntityType="OnlinePriem2012Model.Store.AG_EntryInEntryGroup" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_ManualExam" EntityType="OnlinePriem2012Model.Store.AG_ManualExam" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_ManualExamInAG_Entry" EntityType="OnlinePriem2012Model.Store.AG_ManualExamInAG_Entry" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_ObrazProgram" EntityType="OnlinePriem2012Model.Store.AG_ObrazProgram" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_Profile" EntityType="OnlinePriem2012Model.Store.AG_Profile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AG_Program" EntityType="OnlinePriem2012Model.Store.AG_Program" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application" EntityType="OnlinePriem2012Model.Store.Application" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="OnlinePriem2012Model.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EgeCertificate" EntityType="OnlinePriem2012Model.Store.EgeCertificate" store:Type="Tables" Schema="dbo" />
@@ -26,7 +36,6 @@
           <EntitySet Name="OlympValue" EntityType="OnlinePriem2012Model.Store.OlympValue" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PassportType" EntityType="OnlinePriem2012Model.Store.PassportType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Person" EntityType="OnlinePriem2012Model.Store.Person" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Person_SPOSchoolExitClass" EntityType="OnlinePriem2012Model.Store.Person_SPOSchoolExitClass" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonAddInfo" EntityType="OnlinePriem2012Model.Store.PersonAddInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonChangeStudyFormReason" EntityType="OnlinePriem2012Model.Store.PersonChangeStudyFormReason" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonContacts" EntityType="OnlinePriem2012Model.Store.PersonContacts" store:Type="Tables" Schema="dbo" />
@@ -98,6 +107,18 @@
       [Abiturient].[StudyFormNameEng] AS [StudyFormNameEng]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_AG_Entry_AG_EntryClass" Association="OnlinePriem2012Model.Store.FK_AG_Entry_AG_EntryClass">
+            <End Role="AG_EntryClass" EntitySet="AG_EntryClass" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AG_Entry_AG_ObrazProgram" Association="OnlinePriem2012Model.Store.FK_AG_Entry_AG_ObrazProgram">
+            <End Role="AG_ObrazProgram" EntitySet="AG_ObrazProgram" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AG_Entry_AG_Program" Association="OnlinePriem2012Model.Store.FK_AG_Entry_AG_Program">
+            <End Role="AG_Program" EntitySet="AG_Program" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
+          </AssociationSet>
           <AssociationSet Name="FK_Application_Entry" Association="OnlinePriem2012Model.Store.FK_Application_Entry">
             <End Role="Entry" EntitySet="Entry" />
             <End Role="Application" EntitySet="Application" />
@@ -157,10 +178,6 @@
           <AssociationSet Name="FK_Person_PassportType" Association="OnlinePriem2012Model.Store.FK_Person_PassportType">
             <End Role="PassportType" EntitySet="PassportType" />
             <End Role="Person" EntitySet="Person" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Person_SPOSchoolExitClass_Person" Association="OnlinePriem2012Model.Store.FK_Person_SPOSchoolExitClass_Person">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="Person_SPOSchoolExitClass" EntitySet="Person_SPOSchoolExitClass" />
           </AssociationSet>
           <AssociationSet Name="FK_Person_User" Association="OnlinePriem2012Model.Store.FK_Person_User">
             <End Role="User" EntitySet="User" />
@@ -266,6 +283,103 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="150" />
           <Property Name="Multiplier" Type="int" />
+        </EntityType>
+        <EntityType Name="AG_Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PersonId" Type="uniqueidentifier" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="StudyFormId" Type="int" />
+          <Property Name="StudyBasisId" Type="int" />
+          <Property Name="Barcode" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Enabled" Type="bit" />
+          <Property Name="StudyPlanId" Type="int" />
+          <Property Name="EntryType" Type="int" />
+          <Property Name="HostelEduc" Type="bit" Nullable="false" />
+          <Property Name="DateOfDisable" Type="datetime" />
+          <Property Name="EntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateOfStart" Type="datetime" />
+          <Property Name="ManualExamId" Type="int" />
+          <Property Name="IsApprovedByComission" Type="bit" />
+        </EntityType>
+        <EntityType Name="AG_Entry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProgramId" Type="int" />
+          <Property Name="ObrazProgramId" Type="int" />
+          <Property Name="ProfileId" Type="int" />
+          <Property Name="EntryClassId" Type="int" />
+          <Property Name="HasManualExams" Type="bit" />
+          <Property Name="DateOfStartEntry" Type="smalldatetime" />
+          <Property Name="DateOfStopEntry" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="AG_EntryClass">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Num" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExitClassName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExitClassNum" Type="int" />
+        </EntityType>
+        <EntityType Name="AG_EntryGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AG_EntryInEntryGroup">
+          <Key>
+            <PropertyRef Name="EntryId" />
+          </Key>
+          <Property Name="EntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EntryGroupId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AG_ManualExam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="AG_ManualExamInAG_Entry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EntryId" Type="uniqueidentifier" />
+          <Property Name="ExamId" Type="int" />
+        </EntityType>
+        <EntityType Name="AG_ObrazProgram">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="NameRod" Type="nvarchar" MaxLength="150" />
+          <Property Name="Num" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AG_Profile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="NamePrint" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="AG_Program">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="NameRod" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Application">
           <Key>
@@ -445,7 +559,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
-          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="Number" Type="int" />
         </EntityType>
         <EntityType Name="OlympSubject">
           <Key>
@@ -504,13 +618,6 @@
           <Property Name="IsImported" Type="bit" />
           <Property Name="DateReviewDocs" Type="datetime" />
           <Property Name="IsDisabled" Type="bit" />
-        </EntityType>
-        <EntityType Name="Person_SPOSchoolExitClass">
-          <Key>
-            <PropertyRef Name="PersonId" />
-          </Key>
-          <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="SchoolExitClassId" Type="int" />
         </EntityType>
         <EntityType Name="PersonAddInfo">
           <Key>
@@ -729,7 +836,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IntValue" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Semester">
           <Key>
@@ -836,6 +944,42 @@
           <Property Name="StudyBasisNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyFormNameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_AG_Entry_AG_EntryClass">
+          <End Role="AG_EntryClass" Type="OnlinePriem2012Model.Store.AG_EntryClass" Multiplicity="0..1" />
+          <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_EntryClass">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="EntryClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AG_Entry_AG_ObrazProgram">
+          <End Role="AG_ObrazProgram" Type="OnlinePriem2012Model.Store.AG_ObrazProgram" Multiplicity="0..1" />
+          <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_ObrazProgram">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="ObrazProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AG_Entry_AG_Program">
+          <End Role="AG_Program" Type="OnlinePriem2012Model.Store.AG_Program" Multiplicity="0..1" />
+          <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_Program">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Application_Entry">
           <End Role="Entry" Type="OnlinePriem2012Model.Store.Entry" Multiplicity="0..1" />
           <End Role="Application" Type="OnlinePriem2012Model.Store.Application" Multiplicity="*" />
@@ -1016,18 +1160,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Person_SPOSchoolExitClass_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
-          <End Role="Person_SPOSchoolExitClass" Type="OnlinePriem2012Model.Store.Person_SPOSchoolExitClass" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Person_SPOSchoolExitClass">
-              <PropertyRef Name="PersonId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Person_User">
           <End Role="User" Type="OnlinePriem2012Model.Store.User" Multiplicity="1" />
           <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="0..1" />
@@ -1041,7 +1173,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonAddInfo_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonAddInfo" Type="OnlinePriem2012Model.Store.PersonAddInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1065,7 +1199,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonChangeStudyFormReason_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonChangeStudyFormReason" Type="OnlinePriem2012Model.Store.PersonChangeStudyFormReason" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1089,7 +1225,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonContacts_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonContacts" Type="OnlinePriem2012Model.Store.PersonContacts" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1113,7 +1251,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonCurrentEducation_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonCurrentEducation" Type="OnlinePriem2012Model.Store.PersonCurrentEducation" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1137,7 +1277,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonDisorderInfo_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonDisorderInfo" Type="OnlinePriem2012Model.Store.PersonDisorderInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1173,7 +1315,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonEducationDocument_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonEducationDocument" Type="OnlinePriem2012Model.Store.PersonEducationDocument" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1197,7 +1341,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonHighEducationInfo_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonHighEducationInfo" Type="OnlinePriem2012Model.Store.PersonHighEducationInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1233,7 +1379,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonSchoolInfo_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonSchoolInfo" Type="OnlinePriem2012Model.Store.PersonSchoolInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1257,7 +1405,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonScienceWork_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="0..1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonScienceWork" Type="OnlinePriem2012Model.Store.PersonScienceWork" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1269,7 +1419,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonSportQualification_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonSportQualification" Type="OnlinePriem2012Model.Store.PersonSportQualification" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1293,7 +1445,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonVisaInfo_Person">
-          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1" />
+          <End Role="Person" Type="OnlinePriem2012Model.Store.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonVisaInfo" Type="OnlinePriem2012Model.Store.PersonVisaInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -1438,11 +1592,6 @@
             <End Role="SportQualification" EntitySet="SportQualification" />
             <End Role="PersonSportQualification" EntitySet="PersonSportQualification" />
           </AssociationSet>
-          <EntitySet Name="Person_SPOSchoolExitClass" EntityType="OnlinePriem2012Model.Person_SPOSchoolExitClass" />
-          <AssociationSet Name="FK_Person_SPOSchoolExitClassId_Person" Association="OnlinePriem2012Model.FK_Person_SPOSchoolExitClassId_Person">
-            <End Role="Person" EntitySet="Person" />
-            <End Role="Person_SPOSchoolExitClass" EntitySet="Person_SPOSchoolExitClass" />
-          </AssociationSet>
           <EntitySet Name="RectorScholarshipApplication" EntityType="OnlinePriem2012Model.RectorScholarshipApplication" />
           <EntitySet Name="RectorScholarshipApplicationFile" EntityType="OnlinePriem2012Model.RectorScholarshipApplicationFile" />
           <AssociationSet Name="FK_Person_User1" Association="OnlinePriem2012Model.FK_Person_User1">
@@ -1533,6 +1682,28 @@
           <AssociationSet Name="FK_Olympiads_Person" Association="OnlinePriem2012Model.FK_Olympiads_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="Olympiads" EntitySet="Olympiads" />
+          </AssociationSet>
+          <EntitySet Name="AG_Application" EntityType="OnlinePriem2012Model.AG_Application" />
+          <EntitySet Name="AG_Entry" EntityType="OnlinePriem2012Model.AG_Entry" />
+          <EntitySet Name="AG_EntryClass" EntityType="OnlinePriem2012Model.AG_EntryClass" />
+          <EntitySet Name="AG_EntryGroup" EntityType="OnlinePriem2012Model.AG_EntryGroup" />
+          <EntitySet Name="AG_EntryInEntryGroup" EntityType="OnlinePriem2012Model.AG_EntryInEntryGroup" />
+          <EntitySet Name="AG_ManualExam" EntityType="OnlinePriem2012Model.AG_ManualExam" />
+          <EntitySet Name="AG_ManualExamInAG_Entry" EntityType="OnlinePriem2012Model.AG_ManualExamInAG_Entry" />
+          <EntitySet Name="AG_ObrazProgram" EntityType="OnlinePriem2012Model.AG_ObrazProgram" />
+          <EntitySet Name="AG_Profile" EntityType="OnlinePriem2012Model.AG_Profile" />
+          <EntitySet Name="AG_Program" EntityType="OnlinePriem2012Model.AG_Program" />
+          <AssociationSet Name="FK_AG_Entry_AG_EntryClass" Association="OnlinePriem2012Model.FK_AG_Entry_AG_EntryClass">
+            <End Role="AG_EntryClass" EntitySet="AG_EntryClass" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AG_Entry_AG_ObrazProgram" Association="OnlinePriem2012Model.FK_AG_Entry_AG_ObrazProgram">
+            <End Role="AG_ObrazProgram" EntitySet="AG_ObrazProgram" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AG_Entry_AG_Program" Association="OnlinePriem2012Model.FK_AG_Entry_AG_Program">
+            <End Role="AG_Program" EntitySet="AG_Program" />
+            <End Role="AG_Entry" EntitySet="AG_Entry" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="PassportType">
@@ -1986,7 +2157,6 @@
           <Property Type="Boolean" Name="IsDisabled" />
           <NavigationProperty Name="PersonWork" Relationship="OnlinePriem2012Model.FK_PersonWork_Person" FromRole="Person" ToRole="PersonWork" />
           <NavigationProperty Name="PersonSportQualification" Relationship="OnlinePriem2012Model.FK_PersonSportQualification_Person" FromRole="Person" ToRole="PersonSportQualification" />
-          <NavigationProperty Name="Person_SPOSchoolExitClass" Relationship="OnlinePriem2012Model.FK_Person_SPOSchoolExitClassId_Person" FromRole="Person" ToRole="Person_SPOSchoolExitClass" />
           <NavigationProperty Name="User1" Relationship="OnlinePriem2012Model.FK_Person_User1" FromRole="Person" ToRole="User" />
           <NavigationProperty Name="PersonScienceWork" Relationship="OnlinePriem2012Model.FK_PersonScienceWork_Person" FromRole="Person" ToRole="PersonScienceWork" />
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Person" FromRole="Person" ToRole="PersonEducationDocument" />
@@ -2182,8 +2352,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="PersonSchoolInfo" Relationship="OnlinePriem2012Model.FK_PersonSchoolInfo_SchoolExitClass" FromRole="SchoolExitClass" ToRole="PersonSchoolInfo" />
+          <Property Type="Int32" Name="IntValue" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersonSchoolInfo_Person">
           <End Type="OnlinePriem2012Model.Person" Role="Person" Multiplicity="1" />
@@ -2262,26 +2433,6 @@
             </Principal>
             <Dependent Role="PersonSportQualification">
               <PropertyRef Name="SportQualificationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Person_SPOSchoolExitClass">
-          <Key>
-            <PropertyRef Name="PersonId" />
-          </Key>
-          <Property Type="Guid" Name="PersonId" Nullable="false" />
-          <Property Type="Int32" Name="SchoolExitClassId" />
-          <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_Person_SPOSchoolExitClassId_Person" FromRole="Person_SPOSchoolExitClass" ToRole="Person" />
-        </EntityType>
-        <Association Name="FK_Person_SPOSchoolExitClassId_Person">
-          <End Type="OnlinePriem2012Model.Person" Role="Person" Multiplicity="1" />
-          <End Type="OnlinePriem2012Model.Person_SPOSchoolExitClass" Role="Person_SPOSchoolExitClass" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Person_SPOSchoolExitClass">
-              <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2551,7 +2702,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="Number" Nullable="false" />
+          <Property Type="Int32" Name="Number" />
           <NavigationProperty Name="OlympBook" Relationship="OnlinePriem2012Model.FK_OlympBook_OlympName" FromRole="OlympName" ToRole="OlympBook" />
           <NavigationProperty Name="Olympiads" Relationship="OnlinePriem2012Model.FK_Olympiads_OlympName" FromRole="OlympName" ToRole="Olympiads" />
         </EntityType>
@@ -2694,6 +2845,145 @@
             </Principal>
             <Dependent Role="Olympiads">
               <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AG_Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="PersonId" />
+          <Property Type="Int32" Name="Priority" />
+          <Property Type="Int32" Name="StudyFormId" />
+          <Property Type="Int32" Name="StudyBasisId" />
+          <Property Type="Int32" Name="Barcode" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Boolean" Name="Enabled" />
+          <Property Type="Int32" Name="StudyPlanId" />
+          <Property Type="Int32" Name="EntryType" />
+          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfDisable" Precision="3" />
+          <Property Type="Guid" Name="EntryId" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfStart" Precision="3" />
+          <Property Type="Int32" Name="ManualExamId" />
+          <Property Type="Boolean" Name="IsApprovedByComission" />
+        </EntityType>
+        <EntityType Name="AG_Entry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="ProgramId" />
+          <Property Type="Int32" Name="ObrazProgramId" />
+          <Property Type="Int32" Name="ProfileId" />
+          <Property Type="Int32" Name="EntryClassId" />
+          <Property Type="Boolean" Name="HasManualExams" />
+          <Property Type="DateTime" Name="DateOfStartEntry" Precision="0" />
+          <Property Type="DateTime" Name="DateOfStopEntry" Precision="0" />
+          <NavigationProperty Name="AG_EntryClass" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_EntryClass" FromRole="AG_Entry" ToRole="AG_EntryClass" />
+          <NavigationProperty Name="AG_ObrazProgram" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_ObrazProgram" FromRole="AG_Entry" ToRole="AG_ObrazProgram" />
+          <NavigationProperty Name="AG_Program" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_Program" FromRole="AG_Entry" ToRole="AG_Program" />
+        </EntityType>
+        <EntityType Name="AG_EntryClass">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Num" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ExitClassName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ExitClassNum" />
+          <NavigationProperty Name="AG_Entry" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_EntryClass" FromRole="AG_EntryClass" ToRole="AG_Entry" />
+        </EntityType>
+        <EntityType Name="AG_EntryGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AG_EntryInEntryGroup">
+          <Key>
+            <PropertyRef Name="EntryId" />
+          </Key>
+          <Property Type="Guid" Name="EntryId" Nullable="false" />
+          <Property Type="Guid" Name="EntryGroupId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AG_ManualExam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AG_ManualExamInAG_Entry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="EntryId" />
+          <Property Type="Int32" Name="ExamId" />
+        </EntityType>
+        <EntityType Name="AG_ObrazProgram">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameRod" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Num" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AG_Entry" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_ObrazProgram" FromRole="AG_ObrazProgram" ToRole="AG_Entry" />
+        </EntityType>
+        <EntityType Name="AG_Profile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NamePrint" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AG_Program">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameRod" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AG_Entry" Relationship="OnlinePriem2012Model.FK_AG_Entry_AG_Program" FromRole="AG_Program" ToRole="AG_Entry" />
+        </EntityType>
+        <Association Name="FK_AG_Entry_AG_EntryClass">
+          <End Type="OnlinePriem2012Model.AG_EntryClass" Role="AG_EntryClass" Multiplicity="0..1" />
+          <End Type="OnlinePriem2012Model.AG_Entry" Role="AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_EntryClass">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="EntryClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AG_Entry_AG_ObrazProgram">
+          <End Type="OnlinePriem2012Model.AG_ObrazProgram" Role="AG_ObrazProgram" Multiplicity="0..1" />
+          <End Type="OnlinePriem2012Model.AG_Entry" Role="AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_ObrazProgram">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="ObrazProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AG_Entry_AG_Program">
+          <End Type="OnlinePriem2012Model.AG_Program" Role="AG_Program" Multiplicity="0..1" />
+          <End Type="OnlinePriem2012Model.AG_Entry" Role="AG_Entry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AG_Program">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AG_Entry">
+              <PropertyRef Name="ProgramId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3114,6 +3404,7 @@
           <EntitySetMapping Name="SchoolExitClass">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.SchoolExitClass">
               <MappingFragment StoreEntitySet="SchoolExitClass">
+                <ScalarProperty Name="IntValue" ColumnName="IntValue" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -3135,14 +3426,6 @@
                 <ScalarProperty Name="Acronym" ColumnName="Acronym" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Person_SPOSchoolExitClass">
-            <EntityTypeMapping TypeName="OnlinePriem2012Model.Person_SPOSchoolExitClass">
-              <MappingFragment StoreEntitySet="Person_SPOSchoolExitClass">
-                <ScalarProperty Name="SchoolExitClassId" ColumnName="SchoolExitClassId" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3314,6 +3597,113 @@
           <EntitySetMapping Name="OlympLevel">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.OlympLevel">
               <MappingFragment StoreEntitySet="OlympLevel">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_Application">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_Application">
+              <MappingFragment StoreEntitySet="AG_Application">
+                <ScalarProperty Name="IsApprovedByComission" ColumnName="IsApprovedByComission" />
+                <ScalarProperty Name="ManualExamId" ColumnName="ManualExamId" />
+                <ScalarProperty Name="DateOfStart" ColumnName="DateOfStart" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="DateOfDisable" ColumnName="DateOfDisable" />
+                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
+                <ScalarProperty Name="EntryType" ColumnName="EntryType" />
+                <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
+                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_Entry">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_Entry">
+              <MappingFragment StoreEntitySet="AG_Entry">
+                <ScalarProperty Name="DateOfStopEntry" ColumnName="DateOfStopEntry" />
+                <ScalarProperty Name="DateOfStartEntry" ColumnName="DateOfStartEntry" />
+                <ScalarProperty Name="HasManualExams" ColumnName="HasManualExams" />
+                <ScalarProperty Name="EntryClassId" ColumnName="EntryClassId" />
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_EntryClass">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_EntryClass">
+              <MappingFragment StoreEntitySet="AG_EntryClass">
+                <ScalarProperty Name="ExitClassNum" ColumnName="ExitClassNum" />
+                <ScalarProperty Name="ExitClassName" ColumnName="ExitClassName" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_EntryGroup">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_EntryGroup">
+              <MappingFragment StoreEntitySet="AG_EntryGroup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_EntryInEntryGroup">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_EntryInEntryGroup">
+              <MappingFragment StoreEntitySet="AG_EntryInEntryGroup">
+                <ScalarProperty Name="EntryGroupId" ColumnName="EntryGroupId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_ManualExam">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_ManualExam">
+              <MappingFragment StoreEntitySet="AG_ManualExam">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_ManualExamInAG_Entry">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_ManualExamInAG_Entry">
+              <MappingFragment StoreEntitySet="AG_ManualExamInAG_Entry">
+                <ScalarProperty Name="ExamId" ColumnName="ExamId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_ObrazProgram">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_ObrazProgram">
+              <MappingFragment StoreEntitySet="AG_ObrazProgram">
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="NameRod" ColumnName="NameRod" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_Profile">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_Profile">
+              <MappingFragment StoreEntitySet="AG_Profile">
+                <ScalarProperty Name="NamePrint" ColumnName="NamePrint" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AG_Program">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.AG_Program">
+              <MappingFragment StoreEntitySet="AG_Program">
+                <ScalarProperty Name="NameRod" ColumnName="NameRod" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -3561,15 +3951,6 @@
           <ConnectorPoint PointX="14.25" PointY="23.671153157552084" />
           <ConnectorPoint PointX="14.25" PointY="21.6710009765625" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="OnlinePriem2012Model.Person_SPOSchoolExitClass" Width="1.5" PointX="8.25" PointY="63.375" Height="1.427958984374996" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Person_SPOSchoolExitClassId_Person" >
-          <ConnectorPoint PointX="12.75" PointY="14.838979492187498" />
-          <ConnectorPoint PointX="12.760416666666666" PointY="14.838979492187498" />
-          <ConnectorPoint PointX="12.927083333333334" PointY="14.838979492187498" />
-          <ConnectorPoint PointX="13.041666666666666" PointY="14.838979492187498" />
-          <ConnectorPoint PointX="13.208333333333334" PointY="14.838979492187498" />
-          <ConnectorPoint PointX="13.5" PointY="14.838979492187498" />
-        </AssociationConnector>
         <EntityTypeShape EntityType="OnlinePriem2012Model.RectorScholarshipApplication" Width="1.5" PointX="8.75" PointY="6.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.RectorScholarshipApplicationFile" Width="1.5" PointX="8.75" PointY="9.75" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_Person_User1" />
@@ -3604,6 +3985,19 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympType" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympValue" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_Person" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Application" Width="1.5" PointX="4.9398391809965663" PointY="1.0931073283278883" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Entry" Width="1.5" PointX="7.280315003954021" PointY="21.967764298416565" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_EntryClass" Width="1.5" PointX="8.6010970625100178" PointY="4.0125843752234172" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_EntryGroup" Width="1.5" PointX="9.1788763390755648" PointY="10.832353462852701" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_EntryInEntryGroup" Width="1.5" PointX="3.8017918205828369" PointY="5.1004381650595176" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_ManualExam" Width="1.5" PointX="9.33194920296406" PointY="5.0229499959493751" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_ManualExamInAG_Entry" Width="1.5" PointX="2.904716470700091" PointY="13.91247347645111" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_ObrazProgram" Width="1.5" PointX="7.2468406945685109" PointY="13.896212882313977" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Profile" Width="1.5" PointX="9.431359312232285" PointY="15.464937008668173" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Program" Width="1.5" PointX="8.061056517093002" PointY="26.936443743732035" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Entry_AG_EntryClass" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Entry_AG_ObrazProgram" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Entry_AG_Program" />
         </Diagram>
     </Diagrams>
   </Designer>

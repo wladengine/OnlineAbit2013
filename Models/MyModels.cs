@@ -716,6 +716,7 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> Professions { get; set; }
         public List<int> PersonFilesId {get; set;}
         public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
+        public int MaxBlocks { get; set; }
     }
 
     public class SPO_NewApplicationModel

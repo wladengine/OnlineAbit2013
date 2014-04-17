@@ -186,4 +186,22 @@
   <data name="StudyForm" xml:space="preserve">
     <value>Выберите форму обучения</value>
   </data>
+  <data name="AG_PriemClosed" xml:space="preserve">
+    <value>Приём в АГ закрыт</value>
+  </data>
+  <data name="NewApp_2MoreEntry" xml:space="preserve">
+    <value>Неоднозначный выбор учебного плана</value>
+  </data>
+  <data name="NewApp_NoEntry" xml:space="preserve">
+    <value>Не найден учебный план</value>
+  </data>
+  <data name="NewApp_ClosedEntry" xml:space="preserve">
+    <value>Приём заявлений на данное направление закрыт.</value>
+  </data>
+  <data name="NewApp_HasApplicationOnEntry" xml:space="preserve">
+    <value>Заявление на данную программу уже подано</value>
+  </data>
+  <data name="NewApp_NotOpenedEntry" xml:space="preserve">
+    <value>Приём заявлений на данное направление ещё не открыт.</value>
+  </data>
 </root>

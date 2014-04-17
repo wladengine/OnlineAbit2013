@@ -82,13 +82,7 @@ namespace OnlineAbit2013.Controllers
         //статический конструктор
         static Util()
         {
-            _abitDB = new SQLClass("Data Source=81.89.183.103;Initial Catalog=OnlinePriem2012;Integrated Security=False;User ID=OnlinePriemUser;Password=AllYourBaseAreBelongToUs666+;MultipleActiveResultSets=True;");
-            _studDB = new SQLClass("Data Source=81.89.183.21;Initial Catalog=EducationUR;Integrated Security=False;User ID=faculty;Password=parolfaculty;MultipleActiveResultSets=True;");
-            _priem2012DB = new SQLClass("Data Source=srveducation.ad.pu.ru;Initial Catalog=Priem2012;Integrated Security=false;User ID=PriemReader; Password=kukushonok");
-            
-            //_studDB = new SQLClass("Data Source=81.89.183.21;Initial Catalog=EducationUR;Integrated Security=False;User ID=faculty;Password=parolfaculty;MultipleActiveResultSets=True;");
-            //_priem2012DB = new SQLClass("Data Source=srveducation.ad.pu.ru;Initial Catalog=Priem2012;Integrated Security=false;User ID=PriemReader; Password=kukushonok");
-
+            InitDB();
             string query = "SELECT Id, Name FROM {0} WHERE 1=@x ORDER BY Id";
             Dictionary<string, object> dic = new Dictionary<string, object>() { { "@x", 1 } };
             DataTable tbl = _abitDB.GetDataTable(string.Format(query, "EgeExam"), dic);

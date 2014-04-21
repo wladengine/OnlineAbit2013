@@ -980,6 +980,54 @@ namespace OnlineAbit2013
             }
         }
         private ObjectSet<AG_Program> _AG_Program;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ApplicationFile> ApplicationFile
+        {
+            get
+            {
+                if ((_ApplicationFile == null))
+                {
+                    _ApplicationFile = base.CreateObjectSet<ApplicationFile>("ApplicationFile");
+                }
+                return _ApplicationFile;
+            }
+        }
+        private ObjectSet<ApplicationFile> _ApplicationFile;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PersonFile> PersonFile
+        {
+            get
+            {
+                if ((_PersonFile == null))
+                {
+                    _PersonFile = base.CreateObjectSet<PersonFile>("PersonFile");
+                }
+                return _PersonFile;
+            }
+        }
+        private ObjectSet<PersonFile> _PersonFile;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PersonFileType> PersonFileType
+        {
+            get
+            {
+                if ((_PersonFileType == null))
+                {
+                    _PersonFileType = base.CreateObjectSet<PersonFileType>("PersonFileType");
+                }
+                return _PersonFileType;
+            }
+        }
+        private ObjectSet<PersonFileType> _PersonFileType;
 
         #endregion
 
@@ -1416,6 +1464,30 @@ namespace OnlineAbit2013
         {
             base.AddObject("AG_Program", aG_Program);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ApplicationFile EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplicationFile(ApplicationFile applicationFile)
+        {
+            base.AddObject("ApplicationFile", applicationFile);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PersonFile EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPersonFile(PersonFile personFile)
+        {
+            base.AddObject("PersonFile", personFile);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PersonFileType EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPersonFileType(PersonFileType personFileType)
+        {
+            base.AddObject("PersonFileType", personFileType);
+        }
 
         #endregion
 
@@ -1452,7 +1524,8 @@ namespace OnlineAbit2013
         /// <param name="isSecond">Initial value of the IsSecond property.</param>
         /// <param name="isReduced">Initial value of the IsReduced property.</param>
         /// <param name="isParallel">Initial value of the IsParallel property.</param>
-        public static Abiturient CreateAbiturient(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Boolean hostelEduc, global::System.DateTime dateOfStart, global::System.Guid entryId, global::System.Int32 studyLevelId, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel)
+        /// <param name="isCommited">Initial value of the IsCommited property.</param>
+        public static Abiturient CreateAbiturient(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Boolean hostelEduc, global::System.DateTime dateOfStart, global::System.Guid entryId, global::System.Int32 studyLevelId, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel, global::System.Boolean isCommited)
         {
             Abiturient abiturient = new Abiturient();
             abiturient.Id = id;
@@ -1469,6 +1542,7 @@ namespace OnlineAbit2013
             abiturient.IsSecond = isSecond;
             abiturient.IsReduced = isReduced;
             abiturient.IsParallel = isParallel;
+            abiturient.IsCommited = isCommited;
             return abiturient;
         }
 
@@ -2543,6 +2617,57 @@ namespace OnlineAbit2013
         private global::System.String _StudyFormNameEng;
         partial void OnStudyFormNameEngChanging(global::System.String value);
         partial void OnStudyFormNameEngChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> CommitId
+        {
+            get
+            {
+                return _CommitId;
+            }
+            set
+            {
+                OnCommitIdChanging(value);
+                ReportPropertyChanging("CommitId");
+                _CommitId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CommitId");
+                OnCommitIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _CommitId;
+        partial void OnCommitIdChanging(Nullable<global::System.Guid> value);
+        partial void OnCommitIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCommited
+        {
+            get
+            {
+                return _IsCommited;
+            }
+            set
+            {
+                if (_IsCommited != value)
+                {
+                    OnIsCommitedChanging(value);
+                    ReportPropertyChanging("IsCommited");
+                    _IsCommited = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("IsCommited");
+                    OnIsCommitedChanged();
+                }
+            }
+        }
+        private global::System.Boolean _IsCommited;
+        partial void OnIsCommitedChanging(global::System.Boolean value);
+        partial void OnIsCommitedChanged();
 
         #endregion
 
@@ -4997,6 +5122,387 @@ namespace OnlineAbit2013
 
         #endregion
 
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="ApplicationFile")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ApplicationFile : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ApplicationFile object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="applicationId">Initial value of the ApplicationId property.</param>
+        /// <param name="fileName">Initial value of the FileName property.</param>
+        /// <param name="fileSize">Initial value of the FileSize property.</param>
+        /// <param name="loadDate">Initial value of the LoadDate property.</param>
+        /// <param name="isReadOnly">Initial value of the IsReadOnly property.</param>
+        /// <param name="fileTypeId">Initial value of the FileTypeId property.</param>
+        public static ApplicationFile CreateApplicationFile(global::System.Guid id, global::System.Guid applicationId, global::System.String fileName, global::System.Int32 fileSize, global::System.DateTime loadDate, global::System.Boolean isReadOnly, global::System.Int32 fileTypeId)
+        {
+            ApplicationFile applicationFile = new ApplicationFile();
+            applicationFile.Id = id;
+            applicationFile.ApplicationId = applicationId;
+            applicationFile.FileName = fileName;
+            applicationFile.FileSize = fileSize;
+            applicationFile.LoadDate = loadDate;
+            applicationFile.IsReadOnly = isReadOnly;
+            applicationFile.FileTypeId = fileTypeId;
+            return applicationFile;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ApplicationId
+        {
+            get
+            {
+                return _ApplicationId;
+            }
+            set
+            {
+                OnApplicationIdChanging(value);
+                ReportPropertyChanging("ApplicationId");
+                _ApplicationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApplicationId");
+                OnApplicationIdChanged();
+            }
+        }
+        private global::System.Guid _ApplicationId;
+        partial void OnApplicationIdChanging(global::System.Guid value);
+        partial void OnApplicationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FileSize
+        {
+            get
+            {
+                return _FileSize;
+            }
+            set
+            {
+                OnFileSizeChanging(value);
+                ReportPropertyChanging("FileSize");
+                _FileSize = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FileSize");
+                OnFileSizeChanged();
+            }
+        }
+        private global::System.Int32 _FileSize;
+        partial void OnFileSizeChanging(global::System.Int32 value);
+        partial void OnFileSizeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileExtention
+        {
+            get
+            {
+                return _FileExtention;
+            }
+            set
+            {
+                OnFileExtentionChanging(value);
+                ReportPropertyChanging("FileExtention");
+                _FileExtention = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileExtention");
+                OnFileExtentionChanged();
+            }
+        }
+        private global::System.String _FileExtention;
+        partial void OnFileExtentionChanging(global::System.String value);
+        partial void OnFileExtentionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] FileData
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_FileData);
+            }
+            set
+            {
+                OnFileDataChanging(value);
+                ReportPropertyChanging("FileData");
+                _FileData = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileData");
+                OnFileDataChanged();
+            }
+        }
+        private global::System.Byte[] _FileData;
+        partial void OnFileDataChanging(global::System.Byte[] value);
+        partial void OnFileDataChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LoadDate
+        {
+            get
+            {
+                return _LoadDate;
+            }
+            set
+            {
+                OnLoadDateChanging(value);
+                ReportPropertyChanging("LoadDate");
+                _LoadDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LoadDate");
+                OnLoadDateChanged();
+            }
+        }
+        private global::System.DateTime _LoadDate;
+        partial void OnLoadDateChanging(global::System.DateTime value);
+        partial void OnLoadDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsReadOnly
+        {
+            get
+            {
+                return _IsReadOnly;
+            }
+            set
+            {
+                OnIsReadOnlyChanging(value);
+                ReportPropertyChanging("IsReadOnly");
+                _IsReadOnly = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsReadOnly");
+                OnIsReadOnlyChanged();
+            }
+        }
+        private global::System.Boolean _IsReadOnly;
+        partial void OnIsReadOnlyChanging(global::System.Boolean value);
+        partial void OnIsReadOnlyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MimeType
+        {
+            get
+            {
+                return _MimeType;
+            }
+            set
+            {
+                OnMimeTypeChanging(value);
+                ReportPropertyChanging("MimeType");
+                _MimeType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MimeType");
+                OnMimeTypeChanged();
+            }
+        }
+        private global::System.String _MimeType;
+        partial void OnMimeTypeChanging(global::System.String value);
+        partial void OnMimeTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsApproved
+        {
+            get
+            {
+                return _IsApproved;
+            }
+            set
+            {
+                OnIsApprovedChanging(value);
+                ReportPropertyChanging("IsApproved");
+                _IsApproved = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsApproved");
+                OnIsApprovedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsApproved;
+        partial void OnIsApprovedChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsApprovedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FailReason
+        {
+            get
+            {
+                return _FailReason;
+            }
+            set
+            {
+                OnFailReasonChanging(value);
+                ReportPropertyChanging("FailReason");
+                _FailReason = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FailReason");
+                OnFailReasonChanged();
+            }
+        }
+        private global::System.String _FailReason;
+        partial void OnFailReasonChanging(global::System.String value);
+        partial void OnFailReasonChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FileTypeId
+        {
+            get
+            {
+                return _FileTypeId;
+            }
+            set
+            {
+                OnFileTypeIdChanging(value);
+                ReportPropertyChanging("FileTypeId");
+                _FileTypeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FileTypeId");
+                OnFileTypeIdChanged();
+            }
+        }
+        private global::System.Int32 _FileTypeId;
+        partial void OnFileTypeIdChanging(global::System.Int32 value);
+        partial void OnFileTypeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> CommitId
+        {
+            get
+            {
+                return _CommitId;
+            }
+            set
+            {
+                OnCommitIdChanging(value);
+                ReportPropertyChanging("CommitId");
+                _CommitId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CommitId");
+                OnCommitIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _CommitId;
+        partial void OnCommitIdChanging(Nullable<global::System.Guid> value);
+        partial void OnCommitIdChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>
@@ -12601,6 +13107,464 @@ namespace OnlineAbit2013
 
         #endregion
 
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="PersonFile")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PersonFile : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PersonFile object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="personId">Initial value of the PersonId property.</param>
+        /// <param name="fileName">Initial value of the FileName property.</param>
+        /// <param name="fileSize">Initial value of the FileSize property.</param>
+        /// <param name="loadDate">Initial value of the LoadDate property.</param>
+        public static PersonFile CreatePersonFile(global::System.Guid id, global::System.Guid personId, global::System.String fileName, global::System.Int32 fileSize, global::System.DateTime loadDate)
+        {
+            PersonFile personFile = new PersonFile();
+            personFile.Id = id;
+            personFile.PersonId = personId;
+            personFile.FileName = fileName;
+            personFile.FileSize = fileSize;
+            personFile.LoadDate = loadDate;
+            return personFile;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid PersonId
+        {
+            get
+            {
+                return _PersonId;
+            }
+            set
+            {
+                OnPersonIdChanging(value);
+                ReportPropertyChanging("PersonId");
+                _PersonId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PersonId");
+                OnPersonIdChanged();
+            }
+        }
+        private global::System.Guid _PersonId;
+        partial void OnPersonIdChanging(global::System.Guid value);
+        partial void OnPersonIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FileSize
+        {
+            get
+            {
+                return _FileSize;
+            }
+            set
+            {
+                OnFileSizeChanging(value);
+                ReportPropertyChanging("FileSize");
+                _FileSize = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FileSize");
+                OnFileSizeChanged();
+            }
+        }
+        private global::System.Int32 _FileSize;
+        partial void OnFileSizeChanging(global::System.Int32 value);
+        partial void OnFileSizeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileExtention
+        {
+            get
+            {
+                return _FileExtention;
+            }
+            set
+            {
+                OnFileExtentionChanging(value);
+                ReportPropertyChanging("FileExtention");
+                _FileExtention = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileExtention");
+                OnFileExtentionChanged();
+            }
+        }
+        private global::System.String _FileExtention;
+        partial void OnFileExtentionChanging(global::System.String value);
+        partial void OnFileExtentionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] FileData
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_FileData);
+            }
+            set
+            {
+                OnFileDataChanging(value);
+                ReportPropertyChanging("FileData");
+                _FileData = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileData");
+                OnFileDataChanged();
+            }
+        }
+        private global::System.Byte[] _FileData;
+        partial void OnFileDataChanging(global::System.Byte[] value);
+        partial void OnFileDataChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LoadDate
+        {
+            get
+            {
+                return _LoadDate;
+            }
+            set
+            {
+                OnLoadDateChanging(value);
+                ReportPropertyChanging("LoadDate");
+                _LoadDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LoadDate");
+                OnLoadDateChanged();
+            }
+        }
+        private global::System.DateTime _LoadDate;
+        partial void OnLoadDateChanging(global::System.DateTime value);
+        partial void OnLoadDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MimeType
+        {
+            get
+            {
+                return _MimeType;
+            }
+            set
+            {
+                OnMimeTypeChanging(value);
+                ReportPropertyChanging("MimeType");
+                _MimeType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MimeType");
+                OnMimeTypeChanged();
+            }
+        }
+        private global::System.String _MimeType;
+        partial void OnMimeTypeChanging(global::System.String value);
+        partial void OnMimeTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsReadOnly
+        {
+            get
+            {
+                return _IsReadOnly;
+            }
+            set
+            {
+                OnIsReadOnlyChanging(value);
+                ReportPropertyChanging("IsReadOnly");
+                _IsReadOnly = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsReadOnly");
+                OnIsReadOnlyChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsReadOnly;
+        partial void OnIsReadOnlyChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsReadOnlyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsApproved
+        {
+            get
+            {
+                return _IsApproved;
+            }
+            set
+            {
+                OnIsApprovedChanging(value);
+                ReportPropertyChanging("IsApproved");
+                _IsApproved = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsApproved");
+                OnIsApprovedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsApproved;
+        partial void OnIsApprovedChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsApprovedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FailReason
+        {
+            get
+            {
+                return _FailReason;
+            }
+            set
+            {
+                OnFailReasonChanging(value);
+                ReportPropertyChanging("FailReason");
+                _FailReason = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FailReason");
+                OnFailReasonChanged();
+            }
+        }
+        private global::System.String _FailReason;
+        partial void OnFailReasonChanging(global::System.String value);
+        partial void OnFailReasonChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PersonFileTypeId
+        {
+            get
+            {
+                return _PersonFileTypeId;
+            }
+            set
+            {
+                OnPersonFileTypeIdChanging(value);
+                ReportPropertyChanging("PersonFileTypeId");
+                _PersonFileTypeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PersonFileTypeId");
+                OnPersonFileTypeIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PersonFileTypeId;
+        partial void OnPersonFileTypeIdChanging(Nullable<global::System.Int32> value);
+        partial void OnPersonFileTypeIdChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="PersonFileType")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PersonFileType : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PersonFileType object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static PersonFileType CreatePersonFileType(global::System.Int32 id)
+        {
+            PersonFileType personFileType = new PersonFileType();
+            personFileType.Id = id;
+            return personFileType;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String NameEng
+        {
+            get
+            {
+                return _NameEng;
+            }
+            set
+            {
+                OnNameEngChanging(value);
+                ReportPropertyChanging("NameEng");
+                _NameEng = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("NameEng");
+                OnNameEngChanged();
+            }
+        }
+        private global::System.String _NameEng;
+        partial void OnNameEngChanging(global::System.String value);
+        partial void OnNameEngChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>

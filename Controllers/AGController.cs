@@ -496,87 +496,87 @@ namespace OnlineAbit2013.Controllers
             }
         }
 
-        public ActionResult Main()
-        {
-            //if (Request.Url.AbsoluteUri.IndexOf("https:\\", StringComparison.OrdinalIgnoreCase) == -1 && 
-            //    Request.Url.AbsoluteUri.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) == -1)
-            //    return Redirect(Request.Url.AbsoluteUri.Replace("http://", "https://"));
+        //public ActionResult Main()
+        //{
+        //    //if (Request.Url.AbsoluteUri.IndexOf("https:\\", StringComparison.OrdinalIgnoreCase) == -1 && 
+        //    //    Request.Url.AbsoluteUri.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) == -1)
+        //    //    return Redirect(Request.Url.AbsoluteUri.Replace("http://", "https://"));
 
-            //Validation
-            Guid PersonID;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonID))
-                return RedirectToAction("LogOn", "Account");
+        //    //Validation
+        //    Guid PersonID;
+        //    if (!Util.CheckAuthCookies(Request.Cookies, out PersonID))
+        //        return RedirectToAction("LogOn", "Account");
 
-            if (Util.CheckIsNew(PersonID))
-                return RedirectToAction("OpenPersonalAccount");
+        //    if (Util.CheckIsNew(PersonID))
+        //        return RedirectToAction("OpenPersonalAccount");
 
-            using (OnlinePriemEntities context = new OnlinePriemEntities())
-            {
-                var PersonInfo = context.Person.Where(x => x.Id == PersonID).FirstOrDefault();
-                if (PersonInfo == null)
-                    return RedirectToAction("Index");
+        //    using (OnlinePriemEntities context = new OnlinePriemEntities())
+        //    {
+        //        var PersonInfo = context.Person.Where(x => x.Id == PersonID).FirstOrDefault();
+        //        if (PersonInfo == null)
+        //            return RedirectToAction("Index");
 
-                //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
-                switch (PersonInfo.AbiturientTypeId)
-                {
-                    case 1: { return RedirectToAction("Main", "Abiturient"); }
-                    case 2: { return RedirectToAction("Main", "ForeignAbiturient"); }
-                    case 3: { return RedirectToAction("Main", "Transfer"); }
-                    case 4: { return RedirectToAction("Main", "TransferForeign"); }
-                    case 5: { return RedirectToAction("Main", "Recover"); }
-                    case 6: { return RedirectToAction("Main", "ChangeStudyForm"); }
-                    case 7: { return RedirectToAction("Main", "ChangeObrazProgram"); }
-                    case 8: { break; }
-                    default: { return RedirectToAction("Main", "Abiturient"); }
-                }
+        //        //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
+        //        switch (PersonInfo.AbiturientTypeId)
+        //        {
+        //            case 1: { return RedirectToAction("Main", "Abiturient"); }
+        //            case 2: { return RedirectToAction("Main", "ForeignAbiturient"); }
+        //            case 3: { return RedirectToAction("Main", "Transfer"); }
+        //            case 4: { return RedirectToAction("Main", "TransferForeign"); }
+        //            case 5: { return RedirectToAction("Main", "Recover"); }
+        //            case 6: { return RedirectToAction("Main", "ChangeStudyForm"); }
+        //            case 7: { return RedirectToAction("Main", "ChangeObrazProgram"); }
+        //            case 8: { break; }
+        //            default: { return RedirectToAction("Main", "Abiturient"); }
+        //        }
 
-                int regStage = PersonInfo.RegistrationStage;
-                if (regStage < 100)
-                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage.ToString() } });
+        //        int regStage = PersonInfo.RegistrationStage;
+        //        if (regStage < 100)
+        //            return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage.ToString() } });
 
-                SimplePerson model = new SimplePerson();
-                model.Applications = new List<SimpleApplication>();
-                model.Files = new List<AppendedFile>();
+        //        SimplePerson model = new SimplePerson();
+        //        model.Applications = new List<SimpleApplication>();
+        //        model.Files = new List<AppendedFile>();
 
-                string query = "SELECT Surname, Name, SecondName, RegistrationStage FROM PERSON WHERE Id=@Id";
-                Dictionary<string, object> dic = new Dictionary<string, object>() { { "@Id", PersonID } };
-                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-                if (tbl.Rows.Count != 1)
-                    return RedirectToAction("Index");
+        //        string query = "SELECT Surname, Name, SecondName, RegistrationStage FROM PERSON WHERE Id=@Id";
+        //        Dictionary<string, object> dic = new Dictionary<string, object>() { { "@Id", PersonID } };
+        //        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+        //        if (tbl.Rows.Count != 1)
+        //            return RedirectToAction("Index");
 
-                model.Name = Server.HtmlEncode(PersonInfo.Name);
-                model.Surname = Server.HtmlEncode(PersonInfo.Surname);
-                model.SecondName = Server.HtmlEncode(PersonInfo.SecondName);
+        //        model.Name = Server.HtmlEncode(PersonInfo.Name);
+        //        model.Surname = Server.HtmlEncode(PersonInfo.Surname);
+        //        model.SecondName = Server.HtmlEncode(PersonInfo.SecondName);
 
-                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID);
+        //        var Applications = context.Abiturient.Where(x => x.PersonId == PersonID);
 
-                query = "SELECT [AG_Application].Id, ProgramName, ObrazProgramName, ProfileName, Priority, Enabled FROM [AG_Application] " +
-                    "INNER JOIN AG_qEntry ON [AG_Application].EntryId=AG_qEntry.Id WHERE PersonId=@PersonId";
-                dic.Clear();
-                dic.Add("@PersonId", PersonID);
-                tbl = Util.AbitDB.GetDataTable(query, dic);
-                foreach (DataRow rw in tbl.Rows)
-                {
-                    model.Applications.Add(new SimpleApplication()
-                    {
-                        Id = rw.Field<Guid>("Id"),
-                        Profession = rw.Field<string>("ProgramName"),
-                        ObrazProgram = rw.Field<string>("ObrazProgramName"),
-                        Specialization = rw.Field<string>("ProfileName"),
-                        Priority = rw.Field<int?>("Priority").HasValue ? rw.Field<int?>("Priority").Value.ToString() : "1",
-                        Enabled = rw.Field<bool?>("Enabled") ?? true,
-                    });
-                }
+        //        query = "SELECT [AG_Application].Id, ProgramName, ObrazProgramName, ProfileName, Priority, Enabled FROM [AG_Application] " +
+        //            "INNER JOIN AG_qEntry ON [AG_Application].EntryId=AG_qEntry.Id WHERE PersonId=@PersonId";
+        //        dic.Clear();
+        //        dic.Add("@PersonId", PersonID);
+        //        tbl = Util.AbitDB.GetDataTable(query, dic);
+        //        foreach (DataRow rw in tbl.Rows)
+        //        {
+        //            model.Applications.Add(new SimpleApplication()
+        //            {
+        //                Id = rw.Field<Guid>("Id"),
+        //                Profession = rw.Field<string>("ProgramName"),
+        //                ObrazProgram = rw.Field<string>("ObrazProgramName"),
+        //                Specialization = rw.Field<string>("ProfileName"),
+        //                Priority = rw.Field<int?>("Priority").HasValue ? rw.Field<int?>("Priority").Value.ToString() : "1",
+        //                Enabled = rw.Field<bool?>("Enabled") ?? true,
+        //            });
+        //        }
 
-                model.Messages = Util.GetNewPersonalMessages(PersonID);
-                if (model.Applications.Count == 0)
-                {
-                    model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/Abiturient/NewApplication\">\"Подать новое заявление\"</a>" });
-                }
+        //        model.Messages = Util.GetNewPersonalMessages(PersonID);
+        //        if (model.Applications.Count == 0)
+        //        {
+        //            model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/Abiturient/NewApplication\">\"Подать новое заявление\"</a>" });
+        //        }
 
-                return View("Main", model);
-            }
-        }
+        //        return View("Main", model);
+        //    }
+        //}
 
         [OutputCache(NoStore=true, Duration=0)]
         public ActionResult NewApplication(params string[] errors)
@@ -899,40 +899,40 @@ namespace OnlineAbit2013.Controllers
             }
         }
 
-        public ActionResult PriorityChanger()
-        {
-            Guid PersonId;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return RedirectToAction("LogOn", "Account");
+        //public ActionResult PriorityChanger()
+        //{
+        //    Guid PersonId;
+        //    if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+        //        return RedirectToAction("LogOn", "Account");
 
-            int regStage = 1;
-            if (!Util.CheckPersonRegStatus(PersonId, out regStage))
-                return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage } });
+        //    int regStage = 1;
+        //    if (!Util.CheckPersonRegStatus(PersonId, out regStage))
+        //        return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage } });
 
-            string query = "SELECT [AG_Application].Id, Priority, ProgramName, ObrazProgramName FROM [AG_Application] " + 
-                " INNER JOIN AG_Entry ON [AG_Application].AG_EntryId=AG_Entry.Id " +
-                " WHERE PersonId=@PersonId AND Enabled=@Enabled ORDER BY Priority";
-            Dictionary<string, object> dic = new Dictionary<string, object>()
-            {
-                {"@PersonId", PersonId },
-                {"@Enabled", true }
-            };
-            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-            var apps = (from DataRow rw in tbl.Rows
-                        select new SimpleApplication()
-                        {
-                            Id = rw.Field<Guid>("Id"),
-                            Priority = rw.Field<int>("Priority").ToString(),
-                            Profession = rw.Field<string>("ProgramName"),
-                            ObrazProgram = rw.Field<string>("ObrazProgramName")
-                        }).ToList();
+        //    string query = "SELECT [AG_Application].Id, Priority, ProgramName, ObrazProgramName FROM [AG_Application] " + 
+        //        " INNER JOIN AG_Entry ON [AG_Application].AG_EntryId=AG_Entry.Id " +
+        //        " WHERE PersonId=@PersonId AND Enabled=@Enabled ORDER BY Priority";
+        //    Dictionary<string, object> dic = new Dictionary<string, object>()
+        //    {
+        //        {"@PersonId", PersonId },
+        //        {"@Enabled", true }
+        //    };
+        //    DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+        //    var apps = (from DataRow rw in tbl.Rows
+        //                select new SimpleApplication()
+        //                {
+        //                    Id = rw.Field<Guid>("Id"),
+        //                    Priority = rw.Field<int>("Priority").ToString(),
+        //                    Profession = rw.Field<string>("ProgramName"),
+        //                    ObrazProgram = rw.Field<string>("ObrazProgramName")
+        //                }).ToList();
 
-            MotivateMailModel mdl = new MotivateMailModel()
-            {
-                Apps = apps,
-            };
-            return View(mdl);
-        }
+        //    MotivateMailModel mdl = new MotivateMailModel()
+        //    {
+        //        Apps = apps,
+        //    };
+        //    return View(mdl);
+        //}
 
         [HttpPost]
         public ActionResult ChangePriority(MotivateMailModel model)

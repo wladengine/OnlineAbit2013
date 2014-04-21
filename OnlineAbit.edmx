@@ -18,6 +18,7 @@
           <EntitySet Name="AG_Profile" EntityType="OnlinePriem2012Model.Store.AG_Profile" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="AG_Program" EntityType="OnlinePriem2012Model.Store.AG_Program" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application" EntityType="OnlinePriem2012Model.Store.Application" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ApplicationFile" EntityType="OnlinePriem2012Model.Store.ApplicationFile" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="OnlinePriem2012Model.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EgeCertificate" EntityType="OnlinePriem2012Model.Store.EgeCertificate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EgeExam" EntityType="OnlinePriem2012Model.Store.EgeExam" store:Type="Tables" Schema="dbo" />
@@ -42,6 +43,8 @@
           <EntitySet Name="PersonCurrentEducation" EntityType="OnlinePriem2012Model.Store.PersonCurrentEducation" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonDisorderInfo" EntityType="OnlinePriem2012Model.Store.PersonDisorderInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonEducationDocument" EntityType="OnlinePriem2012Model.Store.PersonEducationDocument" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PersonFile" EntityType="OnlinePriem2012Model.Store.PersonFile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PersonFileType" EntityType="OnlinePriem2012Model.Store.PersonFileType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonHighEducationInfo" EntityType="OnlinePriem2012Model.Store.PersonHighEducationInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonSchoolInfo" EntityType="OnlinePriem2012Model.Store.PersonSchoolInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PersonScienceWork" EntityType="OnlinePriem2012Model.Store.PersonScienceWork" store:Type="Tables" Schema="dbo" />
@@ -104,7 +107,9 @@
       [Abiturient].[LicenseProgramNameEng] AS [LicenseProgramNameEng], 
       [Abiturient].[ProfileNameEng] AS [ProfileNameEng], 
       [Abiturient].[StudyBasisNameEng] AS [StudyBasisNameEng], 
-      [Abiturient].[StudyFormNameEng] AS [StudyFormNameEng]
+      [Abiturient].[StudyFormNameEng] AS [StudyFormNameEng], 
+      [Abiturient].[CommitId] AS [CommitId], 
+      [Abiturient].[IsCommited] AS [IsCommited]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AG_Application_AG_Entry" Association="OnlinePriem2012Model.Store.FK_AG_Application_AG_Entry">
@@ -411,6 +416,25 @@
           <Property Name="DateReviewDocs" Type="datetime" />
           <Property Name="CommitId" Type="uniqueidentifier" />
           <Property Name="IsCommited" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="FileSize" Type="int" Nullable="false" />
+          <Property Name="FileExtention" Type="nvarchar" MaxLength="50" />
+          <Property Name="FileData" Type="varbinary(max)" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LoadDate" Type="datetime" Nullable="false" />
+          <Property Name="IsReadOnly" Type="bit" Nullable="false" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="FailReason" Type="nvarchar(max)" />
+          <Property Name="FileTypeId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -730,6 +754,32 @@
           <Property Name="HasTRKI" Type="bit" />
           <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="PersonFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="FileSize" Type="int" Nullable="false" />
+          <Property Name="FileExtention" Type="nvarchar" MaxLength="50" />
+          <Property Name="FileData" Type="varbinary(max)" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LoadDate" Type="datetime" Nullable="false" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsReadOnly" Type="bit" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="FailReason" Type="nvarchar(max)" />
+          <Property Name="PersonFileTypeId" Type="int" />
+        </EntityType>
+        <EntityType Name="PersonFileType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="NameEng" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="PersonHighEducationInfo">
           <Key>
             <PropertyRef Name="PersonId" />
@@ -920,6 +970,7 @@
             
             
             
+            <PropertyRef Name="IsCommited" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -965,6 +1016,8 @@
           <Property Name="ProfileNameEng" Type="nvarchar" MaxLength="250" />
           <Property Name="StudyBasisNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyFormNameEng" Type="nvarchar" MaxLength="50" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
+          <Property Name="IsCommited" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_AG_Application_AG_Entry">
           <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="1" />
@@ -1775,6 +1828,9 @@
             <End Role="AG_ManualExam" EntitySet="AG_ManualExam" />
             <End Role="AG_Application" EntitySet="AG_Application" />
           </AssociationSet>
+          <EntitySet Name="ApplicationFile" EntityType="OnlinePriem2012Model.ApplicationFile" />
+          <EntitySet Name="PersonFile" EntityType="OnlinePriem2012Model.PersonFile" />
+          <EntitySet Name="PersonFileType" EntityType="OnlinePriem2012Model.PersonFileType" />
           </EntityContainer>
         <EntityType Name="PassportType">
           <Key>
@@ -1985,6 +2041,7 @@
             <PropertyRef Name="Barcode" />
             <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsImported" />
+            <PropertyRef Name="IsCommited" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="PersonId" Nullable="false" />
@@ -2030,6 +2087,8 @@
           <Property Type="String" Name="ProfileNameEng" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyBasisNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyFormNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Boolean" Name="IsCommited" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -3099,6 +3158,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ApplicationFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="String" Name="FileName" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="Int32" Name="FileSize" Nullable="false" />
+          <Property Type="String" Name="FileExtention" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="FileData" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="Comment" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LoadDate" Precision="3" Nullable="false" />
+          <Property Type="Boolean" Name="IsReadOnly" Nullable="false" />
+          <Property Type="String" Name="MimeType" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsApproved" />
+          <Property Type="String" Name="FailReason" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FileTypeId" Nullable="false" />
+          <Property Type="Guid" Name="CommitId" />
+        </EntityType>
+        <EntityType Name="PersonFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="PersonId" Nullable="false" />
+          <Property Type="String" Name="FileName" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="Int32" Name="FileSize" Nullable="false" />
+          <Property Type="String" Name="FileExtention" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="FileData" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="Comment" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LoadDate" Precision="3" Nullable="false" />
+          <Property Type="String" Name="MimeType" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsReadOnly" />
+          <Property Type="Boolean" Name="IsApproved" />
+          <Property Type="String" Name="FailReason" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="PersonFileTypeId" />
+        </EntityType>
+        <EntityType Name="PersonFileType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameEng" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3304,6 +3408,8 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="IsCommited" ColumnName="IsCommited" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
                 <ScalarProperty Name="StudyFormNameEng" ColumnName="StudyFormNameEng" />
                 <ScalarProperty Name="StudyBasisNameEng" ColumnName="StudyBasisNameEng" />
                 <ScalarProperty Name="ProfileNameEng" ColumnName="ProfileNameEng" />
@@ -3821,6 +3927,54 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationFile">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.ApplicationFile">
+              <MappingFragment StoreEntitySet="ApplicationFile">
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
+                <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="LoadDate" ColumnName="LoadDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
+                <ScalarProperty Name="FileExtention" ColumnName="FileExtention" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonFile">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonFile">
+              <MappingFragment StoreEntitySet="PersonFile">
+                <ScalarProperty Name="PersonFileTypeId" ColumnName="PersonFileTypeId" />
+                <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="LoadDate" ColumnName="LoadDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
+                <ScalarProperty Name="FileExtention" ColumnName="FileExtention" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonFileType">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonFileType">
+              <MappingFragment StoreEntitySet="PersonFileType">
+                <ScalarProperty Name="NameEng" ColumnName="NameEng" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -4113,6 +4267,9 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Entry_AG_Profile" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Application_AG_Entry" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Application_AG_ManualExam" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationFile" Width="1.5" PointX="4.3297511266217334" PointY="21.539086575405246" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.PersonFile" Width="1.5" PointX="10.223220408998067" PointY="9.1443029386663355" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.PersonFileType" Width="1.5" PointX="4.7779965497450885" PointY="26.636735123878687" />
         </Diagram>
     </Diagrams>
   </Designer>

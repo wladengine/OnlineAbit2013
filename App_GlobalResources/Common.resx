@@ -120,6 +120,9 @@
   <data name="AbiturientSpbuName" xml:space="preserve">
     <value>Приёмная комиссия</value>
   </data>
+  <data name="AG" xml:space="preserve">
+    <value>Академическая гимназия</value>
+  </data>
   <data name="ForeignAbiturient_PageHeaderAppendix" xml:space="preserve">
     <value>для иностранных граждан</value>
   </data>
@@ -177,8 +180,14 @@
   <data name="StudyBasis" xml:space="preserve">
     <value>Основа обучения</value>
   </data>
+  <data name="StudyBasisBudget" xml:space="preserve">
+    <value>Госбютжетная</value>
+  </data>
   <data name="StudyForm" xml:space="preserve">
     <value>Форма обучения</value>
+  </data>
+  <data name="StudyFormFullTime" xml:space="preserve">
+    <value>Очная</value>
   </data>
   <data name="txtShow" xml:space="preserve">
     <value>Просмотр</value>

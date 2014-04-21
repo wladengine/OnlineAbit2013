@@ -528,7 +528,7 @@ namespace OnlineAbit2013.Models
         public string Surname { get; set; }
         public string Name { get; set; }
         public string SecondName { get; set; }
-        public List<SimpleApplication> Applications { get; set; }
+        public List<SimpleApplicationPackage> Applications { get; set; }
         public List<AppendedFile> Files { get; set; }
         public List<PersonalMessage> Messages { get; set; }
     }
@@ -536,14 +536,22 @@ namespace OnlineAbit2013.Models
     public class SimpleApplication
     {
         public Guid Id { get; set; }
-        public string Priority { get; set; }
+        public int Priority { get; set; }
         public string Profession { get; set; }
         public string ObrazProgram { get; set; }
         public string Specialization { get; set; }
         public string StudyForm { get; set; }
         public string StudyBasis { get; set; }
+        public string StudyLevel { get; set; }
         public bool Enabled { get; set; }
     }
+    public class SimpleApplicationPackage
+    {
+        public Guid Id { get; set; }
+        public string StudyLevel { get; set; }
+        public string PriemType { get; set; }
+    }
+
     public enum ApprovalStatus
     {
         Approved,
@@ -630,6 +638,26 @@ namespace OnlineAbit2013.Models
 
         public string ComissionAddress { get; set; }
         public string ComissionYaCoord { get; set; }
+
+        public List<KeyValuePair<int, string>> FileType { get; set; }
+    }
+
+    public class ExtApplicationCommitModel : BaseModel
+    {
+        public Guid Id { get; set; }
+
+        public List<SimpleApplication> Applications { get; set; }
+        public List<AppendedFile> Files { get; set; }
+       
+        public bool Enabled { get; set; }
+        public string DateOfDisable { get; set; }
+
+        public string StudyLevelId { get; set; }
+        public int AbiturientTypeId { get; set; }
+
+        //перспективные
+        public bool IsApproved { get; set; }
+        public bool NotEnabled { get; set; }
 
         public List<KeyValuePair<int, string>> FileType { get; set; }
     }

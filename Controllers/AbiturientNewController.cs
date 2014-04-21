@@ -362,23 +362,21 @@ namespace OnlineAbit2013.Controllers
                          }).ToList();
 
                     model.PrivelegeInfo = new PersonPrivileges();
-
-                    query = "SELECT Olympiads.Id, OlympType.Name, Olympiads.DocumentSeries, Olympiads.DocumentNumber, Olympiads.DocumentDate" +
-                        " FROM Olympiads INNER JOIN OlympType ON OlympType.Id=Olympiads.OlympTypeId WHERE Olympiads.PersonId=@Id";
-                    DataTable _tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", PersonId } });
-                    model.PrivelegeInfo.pOlympiads =
-                        (from DataRow rw in _tbl.Rows
-                         select new OlympiadInformation()
-                         {
-                             Id = rw.Field<Guid>("Id"),
-                             OlympType = rw.Field<string>("Name"),
-                             DocumentSeries = rw.Field<string>("DocumentSeries"),
-                             DocumentNumber = rw.Field<string>("DocumentNumber"),
-                             DocumentDate = rw.Field<DateTime?>("DocumentDate").HasValue ? rw.Field<DateTime>("DocumentDate") : DateTime.Now
-                         }).ToList();
+                    model.PrivelegeInfo.pOlympiads = context.Olympiads.Where(x => x.PersonId == PersonId)
+                        .Select(x => new OlympiadInformation()
+                        {
+                            Id = x.Id,
+                            OlympType = x.OlympType.Name,
+                            OlympName = x.OlympName.Name,
+                            OlympSubject = x.OlympSubject.Name,
+                            OlympValue = x.OlympValue.Name,
+                            DocumentSeries = x.DocumentSeries,
+                            DocumentNumber = x.DocumentNumber,
+                            DocumentDate = x.DocumentDate.HasValue ? x.DocumentDate.Value : DateTime.Now
+                        }).ToList();
 
                     query = "SELECT Id, Name FROM OlympName";
-                    _tbl = Util.AbitDB.GetDataTable(query, null);
+                    DataTable _tbl = Util.AbitDB.GetDataTable(query, null);
                     model.PrivelegeInfo.OlympNameList =
                         (from DataRow rw in _tbl.Rows
                          select new SelectListItem()
@@ -847,7 +845,7 @@ namespace OnlineAbit2013.Controllers
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage.ToString() } });
 
                 SimplePerson model = new SimplePerson();
-                model.Applications = new List<SimpleApplication>();
+                model.Applications = new List<SimpleApplicationPackage>();
                 model.Files = new List<AppendedFile>();
 
                 string query = "SELECT Surname, Name, SecondName, RegistrationStage FROM PERSON WHERE Id=@Id";
@@ -860,39 +858,28 @@ namespace OnlineAbit2013.Controllers
                 model.Surname = Server.HtmlEncode(PersonInfo.Surname);
                 model.SecondName = Server.HtmlEncode(PersonInfo.SecondName);
 
-                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID && x.Enabled == true)
-                    .Select(x => new { x.Id, x.LicenseProgramName, x.ObrazProgramName, x.ProfileName, x.Priority, x.Enabled, x.StudyBasisName, x.StudyFormName });
+                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { x.CommitId, x.StudyLevelName, x.EntryType }).Distinct();
                 foreach (var app in Applications)
                 {
-                    model.Applications.Add(new SimpleApplication()
+                    model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.Id,
-                        Profession = app.LicenseProgramName,
-                        ObrazProgram = app.ObrazProgramName,
-                        Specialization = app.ProfileName,
-                        Priority = app.Priority.ToString(),
-                        Enabled = app.Enabled,
-                        StudyBasis = app.StudyBasisName,
-                        StudyForm = app.StudyFormName
+                        Id = app.CommitId.Value,
+                        PriemType = app.EntryType.HasValue ? app.EntryType.Value.ToString() : "",
+                        StudyLevel = app.StudyLevelName
                     });
                 }
 
-                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true)
-                    .Select(x => new { x.Id, LicenseProgramName = x.AG_Entry.AG_Program.Name, ObrazProgramName = x.AG_Entry.AG_EntryClass.Name, ProfileName = x.AG_Entry.AG_Profile.Name, 
-                        x.Priority, x.Enabled, StudyBasisName = "", StudyFormName = "" });
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { x.CommitId, StudyLevelName = "", EntryType = (int?)0 }).Distinct();
 
                 foreach (var app in Applications)
                 {
-                    model.Applications.Add(new SimpleApplication()
+                    model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.Id,
-                        Profession = app.LicenseProgramName,
-                        ObrazProgram = app.ObrazProgramName,
-                        Specialization = app.ProfileName,
-                        Priority = app.Priority.ToString(),
-                        Enabled = app.Enabled,
-                        StudyBasis = app.StudyBasisName,
-                        StudyForm = app.StudyFormName
+                        Id = app.CommitId.Value,
+                        PriemType = "",
+                        StudyLevel = "АГ"
                     });
                 }
 
@@ -1253,78 +1240,78 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("PriorityChanger");
         }
 
-        public ActionResult MotivateMail()
-        {
-            Guid PersonId;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return RedirectToAction("LogOn", "Account");
+        //public ActionResult MotivateMail()
+        //{
+        //    Guid PersonId;
+        //    if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+        //        return RedirectToAction("LogOn", "Account");
 
-            string query = "SELECT Id, Priority, Profession, ObrazProgram, Specialization FROM extApplicationAll WHERE PersonId=@PersonId AND Enabled=@Enabled";
-            Dictionary<string, object> dic = new Dictionary<string, object>()
-            {
-                {"@PersonId", PersonId },
-                {"@Enabled", true }
-            };
-            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-            var apps = (from DataRow rw in tbl.Rows
-                        select new SimpleApplication()
-                        {
-                            Id = rw.Field<Guid>("Id"),
-                            Priority = rw.Field<int>("Priority").ToString(),
-                            Profession = rw.Field<string>("Profession"),
-                            ObrazProgram = rw.Field<string>("ObrazProgram"),
-                            Specialization = rw.Field<string>("Specialization")
-                        }).ToList();
+        //    string query = "SELECT Id, Priority, Profession, ObrazProgram, Specialization FROM extApplicationAll WHERE PersonId=@PersonId AND Enabled=@Enabled";
+        //    Dictionary<string, object> dic = new Dictionary<string, object>()
+        //    {
+        //        {"@PersonId", PersonId },
+        //        {"@Enabled", true }
+        //    };
+        //    DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+        //    var apps = (from DataRow rw in tbl.Rows
+        //                select new SimpleApplication()
+        //                {
+        //                    Id = rw.Field<Guid>("Id"),
+        //                    Priority = rw.Field<int>("Priority"),
+        //                    Profession = rw.Field<string>("Profession"),
+        //                    ObrazProgram = rw.Field<string>("ObrazProgram"),
+        //                    Specialization = rw.Field<string>("Specialization")
+        //                }).ToList();
 
-            MotivateMailModel mdl = new MotivateMailModel()
-            {
-                Apps = apps
-            };
-            return View(mdl);
-        }
+        //    MotivateMailModel mdl = new MotivateMailModel()
+        //    {
+        //        Apps = apps
+        //    };
+        //    return View(mdl);
+        //}
 
-        public ActionResult PriorityChanger()
-        {
-            Guid PersonId;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return RedirectToAction("LogOn", "Account");
-            using (OnlinePriemEntities context = new OnlinePriemEntities())
-            {
-                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
-                if (PersonInfo == null)//а что это могло бы значить???
-                    return RedirectToAction("Index");
-                 
-                string query = "(SELECT [Application].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [Application] " +
-                    " INNER JOIN Entry ON [Application].EntryId=Entry.Id " +
-                    " WHERE PersonId=@PersonId AND Enabled=@Enabled " +
-                    " UNION " +
-                    " SELECT [ForeignApplication].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [ForeignApplication] " +
-                    " INNER JOIN Entry ON [ForeignApplication].EntryId=Entry.Id " +
-                    " WHERE PersonId=@PersonId AND Enabled=@Enabled) ORDER BY Priority ";
-                Dictionary<string, object> dic = new Dictionary<string, object>()
-                {
-                    {"@PersonId", PersonId },
-                    {"@Enabled", true }
-                };
-                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-                var apps = (from DataRow rw in tbl.Rows
-                            select new SimpleApplication()
-                            {
-                                Id = rw.Field<Guid>("Id"),
-                                Priority = rw.Field<int>("Priority").ToString(),
-                                Profession = rw.Field<string>("LicenseProgramName"),
-                                ObrazProgram = rw.Field<string>("ObrazProgramName"),
-                                Specialization = rw.Field<string>("ProfileName")
-                            }).ToList();
+        //public ActionResult PriorityChanger()
+        //{
+        //    Guid PersonId;
+        //    if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+        //        return RedirectToAction("LogOn", "Account");
+        //    using (OnlinePriemEntities context = new OnlinePriemEntities())
+        //    {
+        //        var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+        //        if (PersonInfo == null)//а что это могло бы значить???
+        //            return RedirectToAction("Index");
 
-                MotivateMailModel mdl = new MotivateMailModel()
-                {
-                    Apps = apps,
-                    UILanguage = Util.GetUILang(PersonId)
-                };
-                return View(mdl);
-            }
-        }
+        //        string query = "(SELECT [Application].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [Application] " +
+        //            " INNER JOIN Entry ON [Application].EntryId=Entry.Id " +
+        //            " WHERE PersonId=@PersonId AND Enabled=@Enabled " +
+        //            " UNION " +
+        //            " SELECT [ForeignApplication].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [ForeignApplication] " +
+        //            " INNER JOIN Entry ON [ForeignApplication].EntryId=Entry.Id " +
+        //            " WHERE PersonId=@PersonId AND Enabled=@Enabled) ORDER BY Priority ";
+        //        Dictionary<string, object> dic = new Dictionary<string, object>()
+        //        {
+        //            {"@PersonId", PersonId },
+        //            {"@Enabled", true }
+        //        };
+        //        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+        //        var apps = (from DataRow rw in tbl.Rows
+        //                    select new SimpleApplication()
+        //                    {
+        //                        Id = rw.Field<Guid>("Id"),
+        //                        Priority = rw.Field<int>("Priority").ToString(),
+        //                        Profession = rw.Field<string>("LicenseProgramName"),
+        //                        ObrazProgram = rw.Field<string>("ObrazProgramName"),
+        //                        Specialization = rw.Field<string>("ProfileName")
+        //                    }).ToList();
+
+        //        MotivateMailModel mdl = new MotivateMailModel()
+        //        {
+        //            Apps = apps,
+        //            UILanguage = Util.GetUILang(PersonId)
+        //        };
+        //        return View(mdl);
+        //    }
+        //}
 
         [HttpPost]
         public ActionResult ChangePriority(MotivateMailModel model)

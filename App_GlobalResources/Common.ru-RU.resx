@@ -198,4 +198,13 @@
   <data name="StartPageNav" xml:space="preserve">
     <value>Выбор формата поступления</value>
   </data>
+  <data name="StudyBasisBudget" xml:space="preserve">
+    <value>Госбютжетная</value>
+  </data>
+  <data name="StudyFormFullTime" xml:space="preserve">
+    <value>Очная</value>
+  </data>
+  <data name="AG" xml:space="preserve">
+    <value>Академическая гимназия</value>
+  </data>
 </root>

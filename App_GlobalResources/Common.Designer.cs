@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Академическая гимназия.
+        /// </summary>
+        internal static string AG {
+            get {
+                return ResourceManager.GetString("AG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to для иностранных граждан.
         /// </summary>
         internal static string ForeignAbiturient_PageHeaderAppendix {
@@ -241,11 +250,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Госбютжетная.
+        /// </summary>
+        internal static string StudyBasisBudget {
+            get {
+                return ResourceManager.GetString("StudyBasisBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Форма обучения.
         /// </summary>
         internal static string StudyForm {
             get {
                 return ResourceManager.GetString("StudyForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Очная.
+        /// </summary>
+        internal static string StudyFormFullTime {
+            get {
+                return ResourceManager.GetString("StudyFormFullTime", resourceCulture);
             }
         }
         

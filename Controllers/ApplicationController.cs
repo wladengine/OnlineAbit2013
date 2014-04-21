@@ -20,129 +20,79 @@ namespace OnlineAbit2013.Controllers
             if (!Util.CheckAuthCookies(Request.Cookies, out personId))
                 return RedirectToAction("LogOn", "Account");
 
-            Guid appId = new Guid();
-            if (!Guid.TryParse(id, out appId))
+            Guid CommitId = new Guid();
+            if (!Guid.TryParse(id, out CommitId))
                 return RedirectToAction("Main", "Abiturient");
 
-            Dictionary<string, object> prms = new Dictionary<string, object>()
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                { "@PersonId", personId },
-                { "@Id", appId }
-            };
+                var tblAppsMain = context.Application.Where(x => x.CommitId == CommitId && x.IsCommited == true).Select(x => new SimpleApplication()
+                    {
+                        Id = x.Id,
+                        Profession = x.Entry.LicenseProgramName,
+                        ObrazProgram = x.Entry.ObrazProgramName,
+                        Specialization = x.Entry.ProfileName,
+                        StudyForm = x.Entry.StudyFormName,
+                        StudyBasis = x.Entry.StudyBasisName,
+                        StudyLevel = x.Entry.StudyLevelName,
+                        Priority = x.Priority
+                    }).ToList();
 
-            DataTable tbl =
-                Util.AbitDB.GetDataTable("SELECT [Application].Id, LicenseProgramName, Priority, ObrazProgramName, ProfileName, [Entry].StudyFormName, " +
-                " [Entry].StudyBasisName, Enabled, DateOfDisable, EntryType, Entry.StudyLevelId, Comission.Address AS ComAddress, Comission.YaMapCoord, [Application].IsImported, Person.AbiturientTypeId " +
-                " FROM [Application] INNER JOIN Entry ON [Application].EntryId = Entry.Id INNER JOIN Person ON Person.Id = [Application].PersonId " +
-                " LEFT JOIN ComissionInEntry ON ComissionInEntry.EntryId = [Application].EntryId " +
-                " LEFT JOIN Comission ON Comission.Id = ComissionInEntry.ComissionId " +
-                " WHERE PersonId=@PersonId AND [Application].Id=@Id", prms);
+                var tblAppsAG = context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true).Select(x => new SimpleApplication()
+                {
+                    Id = x.Id,
+                    Profession = x.AG_Entry.AG_Program.Name,
+                    ObrazProgram = x.AG_Entry.AG_EntryClass.Name,
+                    Specialization = x.AG_Entry.AG_Profile.Name,
+                    StudyForm = Resources.Common.StudyFormFullTime,
+                    StudyBasis = Resources.Common.StudyBasisBudget,
+                    StudyLevel = Resources.Common.AG,
+                    Priority = x.Priority
+                }).ToList();
 
-            if (tbl.Rows.Count == 0)
-                return RedirectToAction("Main", "Abiturient");
+                var appList = tblAppsMain.Union(tblAppsAG).ToList();
+                var lFiles =
+                    context.ApplicationFile.Where(x => x.CommitId == CommitId).Select
+                    (
+                        x => new AppendedFile()
+                        {
+                            Id = x.Id,
+                            FileName = x.FileName,
+                            FileSize = x.FileSize,
+                            Comment = x.Comment,
+                            IsShared = false,
+                            IsApproved = x.IsApproved.HasValue ?
+                                x.IsApproved.Value ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
+                        }
+                    ).ToList();
 
-            DataRow rw = tbl.Rows[0];
-            var app = new
-            {
-                Id = rw.Field<Guid>("Id"),
-                Profession = rw.Field<string>("LicenseProgramName"),
-                Priority = rw.Field<int>("Priority"),
-                ObrazProgram = rw.Field<string>("ObrazProgramName"),
-                Specialization = rw.Field<string>("ProfileName"),
-                StudyForm = rw.Field<string>("StudyFormName"),
-                StudyBasis = rw.Field<string>("StudyBasisName"),
-                Enabled = rw.Field<bool?>("Enabled"),
-                DateOfDisable = rw.Field<DateTime?>("DateOfDisable"),
-                EntryTypeId = rw.Field<int?>("StudyLevelId") == 17 ? 2 : 1,
-                ComissionAddress = rw.Field<string>("ComAddress"),
-                ComissionYaCoord = rw.Field<string>("YaMapCoord"),
-                AbiturientTypeId = rw.Field<int?>("AbiturientTypeId")
-            };
+                var lSharedFiles =
+                    context.PersonFile.Where(x => x.PersonId == personId).Select
+                    (
+                        x => new AppendedFile()
+                        {
+                            Id = x.Id,
+                            FileName = x.FileName,
+                            FileSize = x.FileSize,
+                            Comment = x.Comment,
+                            IsShared = true,
+                            IsApproved = x.IsApproved.HasValue ?
+                                x.IsApproved.Value ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
+                        }
+                    ).ToList();
 
-            string query = "SELECT DISTINCT Exam FROM AbitMark INNER JOIN Student ON Student.Id = AbitMark.AbiturientId WHERE " +
-                "Profession=@Profession AND ObrazProgram=@ObrazProgram AND Specialization=@Specialization AND StudyBasisId=@StudyBasisId AND StudyFormId=@StudyFormId";
+                var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
 
-            //prms.Clear();
-            //prms.Add("@Profession", app.Profession);
-            //prms.Add("@ObrazProgram", app.ObrazProgram);
-            //prms.Add("@Specialization", app.Specialization == null ? "" : app.Specialization);
-            //prms.Add("@StudyBasisId", app.StudyBasisId);
-            //prms.Add("@StudyFormId", app.StudyFormId);
+                ExtApplicationCommitModel model = new ExtApplicationCommitModel()
+                {
+                    Id = CommitId,
+                    Applications = appList,
+                    Files = AllFiles,
+                    StudyLevelId = appList.First().StudyLevel,
+                };
 
-            //tbl = Util.StudDB.GetDataTable(query, prms);
-
-            //var exams = (from DataRow row in tbl.Rows
-            //             select row.Field<string>("Exam")
-            //             ).ToList();
-
-
-            query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM ApplicationFile WHERE ApplicationId=@AppId";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
-            var lFiles =
-                (from DataRow row in tbl.Rows
-                 select new AppendedFile()
-                 {
-                     Id = row.Field<Guid>("Id"),
-                     FileName = row.Field<string>("FileName"),
-                     FileSize = row.Field<int>("FileSize"),
-                     Comment = row.Field<string>("Comment"),
-                     IsShared = false,
-                     IsApproved = row.Field<bool?>("IsApproved").HasValue ?
-                        row.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
-                 }).ToList();
-
-            query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM PersonFile WHERE PersonId=@PersonId";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", personId } });
-            var lSharedFiles =
-                (from DataRow row in tbl.Rows
-                 select new AppendedFile()
-                 {
-                     Id = row.Field<Guid>("Id"),
-                     FileName = row.Field<string>("FileName"),
-                     FileSize = row.Field<int>("FileSize"),
-                     Comment = row.Field<string>("Comment"),
-                     IsShared = true,
-                     IsApproved = row.Field<bool?>("IsApproved").HasValue ?
-                        row.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
-                 }).ToList();
-
-            var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
-
-            query = "SELECT Id, MailText FROM MotivationMail WHERE ApplicationId=@AppId";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", app.Id } });
-
-            string motivMail = "";
-            Guid motivId = Guid.Empty;
-            if (tbl.Rows.Count > 0)
-            {
-                motivMail = tbl.Rows[0].Field<string>("MailText");
-                motivId = tbl.Rows[0].Field<Guid>("Id");
+                return View(model);
             }
-
-
-
-            ExtApplicationModel model = new ExtApplicationModel()
-            {
-                Id = app.Id,
-                Priority = app.Priority.ToString(),
-                Profession = app.Profession,
-                ObrazProgram = app.ObrazProgram,
-                Specialization = app.Specialization,
-                StudyForm = app.StudyForm,
-                StudyBasis = app.StudyBasis,
-                Enabled = app.Enabled.HasValue ? app.Enabled.Value : false,
-                Exams = new List<string>(),
-                Files = AllFiles,
-                DateOfDisable = app.DateOfDisable.HasValue ? app.DateOfDisable.Value.ToString("dd.MM.yyyy HH:mm:ss") : "",
-                MotivateEditText = motivMail,
-                MotivateEditId = motivId,
-                EntryTypeId = app.EntryTypeId,
-                ComissionAddress = app.ComissionAddress,
-                ComissionYaCoord = app.ComissionYaCoord,
-                AbiturientTypeId = app.AbiturientTypeId ?? 1
-            };
-
-            return View(model);
         }
 
         [HttpPost]
@@ -470,49 +420,6 @@ namespace OnlineAbit2013.Controllers
             return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
         }
 
-        //public ActionResult MotivatePost()
-        //{
-        //    string appid = Request.Form["AppId"];
-        //    string mailid = Request.Form["MailId"];
-        //    string MailText = Request.Form["MailText"];
-
-        //    bool isNewApp = string.IsNullOrEmpty(mailid) ? true : false;
-
-        //    Guid ApplicationId;
-        //    Guid MailId;
-        //    if (!Guid.TryParse(appid, out ApplicationId))
-        //        return RedirectToAction("Main", "Abiturient");
-        //    if (string.IsNullOrEmpty(MailText))
-        //        return RedirectToAction("Index", new RouteValueDictionary() { { "id", appid } });
-
-        //    Guid.TryParse(mailid, out MailId);
-        //    if (MailId == Guid.Empty)//some false conditions
-        //    {
-        //        isNewApp = true;
-        //        MailId = Guid.NewGuid();
-        //    }
-
-        //    string query = "";
-        //    Dictionary<string, object> dic = new Dictionary<string, object>();
-        //    if (isNewApp)
-        //    {
-        //        query = "INSERT INTO MotivationMail (Id, ApplicationId, MailText) VALUES (@Id, @ApplicationId, @MailText)";
-        //        dic.Add("@Id", MailId);
-        //        dic.Add("@ApplicationId", ApplicationId);
-        //        dic.Add("@MailText", MailText);
-        //    }
-        //    else
-        //    {
-        //        query = "UPDATE MotivationMail SET MailText=@MailText WHERE ApplicationId=@ApplicationId";
-        //        dic.Add("@Id", MailId);
-        //        dic.Add("@ApplicationId", ApplicationId);
-        //        dic.Add("@MailText", MailText);
-        //    }
-        //    Util.AbitDB.ExecuteQuery(query, dic);
-        //    return RedirectToAction("Index", new RouteValueDictionary() { { "id", appid } });
-        //}
-
-        //ajax
         public JsonResult ChangePriority(string id, string pr)
         {
             Guid PersonId;
@@ -533,16 +440,6 @@ namespace OnlineAbit2013.Controllers
             {
                 return Json(new { IsOk = false, ErrorMessage = "Ошибка при обновлении данных" });
             }
-            //using (AbitDB db = new AbitDB())
-            //{
-            //    var app = db.Application.Where(x => x.Id == ApplicationId).FirstOrDefault();
-            //    if (app == null)
-            //        return Json(new { IsOk = false, ErrorMessage = "Ошибка идентификатора заявления" });
-
-            //    app.Priority = pr;
-            //    db.SaveChanges();
-            //}
-
         }
 
         [HttpPost]

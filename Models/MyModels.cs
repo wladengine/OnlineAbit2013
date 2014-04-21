@@ -6,7 +6,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+ 
 namespace OnlineAbit2013.Models
 {
     public class BaseModel
@@ -577,6 +577,9 @@ namespace OnlineAbit2013.Models
     {
         public List<SelectListItem> StudyForms { get; set; }
         public int EntryType { get; set; }
+
+        public int ExitClassId { get; set; }
+        public int VuzAddType { get; set; }
         public string StudyFormId { get; set; }
 
         public List<SelectListItem> StudyBasises { get; set; }

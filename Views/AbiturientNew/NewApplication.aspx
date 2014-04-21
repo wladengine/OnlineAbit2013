@@ -63,30 +63,57 @@
 </script>
  
     <%= Html.ValidationSummary() %>
+    <%=Model.EntryType %>
+    <% if (Model.EntryType == 1)
+       { %><%=Model.ExitClassId%> <% } %>
+     <% if (Model.EntryType == 2) { %> 
+     <%=Model.VuzAddType%> <%} %>
     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
     <input name="val_h" id="val_h" type="hidden" value="1" />
-    <!--ag-->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
-    <!-- 1 курс -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
-    <!-- 1 курс иностр граждане -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit2()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType2") %>" /><br /><br />
-    <!-- Перевод РФ-спбгу -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br />
-    <!-- Перевод иностр-спбгу -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit4()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType4") %>" /><br /><br />
-    <!-- восстановление -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit5()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType5") %>" /><br /><br />
+    <% if (Model.EntryType == 1)
+       { %>
+       <% if (Model.ExitClassId < 10)
+          { %>
+            <!--ag-->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
+       <% } %>
+       <% if (Model.ExitClassId == 11)
+              { %> 
+            <!-- 1 курс -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
+          <% } %>
+            <!-- СПО --> 
+            <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
+            <!-- 1 курс иностр граждане -->
+            <!--<input type="button" class="button button-blue" name="Val" onclick="Submit2()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType2") %>" /><br /><br />-->
+    <%}
+       else
+       {%>
+       <% if (Model.VuzAddType == 1) // поступление
+          { %>
+            <!-- 1 курс -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
+       <% } else if (Model.VuzAddType == 2) // перевод
+          { %>
+            <!-- Перевод РФ-спбгу -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br />
+            <!-- Перевод иностр-спбгу -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit4()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType4") %>" /><br /><br />
+       <%}
+          else if (Model.VuzAddType == 3) // восстановление
+          {%>
+            <!-- восстановление -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit5()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType5") %>" /><br /><br />
+       <% } %>
     <!-- Перевод с платной на бюджет -->
     <input type="button" class="button button-blue" name="Val" onclick="Submit6()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType6") %>" /><br /><br />
     <!-- смена образ программы -->
     <input type="button" class="button button-blue" name="Val" onclick="Submit7()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType7") %>" /><br /><br />
-    <!-- СПО --> 
-    <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
     <!-- аспирантура рф -->
     <input type="button" class="button button-blue" name="Val" onclick="Submit10()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType10") %>" /><br /><br />
-    <!-- аспирантура иностр -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />
+   <!-- аспирантура иностр -->
+    <!-- <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />-->
+<%} %>
 </form>
  
 </asp:Content>

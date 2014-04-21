@@ -13,7 +13,6 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-
 using System.Net.Mail;
 
 namespace OnlineAbit2013.Controllers
@@ -59,7 +58,7 @@ namespace OnlineAbit2013.Controllers
                 query = "INSERT INTO Person(Id, UserId, AbiturientTypeId) VALUES (@Id, @Id, @Type)";
                 Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", UserId }, { "@Type", res} });
             }
-
+            
             switch (res)
             {
                 case 1: { return RedirectToAction("Index"); }
@@ -996,9 +995,27 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (iScTypeId.HasValue)
                 {
                     if (iScTypeId.Value != 4)
-                        model.EntryType = 1;//1 курс бак-спец
+                    {
+                        model.EntryType = 1;//1 курс бак-спец, АГ, СПО
+                        int? iScExClassId = (int?)Util.AbitDB.GetValue("SELECT SchoolExitClass.IntValue FROM PersonEducationDocument INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                        if (iScExClassId.HasValue)
+                        {
+                            model.ExitClassId = (int)iScExClassId;
+                        }
+                        /*else 
+                            return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });*/
+                    }
                     else
+                    {
                         model.EntryType = 2;
+                        int? iScExClassId = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                        if (iScExClassId.HasValue)
+                        {
+                            model.VuzAddType = (int)iScExClassId;
+                        }
+                        else
+                            return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });
+                    }
                 }
                 else
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });

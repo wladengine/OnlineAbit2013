@@ -557,8 +557,8 @@ namespace OnlineAbit2013.Controllers
                         Profession = lang == "en" ? app.LicenseProgramNameEng : app.LicenseProgramName,
                         ObrazProgram = lang == "en" ? app.ObrazProgramNameEng : app.ObrazProgramName,
                         Specialization = lang == "en" ? app.ProfileNameEng : app.ProfileName,
-                        Priority = app.Priority.HasValue ? app.Priority.Value.ToString() : "1",
-                        Enabled = app.Enabled ?? true,
+                        Priority = app.Priority.ToString(),
+                        Enabled = app.Enabled,
                         StudyBasis = lang == "en" ? app.StudyBasisNameEng : app.StudyBasisName,
                         StudyForm = lang == "en" ? app.StudyFormNameEng : app.StudyFormName
                     });

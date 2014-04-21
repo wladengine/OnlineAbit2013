@@ -204,4 +204,13 @@
   <data name="NewApp_NotOpenedEntry" xml:space="preserve">
     <value>Приём заявлений на данное направление ещё не открыт.</value>
   </data>
+  <data name="NewApp_NoFreeEntries" xml:space="preserve">
+    <value>Нет доступных направлений для подачи заявления</value>
+  </data>
+  <data name="NewApp_FailDeleteApp_IsCommited" xml:space="preserve">
+    <value>Нельзя удалить уже подтверждённое заявление!</value>
+  </data>
+  <data name="NewApp_DeleteApp_Fail" xml:space="preserve">
+    <value>Ошибка при удалении заявления</value>
+  </data>
 </root>

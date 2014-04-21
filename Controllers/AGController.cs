@@ -1220,7 +1220,7 @@ namespace OnlineAbit2013.Controllers
                        });
             return Json(new { IsOk = true, Vals = res });
         }
-        public JsonResult CheckProfession(string classid, string programid)
+        public JsonResult CheckProfession(string classid, string programid, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -1255,101 +1255,78 @@ namespace OnlineAbit2013.Controllers
             else
                 return Json(new { IsOk = true, Blocked = true });
         }
-        public JsonResult GetSpecializations(string classid, string programid)
+        public JsonResult GetSpecializations(string classid, string programid, string CommitId)
         {
             Guid PersonId;
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
 
-            int iAG_EntryClassId = 0;
+            int iEntryClassId = 0;
             int iProgramId = 0;
 
-            if (!int.TryParse(classid, out iAG_EntryClassId))
+            if (!int.TryParse(classid, out iEntryClassId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
             if (!int.TryParse(programid, out iProgramId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
-            string query = "SELECT COUNT(Id) FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True'";
-            int cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
-            if (cnt >= 2)
-                return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже имеется 2 активных заявления" });
-
-            query = "SELECT COUNT(Id) FROM [AG_qAbiturient] WHERE PersonId=@PersonId AND ProgramId<>@ProgramId AND Enabled='True'";
-            cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@ProgramId", iProgramId } });
-            if (cnt > 0)
-                return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже подано заявление на другое направление" });
-
-            query = "SELECT COUNT([AG_Application].Id) FROM [AG_Application] INNER JOIN AG_Entry ON AG_Entry.Id=[AG_Application].EntryId WHERE PersonId=@PersonId AND Enabled='True' AND ProgramId=@ProgramId";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("@PersonId", PersonId);
-            dic.Add("@ProgramId", iProgramId);
-            cnt = (int)Util.AbitDB.GetValue(query, dic);
-            if (cnt > 0)
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                query = @"SELECT ProgramId, ProfileId, ISNULL(HasManualExams, 'False') AS HasManualExams
-from [AG_Entry]
-WHERE ProgramId=@ProgramId AND EntryClassId=@EntryClassId
-EXCEPT
-SELECT ProgramId, ProfileId, ISNULL(HasManualExams, 'False') AS HasManualExams
-FROM [AG_Application] INNER JOIN [AG_Entry] ON [AG_Entry].Id=[AG_Application].EntryId
-WHERE PersonId = @PersonId AND [AG_Application].[Enabled]='True'
-AND ProgramId=@ProgramId AND EntryClassId=@EntryClassId";
-                dic.Add("@EntryClassId", iAG_EntryClassId);
                 
-                DataTable _tbl = Util.AbitDB.GetDataTable(query, dic);
-                if (_tbl.Rows.Count == 0)
-                    return Json(new { IsOk = false, ErrorMessage = "Заявление уже подавалось" });
-            }
+                int cnt = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Count();
+                if (cnt >= 2)
+                    return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже имеется 2 активных заявления" });
 
-            query = @"SELECT ProfileId, ProfileName FROM AG_qEntry WHERE EntryClassId=@EntryClassId AND ProgramId=@ProgramId AND ProfileId IS NOT NULL";
-            dic.Clear();
-            dic.Add("@EntryClassId", iAG_EntryClassId);
-            dic.Add("@ProgramId", iProgramId);
-            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-            if (tbl.Rows.Count > 1)
-            {
-                var vals =
-                    (from DataRow rw in tbl.Rows
-                     select new
-                     {
-                         Id = rw.Field<int>("ProfileId"),
-                         Name = rw.Field<string>("ProfileName")
-                     });
 
-                return Json(new { IsOk = true, Data = vals.ToList() });
-            }
-            else
-            {
-                query = "SELECT ISNULL(HasManualExams, 'False') AS HasManualExams FROM AG_Entry WHERE EntryClassId=@EntryClassId AND ProgramId=@ProgramId";
-                dic.Clear();
-                dic.Add("@EntryClassId", iAG_EntryClassId);
-                dic.Add("@ProgramId", iProgramId);
-                tbl = Util.AbitDB.GetDataTable(query, dic);
+                cnt = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.AG_Entry.ProgramId != iProgramId).Count();
+                if (cnt > 0)
+                    return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже подано заявление на другое направление" });
 
-                bool HasProfileExams = (from DataRow rw in tbl.Rows
-                            select rw.Field<bool>("HasManualExams")).FirstOrDefault();
+                cnt = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.AG_Entry.ProgramId == iProgramId).Count();
+                if (cnt > 0)
+                {
+                    var lstCheckUsed = (from Ent in context.AG_Entry
+                              where Ent.ProgramId == iProgramId && Ent.EntryClassId == iEntryClassId
+                              select new { Ent.ProgramId, Ent.ProfileId, Ent.HasManualExams }).Except
+                              (
+                              from App in context.AG_Application
+                              where App.AG_Entry.ProgramId == iProgramId && App.AG_Entry.EntryClassId == iEntryClassId
+                              && App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
+                              select new { App.AG_Entry.ProgramId, App.AG_Entry.ProfileId, App.AG_Entry.HasManualExams }
+                              ).ToList();
+                    if (lstCheckUsed.Count == 0)
+                        return Json(new { IsOk = false, ErrorMessage = "Заявление уже подавалось" });
+                }
 
-                query = @"SELECT AG_ManualExam.Id, AG_ManualExam.Name
-  FROM [AG_Entry]
-  INNER JOIN AG_ManualExamInAG_Entry ON AG_ManualExamInAG_Entry.EntryId = [AG_Entry].Id
-  INNER JOIN AG_ManualExam ON AG_ManualExam.Id = AG_ManualExamInAG_Entry.ExamId
-  WHERE EntryClassId=@EntryClassId AND ProgramId=@ProgramId";
+                var Profs = context.AG_Entry.Where(x => x.EntryClassId == iEntryClassId && x.ProgramId == iProgramId && x.ProfileId != null)
+                    .Select(x => new { Id = x.ProfileId, Name = x.AG_Profile.Name }).ToList();
+                if (Profs.Count > 1)
+                    return Json(new { IsOk = true, Data = Profs });
+                else
+                {
+                    bool HasProfileExams = context.AG_Entry.Where(x => x.EntryClassId == iEntryClassId && x.ProgramId == iProgramId).Select(x => x.HasManualExams).FirstOrDefault();
 
-                tbl = Util.AbitDB.GetDataTable(query, dic);
-                var Exams = (from DataRow rw in tbl.Rows
-                            select new 
-                            {
-                                Value = rw.Field<int>("Id").ToString(),
-                                Name = rw.Field<string>("Name")
-                            }).DefaultIfEmpty();
-                return Json(new { IsOk = true, HasProfileExams = HasProfileExams, Exams = Exams });
+                    var Exams = (from Ent in context.AG_Entry
+                                 join ManualExamsInEntry in context.AG_ManualExamInAG_Entry on Ent.Id equals ManualExamsInEntry.EntryId
+                                 join ManualExam in context.AG_ManualExam on ManualExamsInEntry.ExamId equals ManualExam.Id
+                                 where Ent.EntryClassId == iEntryClassId && Ent.ProgramId == iProgramId
+                                 select new { Value = ManualExam.Id, Name = ManualExam.Name }).DefaultIfEmpty();
+                        
+                    return Json(new { IsOk = true, HasProfileExams = HasProfileExams, Exams = Exams });
+                }
             }
         }
-        public JsonResult CheckSpecializations(string classid, string programid, string specid)
+        public JsonResult CheckSpecializations(string classid, string programid, string specid, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return Json(new { IsOk = false, ErrorMessage = "Пользователь не авторизирован" });
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
             int iEntryClassId = 0;
             int iProgramId = 0;
@@ -1359,27 +1336,19 @@ AND ProgramId=@ProgramId AND EntryClassId=@EntryClassId";
             int.TryParse(programid, out iProgramId);
             int.TryParse(specid, out iProfileId);
 
-            string query = "SELECT COUNT(Id) FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True'";
-            int cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId" , PersonId } });
-            if (cnt >= 2)
-                return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже имеется 2 активных заявления" });
-
-            query = @"SELECT COUNT([AG_Application].Id) FROM [AG_Application] INNER JOIN AG_qEntry ON AG_qEntry.Id = [AG_Application].EntryId 
-WHERE [AG_Application].PersonId=@PersonId AND Enabled='True' AND EntryClassId=@EntryClassId AND ProgramId=@ProgramId AND ProfileId=@ProfileId";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("@PersonId", PersonId);
-            dic.Add("@EntryClassId", iEntryClassId);
-            dic.Add("@ProgramId", iProgramId);
-            dic.Add("@ProfileId", iProfileId);
-
-            cnt = (int)Util.AbitDB.GetValue(query, dic);
-            if (cnt > 0)
-                return Json(new { IsOk = false, ErrorMessage = "Заявление уже подавалось" });
-            else
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                query = "SELECT ISNULL(HasManualExams, 'False') AS HasManualExams FROM AG_Entry WHERE EntryClassId=@EntryClassId AND ProgramId=@ProgramId " +
-                    "AND ProfileId=@ProfileId";
-                return Json(new { IsOk = true });
+                int cnt = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Count();
+                if (cnt >= 2)
+                    return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже имеется 2 активных заявления" });
+
+                cnt = context.AG_Application
+                    .Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.AG_Entry.EntryClassId == iEntryClassId 
+                        && x.AG_Entry.ProgramId == iProgramId && x.AG_Entry.ProfileId == iProfileId).Count();
+                if (cnt > 0)
+                    return Json(new { IsOk = false, ErrorMessage = "Заявление уже подавалось" });
+                else
+                    return Json(new { IsOk = true });
             }
         }
 

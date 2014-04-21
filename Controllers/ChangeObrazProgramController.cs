@@ -486,8 +486,8 @@ namespace OnlineAbit2013.Controllers
                         Profession = app.LicenseProgramName,
                         ObrazProgram = app.ObrazProgramName,
                         Specialization = app.ProfileName,
-                        Priority = app.Priority.HasValue ? app.Priority.Value.ToString() : "1",
-                        Enabled = app.Enabled ?? true,
+                        Priority = app.Priority.ToString(),
+                        Enabled = app.Enabled,
                         StudyBasis = app.StudyBasisName,
                         StudyForm = app.StudyFormName
                     });

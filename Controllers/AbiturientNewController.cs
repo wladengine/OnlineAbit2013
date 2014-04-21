@@ -860,13 +860,8 @@ namespace OnlineAbit2013.Controllers
                 model.Surname = Server.HtmlEncode(PersonInfo.Surname);
                 model.SecondName = Server.HtmlEncode(PersonInfo.SecondName);
 
-                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID);
-
-                query = "SELECT [Application].Id, LicenseProgramName, ObrazProgramName, ProfileName, Priority, Enabled, StudyFormName, StudyBasisName FROM [Application] " +
-                    "INNER JOIN Entry ON [Application].EntryId=Entry.Id WHERE PersonId=@PersonId";
-                dic.Clear();
-                dic.Add("@PersonId", PersonID);
-                tbl = Util.AbitDB.GetDataTable(query, dic);
+                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID && x.Enabled == true)
+                    .Select(x => new { x.Id, x.LicenseProgramName, x.ObrazProgramName, x.ProfileName, x.Priority, x.Enabled, x.StudyBasisName, x.StudyFormName });
                 foreach (var app in Applications)
                 {
                     model.Applications.Add(new SimpleApplication()
@@ -875,8 +870,27 @@ namespace OnlineAbit2013.Controllers
                         Profession = app.LicenseProgramName,
                         ObrazProgram = app.ObrazProgramName,
                         Specialization = app.ProfileName,
-                        Priority = app.Priority.HasValue ? app.Priority.Value.ToString() : "1",
-                        Enabled = app.Enabled ?? true,
+                        Priority = app.Priority.ToString(),
+                        Enabled = app.Enabled,
+                        StudyBasis = app.StudyBasisName,
+                        StudyForm = app.StudyFormName
+                    });
+                }
+
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true)
+                    .Select(x => new { x.Id, LicenseProgramName = x.AG_Entry.AG_Program.Name, ObrazProgramName = x.AG_Entry.AG_EntryClass.Name, ProfileName = x.AG_Entry.AG_Profile.Name, 
+                        x.Priority, x.Enabled, StudyBasisName = "", StudyFormName = "" });
+
+                foreach (var app in Applications)
+                {
+                    model.Applications.Add(new SimpleApplication()
+                    {
+                        Id = app.Id,
+                        Profession = app.LicenseProgramName,
+                        ObrazProgram = app.ObrazProgramName,
+                        Specialization = app.ProfileName,
+                        Priority = app.Priority.ToString(),
+                        Enabled = app.Enabled,
                         StudyBasis = app.StudyBasisName,
                         StudyForm = app.StudyFormName
                     });
@@ -885,7 +899,7 @@ namespace OnlineAbit2013.Controllers
                 model.Messages = Util.GetNewPersonalMessages(PersonID);
                 if (model.Applications.Count == 0)
                 {
-                    model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/Abiturient/NewApplication\">\"Подать новое заявление\"</a>" });
+                    model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/AbiturientNew/NewApplication\">\"Подать новое заявление\"</a>" });
                 }
 
                 return View("Main", model);
@@ -912,10 +926,7 @@ namespace OnlineAbit2013.Controllers
                   
                 AG_ApplicationModel model = new AG_ApplicationModel();
 
-                //
-
-                
-
+                model.CommitId = Guid.NewGuid().ToString("N");
                 int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
@@ -1214,106 +1225,32 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
                 return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
 
-            string profession = Request.Form["Professions"];
-            string Entryclass = Request.Form["EntryClassId"];
-            bool needHostel = string.IsNullOrEmpty(Request.Form["NeedHostel"]) ? false : true;
-            string profileid = Request.Form["Profile"];
-            string manualExam = Request.Form["Exam"];
+            string sCommitId = Request.Form["CommitId"];
+            Guid CommitId;
+            if (!Guid.TryParse(sCommitId, out CommitId))
+                return Json(Resources.ServerMessages.IncorrectGUID);
 
-            int iEntryClassId = Util.ParseSafe(Entryclass);
-            int iProfession = Util.ParseSafe(profession);
-            int iProfileId = Util.ParseSafe(profileid);
-            int iManualExamId = Util.ParseSafe(manualExam);
-
-            //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
-            string query = "SELECT Id, DateOfStartEntry, DateOfStopEntry FROM AG_Entry WHERE ProgramId=@ProgramId AND EntryClassId=@EntryClassId ";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("@ProgramId", iProfession);
-            dic.Add("@EntryClassId", iEntryClassId);
-            if (iProfileId != 0)
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                query += " AND ProfileId=@ProfileId ";
-                dic.Add("@ProfileId", iProfileId);
+                var Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
+                foreach (var AppId in Ids)
+                {
+                    var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
+                    App.IsCommited = true;
+                }
+                context.SaveChanges();
+
+                //всё, что вне коммита - удаляем
+                Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == false).Select(x => x.Id).ToList();
+                foreach (var AppId in Ids)
+                {
+                    var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
+                    context.AG_Application.DeleteObject(App);
+                }
+                context.SaveChanges();
             }
-            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-            if (tbl.Rows.Count > 1)
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Неоднозначный выбор учебного плана (" + tbl.Rows.Count + ")" } });
-            if (tbl.Rows.Count == 0)
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Не найден учебный план" } });
 
-            Guid EntryId = tbl.Rows[0].Field<Guid>("Id");
-            DateTime? timeOfStart = tbl.Rows[0].Field<DateTime?>("DateOfStartEntry");
-            DateTime? timeOfStop = tbl.Rows[0].Field<DateTime?>("DateOfStopEntry");
-
-            if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём заявлений на данное направление ещё не открыт." } });
-
-            if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём заявлений на данное направление закрыт." } });
-
-            query = "SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
-            var eIds =
-                from DataRow rw in tbl.Rows
-                select rw.Field<Guid>("EntryId");
-            if (eIds.Contains(EntryId))
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Заявление на данную программу уже подано" } });
-
-            DataTable tblPriors = Util.AbitDB.GetDataTable("SELECT Priority FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled",
-                new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
-            int? PriorMax =
-                (from DataRow rw in tblPriors.Rows
-                 select rw.Field<int?>("Priority")).Max();
-
-            Guid appId = Guid.NewGuid();
-            query = "INSERT INTO [AG_Application] (Id, PersonId, EntryId, HostelEduc, Enabled, DateOfStart, ManualExamId, Priority) " +
-                "VALUES (@Id, @PersonId, @EntryId, @HostelEduc, @Enabled, @DateOfStart, @ManualExamId, @Priority)";
-            Dictionary<string, object> prms = new Dictionary<string, object>();
-            prms.Add("@Id", appId);
-            prms.Add("@PersonId", PersonId);
-            prms.Add("@EntryId", EntryId);
-            prms.Add("@HostelEduc", needHostel);
-            prms.Add("@Priority", PriorMax.HasValue ? PriorMax.Value + 1 : 1);
-            prms.Add("@Enabled", true);
-            prms.Add("@DateOfStart", DateTime.Now);
-            prms.AddItem("@ManualExamId", iManualExamId == 0 ? null : (int?)iManualExamId);
-
-            Util.AbitDB.ExecuteQuery(query, prms);
-
-            //query = "SELECT Person.Surname, Person.Name, Person.SecondName, AG_Entry.ProgramName, AG_Entry.ObrazProgramName " +
-            //    " FROM [AG_Application] INNER JOIN Person ON Person.Id=[AG_Application].PersonId " +
-            //    " INNER JOIN AG_qAG_Entry ON AG_Application.AG_EntryId=AG_qAG_Entry.Id WHERE AG_Application.Id=@AppId";
-            //DataTable Tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
-            //var fileInfo =
-            //    (from DataRow rw in Tbl.Rows
-            //     select new
-            //     {
-            //         Surname = rw.Field<string>("Surname"),
-            //         Name = rw.Field<string>("Name"),
-            //         SecondName = rw.Field<string>("SecondName"),
-            //         Profession = rw.Field<string>("ProgramName"),
-            //         ObrazProgram = rw.Field<string>("ObrazProgramName")
-            //     }).FirstOrDefault();
-
-            //byte[] pdfData = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"));
-            //DateTime dateTime = DateTime.Now;
-
-            //query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileExtention, FileData, FileSize, IsReadOnly, LoadDate, Comment, MimeType) " +
-            //    " VALUES (@Id, @PersonId, @FileName, @FileExtention, @FileData, @FileSize, @IsReadOnly, @LoadDate, @Comment, @MimeType)";
-            //prms.Clear();
-            //prms.Add("@Id", Guid.NewGuid());
-            //prms.Add("@PersonId", appId);
-            //prms.Add("@FileName", fileInfo.Surname + " " + fileInfo.Name.FirstOrDefault() + " - Заявление [" + dateTime.ToString("dd.MM.yyyy HH.mm.ss") + "].pdf");
-            //prms.Add("@FileExtention", ".pdf");
-            //prms.Add("@FileData", pdfData);
-            //prms.Add("@FileSize", pdfData.Length);
-            //prms.Add("@IsReadOnly", true);
-            //prms.Add("@LoadDate", dateTime);
-            //prms.Add("@Comment", "Заявление на направление " + fileInfo.Profession + ", " + fileInfo.ObrazProgram + " образовательная программа, " 
-            //    + " от " + dateTime.ToShortDateString());
-            //prms.Add("@MimeType", "[AG_Application]/pdf");
-            //Util.AbitDB.ExecuteQuery(query, prms);
-            return RedirectToAction("Main");
+            return RedirectToAction("PriorityChanger");
         }
 
         public ActionResult MotivateMail()
@@ -2948,11 +2885,15 @@ Order by cnt desc";
         }
 
         [HttpPost]
-        public JsonResult CheckApplication_AG(string profession, string Entryclass, string profileid, string manualExam, string NeedHostel)
+        public JsonResult CheckApplication_AG(string profession, string Entryclass, string profileid, string manualExam, string NeedHostel, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
@@ -2996,7 +2937,7 @@ Order by cnt desc";
                     (from Entr in context.AG_Entry
                      join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
                      join Abit in context.AG_Application on Entr.Id equals Abit.EntryId
-                     where Abit.PersonId == PersonId && Abit.Enabled == true
+                     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
                      select EntrInEntryGroup.EntryGroupId);
 
                 var AllNeededEntries =
@@ -3006,7 +2947,7 @@ Order by cnt desc";
                      select Entr.Id).ToList();
 
                 var FreeEntries = AllNeededEntries.Except(
-                    context.AG_Application.Where(x => x.PersonId == PersonId).Select(x => x.EntryId).ToList()).ToList();
+                    context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
 
                 if (FreeEntries.Count == 0)
                     return Json(new { IsOk = true, FreeEntries = false });
@@ -3020,7 +2961,7 @@ Order by cnt desc";
 
                     var eIds =
                         (from App in context.AG_Application
-                         where App.PersonId == PersonId && App.Enabled == true
+                         where App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
                          select App.EntryId).ToList();
 
                     if (eIds.Contains(EntryId))
@@ -3030,13 +2971,17 @@ Order by cnt desc";
                 return Json(new { IsOk = true, FreeEntries = true });
             }
         }
-        
+
         [HttpPost]
-        public JsonResult AddApplication_AG(string profession, string Entryclass, string profileid, string manualExam, string NeedHostel)
+        public JsonResult AddApplication_AG(string Entryclass, string profession, string profileid, string manualExam, string NeedHostel, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
@@ -3055,24 +3000,30 @@ Order by cnt desc";
                 int iManualExamId = Util.ParseSafe(manualExam);
 
                 //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
-                string query = "SELECT Id, DateOfStartEntry, DateOfStopEntry FROM AG_Entry WHERE ProgramId=@ProgramId AND EntryClassId=@EntryClassId ";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
-                dic.Add("@ProgramId", iProfession);
-                dic.Add("@EntryClassId", iEntryClassId);
-                if (iProfileId != 0)
-                {
-                    query += " AND ProfileId=@ProfileId ";
-                    dic.Add("@ProfileId", iProfileId);
-                }
-                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-                if (tbl.Rows.Count > 1)
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_2MoreEntry + " (" + tbl.Rows.Count + ")" });
-                if (tbl.Rows.Count == 0)
+                var EntryList =
+                    (from Ent in context.AG_Entry
+                     join EntInEntGroup in context.AG_EntryInEntryGroup on Ent.Id equals EntInEntGroup.EntryId
+                     where Ent.ProgramId == iProfession && Ent.EntryClassId == iEntryClassId && (iProfileId != 0 ? Ent.ProfileId == iProfileId : true)
+                     select new
+                     {
+                         EntryId = Ent.Id,
+                         EntInEntGroup.EntryGroupId,
+                         Ent.DateOfStartEntry,
+                         Ent.DateOfStopEntry,
+                         ProgramName = Ent.AG_Program.Name,
+                         ProfileName = Ent.AG_Profile.Name,
+                     }).ToList();
+
+                if (EntryList.Count > 1)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_2MoreEntry + " (" + EntryList.Count + ")" });
+                if (EntryList.Count == 0)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoEntry });
 
-                Guid EntryId = tbl.Rows[0].Field<Guid>("Id");
-                DateTime? timeOfStart = tbl.Rows[0].Field<DateTime?>("DateOfStartEntry");
-                DateTime? timeOfStop = tbl.Rows[0].Field<DateTime?>("DateOfStopEntry");
+                Guid EntryId = EntryList.First().EntryId;
+                DateTime? timeOfStart = EntryList.First().DateOfStartEntry;
+                DateTime? timeOfStop = EntryList.First().DateOfStopEntry;
+                string Profession = EntryList.First().ProgramName;
+                string Specialization = EntryList.First().ProfileName;
 
                 if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
@@ -3080,34 +3031,102 @@ Order by cnt desc";
                 if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
 
-                query = "SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL";
-                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
-                var eIds =
-                    from DataRow rw in tbl.Rows
-                    select rw.Field<Guid>("EntryId");
-                if (eIds.Contains(EntryId))
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
+                //проверка на группы
+                var EntryGroupList =
+                    (from Entr in context.AG_Entry
+                     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                     join Abit in context.AG_Application on Entr.Id equals Abit.EntryId
+                     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
+                     select EntrInEntryGroup.EntryGroupId);
 
-                DataTable tblPriors = Util.AbitDB.GetDataTable("SELECT Priority FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled",
-                    new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
-                int? PriorMax =
-                    (from DataRow rw in tblPriors.Rows
-                     select rw.Field<int?>("Priority")).Max();
+                bool isNoEntries = EntryGroupList.Count() == 0;
+                var AllNeededEntries =
+                    (from Entr in context.AG_Entry
+                     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId) || isNoEntries
+                     select Entr.Id).ToList();
+
+                var FreeEntries = AllNeededEntries.Except(
+                    context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
+
+                if (FreeEntries.Count == 0)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoFreeEntries });
+                else
+                {
+                    if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
+                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
+
+                    if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
+                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
+
+                    var eIds =
+                        (from App in context.AG_Application
+                         where App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
+                         select App.EntryId).ToList();
+
+                    if (eIds.Contains(EntryId))
+                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
+                }
+
+                int? PriorMax = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
 
                 Guid appId = Guid.NewGuid();
-                query = "INSERT INTO [AG_Application] (Id, PersonId, EntryId, HostelEduc, Enabled, DateOfStart, ManualExamId, Priority) " +
-                    "VALUES (@Id, @PersonId, @EntryId, @HostelEduc, @Enabled, @DateOfStart, @ManualExamId, @Priority)";
-                Dictionary<string, object> prms = new Dictionary<string, object>();
-                prms.Add("@Id", appId);
-                prms.Add("@PersonId", PersonId);
-                prms.Add("@EntryId", EntryId);
-                prms.Add("@HostelEduc", needHostel);
-                prms.Add("@Priority", PriorMax.HasValue ? PriorMax.Value + 1 : 1);
-                prms.Add("@Enabled", true);
-                prms.Add("@DateOfStart", DateTime.Now);
-                prms.AddItem("@ManualExamId", iManualExamId == 0 ? null : (int?)iManualExamId);
+                context.AG_Application.AddObject(new AG_Application()
+                {
+                    Id = appId,
+                    PersonId = PersonId,
+                    EntryId = EntryId,
+                    HostelEduc = needHostel,
+                    Priority = PriorMax.HasValue ? PriorMax.Value + 1 : 1,
+                    Enabled = true,
+                    DateOfStart = DateTime.Now,
+                    ManualExamId = iManualExamId == 0 ? null : (int?)iManualExamId,
+                    CommitId = gCommId
+                });
+                context.SaveChanges();
 
-                Util.AbitDB.ExecuteQuery(query, prms);
+                string ManualExamName = context.AG_ManualExam.Where(x => x.Id == iManualExamId).Select(x => x.Name).FirstOrDefault();
+
+                return Json(new { IsOk = true, Profession = Profession, Specialization = Specialization, ManualExam = ManualExamName, Id = appId.ToString("N") });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteApplication_AG(string id, string CommitId)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                Guid ApplicationId;
+                if (!Guid.TryParse(id, out ApplicationId))
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                var App = context.AG_Application.Where(x => x.Id == ApplicationId).FirstOrDefault();
+                if (App == null)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                if (App.IsCommited)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_FailDeleteApp_IsCommited });
+                try
+                {
+                    context.AG_Application.DeleteObject(App);
+                    context.SaveChanges();
+                }
+                catch
+                {
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_DeleteApp_Fail });
+                }
 
                 return Json(new { IsOk = true });
             }

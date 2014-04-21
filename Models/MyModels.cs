@@ -297,7 +297,7 @@ namespace OnlineAbit2013.Models
         public string DiplomTheme { get; set; }
 
         public List<EgeMarkModel> EgeMarks { get; set; }
-        public List<ForeignLanguage> Languages { get; set; }
+        //public List<ForeignLanguage> Languages { get; set; }
 
         public bool HasTRKI { get; set; }
         public string TRKICertificateNumber { get; set; }
@@ -717,6 +717,7 @@ namespace OnlineAbit2013.Models
         public List<int> PersonFilesId {get; set;}
         public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
         public int MaxBlocks { get; set; }
+        public string CommitId { get; set; }
     }
 
     public class SPO_NewApplicationModel

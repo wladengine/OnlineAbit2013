@@ -205,6 +205,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка при удалении заявления.
+        /// </summary>
+        internal static string NewApp_DeleteApp_Fail {
+            get {
+                return ResourceManager.GetString("NewApp_DeleteApp_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нельзя удалить уже подтверждённое заявление!.
+        /// </summary>
+        internal static string NewApp_FailDeleteApp_IsCommited {
+            get {
+                return ResourceManager.GetString("NewApp_FailDeleteApp_IsCommited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Заявление на данную программу уже подано.
         /// </summary>
         internal static string NewApp_HasApplicationOnEntry {
@@ -219,6 +237,15 @@ namespace Resources {
         internal static string NewApp_NoEntry {
             get {
                 return ResourceManager.GetString("NewApp_NoEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нет доступных направлений для подачи заявления.
+        /// </summary>
+        internal static string NewApp_NoFreeEntries {
+            get {
+                return ResourceManager.GetString("NewApp_NoFreeEntries", resourceCulture);
             }
         }
         

@@ -12,7 +12,15 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<script language="javascript" type="text/javascript">
+<style>
+    button.error {
+        background: -moz-linear-gradient(center top , #FAE2E2, #F2CACB) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border: 1px solid #EEB7BA;
+        color: #BE4741;
+        text-shadow: 0 1px 0 #FFFFFF;
+    }
+</style>
+<script type="text/javascript">
     var entry;
     $(function () {
         $('#Block1').show();
@@ -26,8 +34,33 @@
     var currExams = '#Exams';
     var currManualExam = '#ManualExam';
     var currProfile = '#Profile';
+    var currBlock = '#Block';
+    var currBlockData = '#BlockData';
+    var currNeedHostel = '#NeedHostel'
+    var currBlockData_Profession = '#BlockData_Profession';
+    var currBlockData_Specialization = '#Specialization';
+    var currBlockData_ManualExam = '#ManualExam';
+
+    var nextObrazProgramErrors = '#ObrazProgramsErrors';
+    var nextFinishButton = '#FinishBtn';
+    var nextSpecs = '#Specs';
+    var nextManualExam = '#ManualExam';
+    var nextProfessions = '#Professions';
+    var nextExams = '#Exams';
+    var nextManualExam = '#ManualExam';
+    var nextProfile = '#Profile';
+    var nextBlock = '#Block';
+    var nextBlockData = '#BlockData';
+    var nextNeedHostel = '#NeedHostel'
+    var nextBlockData_Profession = '#BlockData_Profession';
+    var nextBlockData_Specialization = '#Specialization';
+    var nextBlockData_ManualExam = '#ManualExam';
+
+    var BlockIds = new Object();
 
     function GetSpecializations(i) {
+        $('#ObrazProgramsErrors').text('').hide();
+        $('#FinishBtn' + i).hide();
         currFinishButton = '#FinishBtn' + i;
         currSpecs = '#Specs' + i;
         currManualExam = '#ManualExam' + i;
@@ -41,7 +74,7 @@
         $(currFinishButton).hide();
         $(currSpecs).hide();
         $(currManualExam).hide();
-        $.post('/AG/GetSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val() }, function (json_data, i) {
+        $.post('/AG/GetSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val(), CommitId : $('#CommitId').val() }, function (json_data, i) {
             if (json_data.IsOk) {
                 $(currObrazProgramErrors).text('').hide();
                 if (json_data.HasProfileExams) {
@@ -75,6 +108,8 @@
     }
 
     function CheckSpecialization(i) {
+        $('#ObrazProgramsErrors').text('').hide();
+        $('#FinishBtn' + i).hide();
         currFinishButton = '#FinishBtn' + i;
         currSpecs = '#Specs' + i;
         currManualExam = '#ManualExam' + i;
@@ -87,7 +122,7 @@
 
         $(currFinishButton).hide();
         $(currManualExam).hide();
-        $.post('/AG/CheckSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val(), specid: $(currProfile).val() }, function (json_data) {
+        $.post('/AG/CheckSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val(), specid: $(currProfile).val(), CommitId : $('#CommitId').val() }, function (json_data) {
             if (json_data.IsOk) {
                 $(currObrazProgramErrors).text('').hide();
                 if (json_data.HasProfileExams) {
@@ -111,17 +146,122 @@
     }
 
     function mkButton(i) {
-        $('#FinishBtn' + i).show();
+        $('#ObrazProgramsErrors').text('').hide();
+        $('#FinishBtn' + i).hide();
+        currFinishButton = '#FinishBtn' + i;
+        currSpecs = '#Specs' + i;
+        currManualExam = '#ManualExam' + i;
+        currFinishButton = '#FinishBtn' + i;
+        currExams = '#Exams' + i;
+        currManualExam = '#ManualExam' + i;
+        currObrazProgramErrors = '#ObrazProgramsErrors' + i;
+        currProfile = '#Profile' + i;
+        currProfessions = '#Professions' + i;
+        currBlock = '#Block' + i;
+        currNeedHostel = '#NeedHostel' + i;
+        currBlockData = '#BlockData' + i;
+        var nxt = i + 1;
+        nextBlock = '#Block' + nxt;
+
+        currBlockData_Profession = '#BlockData_Profession' + i;
+        currBlockData_Specialization = '#BlockData_Specialization' + i;
+        currBlockData_ManualExam = '#BlockData_ManualExam' + i;
+
+        $.post('/AbiturientNew/AddApplication_AG', { Entryclass: $('#EntryClassId').val(), profession: $(currProfessions).val(), profileid: $(currProfile).val(), manualExam : $(currManualExam).val(), NeedHostel: $(currNeedHostel).is(':checked'), CommitId : $('#CommitId').val() }, function(json_data) {
+            if (json_data.IsOk) {
+                $('#FinishBtn' + i).show();
+            }
+            else {
+                $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
+            }
+        }, 'json');
+    }
+
+    var nxt = 1;
+    function SaveData(i) {
+        $('#ObrazProgramsErrors').text('').hide();
+        currFinishButton = '#FinishBtn' + i;
+        currSpecs = '#Specs' + i;
+        currManualExam = '#ManualExam' + i;
+        currFinishButton = '#FinishBtn' + i;
+        currExams = '#Exams' + i;
+        currManualExam = '#ManualExam' + i;
+        currObrazProgramErrors = '#ObrazProgramsErrors' + i;
+        currProfile = '#Profile' + i;
+        currProfessions = '#Professions' + i;
+        currBlock = '#Block' + i;
+        currNeedHostel = '#NeedHostel' + i;
+        currBlockData = '#BlockData' + i;
+        nxt = i + 1;
+        nextBlock = '#Block' + nxt;
+
+        currBlockData_Profession = '#BlockData_Profession' + i;
+        currBlockData_Specialization = '#BlockData_Specialization' + i;
+        currBlockData_ManualExam = '#BlockData_ManualExam' + i;
+
+        $.post('/AbiturientNew/AddApplication_AG', { Entryclass: $('#EntryClassId').val(), profession: $(currProfessions).val(), profileid: $(currProfile).val(), manualExam : $(currManualExam).val(), NeedHostel: $(currNeedHostel).is(':checked'), CommitId : $('#CommitId').val() }, function(json_data) {
+            if (json_data.IsOk) {
+                $(currBlockData_Profession).text(json_data.Profession);
+                $(currBlockData_Specialization).text(json_data.Specialization);
+                $(currBlockData_ManualExam).text(json_data.ManualExam);
+                $(currBlock).hide();
+                $(currBlockData).show();
+                if (BlockIds[nxt] == undefined) {
+                    $(nextBlock).show();
+                }
+                BlockIds[i] = json_data.Id;
+            }
+            else {
+                $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
+            }
+        }, 'json');
+    }
+
+    var currObrazProgramsErrors_Block = '#ObrazProgramsErrors_Block';
+    function DeleteApp(i) {
+        var appId = BlockIds[i];
+        nextBlock = '#Block' + i;
+        nextFinishButton = '#FinishBtn' + i;
+        nextSpecs = '#Specs' + i;
+        nextManualExam = '#ManualExam' + i;
+        nextFinishButton = '#FinishBtn' + i;
+        nextExams = '#Exams' + i;
+        nextManualExam = '#ManualExam' + i;
+        nextObrazProgramErrors = '#ObrazProgramsErrors' + i;
+        nextProfile = '#Profile' + i;
+        nextProfessions = '#Professions' + i;
+        nextNeedHostel = '#NeedHostel' + i;
+        nextBlockData = '#BlockData' + i;
+        nextBlockData_Profession = '#BlockData_Profession' + i;
+        nextBlockData_Specialization = '#BlockData_Specialization' + i;
+        nextBlockData_ManualExam = '#BlockData_ManualExam' + i;
+
+        currObrazProgramsErrors_Block = '#ObrazProgramsErrors_Block' + i;
+        $(currObrazProgramsErrors_Block).text('').hide();
+
+        $.post('/AbiturientNew/DeleteApplication_AG', { id : appId, CommitId : $('#CommitId').val() }, function(json_data) {
+            if (json_data.IsOk) {
+                $(nextBlockData_ManualExam).text('');
+                $(nextBlockData_Profession).text('');
+                $(nextBlockData_Specialization).text('');
+                $(nextBlockData).hide();
+                $(nextBlock).show();
+            }
+            else {
+                $(currObrazProgramsErrors_Block).text(json_data.ErrorMessage).show();
+            }
+        }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewApp", "AG", FormMethod.Post))
+<% using (Html.BeginForm("NewAppAG", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <%= Html.ValidationSummary() %>
+    <%= Html.HiddenFor(x => x.CommitId) %>
     <% if (DateTime.Now >= new DateTime(2013, 6, 23, 0, 0, 0))
        { %>
        <div class="message error" style="width:450px;">
-        <strong style="font-size:10pt">Внимание! Приём документов в АГ СПбГУ закрыт.</strong>
+           <strong style="font-size:10pt">Внимание! Приём документов в АГ СПбГУ закрыт.</strong>
        </div>
     <% } %>
     <div class="message info" style="width:450px;">
@@ -130,23 +270,26 @@
     <br />
     <%= Html.HiddenFor(x => x.EntryClassId) %>
     <% for (int i = 1; i <= Model.MaxBlocks; i++) { %>
-    <div id="BlockData<%= i.ToString() %>" class="message info" style="width:450px; ">
-        <table style="font-size:0.75em;" class="nopadding" cellspacing="0" cellpadding="0">
+    <div id="BlockData<%= i.ToString() %>" class="message info panel" style="width:450px; display:none;">
+        <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
-                <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
-                <td id="BlockData_Profession<%= i.ToString() %>"></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
+                <td id="BlockData_Profession<%= i.ToString() %>" style="font-size:1.3em;"></td>
             </tr>
             <tr>
-                <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
-                <td id="BlockData_Specialization<%= i.ToString() %>"></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
+                <td id="BlockData_Specialization<%= i.ToString() %>" style="font-size:1.3em;"></td>
             </tr>
             <tr>
-                <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
-                <td id="BlockData_ManualExam<%= i.ToString() %>"></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
+                <td id="BlockData_ManualExam<%= i.ToString() %>" ></td>
             </tr>
         </table>
+        <button type="button" onclick="DeleteApp(<%= i.ToString() %>)" class="error">Удалить</button>
+        <div id="ObrazProgramsErrors_Block<%= i.ToString() %>" class="message error" style="display:none; width:450px;">
     </div>
-    <div id="Block<%= i.ToString() %>" style="display:none;">
+    </div>
+    <div id="Block<%= i.ToString() %>" style="display:none; width:500px;" class="panel">
         <h5>Выберите направление подготовки</h5>
         <p id="Profs<%= i.ToString() %>">
             <span>Направление</span><br />
@@ -167,11 +310,10 @@
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString() %>" class="message error" style="display:none; width:450px;">
         </div>
-        
     </div>
     <% } %>
     <br />
-    <input id="Submit" type="submit" value="Подать заявление" class="button button-green"/>
+    <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
 <% 
    }
 %>

@@ -250,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Госбютжетная.
+        ///   Looks up a localized string similar to Госбюджетная.
         /// </summary>
         internal static string StudyBasisBudget {
             get {

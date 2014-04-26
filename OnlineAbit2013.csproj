@@ -411,6 +411,7 @@
     <Compile Include="Controllers\AspirantController.cs" />
     <Compile Include="Controllers\ChangeObrazProgramController.cs" />
     <Compile Include="Controllers\ChangeStudyFormController.cs" />
+    <Compile Include="Controllers\ConstClass.cs" />
     <Compile Include="Controllers\DormsController.cs" />
     <Compile Include="Controllers\ForeignAbiturientController.cs" />
     <Compile Include="Controllers\ForeignApplicationController.cs" />
@@ -422,6 +423,7 @@
     <Compile Include="Controllers\SPOController.cs" />
     <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Controllers\TransferForeignController.cs" />
+    <Compile Include="Controllers\Util.Connections.cs" />
     <Compile Include="Controllers\Util.cs" />
     <Compile Include="Controllers\Util.Kladr.cs" />
     <Compile Include="Global.asax.cs">
@@ -496,7 +498,11 @@
     <Content Include="Views\AbiturientNew\NewApplication.aspx" />
     <Content Include="Views\AbiturientNew\NewApplicationRectorScholarship.aspx" />
     <Content Include="Views\AbiturientNew\NewApplicationRectorScholarshipSuccess.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_1kurs.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_AG.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_AG_v.aspx" />
     <Content Include="Views\AbiturientNew\NotOpened.aspx" />
+    <Content Include="Views\AbiturientNew\page404.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice_Page1.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice_Page2.aspx" />
@@ -548,6 +554,7 @@
     <Content Include="Views\AG\NewApplication.aspx" />
     <Content Include="Views\AG\PersonalOffice.aspx" />
     <Content Include="Views\AG\PriorityChanger.aspx" />
+    <Content Include="Views\Application\AppIndex.aspx" />
     <Content Include="Views\Application\Index.aspx" />
     <Content Include="Views\Aspirant\AddFiles.aspx" />
     <Content Include="Views\Aspirant\AddSharedFiles.aspx" />

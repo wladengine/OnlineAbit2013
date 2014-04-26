@@ -75,7 +75,8 @@
     }
 </script>
 <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
-<form action="/Abiturient/ChangePriority" method="post">
+<form action="/AbiturientNew/ChangePriority" method="post">
+    <%= Html.HiddenFor(x => x.CommitId) %>
     <ul id="sortable">
     <% foreach (var s in Model.Apps)
        { %>

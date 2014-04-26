@@ -1449,13 +1449,17 @@ namespace OnlineAbit2013.Controllers
         {
             List<AppendedFile> lst = new List<AppendedFile>();
 
-            string query = "SELECT PersonFile.Id, FileName, FileSize, Comment, IsApproved, LoadDate, Name FROM PersonFile, PersonFileType WHERE PersonId=@PersonId ";
+            string query = @"
+SELECT PersonFile.Id, FileName, FileSize, Comment, IsApproved, LoadDate, ISNULL(PersonFileType.Name, 'нет') AS Name
+FROM PersonFile 
+LEFT JOIN PersonFileType ON PersonFile.PersonFileTypeId = PersonFileType.Id 
+WHERE PersonId=@PersonId ";
             string where = "";
             if (!string.IsNullOrEmpty(FileType))
             {
                 where = " and PersonFileTypeId=" + FileType + " ";
             }
-            string order = " and PersonFileTypeId=PersonFileType.Id order by LoadDate desc";
+            string order = " order by LoadDate desc";
             query = query + where + order;
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("@PersonId", PersonId);

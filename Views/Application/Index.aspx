@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Abiturient/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationCommitModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationCommitModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Просмотр заявления
@@ -16,8 +16,7 @@
    { %>
    <script type="text/javascript" src="../../Scripts/jquery-1.5.1-vsdoc.js"></script>
 <% } %>
-<% if (Model.Enabled)
-   { %>
+
     <script type="text/javascript">
         $(function () {
             $('#UILink').hide();
@@ -40,7 +39,7 @@
                     {
                         "Да": function () 
                         {
-                            $.post('/Application/Disable', { id: '<%= Model.Id.ToString("N") %>' }, function (res) 
+                            $.post('/Application/DisableFull', { id: '<%= Model.Id.ToString("N") %>' }, function (res) 
                             {
                                 if (res.IsOk) 
                                 {
@@ -130,78 +129,50 @@
     }
     </script>
     <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
-<% } %>
-    <script type="text/javascript">
-    function DeleteFile(id) {
-        var p = new Object();
-        p["id"] = id;
-        $.post('/Application/DeleteFile', p, function (res) {
-            if (res.IsOk) {
-                $('#' + id).hide(250).html("");
-            }
-            else {
-                if (res != undefined) {
-                    alert(res.ErrorMessage);
-                }
-            }
-        }, 'json');
-    }
-    var portfolioHidden = false;
-    
-    function HidePortfolio() {
-        if (!portfolioHidden) {
-            $('#dPortfolio').hide(200);
-            portfolioHidden = true;
-        }
-        else {
-            $('#dPortfolio').show(200);
-            portfolioHidden = false;
-        }
-    }
-    var motivMailHelpHidden = true;
-    function ShowMotivMailHelp() {
-        if (motivMailHelpHidden) {
-            $('#MotivationInfoHelp').show(200);
-            motivMailHelpHidden = false;
-        }
-        else {
-            $('#MotivationInfoHelp').hide(200);
-            motivMailHelpHidden = true;
-        }
-    }
-    var motivMailHidden = false;
-    function HideMotivationMail() {
-        if (!motivMailHidden) {
-            $('#MotivationMail').hide(200);
-            motivMailHidden = true;
-        }
-        else {
-            $('#MotivationMail').show(200);
-            motivMailHidden = false;
-        }
-    }
-    var essayHidden = false;
-    function HideEssay() {
-        if (!essayHidden) {
-            $('#Essay').hide(200);
-            essayHidden = true;
-        }
-        else {
-            $('#Essay').show(200);
-            essayHidden = false;
-        }
-    }
-    </script>
-    
+<style>
+   td {
+    padding: 1px 10px 1px 10px; 
+   }
+</style>
+<table>
+    <tr>
+        <td><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
+        <td>
+            <img id="rejectBtn" src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
+        </td>
+        <td>
+            <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
+                <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Скачать заявление</td>
+        <td>Удалить заявление целиком</td>
+        <td>Изменить приоритеты</td>
+    </tr>
+
+    <tr>
+        
+    </tr>
+</table>
+<div id="dialog-form">
+    <p class="errMessage"></p>
+    <h5>Внимание!</h5>
+    <p>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</p>
+    <h4>Вы хотите удалить заявление?</h4>
+</div>
 <h4>Основные сведения</h4>
 <hr />
-<% foreach (var Application in Model.Applications)
+<% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
 <table class="paginate">
+    <% if (Application.Enabled) { %>
     <tr>
         <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1">Приоритет</abbr></td>
-        <td align="left"><%= Html.Encode(Application.Priority)%></td>
+        <td align="left"><%= Html.Encode(Application.Priority) %></td>
     </tr>
+    <% } %>
     <tr>
         <td width="30%" align="right">Направление</td>
         <td align="left"><%= Html.Encode(Application.Profession) %></td>
@@ -223,120 +194,45 @@
         <td align="left"><%= Html.Encode(Application.StudyBasis) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right" valign="top">Статус заявления:</td>
-        <td align="left">
-            <span id="appStatus" style="font-size:14px" class="<%= Model.Enabled ? "Green" : "Red" %>">
-                <%= Model.Enabled ? "Подано" : "Отозвано " + Model.DateOfDisable%>
-            </span>
-            <br /><br />
-            <% if (Model.Enabled)
-               { %>
-                <% if (Model.AbiturientTypeId != 2)
-                   { %>
-            <p id="rejectApp">
-                <button id="rejectBtn" class="button button-orange">Удалить заявление</button>
-                <div id="dialog-form">
-                    <p class="errMessage"></p>
-                    <h5>Внимание!</h5>
-                    <p>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</p>
-                    <h4>Вы хотите удалить заявление?</h4>
-                 </div>
-            </p>
-                <% } %>
-                <% if (Model.AbiturientTypeId == 2)
-                   { %>
-            <p id="rejectApp">
-                <button id="rejectBtn" class="button button-orange">Забрать заявление</button>
-                <div id="dialog-form">
-                    <p class="errMessage"></p>
-                    <h5>Внимание!</h5>
-                    <p>Отзывая данное заявление, вы отказываетесь от участия в конкурсе на указанную образовательную программу.Восстановить данное заявление будет уже невозможно.</p>
-                    <h4>Вы хотите отказаться от участия в конкурсе?</h4>
-                </div>
-            </p>
-                <% } %>
-            <% } %>
-        </td>
+        <td width="30%" align="right"></td>
+        <td align="left"><a class="button button-orange" href="../../Application/AppIndex/<%= Application.Id.ToString("N") %>">Просмотр / добавить файлы</a></td>
     </tr>
 </table>
-<% } %>
-<a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a>
 <br />
-<% if (Model.AbiturientTypeId != 2 && Model.AbiturientTypeId == 1)
-   { %>
-   <%--<div class="message info">
-    <b>Вам следует <a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>">распечатать заявление</a> (или запомнить штрих-код и данные по заявлению) и прийти с ним в приёмную комиссию</b> 
-   </div>--%>
-   <%--<div id="map" style="width:600px;height:300px"></div>--%>
 <% } %>
-<% if (Model.AbiturientTypeId == 2)
-   { %>
-    <div class="panel">
-        <h4 style="cursor:pointer;" onclick="HideMotivationMail()">Мотивационное письмо</h4>
-        <div id="MotivationMail">
+
+<br />
+
+<div class="panel">
+    <h4 onclick="HidePortfolio()" style="cursor:pointer;">Прикреплённые файлы</h4>
+    <div class="message info">
+        <b>Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел </b> 
+        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold">Общие файлы</a>
+        <br />
+        <b>В данный раздел прикрепляйте подписанный бланк заявления </b>
+    </div>
+    <div id="dPortfolio">
         <hr />
-            <div id="MotivationInfoHelp" class="message info">
-                <b>В мотивационном письме должны содержаться:</b> 
-                <ul>
-                    <li>необходимые сведения об опыте профессиональной подготовки/деятельности;</li>
-                    <li>сведения, подтверждающие необходимость получения знаний/навыков, освоение/приобретение которых возможно в период обучения на выбранной программе;</li>
-                    <li>перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.</li>
-                </ul>
-            </div>
-            <form action="../../Application/MotivatePost" enctype="multipart/form-data" method="post">
-                <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
-                <div class="clearfix">
-                    <input id="MotivateAttachment" type="file" name="File" />
-                </div><br />
-                <div class="clearfix">
-                    <input id="MotivateSubmit" type="submit" value="Отправить" class="button button-gray"/>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="panel">
-        <h4 style="cursor:pointer;" onclick="HideEssay()">Эссе</h4>
-        <div id="Essay">
-            <hr />
-            <form action="../../Application/EssayPost" enctype="multipart/form-data" method="post">
-                <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
-                <div class="clearfix">
-                    <input id="EssayAttachment" type="file" name="File" />
-                </div><br />
-                <div class="clearfix">
-                    <input id="EssaySubmit" type="submit" value="Отправить" class="button button-gray"/>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="panel">
-        <h4 onclick="HidePortfolio()" style="cursor:pointer;">Портфолио</h4>
-        <div class="message info">
-            <b>Пожалуйста, прикрепляйте те файлы, которые общие для каждого заявления (сканы паспорта/документа об образовании и т.п.) в раздел </b> 
-            <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold">Общие файлы</a>
-        </div>
-        <div id="dPortfolio">
-            <hr />
-            <% if (Model.Files.Count > 0)
-               { %>
-                <table class="paginate">
-                <tr>
-                    <th></th>
-                    <th>Имя файла</th>
-                    <th>Размер</th>
-                    <th>Комментарий</th>
-                    <th>Статус</th>
-                    <th>Удалить</th>
-                </tr>    
-            <% }
-               else
-               { %>
-               <h5>В портфолио нет файлов</h5>
-            <% } %>
-                <tbody>
-            <% foreach (var file in Model.Files)
-               { %>
-                <tr id="<%= file.Id.ToString("N") %>">
+    <% if (Model.Files.Count > 0)
+        { %>
+        <table class="paginate" style="width:99%;">
+            <thead>
+                <th></th>
+                <th>Имя файла</th>
+                <th>Размер</th>
+                <th>Комментарий</th>
+                <th>Статус</th>
+                <th>Удалить</th>
+            </thead>    
+    <% }
+        else
+        { %>
+        <h5>В портфолио нет файлов</h5>
+    <% } %>
+            <tbody>
+        <% foreach (var file in Model.Files)
+            { %>
+                <tr id='<%= file.Id.ToString("N") %>'>
                     <td>
                         <a href="<%= "../../Application/GetFile?id=" + file.Id.ToString("N") %>" target="_blank">
                             <img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" />
@@ -356,52 +252,48 @@
                     <td style="text-align:center; vertical-align:middle;" <%= file.IsApproved == OnlineAbit2013.Models.ApprovalStatus.Approved ? "class=\"Green\"" : file.IsApproved == OnlineAbit2013.Models.ApprovalStatus.Rejected ? "class=\"Red\"" : "class=\"Blue\"" %>  >
                         <span style="font-weight:bold">
                         <%= file.IsApproved == OnlineAbit2013.Models.ApprovalStatus.Approved ?
-                                   GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Approved") :
-                                          file.IsApproved == OnlineAbit2013.Models.ApprovalStatus.Rejected ? GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Rejected") :
-                                          GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_NotSet")
+                                    GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Approved") :
+                                            file.IsApproved == OnlineAbit2013.Models.ApprovalStatus.Rejected ? GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Rejected") :
+                                            GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_NotSet")
                         %>
                         </span>
                     </td>
                     <td  style="text-align:center; vertical-align:middle;">
                     <% if (!file.IsShared)
-                       { %>
+                        { %>
                         <span class="link" onclick="DeleteFile('<%= file.Id.ToString("N") %>')">
                             <img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить" />
                         </span>
                     <% }
-                       else
-                       { %>
-                       <img src="../../Content/myimg/icon_shared3.png" />
+                        else
+                        { %>
+                        <span title="Данный файл можно удалить в разделе 'Общие файлы'">
+                            <img src="../../Content/myimg/icon_shared3.png" />
+                        </span>
                     <% } %>
                     </td>
                 </tr>
-            <% } %>
+        <% } %>
             </tbody>
-            </table>
-                <br />
-            <a class="button button-blue" href="../../Abiturient/FilesList?id=<%= Model.Id.ToString("N") %>" target="_blank">Опись поданных документов</a><br />
-            <% if (Model.Enabled)
-               { %>
+        </table>
+        <div class="panel">
+            <h4>Добавить файл</h4>
+            <hr />
+            <form action="/Application/AddFile" method="post" enctype="multipart/form-data" class="form">
+                <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
+                <div class="clearfix">
+                    <input id="fileAttachment" type="file" name="File" />
+                </div><br />
+                <div class="clearfix">
+                    <textarea id="fileComment" class="noresize" name="Comment" maxlength="1000" cols="80" rows="5"></textarea>
+                </div><br />
+                <div class="clearfix">
+                    <input id="btnSubmit" type="submit" value="Отправить" class="button button-gray"/>
+                </div>
+            </form>
             <br />
-            <div class="panel">
-                <h4>Добавить файл</h4>
-                <hr />
-                <form action="/Application/AddFile" method="post" enctype="multipart/form-data" class="form">
-                    <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
-                    <div class="clearfix">
-                        <input id="fileAttachment" type="file" name="File" />
-                    </div><br />
-                    <div class="clearfix">
-                        <textarea id="fileComment" class="noresize" name="Comment" maxlength="1000" cols="80" rows="5"></textarea>
-                    </div><br />
-                    <div class="clearfix">
-                        <input id="btnSubmit" type="submit" value="Отправить" class="button button-gray"/>
-                    </div>
-                </form>
-                <% } %>
-                <br />
-            </div>
         </div>
     </div>
-<% } %>
+</div>
+
 </asp:Content>

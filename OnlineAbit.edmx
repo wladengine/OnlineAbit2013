@@ -19,6 +19,8 @@
           <EntitySet Name="AG_Program" EntityType="OnlinePriem2012Model.Store.AG_Program" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Application" EntityType="OnlinePriem2012Model.Store.Application" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ApplicationFile" EntityType="OnlinePriem2012Model.Store.ApplicationFile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Comission" EntityType="OnlinePriem2012Model.Store.Comission" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ComissionInEntry" EntityType="OnlinePriem2012Model.Store.ComissionInEntry" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Country" EntityType="OnlinePriem2012Model.Store.Country" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EgeCertificate" EntityType="OnlinePriem2012Model.Store.EgeCertificate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EgeExam" EntityType="OnlinePriem2012Model.Store.EgeExam" store:Type="Tables" Schema="dbo" />
@@ -139,6 +141,14 @@
           <AssociationSet Name="FK_Application_Entry" Association="OnlinePriem2012Model.Store.FK_Application_Entry">
             <End Role="Entry" EntitySet="Entry" />
             <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComissionInEntry_Comission" Association="OnlinePriem2012Model.Store.FK_ComissionInEntry_Comission">
+            <End Role="Comission" EntitySet="Comission" />
+            <End Role="ComissionInEntry" EntitySet="ComissionInEntry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComissionInEntry_Entry" Association="OnlinePriem2012Model.Store.FK_ComissionInEntry_Entry">
+            <End Role="Entry" EntitySet="Entry" />
+            <End Role="ComissionInEntry" EntitySet="ComissionInEntry" />
           </AssociationSet>
           <AssociationSet Name="FK_EgeMark_EgeCertificate" Association="OnlinePriem2012Model.Store.FK_EgeMark_EgeCertificate">
             <End Role="EgeCertificate" EntitySet="EgeCertificate" />
@@ -422,7 +432,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
           <Property Name="CommitId" Type="uniqueidentifier" />
           <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="256" />
           <Property Name="FileSize" Type="int" Nullable="false" />
@@ -435,6 +445,21 @@
           <Property Name="IsApproved" Type="bit" />
           <Property Name="FailReason" Type="nvarchar(max)" />
           <Property Name="FileTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="350" />
+          <Property Name="YaMapCoord" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="ComissionInEntry">
+          <Key>
+            <PropertyRef Name="EntryId" />
+          </Key>
+          <Property Name="EntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ComissionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -654,6 +679,7 @@
           <Property Name="IsImported" Type="bit" />
           <Property Name="DateReviewDocs" Type="datetime" />
           <Property Name="IsDisabled" Type="bit" />
+          <Property Name="IsCreatedByComission" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAddInfo">
           <Key>
@@ -1099,6 +1125,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Application">
+              <PropertyRef Name="EntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComissionInEntry_Comission">
+          <End Role="Comission" Type="OnlinePriem2012Model.Store.Comission" Multiplicity="1" />
+          <End Role="ComissionInEntry" Type="OnlinePriem2012Model.Store.ComissionInEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ComissionInEntry">
+              <PropertyRef Name="ComissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComissionInEntry_Entry">
+          <End Role="Entry" Type="OnlinePriem2012Model.Store.Entry" Multiplicity="1" />
+          <End Role="ComissionInEntry" Type="OnlinePriem2012Model.Store.ComissionInEntry" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Entry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ComissionInEntry">
               <PropertyRef Name="EntryId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1828,9 +1878,14 @@
             <End Role="AG_ManualExam" EntitySet="AG_ManualExam" />
             <End Role="AG_Application" EntitySet="AG_Application" />
           </AssociationSet>
-          <EntitySet Name="ApplicationFile" EntityType="OnlinePriem2012Model.ApplicationFile" />
           <EntitySet Name="PersonFile" EntityType="OnlinePriem2012Model.PersonFile" />
           <EntitySet Name="PersonFileType" EntityType="OnlinePriem2012Model.PersonFileType" />
+          <EntitySet Name="Comission" EntityType="OnlinePriem2012Model.Comission" />
+          <AssociationSet Name="ComissionInEntry" Association="OnlinePriem2012Model.ComissionInEntry">
+            <End Role="Comission" EntitySet="Comission" />
+            <End Role="Entry" EntitySet="Entry" />
+          </AssociationSet>
+          <EntitySet Name="ApplicationFile" EntityType="OnlinePriem2012Model.ApplicationFile" />
           </EntityContainer>
         <EntityType Name="PassportType">
           <Key>
@@ -2015,6 +2070,7 @@
           <Property Type="String" Name="StudyBasisNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyFormNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsUsedForPriem" Nullable="false" />
+          <NavigationProperty Name="Comission" Relationship="OnlinePriem2012Model.ComissionInEntry" FromRole="Entry" ToRole="Comission" />
         </EntityType>
         <EntityType Name="Semester">
           <Key>
@@ -2292,6 +2348,7 @@
           <NavigationProperty Name="PersonScienceWork" Relationship="OnlinePriem2012Model.FK_PersonScienceWork_Person" FromRole="Person" ToRole="PersonScienceWork" />
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Person" FromRole="Person" ToRole="PersonEducationDocument" />
           <NavigationProperty Name="Olympiads" Relationship="OnlinePriem2012Model.FK_Olympiads_Person" FromRole="Person" ToRole="Olympiads" />
+          <Property Type="Boolean" Name="IsCreatedByComission" Nullable="false" />
         </EntityType>
         <Association Name="FK_Application_Person">
           <End Type="OnlinePriem2012Model.Person" Role="Person" Multiplicity="1" />
@@ -3158,25 +3215,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ApplicationFile">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
-          <Property Type="String" Name="FileName" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="Int32" Name="FileSize" Nullable="false" />
-          <Property Type="String" Name="FileExtention" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Binary" Name="FileData" MaxLength="Max" FixedLength="false" />
-          <Property Type="String" Name="Comment" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LoadDate" Precision="3" Nullable="false" />
-          <Property Type="Boolean" Name="IsReadOnly" Nullable="false" />
-          <Property Type="String" Name="MimeType" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsApproved" />
-          <Property Type="String" Name="FailReason" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="FileTypeId" Nullable="false" />
-          <Property Type="Guid" Name="CommitId" />
-        </EntityType>
         <EntityType Name="PersonFile">
           <Key>
             <PropertyRef Name="Id" />
@@ -3202,6 +3240,38 @@
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="NameEng" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Comission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Address" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="YaMapCoord" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Entry" Relationship="OnlinePriem2012Model.ComissionInEntry" FromRole="Comission" ToRole="Entry" />
+        </EntityType>
+        <Association Name="ComissionInEntry">
+          <End Type="OnlinePriem2012Model.Comission" Role="Comission" Multiplicity="0..1" />
+          <End Type="OnlinePriem2012Model.Entry" Role="Entry" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ApplicationFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FileSize" Nullable="false" />
+          <Property Type="String" Name="FileExtention" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="FileData" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="Comment" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LoadDate" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="IsReadOnly" Nullable="false" />
+          <Property Type="String" Name="MimeType" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsApproved" />
+          <Property Type="String" Name="FailReason" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FileTypeId" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3566,6 +3636,7 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="IsCreatedByComission" ColumnName="IsCreatedByComission" />
                 <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
                 <ScalarProperty Name="DateReviewDocs" ColumnName="DateReviewDocs" />
                 <ScalarProperty Name="IsImported" ColumnName="IsImported" />
@@ -3927,26 +3998,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ApplicationFile">
-            <EntityTypeMapping TypeName="OnlinePriem2012Model.ApplicationFile">
-              <MappingFragment StoreEntitySet="ApplicationFile">
-                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
-                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
-                <ScalarProperty Name="FailReason" ColumnName="FailReason" />
-                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
-                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
-                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
-                <ScalarProperty Name="LoadDate" ColumnName="LoadDate" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="FileData" ColumnName="FileData" />
-                <ScalarProperty Name="FileExtention" ColumnName="FileExtention" />
-                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PersonFile">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonFile">
               <MappingFragment StoreEntitySet="PersonFile">
@@ -3971,6 +4022,44 @@
               <MappingFragment StoreEntitySet="PersonFileType">
                 <ScalarProperty Name="NameEng" ColumnName="NameEng" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comission">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.Comission">
+              <MappingFragment StoreEntitySet="Comission">
+                <ScalarProperty Name="YaMapCoord" ColumnName="YaMapCoord" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ComissionInEntry" TypeName="OnlinePriem2012Model.ComissionInEntry" StoreEntitySet="ComissionInEntry">
+            <EndProperty Name="Entry">
+              <ScalarProperty Name="Id" ColumnName="EntryId" />
+            </EndProperty>
+            <EndProperty Name="Comission">
+              <ScalarProperty Name="Id" ColumnName="ComissionId" />
+            </EndProperty>
+            <Condition ColumnName="ComissionId" IsNull="false" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ApplicationFile">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.ApplicationFile">
+              <MappingFragment StoreEntitySet="ApplicationFile">
+                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
+                <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="LoadDate" ColumnName="LoadDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
+                <ScalarProperty Name="FileExtention" ColumnName="FileExtention" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4267,9 +4356,11 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Entry_AG_Profile" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Application_AG_Entry" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_AG_Application_AG_ManualExam" />
-        <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationFile" Width="1.5" PointX="4.3297511266217334" PointY="21.539086575405246" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonFile" Width="1.5" PointX="10.223220408998067" PointY="9.1443029386663355" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonFileType" Width="1.5" PointX="4.7779965497450885" PointY="26.636735123878687" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.Comission" Width="1.5" PointX="10.342912460837006" PointY="1.277558103798683" />
+        <AssociationConnector Association="OnlinePriem2012Model.ComissionInEntry" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationFile" Width="1.5" PointX="1.9125130073691312" PointY="2.870162562872359" />
         </Diagram>
     </Diagrams>
   </Designer>

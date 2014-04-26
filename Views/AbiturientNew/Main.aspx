@@ -26,7 +26,7 @@
         }, 'json');
     }  
 </script>
-<h2><%= Html.Encode(Model.Surname + " " + Model.Name + " " + Model.SecondName) %></h2>
+    <h2><%= Html.Encode(Model.Surname + " " + Model.Name + " " + Model.SecondName) %></h2>
 <% foreach (var msg in Model.Messages)
    { %>
     <div id="<%= msg.Id %>" class="message info" style="padding:5px">
@@ -34,21 +34,20 @@
         <div style="float:right;"><span class="link" onclick="DeleteMsg('<%= msg.Id %>')"><img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить" /></span></div>
     </div>
 <% } %>
-<p>
-    Вы находитесь на главной странице Вашего <b>Личного Кабинета</b>. Здесь Вы можете подать заявление, выставить приоритеты, добавить сканы документов, 
-    создать мотивационное письмо, отредактировать свои персональные данные.
-</p>
+    <p>
+        Вы находитесь на главной странице Вашего <b>Личного Кабинета</b>. Здесь Вы можете подать заявление, выставить приоритеты, добавить сканы документов, 
+        создать мотивационное письмо, отредактировать свои персональные данные.
+    </p>
     <h4>Поданные заявления</h4>
     <hr />
-    
-        <table class="paginate full">
-            <thead>
-                <tr>
-                    <th>Уровень</th>
-                    <th>Тип поступления</th>
-                    <th>Просмотр заявлений</th>
-                </tr>
-            </thead>
+    <table class="paginate full">
+        <thead>
+            <tr>
+                <th>Уровень</th>
+                <th>Тип поступления</th>
+                <th>Просмотр заявлений</th>
+            </tr>
+        </thead>
     <% foreach (OnlineAbit2013.Models.SimpleApplicationPackage app in Model.Applications.ToList())
         { %>
          <tr>
@@ -94,5 +93,4 @@
         <h5>Нет отозванных заявлений</h5>
     <% } %>--%>
     <hr />
-
 </asp:Content>

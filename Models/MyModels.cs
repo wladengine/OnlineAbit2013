@@ -578,6 +578,8 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> StudyForms { get; set; }
         public int EntryType { get; set; }
 
+        public List<SimpleApplicationPackage> Applications { get; set; }
+
         public int ExitClassId { get; set; }
         public int VuzAddType { get; set; }
         public string StudyFormId { get; set; }
@@ -613,12 +615,27 @@ namespace OnlineAbit2013.Models
         public string SportQualification { get; set; }
         public List<SelectListItem> SportQualificationList { get; set; }
     }
-    
+
+    public enum AbitType
+    {
+        FirstCourseBakSpec,
+        Mag,
+        Aspirant,
+        AG,
+        SPO,
+        TransferBakSpec,
+        TransferMag,
+        RestoreBakSpec,
+        RestoreMag
+    }
+
     //-------------------------------------------
     // ./Application/Index.aspx
     public class ExtApplicationModel : BaseModel
     {
         public Guid Id { get; set; }
+        public Guid CommitId { get; set; }
+        public string CommitName { get; set; }
         public string Priority { get; set; }
         public string StudyForm { get; set; }
         public string StudyBasis { get; set; }
@@ -634,6 +651,7 @@ namespace OnlineAbit2013.Models
 
         public int EntryTypeId { get; set; }
         public int AbiturientTypeId { get; set; }
+        public AbitType AbiturientType { get; set; }
 
         //перспективные
         public bool IsApproved { get; set; }
@@ -669,6 +687,7 @@ namespace OnlineAbit2013.Models
     // ./Abiturient/MotivateMail.aspx
     public class MotivateMailModel : BaseModel
     {
+        public string CommitId { get; set; }
         public List<SimpleApplication> Apps { get; set; }
         public List<string> lstApps { get; set; }
     }

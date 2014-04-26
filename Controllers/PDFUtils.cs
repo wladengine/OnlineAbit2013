@@ -2100,6 +2100,136 @@ namespace OnlineAbit2013.Controllers
             return ms.ToArray();
         }
 
+        public static byte[] GetApplicationBlockPDF_AG(Guid commitId, string dirPath)
+        {
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var abitList =
+                    (from App in context.AG_Application
+                     orderby App.Priority
+                     where App.CommitId == commitId && App.IsCommited == true && App.Enabled == true
+                     select new
+                     {
+                         PersonId = App.PersonId,
+                         Barcode = App.Barcode,
+                         Profession = App.AG_Entry.AG_Program.Name,
+                         ObrazProgram = App.AG_Entry.AG_ObrazProgram.Num,
+                         ObrazProgramName = App.AG_Entry.AG_Profile.Name,
+                         Specialization = App.AG_Entry.AG_Profile.Name,
+                         HostelEduc = App.HostelEduc,
+                         ClassNum = App.AG_Entry.AG_EntryClass.Num,
+                         ManualExam = App.ManualExamId.HasValue ? App.AG_ManualExam.Name : "нет"
+                     });
+
+                Guid PersonId = abitList.FirstOrDefault().PersonId;
+                var person =
+                    context.Person.Where(x => x.Id == PersonId).Select(x => new
+                    {
+                        x.Surname,
+                        x.Name, 
+                        x.SecondName,
+                        x.Sex,
+                        x.PersonAddInfo.HasPrivileges
+                    }).FirstOrDefault();
+
+                //query = "SELECT PrintName, DocumentNumber FROM AG_AllPriveleges WHERE PersonId=@PersonId";
+                //tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", abit.PersonId } });
+                var Olympiads =
+                    from Ol in context.Olympiads
+                    where Ol.PersonId == PersonId
+                    select new
+                    {
+                        Ol.DocumentSeries,
+                        Ol.DocumentNumber,
+                        Ol.DocumentDate,
+                        OlympName = Ol.OlympName.Name,
+                        OlympSubject = Ol.OlympSubject.Name
+                    };
+                    //(from DataRow rw in tbl.Rows
+                    // select rw.Field<string>("PrintName") + " " + rw.Field<string>("DocumentNumber"));
+
+                MemoryStream ms = new MemoryStream();
+                string dotName = "ApplicationAG.pdf";
+
+                byte[] templateBytes;
+                using (FileStream fs = new FileStream(dirPath + dotName, FileMode.Open, FileAccess.Read))
+                {
+                    templateBytes = new byte[fs.Length];
+                    fs.Read(templateBytes, 0, templateBytes.Length);
+                }
+
+                PdfReader pdfRd = new PdfReader(templateBytes);
+                PdfStamper pdfStm = new PdfStamper(pdfRd, ms);
+                pdfStm.SetEncryption(PdfWriter.STRENGTH128BITS, "", "", PdfWriter.ALLOW_SCREENREADERS | PdfWriter.ALLOW_PRINTING | PdfWriter.AllowPrinting);
+                AcroFields acrFlds = pdfStm.AcroFields;
+
+                acrFlds.SetField("FIO", ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim());
+                acrFlds.SetField("ObrazProgramYear", abitList.FirstOrDefault().ObrazProgram);
+                acrFlds.SetField("EntryClass", abitList.FirstOrDefault().ClassNum);
+                if (abitList.Where(x => x.HostelEduc == true).Count() > 0)
+                    acrFlds.SetField("HostelAbitYes", "1");
+                else
+                    acrFlds.SetField("HostelAbitNo", "1");
+
+                int inc = 0;
+                bool hasSecondApp = abitList.Count() > 1;
+                foreach (var abit in abitList)
+                {
+                    string code = (800000 + abit.Barcode).ToString();
+                    inc++;
+                    string i = inc.ToString();
+                    if (hasSecondApp)
+                    {
+                        acrFlds.SetField("chbIsPriority" + i, "1");
+                        hasSecondApp = false;
+                    }
+                    //добавляем штрихкод
+                    //Barcode128 barcode = new Barcode128();
+                    //barcode.Code = code;
+                    //PdfContentByte cb = pdfStm.GetOverContent(1);
+                    //iTextSharp.text.Image img = barcode.CreateImageWithBarcode(cb, null, null);
+                    //img.SetAbsolutePosition(70, 750);
+                    //cb.AddImage(img);
+
+                    acrFlds.SetField("RegNum" + i, code);
+                    acrFlds.SetField("Profession" + i, abit.Profession);
+                    acrFlds.SetField("ObrazProgram" + i, abit.ObrazProgramName);
+                    acrFlds.SetField("ManualExam" + i, abit.ManualExam);
+                    
+                    //string AllPrivileges = privileges.DefaultIfEmpty().Aggregate((x, next) => x + "; " + next) ?? "";
+                    //int index = 0, startindex = 0;
+                    //for (int i = 1; i <= 6; i++)
+                    //{
+                    //    if (AllPrivileges.Length > startindex && startindex >= 0)
+                    //    {
+                    //        int rowLength = 100;//длина строки, разная у первых строк
+                    //        if (i > 1) //длина остальных строк одинакова
+                    //            rowLength = 100;
+                    //        index = startindex + rowLength;
+                    //        if (index < AllPrivileges.Length)
+                    //        {
+                    //            index = AllPrivileges.IndexOf(" ", index);
+                    //            string val = index > 0 ?
+                    //                AllPrivileges.Substring(startindex, index - startindex)
+                    //                : AllPrivileges.Substring(startindex);
+                    //            acrFlds.SetField("AddDocs" + i.ToString(), val);
+                    //        }
+                    //        else
+                    //            acrFlds.SetField("AddDocs" + i.ToString(),
+                    //                AllPrivileges.Substring(startindex));
+                    //    }
+                    //    startindex = index;
+                    //}
+                }
+
+                pdfStm.FormFlattening = true;
+                pdfStm.Close();
+                pdfRd.Close();
+
+                return ms.ToArray();
+            }
+        }
+
         public static string[] GetSplittedStrings(string sourceStr, int firstStrLen, int strLen, int numOfStrings)
         {
             sourceStr = sourceStr ?? "";

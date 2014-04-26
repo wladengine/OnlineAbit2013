@@ -66,6 +66,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_AG_Entry_AG_Profile", "AG_Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.AG_Profile), "AG_Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.AG_Entry), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_AG_Application_AG_Entry", "AG_Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.AG_Entry), "AG_Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.AG_Application), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_AG_Application_AG_ManualExam", "AG_ManualExam", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.AG_ManualExam), "AG_Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.AG_Application), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "ComissionInEntry", "Comission", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.Comission), "Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Entry))]
 
 #endregion
 
@@ -984,22 +985,6 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<ApplicationFile> ApplicationFile
-        {
-            get
-            {
-                if ((_ApplicationFile == null))
-                {
-                    _ApplicationFile = base.CreateObjectSet<ApplicationFile>("ApplicationFile");
-                }
-                return _ApplicationFile;
-            }
-        }
-        private ObjectSet<ApplicationFile> _ApplicationFile;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<PersonFile> PersonFile
         {
             get
@@ -1028,6 +1013,38 @@ namespace OnlineAbit2013
             }
         }
         private ObjectSet<PersonFileType> _PersonFileType;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Comission> Comission
+        {
+            get
+            {
+                if ((_Comission == null))
+                {
+                    _Comission = base.CreateObjectSet<Comission>("Comission");
+                }
+                return _Comission;
+            }
+        }
+        private ObjectSet<Comission> _Comission;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ApplicationFile> ApplicationFile
+        {
+            get
+            {
+                if ((_ApplicationFile == null))
+                {
+                    _ApplicationFile = base.CreateObjectSet<ApplicationFile>("ApplicationFile");
+                }
+                return _ApplicationFile;
+            }
+        }
+        private ObjectSet<ApplicationFile> _ApplicationFile;
 
         #endregion
 
@@ -1466,14 +1483,6 @@ namespace OnlineAbit2013
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the ApplicationFile EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToApplicationFile(ApplicationFile applicationFile)
-        {
-            base.AddObject("ApplicationFile", applicationFile);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the PersonFile EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToPersonFile(PersonFile personFile)
@@ -1487,6 +1496,22 @@ namespace OnlineAbit2013
         public void AddToPersonFileType(PersonFileType personFileType)
         {
             base.AddObject("PersonFileType", personFileType);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Comission EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToComission(Comission comission)
+        {
+            base.AddObject("Comission", comission);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ApplicationFile EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplicationFile(ApplicationFile applicationFile)
+        {
+            base.AddObject("ApplicationFile", applicationFile);
         }
 
         #endregion
@@ -5138,17 +5163,15 @@ namespace OnlineAbit2013
         /// Create a new ApplicationFile object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="applicationId">Initial value of the ApplicationId property.</param>
         /// <param name="fileName">Initial value of the FileName property.</param>
         /// <param name="fileSize">Initial value of the FileSize property.</param>
         /// <param name="loadDate">Initial value of the LoadDate property.</param>
         /// <param name="isReadOnly">Initial value of the IsReadOnly property.</param>
         /// <param name="fileTypeId">Initial value of the FileTypeId property.</param>
-        public static ApplicationFile CreateApplicationFile(global::System.Guid id, global::System.Guid applicationId, global::System.String fileName, global::System.Int32 fileSize, global::System.DateTime loadDate, global::System.Boolean isReadOnly, global::System.Int32 fileTypeId)
+        public static ApplicationFile CreateApplicationFile(global::System.Guid id, global::System.String fileName, global::System.Int32 fileSize, global::System.DateTime loadDate, global::System.Boolean isReadOnly, global::System.Int32 fileTypeId)
         {
             ApplicationFile applicationFile = new ApplicationFile();
             applicationFile.Id = id;
-            applicationFile.ApplicationId = applicationId;
             applicationFile.FileName = fileName;
             applicationFile.FileSize = fileSize;
             applicationFile.LoadDate = loadDate;
@@ -5191,9 +5214,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid ApplicationId
+        public Nullable<global::System.Guid> ApplicationId
         {
             get
             {
@@ -5208,9 +5231,33 @@ namespace OnlineAbit2013
                 OnApplicationIdChanged();
             }
         }
-        private global::System.Guid _ApplicationId;
-        partial void OnApplicationIdChanging(global::System.Guid value);
+        private Nullable<global::System.Guid> _ApplicationId;
+        partial void OnApplicationIdChanging(Nullable<global::System.Guid> value);
         partial void OnApplicationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> CommitId
+        {
+            get
+            {
+                return _CommitId;
+            }
+            set
+            {
+                OnCommitIdChanging(value);
+                ReportPropertyChanging("CommitId");
+                _CommitId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CommitId");
+                OnCommitIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _CommitId;
+        partial void OnCommitIdChanging(Nullable<global::System.Guid> value);
+        partial void OnCommitIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5475,34 +5522,141 @@ namespace OnlineAbit2013
         private global::System.Int32 _FileTypeId;
         partial void OnFileTypeIdChanging(global::System.Int32 value);
         partial void OnFileTypeIdChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="Comission")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Comission : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Comission object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static Comission CreateComission(global::System.Int32 id)
+        {
+            Comission comission = new Comission();
+            comission.Id = id;
+            return comission;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Guid> CommitId
+        public global::System.String Address
         {
             get
             {
-                return _CommitId;
+                return _Address;
             }
             set
             {
-                OnCommitIdChanging(value);
-                ReportPropertyChanging("CommitId");
-                _CommitId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CommitId");
-                OnCommitIdChanged();
+                OnAddressChanging(value);
+                ReportPropertyChanging("Address");
+                _Address = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Address");
+                OnAddressChanged();
             }
         }
-        private Nullable<global::System.Guid> _CommitId;
-        partial void OnCommitIdChanging(Nullable<global::System.Guid> value);
-        partial void OnCommitIdChanged();
+        private global::System.String _Address;
+        partial void OnAddressChanging(global::System.String value);
+        partial void OnAddressChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String YaMapCoord
+        {
+            get
+            {
+                return _YaMapCoord;
+            }
+            set
+            {
+                OnYaMapCoordChanging(value);
+                ReportPropertyChanging("YaMapCoord");
+                _YaMapCoord = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("YaMapCoord");
+                OnYaMapCoordChanged();
+            }
+        }
+        private global::System.String _YaMapCoord;
+        partial void OnYaMapCoordChanging(global::System.String value);
+        partial void OnYaMapCoordChanged();
 
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "ComissionInEntry", "Entry")]
+        public EntityCollection<Entry> Entry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Entry>("OnlinePriem2012Model.ComissionInEntry", "Entry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Entry>("OnlinePriem2012Model.ComissionInEntry", "Entry", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -7541,6 +7695,44 @@ namespace OnlineAbit2013
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "ComissionInEntry", "Comission")]
+        public Comission Comission
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Comission>("OnlinePriem2012Model.ComissionInEntry", "Comission").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Comission>("OnlinePriem2012Model.ComissionInEntry", "Comission").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Comission> ComissionReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Comission>("OnlinePriem2012Model.ComissionInEntry", "Comission");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Comission>("OnlinePriem2012Model.ComissionInEntry", "Comission", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -9536,7 +9728,8 @@ namespace OnlineAbit2013
         /// <param name="barcode">Initial value of the Barcode property.</param>
         /// <param name="registrationStage">Initial value of the RegistrationStage property.</param>
         /// <param name="abiturientTypeId">Initial value of the AbiturientTypeId property.</param>
-        public static Person CreatePerson(global::System.Guid id, global::System.Guid userId, global::System.Int32 barcode, global::System.Int32 registrationStage, global::System.Int32 abiturientTypeId)
+        /// <param name="isCreatedByComission">Initial value of the IsCreatedByComission property.</param>
+        public static Person CreatePerson(global::System.Guid id, global::System.Guid userId, global::System.Int32 barcode, global::System.Int32 registrationStage, global::System.Int32 abiturientTypeId, global::System.Boolean isCreatedByComission)
         {
             Person person = new Person();
             person.Id = id;
@@ -9544,6 +9737,7 @@ namespace OnlineAbit2013
             person.Barcode = barcode;
             person.RegistrationStage = registrationStage;
             person.AbiturientTypeId = abiturientTypeId;
+            person.IsCreatedByComission = isCreatedByComission;
             return person;
         }
 
@@ -10105,6 +10299,30 @@ namespace OnlineAbit2013
         private Nullable<global::System.Boolean> _IsDisabled;
         partial void OnIsDisabledChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDisabledChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsCreatedByComission
+        {
+            get
+            {
+                return _IsCreatedByComission;
+            }
+            set
+            {
+                OnIsCreatedByComissionChanging(value);
+                ReportPropertyChanging("IsCreatedByComission");
+                _IsCreatedByComission = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsCreatedByComission");
+                OnIsCreatedByComissionChanged();
+            }
+        }
+        private global::System.Boolean _IsCreatedByComission;
+        partial void OnIsCreatedByComissionChanging(global::System.Boolean value);
+        partial void OnIsCreatedByComissionChanged();
 
         #endregion
 

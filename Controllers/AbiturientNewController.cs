@@ -1002,8 +1002,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         {
                             model.ExitClassId = (int)iScExClassId;
                         }
-                        /*else 
-                            return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });*/
                     }
                     else
                     {
@@ -1043,6 +1041,33 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                      }).AsEnumerable()
                      .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                      .ToList();
+
+                //выборка активных заявлений
+                model.Applications = new List<SimpleApplicationPackage>();
+                var Applications = context.Abiturient.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { x.CommitId, x.StudyLevelName, x.EntryType }).Distinct();
+                foreach (var app in Applications)
+                {
+                    model.Applications.Add(new SimpleApplicationPackage()
+                    {
+                        Id = app.CommitId.Value,
+                        PriemType = app.EntryType.HasValue ? app.EntryType.Value.ToString() : "",
+                        StudyLevel = app.StudyLevelName
+                    });
+                }
+
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { x.CommitId, StudyLevelName = "", EntryType = (int?)0 }).Distinct();
+
+                foreach (var app in Applications)
+                {
+                    model.Applications.Add(new SimpleApplicationPackage()
+                    {
+                        Id = app.CommitId.Value,
+                        PriemType = "",
+                        StudyLevel = "АГ"
+                    });
+                }
 
                 return View("NewApplication", model);
             }
@@ -1227,7 +1252,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 return RedirectToAction("LogOn", "Account");
 
             if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-                return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+                return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
 
             string sCommitId = Request.Form["CommitId"];
             Guid CommitId;
@@ -1236,6 +1261,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true).Count() > 0)
+                    return RedirectToAction("NewApplication_AG", 
+                        new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
+
                 var Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
                 foreach (var AppId in Ids)
                 {
@@ -1254,7 +1283,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 context.SaveChanges();
             }
 
-            return RedirectToAction("PriorityChanger");
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
         }
 
         //public ActionResult MotivateMail()
@@ -1287,48 +1316,52 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
         //    return View(mdl);
         //}
 
-        //public ActionResult PriorityChanger()
-        //{
-        //    Guid PersonId;
-        //    if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-        //        return RedirectToAction("LogOn", "Account");
-        //    using (OnlinePriemEntities context = new OnlinePriemEntities())
-        //    {
-        //        var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
-        //        if (PersonInfo == null)//а что это могло бы значить???
-        //            return RedirectToAction("Index");
+        public ActionResult PriorityChanger(string CommitId)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
 
-        //        string query = "(SELECT [Application].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [Application] " +
-        //            " INNER JOIN Entry ON [Application].EntryId=Entry.Id " +
-        //            " WHERE PersonId=@PersonId AND Enabled=@Enabled " +
-        //            " UNION " +
-        //            " SELECT [ForeignApplication].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [ForeignApplication] " +
-        //            " INNER JOIN Entry ON [ForeignApplication].EntryId=Entry.Id " +
-        //            " WHERE PersonId=@PersonId AND Enabled=@Enabled) ORDER BY Priority ";
-        //        Dictionary<string, object> dic = new Dictionary<string, object>()
-        //        {
-        //            {"@PersonId", PersonId },
-        //            {"@Enabled", true }
-        //        };
-        //        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-        //        var apps = (from DataRow rw in tbl.Rows
-        //                    select new SimpleApplication()
-        //                    {
-        //                        Id = rw.Field<Guid>("Id"),
-        //                        Priority = rw.Field<int>("Priority").ToString(),
-        //                        Profession = rw.Field<string>("LicenseProgramName"),
-        //                        ObrazProgram = rw.Field<string>("ObrazProgramName"),
-        //                        Specialization = rw.Field<string>("ProfileName")
-        //                    }).ToList();
+            Guid gCommitId;
+            if (!Guid.TryParse(CommitId, out gCommitId))
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
-        //        MotivateMailModel mdl = new MotivateMailModel()
-        //        {
-        //            Apps = apps,
-        //            UILanguage = Util.GetUILang(PersonId)
-        //        };
-        //        return View(mdl);
-        //    }
-        //}
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return RedirectToAction("Index");
+
+                var apps =
+                    (from App in context.Application
+                     where App.PersonId == PersonId && App.CommitId == gCommitId && App.IsCommited == true && App.Enabled == true
+                     select new SimpleApplication()
+                     {
+                         Id = App.Id,
+                         Priority = App.Priority,
+                         Profession = App.Entry.LicenseProgramCode + " " + App.Entry.LicenseProgramName,
+                         ObrazProgram = App.Entry.ObrazProgramCrypt + " " + App.Entry.ObrazProgramName,
+                         Specialization = App.Entry.ProfileName
+                     }).ToList().Union(
+                     (from AG_App in context.AG_Application
+                      where AG_App.PersonId == PersonId && AG_App.CommitId == gCommitId && AG_App.IsCommited == true && AG_App.Enabled == true
+                      select new SimpleApplication()
+                      {
+                          Id = AG_App.Id,
+                          Priority = AG_App.Priority,
+                          Profession = AG_App.AG_Entry.AG_Program.Name,
+                          ObrazProgram = AG_App.AG_Entry.AG_EntryClass.Name,
+                          Specialization = AG_App.AG_Entry.AG_Profile.Name
+                      }).ToList()).ToList();
+
+                MotivateMailModel mdl = new MotivateMailModel()
+                {
+                    Apps = apps,
+                    UILanguage = Util.GetUILang(PersonId)
+                };
+                return View(mdl);
+            }
+        }
 
         [HttpPost]
         public ActionResult ChangePriority(MotivateMailModel model)
@@ -1336,6 +1369,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
+
+            Guid gCommId;
+            if (!Guid.TryParse(model.CommitId, out gCommId))
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
+
             int prior = 0;
             string[] allKeys = Request.Form.AllKeys;
             foreach (string key in allKeys)
@@ -1344,19 +1382,26 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (!Guid.TryParse(key, out appId))
                     continue;
 
-                string query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId";
+                string query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId";
                 Dictionary<string, object> dic = new Dictionary<string, object>();
                 dic.AddItem("@Priority", ++prior);
                 dic.AddItem("@Id", appId);
                 dic.AddItem("@PersonId", PersonId);
-
+                dic.AddItem("@CommitId", gCommId);
+                
                 try
                 {
                     Util.AbitDB.ExecuteQuery(query, dic);
                 }
                 catch { }
+
+                query = "UPDATE [AG_Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId";
+                try { 
+                    Util.AbitDB.ExecuteQuery(query, dic); 
+                }
+                catch { }
             }
-            return RedirectToAction("PriorityChanger");
+            return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
         }
 
         public ActionResult AddFiles()

@@ -1,10 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Abiturient/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Просмотр заявления
+    Просмотр условий поступления
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-    <h2>Просмотр заявления</h2>
+    <h2>Просмотр условий поступления</h2>
 </asp:Content>
 
 <asp:Content ID="HeaderScripts" ContentPlaceHolderID="HeaderScriptsContent" runat="server">
@@ -215,7 +215,11 @@
         }
     }
     </script>
-    
+
+<a href="../../AbiturientNew/Main/">Главное меню</a> - 
+<a href="../../Application/Index/<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a> - 
+Детали условий поступления
+<br />
 <h4>Основные сведения</h4>
 <hr />
 <table class="paginate">
@@ -246,60 +250,17 @@
         <td width="30%" align="right">Основа обучения</td>
         <td align="left"><%= Html.Encode(Model.StudyBasis) %></td>
     </tr>
-    <tr>
-        <td width="30%" align="right">Скачать заявление</td>
-        <td align="left"><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
-    </tr>
-    
-    <tr>
-        <td width="30%" align="right" valign="top">Статус заявления:</td>
-        <td align="left">
-            <span id="appStatus" style="font-size:14px" class="<%= Model.Enabled ? "Green" : "Red" %>">
-                <%= Model.Enabled ? "Подано" : "Отозвано " + Model.DateOfDisable%>
-            </span>
-            <br /><br />
-            <% if (Model.Enabled)
-               { %>
-                <% if (Model.EntryTypeId != 2)
-                   { %>
-            <p id="rejectApp">
-                <button id="rejectBtn" class="button button-orange">Удалить заявление</button>
-                <div id="dialog-form">
-                    <p class="errMessage"></p>
-                    <h5>Внимание!</h5>
-                    <p>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</p>
-                    <h4>Вы хотите удалить заявление?</h4>
-                 </div>
-            </p>
-                <% } %>
-                <% if (Model.EntryTypeId == 2)
-                   { %>
-                <p id="rejectApp">
-                    <button id="rejectBtn" class="button button-orange">Забрать заявление</button>
-                    <div id="dialog-form">
-                        <p class="errMessage"></p>
-                        <h5>Внимание!</h5>
-                        <p>Отзывая данное заявление, вы отказываетесь от участия в конкурсе на указанную образовательную программу.Восстановить данное заявление будет уже невозможно.</p>
-                        <h4>Вы хотите отказаться от участия в конкурсе?</h4>
-                    </div>
-                </p>
-                <% } %>
-            <% } %>
-        </td>
-    </tr>
-    
 </table>
 <br />
-<% if (Model.EntryTypeId != 2 && Model.AbiturientTypeId == 1)
+<% if (Model.EntryTypeId != 2 && (Model.AbiturientType == OnlineAbit2013.Models.AbitType.AG || Model.AbiturientType == OnlineAbit2013.Models.AbitType.FirstCourseBakSpec))
    { %>
    <div class="message info">
-    <b>Вам следует <a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>">распечатать заявление</a> (или запомнить штрих-код и данные по заявлению) и прийти с ним в приёмную комиссию</b> 
+    <b>Вам следует <a href="<%= string.Format("../../Application/GetPrint/{0}", Model.CommitId.ToString("N")) %>">распечатать заявление</a> и прийти с ним в приёмную комиссию</b> 
    </div>
    <div id="map" style="width:600px;height:300px"></div>
 <% } %>
-<% if (Model.EntryTypeId == 2)
+<% else if (Model.EntryTypeId == 2)
    { %>
-
     <div class="panel">
     <h4 style="cursor:pointer;" onclick="HideMotivationMail()">Мотивационное письмо</h4>
     <div id="MotivationMail">
@@ -323,7 +284,6 @@
     </form>
     </div>
     </div>
-
     <div class="panel">
     <h4 style="cursor:pointer;" onclick="HideEssay()">Эссе</h4>
     <div id="Essay">
@@ -339,7 +299,6 @@
     </form>
     </div>
     </div>
-
     <div class="panel">
     <h4 onclick="HidePortfolio()" style="cursor:pointer;">Портфолио</h4>
     <div class="message info">

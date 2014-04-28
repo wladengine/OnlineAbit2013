@@ -121,7 +121,7 @@
     <value>Date of birth</value>
   </data>
   <data name="BirthPlace" xml:space="preserve">
-    <value>Place of birth (Country of birth)</value>
+    <value>Country, place of birth</value>
   </data>
   <data name="ButtonSaveText" xml:space="preserve">
     <value>Save</value>

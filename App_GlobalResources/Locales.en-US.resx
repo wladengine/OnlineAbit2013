@@ -127,7 +127,7 @@
     <value>Personal Account</value>
   </data>
   <data name="LeftMenuAddSharedFiles" xml:space="preserve">
-    <value>Shared documents</value>
+    <value>Common files</value>
   </data>
   <data name="LeftMenuChangePassword" xml:space="preserve">
     <value>Change password</value>

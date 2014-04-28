@@ -147,4 +147,7 @@
   <data name="ParentsHeader" xml:space="preserve">
     <value>Лицо, с которым можно связаться в экстренных случаях:</value>
   </data>
+  <data name="DocumentsReturn" xml:space="preserve">
+    <value>Способ возврата поданых документов</value>
+  </data>
 </root>

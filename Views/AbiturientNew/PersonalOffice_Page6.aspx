@@ -42,9 +42,9 @@
                     <%= Html.ValidationSummary() %>
                     <%= Html.HiddenFor(x => x.Stage) %>
                     <div class="clearfix">
-                        <h4>Общежитие</h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "HostelHeader").ToString()%></h4>
                         <%= Html.CheckBoxFor(x => x.AddInfo.HostelAbit)%>
-                        <span>Нуждаюсь в общежитии на время поступления</span>
+                        <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "HostelAbit").ToString()%></span>
                     </div>
                     <div class="clearfix">
                         <h4>Право на льготы:</h4>
@@ -52,17 +52,17 @@
                         <span>Претендую на льготы (инвалид I,II ст., участник боевых действий, сирота, чернобылец...)</span>
                     </div>
                     <div class="clearfix">
-                        <h4>Лицо, с которым можно связаться в экстренных случаях:</h4>
-                        <span>(указать Ф.И.О., степень родства, телефон, моб.телефон, эл.почта)</span><br />
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson").ToString()%></h4>
+                        <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson_SubHeader").ToString()%></span><br />
                         <!-- <textarea id="AddPerson_ContactPerson" name="AddPerson.ContactPerson" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
                         <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } }) %>
                     </div>
                     <div class="clearfix">
-                        <h4>О себе дополнительно сообщаю:</h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ExtraInfo").ToString()%></h4>
                         <!-- <textarea id="AddPerson_ExtraInfo" name="AddPerson.ExtraInfo" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
                         <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
                     </div>
-                    <h4>Способ возврата поданых документов</h4>
+                    <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "DocumentsReturn").ToString()%></h4>
                     <div class="clearfix">
                     <%
                         foreach (SelectListItem SLI in Model.AddInfo.ReturnDocumentTypeList)
@@ -74,14 +74,14 @@
                     %>
                     </div>
                     <div class="clearfix">
-                        <h4>Я подтверждаю, что предоставленная мной информация корректна и достоверна. Даю согласие на обработку предоставленных персональных данных в порядке, установленном Федеральным законом от 27 июля 2006 года № 152-ФЗ «О персональных данных».</h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "FZ152_Header").ToString()%></h4>
                         <%= Html.CheckBoxFor(x => x.AddInfo.FZ_152Agree) %>
-                        <span>Подтверждаю и согласен</span>    
+                        <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "FZ_152Agree").ToString()%></span>    
                     </div>
-                    <span id="FZ" class="Red" style="display:none;">Вы должны принять условия</span>
+                    <span id="FZ" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step6", "FZ_152_Message").ToString()%></span>
                     <hr />
                     <div class="clearfix">
-                        <input id="Submit5" class="button button-green" type="submit" value="Закончить регистрацию" />
+                        <input id="Submit5" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonalOffice_Step6", "btnValue_EndRegisration").ToString()%>" />
                     </div>
                 </form>
             </div>

@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AttestatRegion" xml:space="preserve">
-    <value>Region (for Russian diplomas)</value>
+    <value>Region (for Russian High School Diplomas)</value>
   </data>
   <data name="AttestatRegion_Message" xml:space="preserve">
     <value>Specify the number of the region</value>
   </data>
   <data name="AvgMark" xml:space="preserve">
-    <value>Average mark</value>
+    <value>Average Grade</value>
   </data>
   <data name="CountryEducId" xml:space="preserve">
-    <value>Country of previous education</value>
+    <value>Country of your previous education</value>
   </data>
   <data name="DiplomNumber" xml:space="preserve">
     <value>Number</value>
@@ -142,10 +142,10 @@
     <value>Specify the document series</value>
   </data>
   <data name="DiplomTheme" xml:space="preserve">
-    <value>Diploma work</value>
+    <value>Diploma Thesis</value>
   </data>
   <data name="EducationDocumentHeader" xml:space="preserve">
-    <value>Education document</value>
+    <value>Document of Education</value>
   </data>
   <data name="EducationInfo_SchoolExitYear_MessageFormat" xml:space="preserve">
     <value>Enter year in 4-digit format</value>
@@ -157,31 +157,31 @@
     <value>I have the TORFL Certificate (ТРКИ)</value>
   </data>
   <data name="HEDataHeader" xml:space="preserve">
-    <value>Higher education info</value>
+    <value>Higher Education Data</value>
   </data>
   <data name="HEEntryYear" xml:space="preserve">
-    <value>Year of start</value>
+    <value>Year of the beginning of study</value>
   </data>
   <data name="LanguageId" xml:space="preserve">
-    <value>Foreign Language</value>
+    <value>Foreign languages</value>
   </data>
   <data name="PersonQualification" xml:space="preserve">
     <value>Qualification</value>
   </data>
   <data name="PersonSpecialization" xml:space="preserve">
-    <value>Speciality</value>
+    <value>Field of Study</value>
   </data>
   <data name="PersonStudyForm" xml:space="preserve">
-    <value>Education form</value>
+    <value>Form of Education</value>
   </data>
   <data name="SchoolExitYear" xml:space="preserve">
     <value>Year of graduation</value>
   </data>
   <data name="SchoolName" xml:space="preserve">
-    <value>Name of educational institution</value>
+    <value>Name of Educational Institution</value>
   </data>
   <data name="SchoolTypeId" xml:space="preserve">
-    <value>Type</value>
+    <value>Type of Educational Institution</value>
   </data>
   <data name="TRKICertificateNumber" xml:space="preserve">
     <value>TORFL Certificate Number</value>
@@ -197,5 +197,32 @@
   </data>
   <data name="RegionEducId" xml:space="preserve">
     <value>Select the region</value>
+  </data>
+  <data name="AddMark" xml:space="preserve">
+    <value>Add Grade</value>
+  </data>
+  <data name="EGEmarks" xml:space="preserve">
+    <value>Unified State Exam Grades</value>
+  </data>
+  <data name="EGEnomarks" xml:space="preserve">
+    <value>No Unified State Exam Grades</value>
+  </data>
+  <data name="EnglishMark" xml:space="preserve">
+    <value>Final grade of English (if there are)</value>
+  </data>
+  <data name="ResidentialPlace" xml:space="preserve">
+    <value>Residential place</value>
+  </data>
+  <data name="SchoolExitClass" xml:space="preserve">
+    <value>Graduate class</value>
+  </data>
+  <data name="SchoolNumber" xml:space="preserve">
+    <value>Number of School</value>
+  </data>
+  <data name="EducationHeader" xml:space="preserve">
+    <value>Educational Data</value>
+  </data>
+  <data name="SchoolExitYear_Message" xml:space="preserve">
+    <value>Enter the year of graduation</value>
   </data>
 </root>

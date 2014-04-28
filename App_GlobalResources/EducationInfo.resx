@@ -207,4 +207,31 @@
   <data name="VuzAdditionalTypeId" xml:space="preserve">
     <value>Выберите тип поступления</value>
   </data>
+  <data name="AddMark" xml:space="preserve">
+    <value>Добавить оценку</value>
+  </data>
+  <data name="EGEmarks" xml:space="preserve">
+    <value>Баллы ЕГЭ</value>
+  </data>
+  <data name="EGEnomarks" xml:space="preserve">
+    <value>Нет баллов по ЕГЭ</value>
+  </data>
+  <data name="EnglishMark" xml:space="preserve">
+    <value>Итоговая оценка по английскому языку (если изучался)</value>
+  </data>
+  <data name="ResidentialPlace" xml:space="preserve">
+    <value>Населенный пункт</value>
+  </data>
+  <data name="SchoolNumber" xml:space="preserve">
+    <value>Номер школы</value>
+  </data>
+  <data name="EducationHeader" xml:space="preserve">
+    <value>Данные об образовании</value>
+  </data>
+  <data name="EnglishNull" xml:space="preserve">
+    <value>Желаю изучать английский в СПбГУ 'с нуля'</value>
+  </data>
+  <data name="RedDiploma" xml:space="preserve">
+    <value>Медалист (красный диплом)</value>
+  </data>
 </root>

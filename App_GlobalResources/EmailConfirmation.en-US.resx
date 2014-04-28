@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EducationHeader" xml:space="preserve">
+    <value>Educational Data</value>
+  </data>
   <data name="FirstMail1" xml:space="preserve">
     <value>On your email</value>
   </data>

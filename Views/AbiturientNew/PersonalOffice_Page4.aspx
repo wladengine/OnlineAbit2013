@@ -54,24 +54,27 @@
                 return ret;
             }
             function CheckSchoolExitYear() {
-                var ret = true;
+                var ret = true; 
                 if ($('#EducationInfo_SchoolExitYear').val() == '') {
                     ret = false;
                     $('#EducationInfo_SchoolExitYear').addClass('input-validation-error');
                     $('#EducationInfo_SchoolExitYear_Message').show();
+                    $('#EducationInfo_SchoolExitYear_MessageFormat').hide();
                 }
                 else {
                     $('#EducationInfo_SchoolExitYear').removeClass('input-validation-error');
-                    $('#EducationInfo_SchoolExitYear_Message').hide();
-                }
-                var regex = /^\d{4}$/i;
-                var val = $('#EducationInfo_SchoolExitYear').val();
-                if (!regex.test(val)) {
-                    $('#EducationInfo_SchoolExitYear_MessageFormat').show();
-                    ret = false;
-                }
-                else {
-                    $('#EducationInfo_SchoolExitYear_MessageFormat').hide();
+                    $('#EducationInfo_SchoolExitYear_Message').hide(); 
+                    var regex = /^\d{4}$/i;
+                    var val = $('#EducationInfo_SchoolExitYear').val();
+                    if (!regex.test(val)) {
+                        $('#EducationInfo_SchoolExitYear').addClass('input-validation-error');
+                        $('#EducationInfo_SchoolExitYear_MessageFormat').show();
+                        ret = false;
+                    }
+                    else {
+                        $('#EducationInfo_SchoolExitYear').removeClass('input-validation-error');
+                        $('#EducationInfo_SchoolExitYear_MessageFormat').hide();
+                    }
                 }
                 return ret;
             }
@@ -430,65 +433,79 @@
                         </div>
                     <% } %>
                     <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
-                        <h3>Данные об образовании</h3>
+                        <h3><%= GetGlobalResourceObject("EducationInfo", "EducationHeader")%></h3>
                         <hr />
                         <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                         <fieldset><br />
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolTypeId, GetGlobalResourceObject("EducationInfo", "SchoolTypeId").ToString())%>
+                            <label for="EducationInfo_SchoolTypeId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal runat="server" Text="<%$Resources:EducationInfo, SchoolTypeId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label> 
                             <%= Html.DropDownListFor(x => x.EducationInfo.SchoolTypeId, Model.EducationInfo.SchoolTypeList) %>
                         </div>
 
                         <div id="_vuzAddType" class="clearfix" style="display:none">
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.VuzAdditionalTypeId, GetGlobalResourceObject("EducationInfo", "VuzAdditionalTypeId").ToString())%>
+                                <label for="EducationInfo_VuzAdditionalTypeId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:EducationInfo, VuzAdditionalTypeId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                                </label> 
                                 <%= Html.DropDownListFor(x => x.EducationInfo.VuzAdditionalTypeId, Model.EducationInfo.VuzAdditionalTypeList) %>
                             </div>
                         </div>
                         <div id="_schoolExitClass" class="clearfix" style="display:none">
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.SchoolExitClassId, GetGlobalResourceObject("EducationInfo", "SchoolExitClass").ToString())%>
+                                <label for="EducationInfo_SchoolExitClassId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:EducationInfo, SchoolExitClass %>"></asp:Literal><asp:Literal  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                                </label>
                                 <%= Html.DropDownListFor(x => x.EducationInfo.SchoolExitClassId, Model.EducationInfo.SchoolExitClassList) %>
                             </div>
                         </div>
 
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.CountryEducId, GetGlobalResourceObject("EducationInfo", "CountryEducId").ToString()) %>
+                            <label for="EducationInfo_CountryEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:EducationInfo, CountryEducId %>"></asp:Literal><asp:Literal ID="Literal2"  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label> 
                             <%= Html.DropDownListFor(x => x.EducationInfo.CountryEducId, Model.EducationInfo.CountryList) %>
                         </div>
                         <div id="_regionEduc" class="clearfix">
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.RegionEducId, GetGlobalResourceObject("EducationInfo", "RegionEducId").ToString()) %>
+                                <label for="EducationInfo_RegionEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal  runat="server" Text="<%$Resources:EducationInfo, RegionEducId %>"></asp:Literal><asp:Literal  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                                </label>  
                                 <%= Html.DropDownListFor(x => x.EducationInfo.RegionEducId, Model.EducationInfo.RegionList) %>
                             </div>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolName, GetGlobalResourceObject("EducationInfo", "SchoolName").ToString())%>
+                            <label for="EducationInfo_SchoolName" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal ID="Literal5"  runat="server" Text="<%$Resources:EducationInfo, SchoolName %>"></asp:Literal><asp:Literal ID="Literal6"  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label>  
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolName)%>
-                            <br />
-                            <span id="EducationInfo_SchoolName_Message" class="Red" style="display:none">Укажите название образовательного учреждения</span>
+                            <br /><p></p>
+                            <span id="EducationInfo_SchoolName_Message" class="Red" style="display:none">  <%= GetGlobalResourceObject("EducationInfo", "EducationInfo_SchoolName_Message").ToString()%> </span>
                         </div>
                         <div id="_SchoolNumber" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolNumber, "Номер школы") %>
+                            <%= Html.LabelFor(x => x.EducationInfo.SchoolNumber, GetGlobalResourceObject("EducationInfo", "SchoolNumber").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolNumber) %>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolCity, "Населённый пункт") %>
+                            <%= Html.LabelFor(x => x.EducationInfo.SchoolCity, GetGlobalResourceObject("EducationInfo", "ResidentialPlace").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolCity) %>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolExitYear, GetGlobalResourceObject("EducationInfo", "SchoolExitYear").ToString())%>
+                            <label for="EducationInfo_SchoolExitYear" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                            <asp:Literal ID="Literal3"  runat="server" Text="<%$Resources:EducationInfo, SchoolExitYear %>"></asp:Literal><asp:Literal ID="Literal4"  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolExitYear)%>
-                            <br />
-                            <span id="EducationInfo_SchoolExitYear_Message" class="Red" style="display:none; border-collapse:collapse;">Укажите год окончания обучения</span>
-                            <span id="EducationInfo_SchoolExitYear_MessageFormat" class="Red" style="display:none; border-collapse:collapse;">Укажите год в 4-значном формате</span>
+                            <br /><p></p>
+                            <span id="EducationInfo_SchoolExitYear_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("EducationInfo", "SchoolExitYear_Message").ToString()%></span>
+                            <span id="EducationInfo_SchoolExitYear_MessageFormat" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("EducationInfo", "EducationInfo_SchoolExitYear_MessageFormat").ToString()%></span>
                         </div>
                         <div id="AvgMark" class="clearfix">
                             <%= Html.LabelFor(x => x.EducationInfo.AvgMark, GetGlobalResourceObject("EducationInfo", "AvgMark").ToString()) %>
                             <%= Html.TextBoxFor(x => x.EducationInfo.AvgMark) %>
                         </div>
                         <div id="_IsExcellent" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.IsExcellent, "Медалист (красный диплом)") %>
+                            <%= Html.LabelFor(x => x.EducationInfo.IsExcellent, GetGlobalResourceObject("EducationInfo", "RedDiploma").ToString())%>
                             <%= Html.CheckBoxFor(x => x.EducationInfo.IsExcellent)%>
                         </div>
                         
@@ -497,32 +514,32 @@
                             <%= Html.DropDownListFor(x => x.EducationInfo.LanguageId, Model.EducationInfo.LanguageList) %>
                         </div>
                         <div id="EnglishMark" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.EnglishMark, "Итоговая оценка по английскому языку (если изучался)") %>
+                            <%= Html.LabelFor(x => x.EducationInfo.EnglishMark, GetGlobalResourceObject("EducationInfo", "EnglishMark").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.EnglishMark) %>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.StartEnglish, "Желаю изучать английский в СПбГУ 'с нуля'")%>
+                            <%= Html.LabelFor(x => x.EducationInfo.StartEnglish, GetGlobalResourceObject("EducationInfo", "EnglishNull").ToString())%>
                             <%= Html.CheckBoxFor(x => x.EducationInfo.StartEnglish)%>
                         </div>
                         
-                        <h4>Документ об образовании</h4>
+                        <h4><%=GetGlobalResourceObject("EducationInfo", "EducationDocumentHeader").ToString()%></h4>
                         <hr />
                         <div id="_AttRegion" class="clearfix" style="display:none">
-                            <%= Html.LabelFor(x => x.EducationInfo.AttestatRegion, "Регион (для российских аттестатов)")%>
+                            <%= Html.LabelFor(x => x.EducationInfo.AttestatRegion, GetGlobalResourceObject("EducationInfo", "AttestatRegion").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.AttestatRegion) %>
-                            <span id="EducationInfo_AttestatRegion_Message" class="Red" style="display:none; border-collapse:collapse;">Укажите номер региона</span>
+                            <span id="EducationInfo_AttestatRegion_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("EducationInfo", "AttestatRegion_Message").ToString()%> </span>
                         </div>
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.EducationInfo.DiplomSeries, GetGlobalResourceObject("EducationInfo", "DiplomSeries").ToString()) %>
                             <%= Html.TextBoxFor(x => x.EducationInfo.DiplomSeries) %>
-                            <br />
-                            <span id="EducationInfo_DiplomSeries_Message" class="Red" style="display:none">Укажите серию документа</span>
+                            <br /><p></p>
+                            <span id="EducationInfo_DiplomSeries_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("EducationInfo", "DiplomSeries_Message").ToString()%></span>
                         </div>
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.EducationInfo.DiplomNumber, GetGlobalResourceObject("EducationInfo", "DiplomNumber").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.DiplomNumber)%>
-                            <br />
-                            <span id="EducationInfo_DiplomNumber_Message" class="Red" style="display:none">Укажите номер документа</span>
+                            <br /><p></p>
+                            <span id="EducationInfo_DiplomNumber_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("EducationInfo", "DiplomNumber_Message").ToString()%></span>
                         </div>
                         <div id="_ForeignCountryEduc" class="clearfix" style="display:none">
                             <div class="clearfix">
@@ -543,7 +560,7 @@
                             </div>
                         </div>
                         <div id="HEData">
-                            <h4>Данные о высшем образовании</h4>
+                            <h4><% =GetGlobalResourceObject("EducationInfo", "HEDataHeader").ToString()%></h4>
                             <hr />
                             <div class="clearfix">
                                 <%= Html.LabelFor(x => x.EducationInfo.ProgramName, GetGlobalResourceObject("EducationInfo", "PersonSpecialization").ToString())%>
@@ -562,7 +579,7 @@
                                 <%= Html.TextBoxFor(x => x.EducationInfo.DiplomTheme) %>
                             </div>
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.HEEntryYear, "Год начала обучения") %>
+                                <%= Html.LabelFor(x => x.EducationInfo.HEEntryYear, GetGlobalResourceObject("EducationInfo", "HEEntryYear").ToString())%>
                                 <%= Html.TextBoxFor(x => x.EducationInfo.HEEntryYear) %>
                             </div>
                             <%--<div class="clearfix">
@@ -571,11 +588,11 @@
                             </div>--%>
                         </div>
                         <div id="EGEData" class="clearfix">
-                            <h6>Баллы ЕГЭ</h6>
+                            <h6><%=GetGlobalResourceObject("EducationInfo", "EGEmarks").ToString()%></h6>
                             <% if (Model.EducationInfo.EgeMarks.Count == 0)
                                { 
                             %>
-                                <h6 id="noMarks">Нет баллов по ЕГЭ</h6>
+                                <h6 id="noMarks"><%=GetGlobalResourceObject("EducationInfo", "EGEnomarks").ToString()%></h6>
                             <%
                                }
                                else
@@ -608,7 +625,7 @@
                             </table>
                             <% } %>
                             <br />
-                            <button type="button" id="create-ege" class="button button-blue">Добавить оценку</button>
+                            <button type="button" id="create-ege" class="button button-blue"><%=GetGlobalResourceObject("EducationInfo", "AddMark").ToString()%></button>
                             <div id="dialog-form">
                                 <p id="validation_info">Все поля обязательны для заполнения</p>
 	                            <hr />

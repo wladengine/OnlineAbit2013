@@ -145,7 +145,7 @@
     <value>File name</value>
   </data>
   <data name="FileType" xml:space="preserve">
-    <value>File type</value>
+    <value>Type of the document</value>
   </data>
   <data name="Header" xml:space="preserve">
     <value>Shared files</value>
@@ -172,11 +172,11 @@
     <value>No files</value>
   </data>
   <data name="PassportLoad" xml:space="preserve">
-    <value>Here you can attach only scans of the passport</value>
+    <value>Apload the copy of your ID (document identifying personality and citizenship of the applicant)</value>
   </data>
   <data name="PersonalOffice_Passport" xml:space="preserve">
-    <value>Here you can attach scans of the passport. &lt;/br&gt;
-The other documents might be  attached in the "Shared documents" folder.&lt;/br&gt;</value>
+    <value>You can attach passport scans here &lt;/br&gt;
+Other documents can be attached in the window "General documents".&lt;/br&gt;</value>
   </data>
   <data name="RulesInformation" xml:space="preserve">
     <value>&lt;h3&gt;Information for applicants:&lt;/h3&gt;

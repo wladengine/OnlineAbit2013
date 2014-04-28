@@ -117,11 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdCity" xml:space="preserve">
-    <value>City</value>
-  </data>
   <data name="AdditionalAddress_Header" xml:space="preserve">
-    <value>Additional address:</value>
+    <value>Residential Address (if different)</value>
   </data>
   <data name="AddressData_Message" xml:space="preserve">
     <value>Enter address</value>
@@ -139,7 +136,7 @@
     <value>Country</value>
   </data>
   <data name="Flat" xml:space="preserve">
-    <value>Flat</value>
+    <value>Flat number</value>
   </data>
   <data name="House" xml:space="preserve">
     <value>House</value>
@@ -148,31 +145,31 @@
     <value>Enter house</value>
   </data>
   <data name="Korpus" xml:space="preserve">
-    <value>Housing</value>
+    <value>Building</value>
   </data>
   <data name="MainPhone" xml:space="preserve">
-    <value>Main phone number</value>
+    <value>Main Telephone Number</value>
   </data>
   <data name="MainPhone_Message" xml:space="preserve">
     <value>Enter main phone</value>
   </data>
   <data name="PhonesHeader" xml:space="preserve">
-    <value>Contact phone:</value>
+    <value>Contact Telephone Numbers</value>
   </data>
   <data name="PostIndex" xml:space="preserve">
-    <value>Index</value>
+    <value>Postal Code</value>
   </data>
   <data name="PostIndex_Message" xml:space="preserve">
-    <value>Enter index</value>
+    <value>Enter  postal code</value>
   </data>
   <data name="RegionId" xml:space="preserve">
     <value>Region</value>
   </data>
   <data name="RegistrationHeader" xml:space="preserve">
-    <value>Registration address:</value>
+    <value>Registered Address</value>
   </data>
   <data name="SecondPhone" xml:space="preserve">
-    <value>Additional phone number</value>
+    <value>Additional Telephone Number</value>
   </data>
   <data name="Street" xml:space="preserve">
     <value>Street</value>

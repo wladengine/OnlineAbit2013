@@ -117,160 +117,93 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Address" xml:space="preserve">
-    <value>Permanent address</value>
+  <data name="btnAdd" xml:space="preserve">
+    <value>Add</value>
   </data>
-  <data name="AddressMessage" xml:space="preserve">
-    <value>Specify your permament address</value>
+  <data name="JobExperience" xml:space="preserve">
+    <value>Experience (number of full years)</value>
   </data>
-  <data name="Agree" xml:space="preserve">
-    <value>I agree with this conditions</value>
+  <data name="JobFunctions" xml:space="preserve">
+    <value>Functions</value>
   </data>
-  <data name="BirthDate" xml:space="preserve">
-    <value>Date of  birth</value>
+  <data name="JobLocation" xml:space="preserve">
+    <value>Job location  (internship)</value>
   </data>
-  <data name="BirthDateMessage" xml:space="preserve">
-    <value>Specity your date of birth</value>
+  <data name="JobPosition" xml:space="preserve">
+    <value>Position</value>
   </data>
-  <data name="BirthPlace" xml:space="preserve">
-    <value>Place of birth</value>
+  <data name="ResearchWorkHeader" xml:space="preserve">
+    <value>Participation in research work</value>
   </data>
-  <data name="BirthPlaceMessage" xml:space="preserve">
-    <value>Specify your place of birth</value>
+  <data name="ResearchWorkMessage" xml:space="preserve">
+    <value>               &lt;p&gt; Participation in scientific conferences (indicate topic of the conference, date and place where it was held; 
+the theme of your report), published scientific articles, work in scientific laboratories, work on group projects.
+&lt;/p&gt;
+                &lt;p&gt;(We remind you that) You should provide certificates, &lt;b&gt;confirming :&lt;/b&gt; &lt;/p&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;your participation in conferences, seminars, round tables and other scientific and  theoretical and practical events. Such as published report thesis and officcial event program.&lt;/li&gt;
+                    &lt;li&gt;your participation in research projects, supported by grants, also confirming your findings.&lt;/li&gt;
+                    &lt;li&gt;your work (including effectiveness of your activitirs)&lt;/li&gt;
+                &lt;/ul&gt;</value>
   </data>
-  <data name="btnRegister" xml:space="preserve">
-    <value>Register</value>
+  <data name="ScWorksText" xml:space="preserve">
+    <value>Text</value>
   </data>
-  <data name="FormMainHeader" xml:space="preserve">
-    <value>Please, fill the form to continue</value>
+  <data name="ScWorksType" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="HeaderAddress" xml:space="preserve">
-    <value>Your address</value>
+  <data name="WorkExperienceHeader" xml:space="preserve">
+    <value>Work experience (internship)</value>
   </data>
-  <data name="HeaderEducation" xml:space="preserve">
-    <value>Education (name, place, dates of entering and graduation):</value>
+  <data name="DocumentDate" xml:space="preserve">
+    <value>Date</value>
   </data>
-  <data name="HeaderForeignLanguages" xml:space="preserve">
-    <value>What languages do you know? What is the level of your knowledge of the foreign languages?</value>
+  <data name="DocumentHeader" xml:space="preserve">
+    <value>Document</value>
   </data>
-  <data name="HeaderJob" xml:space="preserve">
-    <value>Your job (occupation) or place of study at the moment of application</value>
-  </data>
-  <data name="HeaderPassport" xml:space="preserve">
-    <value>National passport for entering the Russian Federation</value>
-  </data>
-  <data name="HeaderPersonalInformation" xml:space="preserve">
-    <value>Personal Informaion</value>
-  </data>
-  <data name="HeaderPersonalOffice" xml:space="preserve">
-    <value>Personal Office for foreign users</value>
-  </data>
-  <data name="HeaderPrivacyTerms" xml:space="preserve">
-    <value>&lt;b&gt;Important: &lt;/b&gt;I declare that the information given on this form is correct. I’m informed about the requirements for a candidate to study in the Russian Federation and for the documents, as well as the terms of staying in the Russian Federation. I give my consent to processing the information provided on this form.</value>
-  </data>
-  <data name="HeaderVisa" xml:space="preserve">
-    <value>Ambassy where you are going to recieve visa</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Level" xml:space="preserve">
-    <value>Level</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name, father’s name</value>
-  </data>
-  <data name="NameMessage" xml:space="preserve">
-    <value>Type your name</value>
-  </data>
-  <data name="NationalityId" xml:space="preserve">
-    <value>Citizenship</value>
-  </data>
-  <data name="ObtainingLevelId" xml:space="preserve">
-    <value>What level of education do you want to obtain in SPbSU?</value>
-  </data>
-  <data name="PassportDate" xml:space="preserve">
-    <value>Date of issue</value>
-  </data>
-  <data name="PassportDateMessage" xml:space="preserve">
-    <value>Specify the date of issue</value>
-  </data>
-  <data name="PassportExpire" xml:space="preserve">
-    <value>Period of validity</value>
-  </data>
-  <data name="PassportExpireMessage" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PassportNumber" xml:space="preserve">
+  <data name="DocumentNumber" xml:space="preserve">
     <value>Number</value>
   </data>
-  <data name="PassportNumberMessage" xml:space="preserve">
-    <value>Specify the passport number</value>
-  </data>
-  <data name="PassportSeries" xml:space="preserve">
+  <data name="DocumentSeries" xml:space="preserve">
     <value>Series</value>
   </data>
-  <data name="Phone" xml:space="preserve">
-    <value>Phone number (in Russia)</value>
+  <data name="OlympiadsHeader" xml:space="preserve">
+    <value>Academic competitions</value>
   </data>
-  <data name="PhoneMessage" xml:space="preserve">
-    <value>Specify the phone number</value>
+  <data name="OlympiadsAdded" xml:space="preserve">
+    <value>Added academic competitions</value>
   </data>
-  <data name="Sex" xml:space="preserve">
-    <value>Sex</value>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
   </data>
-  <data name="SexFemale" xml:space="preserve">
-    <value>Female</value>
+  <data name="OlympiadsDocument" xml:space="preserve">
+    <value>Document</value>
   </data>
-  <data name="SexMale" xml:space="preserve">
-    <value>Male</value>
+  <data name="OlympiadsMessage" xml:space="preserve">
+    <value>Please, do not forget to attach a copy of the scanned document in the section "general documents".</value>
   </data>
-  <data name="StudyFinish" xml:space="preserve">
-    <value>Date of finishing/graduation</value>
+  <data name="OlympiadsName" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="StudyFinishMessage" xml:space="preserve">
-    <value />
+  <data name="OlympiadsStatus" xml:space="preserve">
+    <value>Status</value>
   </data>
-  <data name="StudyLevelId" xml:space="preserve">
-    <value>What level of education have you got?</value>
+  <data name="OlympiadsSubject" xml:space="preserve">
+    <value>Subject</value>
   </data>
-  <data name="StudyPlace" xml:space="preserve">
-    <value>Name, place</value>
+  <data name="OlympiadsType" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="StudyPlaceMessage" xml:space="preserve">
-    <value>Specify the study place</value>
+  <data name="DocumentDateMessage" xml:space="preserve">
+    <value>Input the date of the document</value>
   </data>
-  <data name="StudyStart" xml:space="preserve">
-    <value>Date of entering</value>
+  <data name="DocumentNumberMessage" xml:space="preserve">
+    <value>Input the number of the document</value>
   </data>
-  <data name="StudyStartMessage" xml:space="preserve">
-    <value>Specify the date of start</value>
+  <data name="DocumentSeriesMessage" xml:space="preserve">
+    <value>Input the series of the document</value>
   </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Family name/Surname (as in your passport)</value>
-  </data>
-  <data name="SurnameMessage" xml:space="preserve">
-    <value>Please, enter your surname</value>
-  </data>
-  <data name="VisaCountryName" xml:space="preserve">
-    <value>Country</value>
-  </data>
-  <data name="VisaCountryNameMessage" xml:space="preserve">
-    <value>Specify the country</value>
-  </data>
-  <data name="VisaPostAddress" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="VisaPostAddressMessage" xml:space="preserve">
-    <value>Specify the address</value>
-  </data>
-  <data name="VisaTownName" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="VisaTownNameMessage" xml:space="preserve">
-    <value>Specify the city</value>
-  </data>
-  <data name="AgreeError" xml:space="preserve">
-    <value>You must agree with terms</value>
+  <data name="NoWorks" xml:space="preserve">
+    <value>none</value>
   </data>
 </root>

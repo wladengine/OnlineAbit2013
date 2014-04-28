@@ -21,27 +21,33 @@
             $('#WorkPlace').keyup(function () {
                 var str = $('#WorkPlace').val();
                 if (str != "") {
+                    $('#WorkPlace').removeClass('input-validation-error');
                     $('#validationMsgPersonWorksPlace').text('');
                 }
                 else {
+                    $('#WorkPlace').addClass('input-validation-error'); 
                     $('#validationMsgPersonWorksPlace').text('Введите место работы');
                 }
             });
             $('#WorkProf').keyup(function () {
                 var str = $('#WorkProf').val();
                 if (str != "") {
+                    $('#WorkProf').removeClass('input-validation-error');
                     $('#validationMsgPersonWorksLevel').text('');
                 }
                 else {
+                    $('#WorkProf').addClass('input-validation-error');
                     $('#validationMsgPersonWorksLevel').text('Введите должность');
                 }
             });
             $('#WorkSpec').keyup(function () {
                 var str = $('#WorkSpec').val();
                 if (str != "") {
+                    $('#WorkSpec').removeClass('input-validation-error');
                     $('#validationMsgPersonWorksDuties').text('');
                 }
                 else {
+                    $('#WorkSpec').addClass('input-validation-error');
                     $('#validationMsgPersonWorksDuties').text('Введите должностные обязанности');
                 }
             });
@@ -88,14 +94,17 @@
             params['WorkSpec'] = $('#WorkSpec').val();
             var Ok = true;
             if (params['WorkPlace'] == "") {
+                $('#WorkPlace').addClass('input-validation-error');
                 $('#validationMsgPersonWorksPlace').text('Введите место работы');
                 Ok = false;
             }
-            if (params['WorkPlace'] == "") {
+            if (params['WorkProf'] == "") {
+                $('#WorkProf').addClass('input-validation-error');
                 $('#validationMsgPersonWorksLevel').text('Введите должность');
                 Ok = false;
             }
             if (params['WorkSpec'] == "") {
+                $('#WorkSpec').addClass('input-validation-error');
                 $('#validationMsgPersonWorksDuties').text('Введите должностные обязанности');
                 Ok = false;
             }
@@ -290,15 +299,9 @@
                     <span class="ui-icon ui-icon-alert"></span><%= GetGlobalResourceObject("PersonInfo", "WarningMessagePersonLocked").ToString()%>
                 </div>
             <% } %>
-                <h3>Участие в научно-исследовательской работе:</h3>
+                <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "ResearchWorkHeader").ToString()%></h3>
                 <hr />
-                <p>Участие в научных конференциях (укажите тему конференции, дату и место ее проведения; тему доклада/выступления), опубликованные научные статьи, работа в научных лабораториях, работа в проектных группах.</p>
-                <p>Напоминаем, что Вам необходимо предоставить документы, <b>подтверждающие:</b> </p>
-                <ul>
-                    <li>Ваше участие в конференциях, семинарах, круглых столах и прочих научных и научно-практических мероприятиях. В качестве таковых могут выступать опубликованные тезисы доклада и программа  мероприятия.</li>
-                    <li>Ваше  участие в <b>исследовательских проектах, поддержанных грантами,</b> а также подтверждающие полученные Вами результаты.</li>
-                    <li>Вашу работу (в том числе и эффективность  деятельности).</li>
-                </ul>
+                <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonalOffice_Step5, ResearchWorkMessage %>"></asp:Literal>
                 <div class="form">
                     <div class="clearfix">
                         <%= Html.DropDownListFor(x => x.WorkInfo.ScWorkId, Model.WorkInfo.ScWorks)%>
@@ -308,15 +311,15 @@
                     </div>
                     <br />
                     <div class="clearfix">
-                        <button id="btnAddScWork" onclick="UpdScWorks()" class="button button-blue">Добавить</button>
+                        <button id="btnAddScWork" onclick="UpdScWorks()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                     </div>
                     <br /><br />
                     <table id="ScWorks" class="paginate" style="width:100%;">
                         <thead>
                             <tr>
-                                <th>Тип</th>
-                                <th>Текст</th>
-                                <th>Удалить</th>
+                                <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "ScWorksType").ToString()%></th>
+                                <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "ScWorksText").ToString()%></th>
+                                <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -334,38 +337,42 @@
                     </table>
                 </div>
                 <br /><br />
-                <h3>Опыт работы (практики):</h3>
+                <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "WorkExperienceHeader").ToString()%></h3>
                 <hr />
-                <div class="form">
+                <div class="form"> 
                     <div class="clearfix">
-                        <label for="WorkStag">Стаж (полных лет):</label>
-                        <input id="WorkStag" onkeyup="CheckRegExp()" type="text" class="text ui-widget-content ui-corner-all"/><br /><span id="validationMsgPersonWorksExperience" class="Red"></span>
+                        <label for="WorkStag"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></label>
+                        <input id="WorkStag" onkeyup="CheckRegExp()" type="text" class="text ui-widget-content ui-corner-all"/>
+                        <br /><p></p><span id="validationMsgPersonWorksExperience" style="display:none; color:Red;"></span>
                     </div>
                     <div class="clearfix">
-                        <label for="WorkPlace">Место работы(практики):</label>
-                        <input id="WorkPlace" type="text" /><br /><span id="validationMsgPersonWorksPlace" class="Red"></span>
+                        <label for="WorkPlace"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></label>
+                        <input id="WorkPlace" type="text" /><br /><p></p><span id="validationMsgPersonWorksPlace" class="Red"></span>
                     </div>
                     <div class="clearfix">
-                        <label for="WorkProf">Должность:</label>
-                        <input id="WorkProf" type="text" /><br /><span id="validationMsgPersonWorksLevel" class="Red"></span>
+                        <label for="WorkProf"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobPosition").ToString()%></label>
+                        <input id="WorkProf" type="text" /><br /><p></p><span id="validationMsgPersonWorksLevel" class="Red"></span>
                     </div>
                     <div class="clearfix">
-                        <label for="WorkSpec">Должностные обязанности:</label>
-                        <textarea id="WorkSpec" cols="80" rows="4" ></textarea><br /><span id="validationMsgPersonWorksDuties" class="Red"></span>
+                        <label for="WorkSpec"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobFunctions").ToString()%></label>
+                        <textarea id="WorkSpec" cols="80" rows="4" ></textarea>
+                    </div>
+                    <div>
+                        <span id="validationMsgPersonWorksDuties" class="Red"></span>
                     </div>
                 </div>
                 <div class="clearfix">
-                    <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue">Добавить</button>
+                    <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                 </div>
                 <br /><br />
                 <table id="PersonWorks" class="paginate" style="width:100%;">
                     <thead>
                         <tr>
-                            <th>Место работы</th>
-                            <th>Стаж</th>
-                            <th>Должность</th>
-                            <th>Должностные обязанности</th>
-                            <th>Удалить</th>
+                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></th>
+                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></th>
+                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobPosition").ToString()%></th>
+                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobFunctions").ToString()%></th>
+                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -386,12 +393,12 @@
                 <% if (Model.WorkInfo.pWorks.Count == 0)
                     {
                 %>
-                    <h5 id="NoWorks">Нет</h5>
+                    <h5 id="NoWorks"><%= GetGlobalResourceObject("PersonalOffice_Step5", "NoWorks").ToString()%></h5>
                 <% } %>
 
                 <br />
                 
-                <h2>Олимпиады</h2>
+                <h2><%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsHeader").ToString()%></h2>
                 <div class="form panel">
                     <div class="clearfix">
                         <%= Html.DropDownList("OlympType", Model.PrivelegeInfo.OlympTypeList, 
@@ -410,40 +417,40 @@
                         new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
                     </div>
                     <div>
-                        <h4>Документ</h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentHeader").ToString()%></h4>
                         <hr />
                         <div class="clearfix">
-                            <label for="OlSeries">Серия</label>
-                            <input id="OlSeries" type="text" />
-                            <span id="OlSeries_Message" style="display:none; color:Red;">Введите серию</span>
+                            <label for="OlSeries"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentSeries").ToString()%></label>
+                            <input id="OlSeries" type="text" /><br/><p></p>
+                            <span id="OlSeries_Message" style="display:none; color:Red;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentSeriesMessage").ToString()%></span>
                         </div>
                         <div class="clearfix">
-                            <label for="OlNumber">Номер</label>
-                            <input id="OlNumber" type="text" />
-                            <span id="OlNumber_Message" style="display:none; color:Red;">Введите номер</span>
+                            <label for="OlNumber"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentNumber").ToString()%></label>
+                            <input id="OlNumber" type="text" /><br/><p></p>
+                            <span id="OlNumber_Message" style="display:none; color:Red;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentNumberMessage").ToString()%></span>
                         </div>
                         <div class="clearfix">
-                            <label for="OlDate">Дата</label>
-                            <input id="OlDate" type="text" />
-                            <span id="OlDate_Message" style="display:none; color:Red;">Введите дату</span>
+                            <label for="OlDate"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentDate").ToString()%></label>
+                            <input id="OlDate" type="text" /><br/><p></p>
+                            <span id="OlDate_Message" style="display:none; color:Red;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentDateMessage").ToString()%></span>
                         </div>
                         <hr />
                         <div class="message info">
-                            Пожалуйста, не забудьте приложить копию(скан) документа, в разделе "Общие документы"
+                            <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsMessage").ToString()%>
                         </div>
                         <div class="clearfix" id="btnAddOlympiad" >
-                            <button onclick="AddOlympiad()" class="button button-blue">Добавить</button>
+                            <button onclick="AddOlympiad()" class="button button-blue"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                         </div>
-                        <h4>Добавленные олимпиады</h4>
+                        <h4> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsAdded").ToString()%></h4>
                         <table id="tblOlympiads" class="paginate" style="width:100%;">
                             <thead>
                                 <tr>
-                                    <th style="text-align:center;">Тип</th>
-                                    <th style="text-align:center;">Название</th>
-                                    <th style="text-align:center;">Предмет</th>
-                                    <th style="text-align:center;">Статус</th>
-                                    <th style="width:35%;text-align:center;">Документ</th>
-                                    <th style="width:10%;text-align:center;">Удалить</th>
+                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsType").ToString()%></th>
+                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsName").ToString()%></th>
+                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsSubject").ToString()%></th>
+                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsStatus").ToString()%></th>
+                                    <th style="width:35%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentHeader").ToString()%></th>
+                                    <th style="width:10%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
                                 </tr>
                             </thead>
                             <tbody>

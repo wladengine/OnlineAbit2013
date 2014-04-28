@@ -121,7 +121,7 @@
     <value>Surname</value>
   </data>
   <data name="LeftMenuAbiturient" xml:space="preserve">
-    <value>Edit personal info</value>
+    <value>Edit Questionnaire Data</value>
   </data>
   <data name="LeftMenuAbiturientMain" xml:space="preserve">
     <value>Personal Account</value>

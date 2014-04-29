@@ -110,7 +110,7 @@
     <% if (Model.Applications.Count == 0)
    { %>
     <div class="message error">
-        <b>Вы уже отозвали это заявление</b>
+        <b>Вы отозвали это заявление</b>
     </div>
 <% } else { %>
 <table>

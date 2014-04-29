@@ -60,9 +60,18 @@
     }
     //});
 </script>
- 
+      
     <%= Html.ValidationSummary() %>
-    <h4>Поданные заявления</h4>
+    <div class = "form panel">
+    <%  if (Model.Applications.Count == 0)
+        { %>
+         <div class="message error">
+        <b>Грустная фраза</b>
+        </div>
+        <%}
+        else
+        {%>
+    <h3>Поданные заявления</h3>
     <hr />
     <table class="paginate full">
         <thead>
@@ -73,20 +82,21 @@
             </tr>
         </thead>
     <% foreach (OnlineAbit2013.Models.SimpleApplicationPackage app in Model.Applications.ToList())
-        { %>
+       { %>
          <tr>
-            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel) %></td>
-            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType) %></td>
+            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel)%></td>
+            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType)%></td>
             <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">Просмотр</a></td>
          </tr>
      <% } %>
      </table>
+     <% } %>
+     </div>
+    <br />
 
-    <%=Model.EntryType %>
-    <% if (Model.EntryType == 1)
-       { %><%=Model.ExitClassId%> <% } %>
-     <% if (Model.EntryType == 2) { %> 
-     <%= Model.VuzAddType %> <%} %>
+    <div class = "form panel"> 
+    <h3>Симсалабимрахатлукум!</h3>
+    <hr />
     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
     <input name="val_h" id="val_h" type="hidden" value="1" />
     <% if (Model.EntryType == 1)
@@ -144,5 +154,5 @@
     <!-- <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />-->
 <%} %>
 </form>
- 
+ </div>
 </asp:Content>

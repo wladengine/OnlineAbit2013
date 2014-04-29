@@ -103,7 +103,8 @@
             params['WorkPlace'] = $('#WorkPlace').val();
             params['WorkProf'] = $('#WorkProf').val();
             params['WorkSpec'] = $('#WorkSpec').val();
-            var Ok = true;
+            var Ok = CheckRegExp();
+             
             if (params['WorkPlace'] == "") {
                 $('#WorkPlace').addClass('input-validation-error');
                 $('#validationMsgPersonWorksPlace').text('Введите место работы');
@@ -155,14 +156,18 @@
         function CheckRegExp() {
             var val = $('#WorkStag').val();
             var regex = /^([0-9])+$/i;
-            if (!regex.test(val)) {
-                $('#btnAddProfs').hide();
-                $('#validationMsgPersonWorksExperience').text('Введите целое число').show();
+            if (val != '') {
+                if (!regex.test(val)) {
+                    $('#WorkStag').addClass('input-validation-error');
+                    $('#validationMsgPersonWorksExperience').text('Введите целое число').show();
+                    return false;
+                }
+                else {
+                    $('#WorkStag').removeClass('input-validation-error');
+                    $('#validationMsgPersonWorksExperience').hide();
+                }
             }
-            else {
-                $('#btnAddProfs').show();
-                $('#validationMsgPersonWorksExperience').hide();
-            }
+            return true;
         }
     </script>
     <script type="text/javascript">
@@ -275,15 +280,15 @@
             param['Date'] = $('#OlDate').val();
             $.post('AbiturientNew/AddOlympiad', param, function (res) {
                 if (res.IsOk) {
-                    $('#tblOlympiads').show();
+                    $('#OlympBlock').show();
                     var output = '';
-                    output += '<tr id=\'' + res.Id + '\'><td style="text-align:center; vertical-align:middle;">';
+                    output += '<tr id=\'' + res.Id + '\'><td style="vertical-align: middle;">';
                     output += res.Type + '</td>';
-                    output += '<td>' + res.Name + '</td>';
-                    output += '<td>' + res.Subject + '</td>';
-                    output += '<td>' + res.Value + '</td>';
-                    output += '<td style="width:35%;text-align:center; vertical-align:middle;">' + res.Doc + '</td>';
-                    output += '<td style="width:10%;text-align:center; vertical-align:middle;"><span class="link" onclick="DeleteOlympiad(\'' + res.Id + '\')" ><img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить оценку" /><span></td>';
+                    output += '<td style="vertical-align: middle;">' + res.Name + '</td>';
+                    output += '<td style="vertical-align: middle;">' + res.Subject + '</td>';
+                    output += '<td style="vertical-align: middle;">' + res.Value + '</td>';
+                    output += '<td style="width:35%; vertical-align: middle;">' + res.Doc + '</td>';
+                    output += '<td style="width:10%; vertical-align: middle;"><span class="link" onclick="DeleteOlympiad(\'' + res.Id + '\')" ><img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить оценку" /><span></td>';
                     output += '</tr>';
                     $('#tblOlympiads tbody').append(output);
                 }
@@ -299,7 +304,7 @@
                 if (res.IsOk) {
                     $('#' + id).hide();
                     if (res.Count == 0) {
-                        $('#tblOlympiads').hide();
+                        $('#OlympBlock').hide();
                     }
                 }
                 else {
@@ -367,7 +372,7 @@
                 <hr /> 
                     <div class="clearfix">
                         <label for="WorkStag"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></label>
-                        <input id="WorkStag" onkeyup="CheckRegExp()" type="text" class="text ui-widget-content ui-corner-all"/>
+                        <input id="WorkStag" onkeyup="CheckRegExp()" type="text"/>
                         <br /><p></p><span id="validationMsgPersonWorksExperience" style="display:none; color:Red;"></span>
                     </div>
                     <div class="clearfix">
@@ -465,39 +470,41 @@
                         <div class="clearfix" id="btnAddOlympiad" >
                             <button onclick="AddOlympiad()" class="button button-blue"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                         </div>
+                        <br />
                        
-                        <% if (Model.PrivelegeInfo.pOlympiads.Count==0) { %>
-                         <table id="tblOlympiads" class="paginate" style="display: none; width:100%; text-align: center;"> <% } else { %>
-                         <br />
-                         <h4> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsAdded").ToString()%></h4>
-                         <table id="tblOlympiads" class="paginate" style="width:100%; text-align: center;"> <% } %>
-                            <thead>
-                                <tr>
-                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsType").ToString()%></th>
-                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsName").ToString()%></th>
-                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsSubject").ToString()%></th>
-                                    <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsStatus").ToString()%></th>
-                                    <th style="width:35%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentHeader").ToString()%></th>
-                                    <th style="width:10%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% foreach (var olympiad in Model.PrivelegeInfo.pOlympiads)
-                                {
-                            %>
-                                <tr id='<%= olympiad.Id.ToString("N") %>'>
-                                    <td style="text-align:center; vertical-align:middle;"><%= Html.Encode(olympiad.OlympType) %></td>
-                                    <td style="text-align:center; vertical-align:middle;"><%= Html.Encode(olympiad.OlympName) %></td>
-                                    <td style="text-align:center; vertical-align:middle;"><%= Html.Encode(olympiad.OlympSubject) %></td>
-                                    <td style="text-align:center; vertical-align:middle;"><%= Html.Encode(olympiad.OlympValue) %></td>
-                                    <td style="width:35%;text-align:center; vertical-align:middle;">
-                                        <%= Html.Encode(olympiad.DocumentSeries + " " + olympiad.DocumentNumber + " от " + olympiad.DocumentDate.ToShortDateString())%>
-                                    </td>
-                                    <td style="width:10%; text-align:center; vertical-align:middle;"><%= Html.Raw("<span class=\"link\" onclick=\"DeleteOlympiad('" + olympiad.Id.ToString("N") + "')\" ><img src=\"../../Content/themes/base/images/delete-icon.png\" alt=\"Удалить\" /></span>")%></td>
-                                </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
+                            <% if (Model.PrivelegeInfo.pOlympiads.Count==0) { %> 
+                            <div id = "OlympBlock" style="width: 464px; overflow-x: scroll; display: none;"><% } else { %> 
+                            <div id = "OlympBlock" style="width: 464px; overflow-x: scroll; "><% } %>
+                            <h4 > <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsAdded").ToString()%></h4>
+                            <table id="tblOlympiads" class="paginate" style="width:100%; text-align: center; vertical-align:middle; ">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsType").ToString()%></th>
+                                        <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsName").ToString()%></th>
+                                        <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsSubject").ToString()%></th>
+                                        <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsStatus").ToString()%></th>
+                                        <th style="width:35%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentHeader").ToString()%></th>
+                                        <th style="width:10%;text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% foreach (var olympiad in Model.PrivelegeInfo.pOlympiads)
+                                    {
+                                %>
+                                    <tr id='<%= olympiad.Id.ToString("N") %>'>
+                                        <td style="vertical-align: middle;"><%= Html.Encode(olympiad.OlympType) %></td>
+                                        <td style="vertical-align: middle;"><%= Html.Encode(olympiad.OlympName) %></td>
+                                        <td style="vertical-align: middle;"><%= Html.Encode(olympiad.OlympSubject) %></td>
+                                        <td style="vertical-align: middle;"><%= Html.Encode(olympiad.OlympValue) %></td>
+                                        <td style="width:35%; vertical-align: middle;">
+                                            <%= Html.Encode(olympiad.DocumentSeries + " " + olympiad.DocumentNumber + " от " + olympiad.DocumentDate.ToShortDateString())%>
+                                        </td>
+                                        <td style="width:10%; vertical-align: middle;"><%= Html.Raw("<span class=\"link\" onclick=\"DeleteOlympiad('" + olympiad.Id.ToString("N") + "')\" ><img src=\"../../Content/themes/base/images/delete-icon.png\" alt=\"Удалить\" /></span>")%></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div> 
                 <hr style="color:#A6C9E2;" />

@@ -24,6 +24,7 @@
                 <% } %>
                 <% if (Model.Enabled)
                    { %>
+                SetRequiredFields();
                 $("#PassportInfo_PassportDate").datepicker({
                     changeMonth: true,
                     changeYear: true,

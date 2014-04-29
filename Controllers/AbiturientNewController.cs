@@ -271,7 +271,7 @@ namespace OnlineAbit2013.Controllers
                     model.EducationInfo.IsEqual = PersonEducationDocument.IsEqual ?? false;
                     model.EducationInfo.EqualityDocumentNumber = PersonEducationDocument.EqualDocumentNumber;
                     // добавить сортировку по Name
-                    model.EducationInfo.SchoolExitClassList = context.SchoolExitClass
+                    model.EducationInfo.SchoolExitClassList = context.SchoolExitClass.OrderBy(x => x.IntValue)
                         .Select(x => new { x.Id, x.Name }).ToList()
                         .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
 

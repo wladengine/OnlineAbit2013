@@ -92,7 +92,7 @@ namespace OnlineAbit2013.Controllers
                     Id = CommitId,
                     Applications = tblAppsMain,
                     Files = AllFiles,
-                    StudyLevelId = tblAppsMain.First().StudyLevel,
+                    //StudyLevelId = tblAppsMain.First().StudyLevel,
                 };
 
                 return View(model);

@@ -199,7 +199,7 @@
         currBlockData_Specialization = '#BlockData_Specialization' + i;
         currBlockData_ManualExam = '#BlockData_ManualExam' + i;
 
-        $.post('/AbiturientNew/AddApplication_AG', { Entryclass: $('#EntryClassId').val(), profession: $(currProfessions).val(), profileid: $(currProfile).val(), manualExam : $(currManualExam).val(), NeedHostel: $(currNeedHostel).is(':checked'), CommitId : $('#CommitId').val() }, function(json_data) {
+        $.post('/AbiturientNew/AddApplication_AG', { Entryclass: $('#EntryClassId').val(), profession: $(currProfessions).val(), profileid: $(currProfile).val(), manualExam : $(currExams).val(), NeedHostel: $(currNeedHostel).is(':checked'), CommitId : $('#CommitId').val() }, function(json_data) {
             if (json_data.IsOk) {
                 $(currBlockData_Profession).text(json_data.Profession);
                 $(currBlockData_Specialization).text(json_data.Specialization);

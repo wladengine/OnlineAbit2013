@@ -1351,7 +1351,17 @@ namespace OnlineAbit2013.Controllers
                 if (cnt > 0)
                     return Json(new { IsOk = false, ErrorMessage = "Заявление уже подавалось" });
                 else
-                    return Json(new { IsOk = true });
+                {
+                    bool HasProfileExams = context.AG_Entry.Where(x => x.EntryClassId == iEntryClassId && x.ProgramId == iProgramId && x.ProfileId == iProfileId).Select(x => x.HasManualExams).FirstOrDefault();
+
+                    var Exams = (from Ent in context.AG_Entry
+                                 join ManualExamsInEntry in context.AG_ManualExamInAG_Entry on Ent.Id equals ManualExamsInEntry.EntryId
+                                 join ManualExam in context.AG_ManualExam on ManualExamsInEntry.ExamId equals ManualExam.Id
+                                 where Ent.EntryClassId == iEntryClassId && Ent.ProgramId == iProgramId
+                                 select new { Value = ManualExam.Id, Name = ManualExam.Name }).ToList();
+
+                    return Json(new { IsOk = true, HasProfileExams = HasProfileExams, Exams = Exams });
+                }
             }
         }
 

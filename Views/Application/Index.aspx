@@ -16,13 +16,10 @@
    { %>
    <script type="text/javascript" src="../../Scripts/jquery-1.5.1-vsdoc.js"></script>
 <% } %>
-
     <script type="text/javascript">
         $(function () {
             $('#UILink').hide();
             $('#fileAttachment').change(ValidateInput);
-            $('#MotivateAttachment').change(ValidateInput_Motivate);
-            $('#EssayAttachment').change(ValidateInput_Essay);
             $("#rejectBtn")
                 .button().click(function () {
                     $("#dialog-form").dialog("open");
@@ -48,6 +45,7 @@
                                         $('#appStatus').removeClass("Green").addClass("Red").text("Отозвано");
                                         $('#rejectApp').html('').hide();
                                         $("#dialog-form").dialog("close");
+                                        location.reload(true);
                                     }
                                 }
                                 else 
@@ -88,44 +86,19 @@
         }
     }
 
-    function ValidateInput_Essay() {
-        var size = 0;
-        if ($.browser.msie) {
-            var myFSO = new ActiveXObject("Scripting.FileSystemObject");
-            var filepath = document.getElementById('EssayAttachment').value;
-            var thefile = myFSO.getFile(filepath);
-            size = thefile.size;
-        } else {
-            var fileInput = $("#EssayAttachment")[0];
-            if (fileInput.files[0] != undefined) {
-                size = fileInput.files[0].size; // Size returned in bytes.
+    function DeleteFile(id) {
+        var p = new Object();
+        p["id"] = id;
+        $.post('/Application/DeleteFile', p, function (res) {
+            if (res.IsOk) {
+                $('#' + id).hide(250).html("");
             }
-        }
-        if (size > 4194304) {// 4194304 = 5Mb
-            alert('To big file for uploading (4Mb - max)');
-            //Очищаем поле ввода файла
-            document.getElementById('EssayAttachment').parentNode.innerHTML = document.getElementById('EssayAttachment').parentNode.innerHTML;
-        }
-    }
-
-    function ValidateInput_Motivate() {
-        var size = 0;
-        if ($.browser.msie) {
-            var myFSO = new ActiveXObject("Scripting.FileSystemObject");
-            var filepath = document.getElementById('MotivateAttachment').value;
-            var thefile = myFSO.getFile(filepath);
-            size = thefile.size;
-        } else {
-            var fileInput = $("#MotivateAttachment")[0];
-            if (fileInput.files[0] != undefined) {
-                size = fileInput.files[0].size; // Size returned in bytes.
+            else {
+                if (res != undefined) {
+                    alert(res.ErrorMessage);
+                }
             }
-        }
-        if (size > 4194304) {// 4194304 = 5Mb
-            alert('To big file for uploading (4Mb - max)');
-            //Очищаем поле ввода файла
-            document.getElementById('MotivateAttachment').parentNode.innerHTML = document.getElementById('MotivateAttachment').parentNode.innerHTML;
-        }
+        }, 'json');
     }
     </script>
     <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
@@ -134,6 +107,12 @@
     padding: 1px 10px 1px 10px; 
    }
 </style>
+    <% if (Model.Applications.Count == 0)
+   { %>
+    <div class="message error">
+        <b>Вы уже отозвали это заявление</b>
+    </div>
+<% } else { %>
 <table>
     <tr>
         <td><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
@@ -200,8 +179,6 @@
 </table>
 <br />
 <% } %>
-
-<br />
 
 <div class="panel">
     <h4 onclick="HidePortfolio()" style="cursor:pointer;">Прикреплённые файлы</h4>
@@ -279,7 +256,7 @@
         <div class="panel">
             <h4>Добавить файл</h4>
             <hr />
-            <form action="/Application/AddFile" method="post" enctype="multipart/form-data" class="form">
+            <form action="/Application/AddFileInCommit" method="post" enctype="multipart/form-data" class="form" id="">
                 <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
                 <div class="clearfix">
                     <input id="fileAttachment" type="file" name="File" />
@@ -295,5 +272,5 @@
         </div>
     </div>
 </div>
-
+<% } %>
 </asp:Content>

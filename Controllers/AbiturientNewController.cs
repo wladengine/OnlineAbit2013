@@ -969,6 +969,89 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             }
         }
 
+        [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult ChangeApplication_AG(params string[] errors)
+        {
+            if (errors != null && errors.Length > 0)
+            {
+                foreach (string er in errors)
+                    ModelState.AddModelError("", er);
+            }
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return RedirectToAction("Index");
+
+                AG_ApplicationModel model = new AG_ApplicationModel();
+
+                model.CommitId = Guid.NewGuid().ToString("N");
+                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
+                if (c != 100)
+                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
+
+                /*int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
+                    new Dictionary<string, object>() { { "@Id", PersonId } });*/
+
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                   new Dictionary<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId == 4)
+                {
+                    model.Enabled = false;
+                }
+                else
+                {
+                    // ссылка на объект  и пр., когда SchoolExitClassId = null
+                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                    if (tbl.Rows.Count == 0)
+                    {
+                        model.Enabled = false;
+                    }
+                    else
+                    {
+                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+
+                        if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
+                        {
+                            model.Enabled = false;
+                        }
+                        else
+                        {
+                            var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
+                            if (CommId.Count() > 0 && CommId.First().HasValue)
+                            {
+                                model.CommitId = CommId.First().Value.ToString("N");
+
+                            }
+                            model.Enabled = true;
+                            string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
+                            Dictionary<string, object> dic = new Dictionary<string, object>();
+                            dic.Add("@PersonId", PersonId);
+                            dic.Add("@ClassId", iAG_EntryClassId);
+                            tbl = Util.AbitDB.GetDataTable(query, dic);
+                            model.Professions = (from DataRow rw in tbl.Rows
+                                                 select new SelectListItem()
+                                                 {
+                                                     Value = rw.Field<int>("ProgramId").ToString(),
+                                                     Text = rw.Field<string>("ProgramName")
+                                                 }).ToList();
+                            model.EntryClassId = iAG_EntryClassId;
+                            model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
+                            //пока что так
+                            model.MaxBlocks = iAG_EntryClassValue == 9 ? 2 : 1;
+                        }
+                    }
+                }
+                return View("NewApplication_AG", model);
+            }
+        }
+
         public ActionResult NewApplication(params string[] errors)
         {
             if (errors != null && errors.Length > 0)

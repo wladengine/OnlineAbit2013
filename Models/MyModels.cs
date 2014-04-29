@@ -768,6 +768,17 @@ namespace OnlineAbit2013.Models
         public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
         public int MaxBlocks { get; set; }
         public string CommitId { get; set; }
+        public List<AG_ApplicationSipleEntity> Applications { get; set; }
+    }
+
+    public class AG_ApplicationSipleEntity
+    {
+        public int ProgramId { get; set; }
+        public string ProgramName { get; set; }
+        public int ProfileId { get; set; }
+        public string ProfileName { get; set; }
+        public int ManualExamId { get; set; }
+        public string ManualExamName { get; set; }
     }
 
     public class SPO_NewApplicationModel

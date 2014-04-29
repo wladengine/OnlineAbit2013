@@ -26,6 +26,7 @@ namespace OnlineAbit2013.Controllers
                 Request.Url.AbsoluteUri.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) == -1)
                 return Redirect(Request.Url.AbsoluteUri.Replace("http://", "https://"));
 
+
             Guid UserId;
             if (Util.CheckAuthCookies(Request.Cookies, out UserId))
                 return RedirectToAction("Main", "AbiturientNew");

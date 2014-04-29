@@ -1220,6 +1220,7 @@ namespace OnlineAbit2013.Controllers
                        });
             return Json(new { IsOk = true, Vals = res });
         }
+        [OutputCache(NoStore = true, Duration = 0)]
         public JsonResult CheckProfession(string classid, string programid, string CommitId)
         {
             Guid PersonId;
@@ -1255,6 +1256,7 @@ namespace OnlineAbit2013.Controllers
             else
                 return Json(new { IsOk = true, Blocked = true });
         }
+        [OutputCache(NoStore = true, Duration = 0)]
         public JsonResult GetSpecializations(string classid, string programid, string CommitId)
         {
             Guid PersonId;
@@ -1312,12 +1314,13 @@ namespace OnlineAbit2013.Controllers
                                  join ManualExamsInEntry in context.AG_ManualExamInAG_Entry on Ent.Id equals ManualExamsInEntry.EntryId
                                  join ManualExam in context.AG_ManualExam on ManualExamsInEntry.ExamId equals ManualExam.Id
                                  where Ent.EntryClassId == iEntryClassId && Ent.ProgramId == iProgramId
-                                 select new { Value = ManualExam.Id, Name = ManualExam.Name }).DefaultIfEmpty();
+                                 select new { Value = ManualExam.Id, Name = ManualExam.Name }).ToList();
                         
                     return Json(new { IsOk = true, HasProfileExams = HasProfileExams, Exams = Exams });
                 }
             }
         }
+        [OutputCache(NoStore = true, Duration = 0)]
         public JsonResult CheckSpecializations(string classid, string programid, string specid, string CommitId)
         {
             Guid PersonId;

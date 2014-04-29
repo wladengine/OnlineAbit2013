@@ -16,7 +16,9 @@
 <% } %>
 <script type="text/javascript">
     $(function () {
+        SetTitle();
         $('#fileAttachment').change(ValidateInput);
+        $('#FileTypeId').change(SetTitle);
     });
     function ValidateInput() {
         if ($.browser.msie) {
@@ -64,6 +66,10 @@
             }
         }, 'json');
     }
+    function SetTitle() {
+        var txt = $("#FileTypeId option:selected").text();
+        $('#FileTypeId').attr("title", txt);
+    }
 </script>
 <%= Html.ValidationSummary() %>
 <p class="message info">
@@ -77,9 +83,10 @@
         </div>
         <br/> 
         <div class="clearfix">
-         <%= Html.Label(GetGlobalResourceObject("AddSharedFiles", "FileType").ToString())%> 
-         <%--<br/><p></p> --%>
-         <%= Html.DropDownList("FileTypeId", Model.FileTypes)%>
+        <label for="FileTypeId"><%=GetGlobalResourceObject("AddSharedFiles", "FileType").ToString()%></label> 
+        <div style="width:200px; height:30px; overflow: hidden;">
+         <%= Html.DropDownList("FileTypeId", Model.FileTypes )%>
+        </div>
         </div>
         <div class="clearfix">
             <label for="fileComment"><%= GetGlobalResourceObject("AddSharedFiles", "Comment") %></label>

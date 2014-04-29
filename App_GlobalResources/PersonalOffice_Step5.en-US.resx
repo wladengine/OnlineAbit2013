@@ -206,4 +206,7 @@ the theme of your report), published scientific articles, work in scientific lab
   <data name="NoWorks" xml:space="preserve">
     <value>none</value>
   </data>
+  <data name="ScWork_Message" xml:space="preserve">
+    <value>Input required data</value>
+  </data>
 </root>

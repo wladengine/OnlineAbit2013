@@ -242,7 +242,7 @@
                     </div>
                     <% if ((Model.res == 1) || (Model.res == 3))
                        { %> 
-                    <h3><%= GetGlobalResourceObject("ContactsInfo", "AdditionalAddress_Header").ToString()%> </h3>
+                    <h4><%= GetGlobalResourceObject("ContactsInfo", "AdditionalAddress_Header").ToString()%> </h4>
                     <hr />
                     <div class="clearfix">
                         <%= Html.LabelFor(x => x.ContactsInfo.PostIndexReal, GetGlobalResourceObject("ContactsInfo", "PostIndex").ToString())%>

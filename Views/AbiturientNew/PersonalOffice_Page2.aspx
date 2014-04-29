@@ -230,7 +230,7 @@
                         </div>
                     <% } %>
                     <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
-                        <h4><%= GetGlobalResourceObject("PassportInfo", "HeaderPassport").ToString()%></h4>
+                        <h3><%= GetGlobalResourceObject("PassportInfo", "HeaderPassport").ToString()%></h3>
                         <hr />
                         <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                         <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
@@ -333,6 +333,7 @@
                         <% } %><hr /> 
                         <div class="clearfix">
                             <input id="Submit2" name = "SubmitSave" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSaveText").ToString()%>" />
+                             
                             <input id="Submit1" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
                         </div>
                         <div> 

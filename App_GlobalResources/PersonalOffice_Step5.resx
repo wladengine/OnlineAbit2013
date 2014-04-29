@@ -204,4 +204,7 @@
   <data name="NoWorks" xml:space="preserve">
     <value>нет</value>
   </data>
+  <data name="ScWork_Message" xml:space="preserve">
+    <value>Укажите необходимые сведения</value>
+  </data>
 </root>

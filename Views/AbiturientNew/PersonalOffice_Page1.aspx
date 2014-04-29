@@ -163,7 +163,7 @@
                 </div>
             <% } %>
             <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
-                <h4><%= GetGlobalResourceObject("PersonInfo", "HeaderPersonalInfo").ToString()%></h4>
+                <h3><%= GetGlobalResourceObject("PersonInfo", "HeaderPersonalInfo").ToString()%></h3>
                 <hr />
                 <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                 <input name="Stage" type="hidden" value="<%= Model.Stage %>" />

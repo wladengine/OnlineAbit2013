@@ -298,6 +298,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Укажите необходимые сведения.
+        /// </summary>
+        internal static string ScWork_Message {
+            get {
+                return ResourceManager.GetString("ScWork_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Опыт работы (практики).
         /// </summary>
         internal static string WorkExperienceHeader {

@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../../Scripts/jquery.ui.datepicker-ru.js"></script>
     <script type="text/javascript">
         $(function () {
+            
             $('#WorkPlace').keyup(function () {
                 var str = $('#WorkPlace').val();
                 if (str != "") {
@@ -54,13 +55,20 @@
         });
         function UpdScWorks() {
             if ($('#ScWorkInfo').val() == '') {
+                $('#ScWorkInfo').addClass('input-validation-error');
+                $('#ScWorkInfo_Message').show();
                 return false;
+            }
+            else {
+                $('#ScWorkInfo').removeClass('input-validation-error');
+                $('#ScWorkInfo_Message').hide();
             }
             var params = new Object();
             params['ScWorkInfo'] = $('#ScWorkInfo').val();
             params['ScWorkType'] = $('#WorkInfo_ScWorkId').val();
             $.post('AbiturientNew/UpdateScienceWorks', params, function (res) {
                 if (res.IsOk) {
+                    $('#ScWorks').show();
                     var output = '';
                     output += '<tr id=\'' + res.Data.Id + '\'><td>';
                     output += res.Data.Type + '</td>';
@@ -79,7 +87,10 @@
             param['id'] = id;
             $.post('AbiturientNew/DeleteScienceWorks', param, function (res) {
                 if (res.IsOk) {
-                    $("#" + id).hide(250).html("");
+                    $("#" + id).hide(250).html(""); 
+                    if (res.Count == 0) {
+                        $('#ScWorks').hide();
+                    }
                 }
                 else {
                     alert(res.ErrorMessage);
@@ -111,7 +122,7 @@
             if (Ok) {
                 $.post('AbiturientNew/AddWorkPlace', params, function (res) {
                     if (res.IsOk) {
-                        $('#NoWorks').hide();
+                        $('#PersonWorks').show();
                         var info = '<tr id="' + res.Data.Id + '">';
                         info += '<td>' + res.Data.Place + '</td>';
                         info += '<td>' + res.Data.Stag + '</td>';
@@ -132,6 +143,9 @@
             $.post('AbiturientNew/DeleteWorkPlace', parm, function (res) {
                 if (res.IsOk) {
                     $('#' + id).hide(250).html('');
+                    if (res.Count == 0) {
+                        $('#PersonWorks').hide();
+                    }
                 }
                 else {
                     alert(res.ErrorMessage);
@@ -261,6 +275,7 @@
             param['Date'] = $('#OlDate').val();
             $.post('AbiturientNew/AddOlympiad', param, function (res) {
                 if (res.IsOk) {
+                    $('#tblOlympiads').show();
                     var output = '';
                     output += '<tr id=\'' + res.Id + '\'><td style="text-align:center; vertical-align:middle;">';
                     output += res.Type + '</td>';
@@ -283,6 +298,9 @@
             $.post('AbiturientNew/DeleteOlympiad', param, function (res) {
                 if (res.IsOk) {
                     $('#' + id).hide();
+                    if (res.Count == 0) {
+                        $('#tblOlympiads').hide();
+                    }
                 }
                 else {
                     alert(res.ErrorMessage);
@@ -298,23 +316,29 @@
                 <div id="Message" class="message warning">
                     <span class="ui-icon ui-icon-alert"></span><%= GetGlobalResourceObject("PersonInfo", "WarningMessagePersonLocked").ToString()%>
                 </div>
-            <% } %>
+            <% } %> 
+                <div class="form panel">
                 <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "ResearchWorkHeader").ToString()%></h3>
                 <hr />
-                <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonalOffice_Step5, ResearchWorkMessage %>"></asp:Literal>
-                <div class="form">
+                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step5, ResearchWorkMessage %>"></asp:Literal>
                     <div class="clearfix">
                         <%= Html.DropDownListFor(x => x.WorkInfo.ScWorkId, Model.WorkInfo.ScWorks)%>
                     </div>
                     <div class="clearfix">
                         <textarea class="noresize" id="ScWorkInfo" rows="5" cols="80"></textarea>
                     </div>
+                    <div class = "clearfix">
+                        <span id="ScWorkInfo_Message" style="display:none; color:Red;"><asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step5, ScWork_Message %>"></asp:Literal></span>
+                    </div>
                     <br />
                     <div class="clearfix">
                         <button id="btnAddScWork" onclick="UpdScWorks()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                     </div>
                     <br /><br />
-                    <table id="ScWorks" class="paginate" style="width:100%;">
+                    <% if (Model.WorkInfo.pScWorks.Count == 0)
+                       { %> <table id="ScWorks" class="paginate" style="display: none; width:100%; text-align: center;"> <%   }
+                       else
+                       {%>  <table id="ScWorks" class="paginate" style="width:100%; text-align: center;">  <%} %>
                         <thead>
                             <tr>
                                 <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "ScWorksType").ToString()%></th>
@@ -328,7 +352,7 @@
                         %>
                             <tr>
                             <%= Html.Raw(string.Format(@"<tr id=""{0}"">", scWork.Id)) %>
-                                <td><%= Html.Encode(scWork.ScienceWorkType) %></td>
+                                <td ><%= Html.Encode(scWork.ScienceWorkType) %></td>
                                 <td><%= Html.Encode(scWork.ScienceWorkInfo) %></td>
                                 <td><%= Html.Raw("<span class=\"link\" onclick=\"DeleteScWork('" + scWork.Id.ToString() + "')\" ><img src=\"../../Content/themes/base/images/delete-icon.png\" alt=\"Удалить\" /></span>") %></td>
                             </tr>
@@ -336,10 +360,11 @@
                         </tbody>
                     </table>
                 </div>
-                <br /><br />
+                <br /><br /> 
+
+                <div class="form panel">
                 <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "WorkExperienceHeader").ToString()%></h3>
-                <hr />
-                <div class="form"> 
+                <hr /> 
                     <div class="clearfix">
                         <label for="WorkStag"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></label>
                         <input id="WorkStag" onkeyup="CheckRegExp()" type="text" class="text ui-widget-content ui-corner-all"/>
@@ -359,13 +384,17 @@
                     </div>
                     <div>
                         <span id="validationMsgPersonWorksDuties" class="Red"></span>
-                    </div>
-                </div>
+                    </div> 
                 <div class="clearfix">
                     <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                 </div>
                 <br /><br />
-                <table id="PersonWorks" class="paginate" style="width:100%;">
+                <% if (Model.WorkInfo.pWorks.Count == 0)
+                   { %> 
+                <table id="PersonWorks" class="paginate" style="display: none; width:100%; text-align: center;"> <% }
+                   else
+                   { %>
+                <table id="PersonWorks" class="paginate" style="width:100%; text-align: center;"> <%} %>
                     <thead>
                         <tr>
                             <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></th>
@@ -389,17 +418,12 @@
                         </tr>
                     <% } %>
                     </tbody>
-                </table>
-                <% if (Model.WorkInfo.pWorks.Count == 0)
-                    {
-                %>
-                    <h5 id="NoWorks"><%= GetGlobalResourceObject("PersonalOffice_Step5", "NoWorks").ToString()%></h5>
-                <% } %>
-
-                <br />
+                </table> 
+                </div>
+                <br /> 
                 
-                <h2><%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsHeader").ToString()%></h2>
                 <div class="form panel">
+                <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsHeader").ToString()%></h3>
                     <div class="clearfix">
                         <%= Html.DropDownList("OlympType", Model.PrivelegeInfo.OlympTypeList, 
                         new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
@@ -441,8 +465,12 @@
                         <div class="clearfix" id="btnAddOlympiad" >
                             <button onclick="AddOlympiad()" class="button button-blue"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
                         </div>
-                        <h4> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsAdded").ToString()%></h4>
-                        <table id="tblOlympiads" class="paginate" style="width:100%;">
+                       
+                        <% if (Model.PrivelegeInfo.pOlympiads.Count==0) { %>
+                         <table id="tblOlympiads" class="paginate" style="display: none; width:100%; text-align: center;"> <% } else { %>
+                         <br />
+                         <h4> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsAdded").ToString()%></h4>
+                         <table id="tblOlympiads" class="paginate" style="width:100%; text-align: center;"> <% } %>
                             <thead>
                                 <tr>
                                     <th style="text-align:center;"> <%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsType").ToString()%></th>
@@ -471,8 +499,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                
+                </div> 
                 <hr style="color:#A6C9E2;" />
 
                 <% using (Html.BeginForm("NextStep", "AbiturientNew", FormMethod.Post))

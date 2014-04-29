@@ -156,6 +156,9 @@
   <data name="PersonInfo_Surname_Message" xml:space="preserve">
     <value>Enter your surname</value>
   </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Required field</value>
+  </data>
   <data name="SecondName" xml:space="preserve">
     <value>Second name</value>
   </data>

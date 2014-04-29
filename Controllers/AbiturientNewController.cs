@@ -2483,7 +2483,8 @@ SELECT [User].Email
             try
             {
                 Util.AbitDB.ExecuteQuery("DELETE FROM PersonScienceWork WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", wrkId } });
-                var res = new { IsOk = true, ErrorMessage = "" };
+                DataTable tbl = Util.AbitDB.GetDataTable("SELECT count(Id) as cnt FROM PersonScienceWork WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                var res = new { IsOk = true, Count = tbl.Rows[0].Field<int>("cnt"), ErrorMessage = "" }; 
                 return Json(res);
             }
             catch
@@ -2622,7 +2623,8 @@ Order by cnt desc";
             try
             {
                 Util.AbitDB.ExecuteQuery("DELETE FROM PersonWork WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", workId } });
-                var res = new { IsOk = true, ErrorMessage = "" };
+                DataTable tbl = Util.AbitDB.GetDataTable("SELECT count(Id) as cnt FROM PersonWork WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                var res = new { IsOk = true, Count = tbl.Rows[0].Field<int>("cnt"), ErrorMessage = "" };  
                 return Json(res);
             }
             catch
@@ -3011,9 +3013,10 @@ Order by cnt desc";
             if (!Guid.TryParse(id, out OlympId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
-            string query = "DELETE FROM Olympiads WHERE Id=@Id";
+            string query = "DELETE FROM Olympiads WHERE Id=@Id"; 
             Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", OlympId } });
-            return Json(new { IsOk = true });
+            DataTable tbl = Util.AbitDB.GetDataTable("SELECT count(Id) as cnt FROM Olympiads WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+            return Json(new { IsOk = true, Count = tbl.Rows[0].Field<int>("cnt")});
         }
 
         [HttpPost]

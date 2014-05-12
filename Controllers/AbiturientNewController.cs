@@ -911,7 +911,7 @@ namespace OnlineAbit2013.Controllers
                     return RedirectToAction("Index");
                   
                 AG_ApplicationModel model = new AG_ApplicationModel();
-
+                model.Applications = new List<AG_ApplicationSipleEntity>();
                 model.CommitId = Guid.NewGuid().ToString("N");
                 int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
@@ -970,13 +970,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult ChangeApplication_AG(params string[] errors)
+        public ActionResult ChangeApplication_AG(string Id)
         {
-            if (errors != null && errors.Length > 0)
-            {
-                foreach (string er in errors)
-                    ModelState.AddModelError("", er);
-            }
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
@@ -988,8 +983,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     return RedirectToAction("Index");
 
                 AG_ApplicationModel model = new AG_ApplicationModel();
-
-                model.CommitId = Guid.NewGuid().ToString("N");
+                model.Applications = new List<AG_ApplicationSipleEntity>();
+                model.CommitId = Id;
                 int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
@@ -1026,8 +1021,59 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
                             if (CommId.Count() > 0 && CommId.First().HasValue)
                             {
-                                model.CommitId = CommId.First().Value.ToString("N");
+                                Guid CommitId = CommId.First().Value;
+                                model.CommitId = CommitId.ToString("N");
+                                
 
+                                var AppList = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
+                                    .Select(x => new 
+                                    { 
+                                        x.Id, 
+                                        x.AG_Entry.ProgramId, 
+                                        ProgramName = x.AG_Entry.AG_Program.Name, 
+                                        x.AG_Entry.ProfileId, 
+                                        ProfileName = x.AG_Entry.AG_Profile.Name, 
+                                        x.ManualExamId, 
+                                        x.AG_Entry.HasManualExams,
+                                        x.AG_Entry.EntryClassId
+                                    });
+                                foreach (var App in AppList)
+                                {
+                                    var Ent = new AG_ApplicationSipleEntity()
+                                    {
+                                        Id = App.Id,
+                                        ProgramId = App.ProgramId,
+                                        ProgramName = App.ProgramName,
+                                        ProfileId = App.ProfileId,
+                                        ProfileName = App.ProfileName,
+                                    };
+
+                                    var ProgramList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId)
+                                        .Select(x => new { x.AG_Program.Id, x.AG_Program.Name }).Distinct().ToList()
+                                        .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProgramId }).ToList();
+                                    Ent.ProgramList = ProgramList;
+
+                                    var ProfileList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId)
+                                        .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
+                                        .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
+                                    if (ProfileList.Count > 1)
+                                        Ent.ProfileList = ProfileList;
+                                    
+                                    if (App.HasManualExams)
+                                    {
+                                        var ManualExamsList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId && x.ProfileId == App.ProfileId)
+                                            .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
+                                            .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
+
+                                        if (App.ManualExamId.HasValue)
+                                        {
+                                            Ent.ManualExamId = App.ManualExamId.Value;
+                                            Ent.ManualExamList = ManualExamsList;
+                                        }
+                                    }
+
+                                    model.Applications.Add(Ent);
+                                }
                             }
                             model.Enabled = true;
                             string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
@@ -3204,7 +3250,8 @@ Order by cnt desc";
                 }
 
                 int? PriorMax = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
-
+                // если в коммите уже есть закоммиченные заявления, то добавляемое тоже считаем закоммиченным
+                bool isCommited = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == gCommId).Count() > 0;
                 Guid appId = Guid.NewGuid();
                 context.AG_Application.AddObject(new AG_Application()
                 {
@@ -3216,7 +3263,8 @@ Order by cnt desc";
                     Enabled = true,
                     DateOfStart = DateTime.Now,
                     ManualExamId = iManualExamId == 0 ? null : (int?)iManualExamId,
-                    CommitId = gCommId
+                    CommitId = gCommId,
+                    IsCommited = isCommited
                 });
                 context.SaveChanges();
 
@@ -3251,8 +3299,8 @@ Order by cnt desc";
                 if (App == null)
                     return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
-                if (App.IsCommited)
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_FailDeleteApp_IsCommited });
+                //if (App.IsCommited)
+                //    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_FailDeleteApp_IsCommited });
                 try
                 {
                     context.AG_Application.DeleteObject(App);

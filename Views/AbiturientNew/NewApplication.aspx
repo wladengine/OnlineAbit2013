@@ -66,7 +66,7 @@
     <%  if (Model.Applications.Count == 0)
         { %>
          <div class="message error">
-        <b>Грустная фраза</b>
+        <b>Нет поданых заявлений</b>
         </div>
         <%}
         else
@@ -95,7 +95,7 @@
     <br />
 
     <div class = "form panel"> 
-    <h3>Симсалабимрахатлукум!</h3>
+    <h3>Выберите направление для поступления</h3>
     <hr />
     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
     <input name="val_h" id="val_h" type="hidden" value="1" />

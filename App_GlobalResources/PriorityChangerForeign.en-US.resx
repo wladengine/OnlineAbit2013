@@ -132,6 +132,9 @@
   <data name="ObrazProgram" xml:space="preserve">
     <value>Educational Program</value>
   </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>

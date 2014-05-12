@@ -253,7 +253,7 @@
         </script>
         <script type="text/javascript">
             function updateIs2014() {
-                if (Is2014) {
+                if ($("#Is2014").is(':checked')) {
                     $('#EgeCert').attr('disabled', 'disabled');
                 }
                 else {
@@ -261,7 +261,7 @@
                 }
             }
             function updateIsSecondWave() {
-                if (IsSecondWave) {
+                if ($("#IsSecondWave").is(':checked')) {
                     $('#EgeCert').attr('disabled', 'disabled');
                     $('#_EgeMark').hide();
                 }
@@ -271,7 +271,7 @@
                 }
             }
             function updateIsInUniversity() {
-                if (IsInUniversity) {
+                if ($("#IsInUniversity").is(':checked')) {
                     $('#EgeCert').attr('disabled', 'disabled');
                     $('#_EgeMark').hide();
                 }
@@ -311,9 +311,9 @@
                 var certificateNumber = $("#EgeCert"),
 			    examName = $("#EgeExam"),
 			    examMark = $("#EgeMark"),
-                Is2014 = $("#Is2014").filter(":checked").val() == 'on',
-                IsSecondWave = $("#IsSecondWave:checked"),
-                IsInUniversity = $("#IsInUniversity:checked"),
+                Is2014 = $("#Is2014"),
+                IsSecondWave = $("#IsSecondWave"),
+                IsInUniversity = $("#IsInUniversity"),
 
 			    allFields = $([]).add(certificateNumber).add(examName).add(examMark),
 			    tips = $(".validateTips");
@@ -325,7 +325,7 @@
                     }, 500);
                 }
                 function checkLength() {
-                    if ((certificateNumber.val().length > 15 || certificateNumber.val().length < 15) && Is2014) {
+                    if ((certificateNumber.val().length > 15 || certificateNumber.val().length < 15) && $("#Is2014").is(':checked')) {
                         certificateNumber.addClass("ui-state-error");
                         updateTips("Номер сертификата должен быть 15-значным в формате РР-ХХХХХХХХ-ГГ");
                         return false;
@@ -335,7 +335,7 @@
                 }
                 function checkVal() {
                     var val = examMark.val();
-                    if ((val < 1 || val > 100) && !IsSecondWave && !IsInUniversity) {
+                    if ((val < 1 || val > 100) && !$("#IsSecondWave").is(':checked') && !$("#IsInUniversity").is(':checked')) {
                         updateTips("Экзаменационный балл должен быть от 1 до 100");
                         return false;
                     }
@@ -366,7 +366,6 @@
 
                             bValid = bValid && checkLength();
                             bValid = bValid && checkVal();
-                            //bValid = bValid && checkRegexp(certificateNumber, /^\d{2}\-\d{9}\-\d{2}$/i, "Номер сертификата должен быть 15-значным в формате РР-ХХХХХХХХХ-ГГ");
 
                             if (bValid) {
                                 //add to DB
@@ -374,9 +373,9 @@
                                 parm["certNumber"] = certificateNumber.val();
                                 parm["examName"] = examName.val();
                                 parm["examValue"] = examMark.val();
-                                parm["Is2014"] = Is2014;
-                                parm["IsInUniversity"] = IsInUniversity;
-                                parm["IsSecondWave"] = IsSecondWave;
+                                parm["Is2014"] = $("#Is2014").is(':checked');
+                                parm["IsInUniversity"] = $("#IsInUniversity").is(':checked');
+                                parm["IsSecondWave"] = $("#IsSecondWave").is(':checked');
 
                                 $.post("AbiturientNew/AddMark", parm, function (res) {
                                     //add to table if ok
@@ -636,7 +635,7 @@
                                     </div>
                                     <div class="clearfix">
                                         <label for="Is2014">2014 год</label><br />
-		                                <input type="checkbox" id="Is2014" checked="checked" onclick="updateIs2014()" /><br />
+		                                <input type="checkbox" id="Is2014" checked="checked" onchange="updateIs2014()" /><br />
                                     </div>
                                     <div class="clearfix">
                                         <label for="EgeExam">Предмет</label><br />
@@ -648,12 +647,12 @@
                                     </div>
                                     <div id="_IsSecondWave" class=="clearfix">
                                         <label for="IsSecondWave">Сдаю во "второй волне"</label><br />
-		                                <input type="checkbox" id="IsSecondWave" checked="checked" onclick="updateIsSecondWave()" /><br />
+		                                <input type="checkbox" id="IsSecondWave" checked="checked" onchange="updateIsSecondWave()" /><br />
                                     </div>
                                     <br />
                                     <div id="_IsInUniversity" class="clearfix">
                                         <label for="IsInUniversity">Сдаю в СПбГУ</label><br />
-		                                <input type="checkbox" id="IsInUniversity" checked="checked" onclick="updateIsInUniversity()" /><br />
+		                                <input type="checkbox" id="IsInUniversity" checked="checked" onchange="updateIsInUniversity()" /><br />
                                     </div>
 	                            </fieldset>
                             </div>

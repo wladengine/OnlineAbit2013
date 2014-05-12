@@ -132,6 +132,9 @@
   <data name="ObrazProgram" xml:space="preserve">
     <value>Образовательная программа</value>
   </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Профиль</value>
   </data>

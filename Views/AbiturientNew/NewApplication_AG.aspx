@@ -23,8 +23,12 @@
 <script type="text/javascript">
     var entry;
     $(function () {
-        $('#Block1').show();
+        $('#Block<%= Model.Applications.Count + 1 %>').show();
     });
+    var BlockIds = new Object();
+    <% for (int i = 1; i <= Model.Applications.Count; i++ ) { %>
+        BlockIds['<%= i.ToString() %>'] = '<%= Model.Applications[i - 1].Id.ToString("N") %>';
+    <% } %>
 
     var currObrazProgramErrors = '#ObrazProgramsErrors';
     var currFinishButton = '#FinishBtn';
@@ -56,7 +60,7 @@
     var nextBlockData_Specialization = '#Specialization';
     var nextBlockData_ManualExam = '#ManualExam';
 
-    var BlockIds = new Object();
+    
 
     function GetSpecializations(i) {
         $('#ObrazProgramsErrors').text('').hide();
@@ -74,6 +78,8 @@
         $(currFinishButton).hide();
         $(currSpecs).hide();
         $(currManualExam).hide();
+        $(currProfile).html('');
+        $(currExams).html('');
         $.post('/AG/GetSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val(), CommitId : $('#CommitId').val() }, function (json_data, i) {
             if (json_data.IsOk) {
                 $(currObrazProgramErrors).text('').hide();
@@ -122,6 +128,8 @@
 
         $(currFinishButton).hide();
         $(currManualExam).hide();
+        $(currExams).html('');
+
         $.post('/AG/CheckSpecializations', { classid: $('#EntryClassId').val(), programid: $(currProfessions).val(), specid: $(currProfile).val(), CommitId : $('#CommitId').val() }, function (json_data) {
             if (json_data.IsOk) {
                 $(currObrazProgramErrors).text('').hide();
@@ -256,8 +264,8 @@
 <% using (Html.BeginForm("NewAppAG", "AbiturientNew", FormMethod.Post))
    { 
 %> 
-    <%= Html.ValidationSummary() %>
-    <%= Html.HiddenFor(x => x.CommitId) %>
+    <%= Html.ValidationSummary()%>
+    <%= Html.HiddenFor(x => x.CommitId)%>
     <% if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
        { %>
        <div class="message error" style="width:450px;">
@@ -265,50 +273,105 @@
        </div>
     <% } %>
     <div class="message info" style="width:450px;">
-        Согласно данным анкеты, Вы поступаете в <strong><%= Model.EntryClassName %></strong>
+        Согласно данным анкеты, Вы поступаете в <strong><%= Model.EntryClassName%></strong>
     </div>
     <br />
-    <%= Html.HiddenFor(x => x.EntryClassId) %>
-    <% for (int i = 1; i <= Model.MaxBlocks; i++) { %>
-    <div id="BlockData<%= i.ToString() %>" class="message info panel" style="width:450px; display:none;">
+    <%= Html.HiddenFor(x => x.EntryClassId)%>
+
+    <% for (int i = 1; i <= Model.Applications.Count; i++)
+       { %>
+    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px;">
         <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
+                <td style="font-size:1.3em;"><%= i.ToString() %></td>
+            </tr>
+            <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
-                <td id="BlockData_Profession<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                <td id="BlockData_Profession<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].ProgramName%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
-                <td id="BlockData_Specialization<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].ProfileName%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
-                <td id="BlockData_ManualExam<%= i.ToString() %>" ></td>
+                <td id="BlockData_ManualExam<%= i.ToString()%>" ><%= Model.Applications[i - 1].ManualExamName%></td>
             </tr>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString() %>)" class="error">Удалить</button>
-        <div id="ObrazProgramsErrors_Block<%= i.ToString() %>" class="message error" style="display:none; width:450px;">
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+        <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
+        </div>
     </div>
-    </div>
-    <div id="Block<%= i.ToString() %>" style="display:none; width:500px;" class="panel">
+    <div id="Block<%= i.ToString()%>" style="display:none; width:500px;" class="panel">
         <h5>Выберите направление подготовки</h5>
-        <p id="Profs<%= i.ToString() %>">
+        <p id="Profs<%= i.ToString()%>">
             <span>Направление</span><br />
             <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new Dictionary<string, object>() { { "size", "5" }, 
-{ "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} }) %>
+{ "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} })%>
         </p>
-        <p id="Specs<%= i.ToString() %>" style="display:none;">
+        <p id="Specs<%= i.ToString()%>" style="display:none;">
             <span>Специализация</span><br />
-            <select id="Profile<%= i.ToString() %>" name="Profile" size="3" style="min-width:450px;" onchange="CheckSpecialization(<%= i.ToString() %>)"></select>
+            <select id="Profile<%= i.ToString()%>" name="Profile" size="3" style="min-width:450px;" onchange="CheckSpecialization(<%= i.ToString()%>)"></select>
         </p>
-        <p id="ManualExam<%= i.ToString() %>" style="display:none;">
+        <p id="ManualExam<%= i.ToString()%>" style="display:none;">
             <span>Экзамен по выбору</span><br />
-            <select id="Exams<%= i.ToString() %>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString() %>)"></select>
+            <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
-        <p id="FinishBtn<%= i.ToString() %>" style="display:none;">
-            <input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString() %>" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
-            <input id="Submit<%= i.ToString() %>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString() %>)" class="button button-blue"/>
+        <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
+            <input type="checkbox" name="NeedHostel" id="Checkbox1" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
+            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
-        <div id="ObrazProgramsErrors<%= i.ToString() %>" class="message error" style="display:none; width:450px;">
+        <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
+        </div>
+    </div>
+    <% } %>
+
+    <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)
+       { %>
+    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
+        <table class="nopadding" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
+                <td style="font-size:1.3em;"><%= i.ToString() %></td>
+            </tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
+                <td id="BlockData_Profession<%= i.ToString()%>" style="font-size:1.3em;"></td>
+            </tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
+                <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"></td>
+            </tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
+                <td id="BlockData_ManualExam<%= i.ToString()%>" ></td>
+            </tr>
+        </table>
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+        <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
+    </div>
+    </div>
+    <div id="Block<%= i.ToString()%>" style="display:none; width:500px;" class="panel">
+        <h5>Выберите направление подготовки</h5>
+        <p id="Profs<%= i.ToString()%>">
+            <span>Направление</span><br />
+            <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new Dictionary<string, object>() { { "size", "5" }, 
+{ "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} })%>
+        </p>
+        <p id="Specs<%= i.ToString()%>" style="display:none;">
+            <span>Специализация</span><br />
+            <select id="Profile<%= i.ToString()%>" name="Profile" size="3" style="min-width:450px;" onchange="CheckSpecialization(<%= i.ToString()%>)"></select>
+        </p>
+        <p id="ManualExam<%= i.ToString()%>" style="display:none;">
+            <span>Экзамен по выбору</span><br />
+            <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
+        </p>
+        <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
+            <input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
+            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
+        </p>
+        <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
     <% } %>

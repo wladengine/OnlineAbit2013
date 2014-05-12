@@ -773,12 +773,16 @@ namespace OnlineAbit2013.Models
 
     public class AG_ApplicationSipleEntity
     {
+        public Guid Id { get; set; }
         public int ProgramId { get; set; }
         public string ProgramName { get; set; }
+        public List<SelectListItem> ProgramList { get; set; }
         public int ProfileId { get; set; }
         public string ProfileName { get; set; }
+        public List<SelectListItem> ProfileList { get; set; }
         public int ManualExamId { get; set; }
         public string ManualExamName { get; set; }
+        public List<SelectListItem> ManualExamList { get; set; }
     }
 
     public class SPO_NewApplicationModel

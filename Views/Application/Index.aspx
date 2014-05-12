@@ -21,7 +21,8 @@
             $('#UILink').hide();
             $('#fileAttachment').change(ValidateInput);
             $("#rejectBtn")
-                .button().click(function () {
+                //.button()
+                .click(function () {
                     $("#dialog-form").dialog("open");
                 });
                 $("#dialog:ui-dialog").dialog("destroy");
@@ -85,7 +86,6 @@
             document.getElementById('fileAttachment').parentNode.innerHTML = document.getElementById('fileAttachment').parentNode.innerHTML;
         }
     }
-
     function DeleteFile(id) {
         var p = new Object();
         p["id"] = id;
@@ -117,11 +117,18 @@
     <tr>
         <td><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
         <td>
-            <img id="rejectBtn" src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
+            <a href="#" id="rejectBtn">
+                <img  src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
+            </a>
         </td>
         <td>
             <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
+            </a>
+        </td>
+        <td>
+            <a href="<%= string.Format("../../AbiturientNew/ChangeApplication_AG?Id={0}", Model.Id.ToString("N")) %>">
+                <img src="../../Content/themes/base/images/File_edit064.png" alt="Редактировать заявление" />
             </a>
         </td>
     </tr>
@@ -129,6 +136,7 @@
         <td>Скачать заявление</td>
         <td>Удалить заявление целиком</td>
         <td>Изменить приоритеты</td>
+        <td>Редактировать заявление</td>
     </tr>
 
     <tr>

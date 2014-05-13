@@ -4656,7 +4656,8 @@ namespace OnlineAbit2013
         /// <param name="isApprovedByComission">Initial value of the IsApprovedByComission property.</param>
         /// <param name="isImported">Initial value of the IsImported property.</param>
         /// <param name="isCommited">Initial value of the IsCommited property.</param>
-        public static Application CreateApplication(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Boolean hostelEduc, global::System.Guid entryId, global::System.DateTime dateOfStart, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isCommited)
+        /// <param name="isGosLine">Initial value of the IsGosLine property.</param>
+        public static Application CreateApplication(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Boolean hostelEduc, global::System.Guid entryId, global::System.DateTime dateOfStart, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isCommited, global::System.Boolean isGosLine)
         {
             Application application = new Application();
             application.Id = id;
@@ -4670,6 +4671,7 @@ namespace OnlineAbit2013
             application.IsApprovedByComission = isApprovedByComission;
             application.IsImported = isImported;
             application.IsCommited = isCommited;
+            application.IsGosLine = isGosLine;
             return application;
         }
 
@@ -5063,6 +5065,30 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsCommited;
         partial void OnIsCommitedChanging(global::System.Boolean value);
         partial void OnIsCommitedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsGosLine
+        {
+            get
+            {
+                return _IsGosLine;
+            }
+            set
+            {
+                OnIsGosLineChanging(value);
+                ReportPropertyChanging("IsGosLine");
+                _IsGosLine = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsGosLine");
+                OnIsGosLineChanged();
+            }
+        }
+        private global::System.Boolean _IsGosLine;
+        partial void OnIsGosLineChanging(global::System.Boolean value);
+        partial void OnIsGosLineChanged();
 
         #endregion
 

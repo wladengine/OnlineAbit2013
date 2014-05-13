@@ -426,6 +426,7 @@
           <Property Name="DateReviewDocs" Type="datetime" />
           <Property Name="CommitId" Type="uniqueidentifier" />
           <Property Name="IsCommited" Type="bit" Nullable="false" />
+          <Property Name="IsGosLine" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationFile">
           <Key>
@@ -2018,6 +2019,7 @@
           <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_Application_Person" FromRole="Application" ToRole="Person" />
           <Property Type="Guid" Name="CommitId" />
           <Property Type="Boolean" Name="IsCommited" Nullable="false" />
+          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
         </EntityType>
         <EntityType Name="Entry">
           <Key>
@@ -3386,6 +3388,7 @@
           <EntitySetMapping Name="Application">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Application">
               <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
                 <ScalarProperty Name="IsCommited" ColumnName="IsCommited" />
                 <ScalarProperty Name="CommitId" ColumnName="CommitId" />
                 <ScalarProperty Name="DateReviewDocs" ColumnName="DateReviewDocs" />

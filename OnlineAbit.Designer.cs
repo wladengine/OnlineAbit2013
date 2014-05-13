@@ -5701,12 +5701,14 @@ namespace OnlineAbit2013
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="isCountry">Initial value of the IsCountry property.</param>
         /// <param name="isNationality">Initial value of the IsNationality property.</param>
-        public static Country CreateCountry(global::System.Int32 id, global::System.Boolean isCountry, global::System.Boolean isNationality)
+        /// <param name="isSNG">Initial value of the IsSNG property.</param>
+        public static Country CreateCountry(global::System.Int32 id, global::System.Boolean isCountry, global::System.Boolean isNationality, global::System.Boolean isSNG)
         {
             Country country = new Country();
             country.Id = id;
             country.IsCountry = isCountry;
             country.IsNationality = isNationality;
+            country.IsSNG = isSNG;
             return country;
         }
 
@@ -5908,6 +5910,30 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsNationality;
         partial void OnIsNationalityChanging(global::System.Boolean value);
         partial void OnIsNationalityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsSNG
+        {
+            get
+            {
+                return _IsSNG;
+            }
+            set
+            {
+                OnIsSNGChanging(value);
+                ReportPropertyChanging("IsSNG");
+                _IsSNG = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsSNG");
+                OnIsSNGChanged();
+            }
+        }
+        private global::System.Boolean _IsSNG;
+        partial void OnIsSNGChanging(global::System.Boolean value);
+        partial void OnIsSNGChanged();
 
         #endregion
 

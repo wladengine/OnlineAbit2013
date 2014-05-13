@@ -474,6 +474,7 @@
           <Property Name="PriemDictionaryId" Type="int" />
           <Property Name="IsCountry" Type="bit" Nullable="false" />
           <Property Name="IsNationality" Type="bit" Nullable="false" />
+          <Property Name="IsSNG" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="EgeCertificate">
           <Key>
@@ -2234,6 +2235,7 @@
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Country" FromRole="Country" ToRole="PersonEducationDocument" />
           <Property Type="Boolean" Name="IsCountry" Nullable="false" />
           <Property Type="Boolean" Name="IsNationality" Nullable="false" />
+          <Property Type="Boolean" Name="IsSNG" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersonContacts_Country">
           <End Type="OnlinePriem2012Model.Country" Role="Country" Multiplicity="0..1" />
@@ -3589,6 +3591,7 @@
           <EntitySetMapping Name="Country">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Country">
               <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="IsSNG" ColumnName="IsSNG" />
                 <ScalarProperty Name="IsNationality" ColumnName="IsNationality" />
                 <ScalarProperty Name="IsCountry" ColumnName="IsCountry" />
                 <ScalarProperty Name="PriemDictionaryId" ColumnName="PriemDictionaryId" />

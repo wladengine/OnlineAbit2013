@@ -800,4 +800,45 @@ namespace OnlineAbit2013.Models
         public string Message { get; set; }
         public List<AppendedFile> Files { get; set; }
     }
+
+    public class Mag_ApplicationModel
+    {
+        public bool Enabled { get; set; } // доступно?
+        public int MaxBlocks { get; set; } // макс количество блоков
+        public string CommitId { get; set; } // коммит
+
+
+        public List<SelectListItem> StudyFormList { get; set; }
+        public List<SelectListItem> StudyBasisList { get; set; }
+
+        public List<SelectListItem> FacultyList { get; set; }
+
+        public List<Mag_ApplicationSipleEntity> Applications { get; set; }
+
+        public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
+    }
+
+    public class Mag_ApplicationSipleEntity
+    {
+        public Guid Id { get; set; }
+        public int StudyFormId { get; set; }
+        public string StudyFormName { get; set; }
+        public int StudyBasisId { get; set; }
+        public string StudyBasisName { get; set; }
+        public bool IsReduced { get; set; }
+        public bool IsParalle { get; set; }
+        public bool IsSecond { get; set; }
+        public int ProfessionId { get; set; }
+        public string ProfessionName { get; set; }
+        public int ObrazProgramId { get; set; }
+        public string ObrazProgramName { get; set; }
+        public int SpecializationId { get; set; }
+        public string SpecializationName { get; set; }
+        public List<SelectListItem> ProfessionList { get; set; }
+        public List<SelectListItem> ObrazProgramList { get; set; }
+        public List<SelectListItem> SpecializationList { get; set; }
+        public int FacultyId { get; set; }
+        public string FacultyName { get; set; }
+        public bool Hostel { get; set; }
+    }
 }

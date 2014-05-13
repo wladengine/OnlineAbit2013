@@ -3410,10 +3410,17 @@ Order by cnt desc";
                 //int iFacultyId = Util.ParseSafe(faculty);
                 int iProfession = Util.ParseSafe(profession);
                 int iObrazProgram = Util.ParseSafe(obrazprogram);
-                int iparallel = Util.ParseSafe(isParallel);
-                Guid iSpecialization = Guid.Empty;
+                int iParallel = Util.ParseSafe(isParallel);
+                int iReduced = Util.ParseSafe(isReduced);
+                int iSecond = Util.ParseSafe(isSecond);
+
+                bool bIsParallel = iParallel == 1;
+                bool bIsReduced = iReduced == 1;
+                bool bIsSecond = iSecond == 1;
+                
+                Guid gSpecialization = Guid.Empty;
                 if ((specialization != null) && (specialization != "") && (specialization != "null"))
-                    iSpecialization = Guid.Parse(specialization);
+                    gSpecialization = Guid.Parse(specialization);
 
                 //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
 
@@ -3426,10 +3433,10 @@ Order by cnt desc";
                             Ent.ObrazProgramId == iObrazProgram &&
                             Ent.CampaignYear == Util.iPriemYear &&
                             SPStudyLevel.StudyLevelGroupId == EntryTypeId &&
-
-                      // isParallel == (iparallel==0 ? false : true)&&
-                          // IsReduced
-                           (iSpecialization.Equals(Guid.Empty) ? true : Ent.ProfileId.Equals(iSpecialization))
+                            Ent.IsParallel == bIsParallel &&
+                            Ent.IsReduced == bIsReduced &&
+                            Ent.IsSecond == bIsSecond &&
+                           (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
                       select new
                       {
                           EntryId = Ent.Id,
@@ -3464,41 +3471,34 @@ Order by cnt desc";
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
 
                 //проверка на группы ??????????????
-                var EntryGroupList =
-                    (from Entr in context.AG_Entry
-                     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                     join Abit in context.AG_Application on Entr.Id equals Abit.EntryId
-                     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
-                     select EntrInEntryGroup.EntryGroupId);
+                //
+                //var EntryGroupList =
+                //    (from Entr in context.Entry
+                //     join EntrInEntryGroup in context.EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                //     join Abit in context.Application on Entr.Id equals Abit.EntryId
+                //     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
+                //     select EntrInEntryGroup.EntryGroupId);
 
-                bool isNoEntries = EntryGroupList.Count() == 0;
-                var AllNeededEntries =
-                    (from Entr in context.AG_Entry
-                     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId) || isNoEntries
-                     select Entr.Id).ToList();
+                //bool isNoEntries = EntryGroupList.Count() == 0;
+                //var AllNeededEntries =
+                //    (from Entr in context.Entry
+                //     join EntrInEntryGroup in context.EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                //     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId) || isNoEntries
+                //     select Entr.Id).ToList();
 
-                var FreeEntries = AllNeededEntries.Except(
-                    context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
+                //var FreeEntries = AllNeededEntries.Except(
+                //    context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
 
-                if (FreeEntries.Count == 0)
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoFreeEntries });
-                else
-                {
-                    if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
-                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
+                //if (FreeEntries.Count == 0)
+                //    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoFreeEntries });
+                //else
+                //{
+                //    if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
+                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
 
-                    if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
-                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
-
-                    var eIds =
-                        (from App in context.AG_Application
-                         where App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
-                         select App.EntryId).ToList();
-
-                    if (eIds.Contains(EntryId))
-                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
-                }
+                //    if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
+                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
+                //}
 
                 int? PriorMax = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
                 // если в коммите уже есть закоммиченные заявления, то добавляемое тоже считаем закоммиченным

@@ -1482,6 +1482,47 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
         }
 
+        [HttpPost]
+        public ActionResult NewApp_Mag()
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+
+            string sCommitId = Request.Form["CommitId"];
+            Guid CommitId;
+            if (!Guid.TryParse(sCommitId, out CommitId))
+                return Json(Resources.ServerMessages.IncorrectGUID);
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true).Count() > 0)
+                    return RedirectToAction("NewApplication_Mag",
+                        new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
+
+                var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
+                foreach (var AppId in Ids)
+                {
+                    var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                    App.IsCommited = true;
+                }
+                context.SaveChanges();
+
+                //всё, что вне коммита - удаляем
+                Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == false).Select(x => x.Id).ToList();
+                foreach (var AppId in Ids)
+                {
+                    var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                    context.Application.DeleteObject(App);
+                }
+                context.SaveChanges();
+            } 
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
+        }
+
         //public ActionResult MotivateMail()
         //{
         //    Guid PersonId;
@@ -1534,7 +1575,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                      select new SimpleApplication()
                      {
                          Id = App.Id,
-                         Priority = App.Priority,
+                         Priority = App.Priority, 
+                         StudyForm = App.Entry.StudyFormName,
+                         StudyBasis = App.Entry.StudyBasisName,
                          Profession = App.Entry.LicenseProgramCode + " " + App.Entry.LicenseProgramName,
                          ObrazProgram = App.Entry.ObrazProgramCrypt + " " + App.Entry.ObrazProgramName,
                          Specialization = App.Entry.ProfileName
@@ -3521,6 +3564,161 @@ Order by cnt desc";
                 context.SaveChanges();
 
                 return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N") });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteApplication_Mag(string id, string CommitId)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                Guid ApplicationId;
+                if (!Guid.TryParse(id, out ApplicationId))
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                var App = context.Application.Where(x => x.Id == ApplicationId).FirstOrDefault();
+                if (App == null)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                //if (App.IsCommited)
+                //    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_FailDeleteApp_IsCommited });
+                try
+                {
+                    context.Application.DeleteObject(App);
+                    context.SaveChanges();
+                }
+                catch
+                {
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_DeleteApp_Fail });
+                }
+
+                return Json(new { IsOk = true });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CheckApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string CommitId)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+
+            Guid gCommId;
+            if (!Guid.TryParse(CommitId, out gCommId))
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+                //    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });
+
+                bool needHostel = string.IsNullOrEmpty(NeedHostel) ? false : true;
+
+                int iStudyFormId = Util.ParseSafe(studyform);
+                int iStudyBasisId = Util.ParseSafe(studybasis);
+                int EntryTypeId = Util.ParseSafe(entry); 
+                int iProfession = Util.ParseSafe(profession);
+                int iObrazProgram = Util.ParseSafe(obrazprogram);
+                int iParallel = Util.ParseSafe(isParallel);
+                int iReduced = Util.ParseSafe(isReduced);
+                int iSecond = Util.ParseSafe(isSecond);
+
+                bool bIsParallel = iParallel == 1;
+                bool bIsReduced = iReduced == 1;
+                bool bIsSecond = iSecond == 1;
+
+                Guid gSpecialization = Guid.Empty;
+                if ((specialization != null) && (specialization != "") && (specialization != "null"))
+                    gSpecialization = Guid.Parse(specialization);
+
+                //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
+                var EntryList =
+                      (from Ent in context.Entry
+                       join SPStudyLevel in context.SP_StudyLevel on Ent.StudyLevelId equals SPStudyLevel.Id
+                       where Ent.StudyFormId == iStudyFormId &&
+                             Ent.StudyBasisId == iStudyBasisId &&
+                             Ent.LicenseProgramId == iProfession &&
+                             Ent.ObrazProgramId == iObrazProgram &&
+                             Ent.CampaignYear == Util.iPriemYear &&
+                             SPStudyLevel.StudyLevelGroupId == EntryTypeId &&
+                             Ent.IsParallel == bIsParallel &&
+                             Ent.IsReduced == bIsReduced &&
+                             Ent.IsSecond == bIsSecond &&
+                            (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
+                       select new
+                       {
+                           EntryId = Ent.Id,
+                           Ent.DateOfStart,
+                           Ent.DateOfClose,
+                           StudyFormName = Ent.StudyFormName,
+                           StudyBasisName = Ent.StudyBasisName,
+                           Profession = Ent.LicenseProgramName,
+                           ObrazProgram = Ent.ObrazProgramName,
+                           Specialization = Ent.ProfileName
+                       }).ToList();
+
+                if (EntryList.Count > 1)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_2MoreEntry + " (" + EntryList.Count.ToString() + ")" });
+                if (EntryList.Count == 0)
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoEntry });
+
+                Guid EntryId = EntryList.First().EntryId;
+                DateTime? timeOfStart = EntryList.First().DateOfStart;
+                DateTime? timeOfStop = EntryList.First().DateOfClose;
+
+                //проверка на группы
+                //var EntryGroupList =
+                //    (from Entr in context.AG_Entry
+                //     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                //     join Abit in context.AG_Application on Entr.Id equals Abit.EntryId
+                //     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
+                //     select EntrInEntryGroup.EntryGroupId);
+
+                //var AllNeededEntries =
+                //    (from Entr in context.AG_Entry
+                //     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
+                //     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId)
+                //     select Entr.Id).ToList();
+
+                //var FreeEntries = AllNeededEntries.Except(
+                //    context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
+
+                //if (FreeEntries.Count == 0)
+                //    return Json(new { IsOk = true, FreeEntries = false });
+                //else
+                //{
+                //    if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
+                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
+
+                //    if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
+                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
+
+                //    var eIds =
+                //        (from App in context.AG_Application
+                //         where App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
+                //         select App.EntryId).ToList();
+
+                //    if (eIds.Contains(EntryId))
+                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
+                //}
+
+                return Json(new { IsOk = true, FreeEntries = true });
             }
         }
 

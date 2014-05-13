@@ -837,7 +837,7 @@ namespace OnlineAbit2013.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string isParallel = "0", string isReduced = "0", string semesterId = "1")
+        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string CommitId, string isParallel = "0", string isReduced = "0", string semesterId = "1")
         {
             Guid PersonId;
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
@@ -859,14 +859,14 @@ namespace OnlineAbit2013.Controllers
                 iObrazProgramId = 1;
             int iSemesterId;
             if (!int.TryParse(semesterId, out iSemesterId))
-                iSemesterId = 1;
+                iSemesterId = 1; 
 
             bool bIsReduced = isReduced == "1" ? true : false;
             bool bIsParallel = isParallel == "1" ? true : false;
 
             string query = "SELECT DISTINCT ProfileId, ProfileName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId WHERE StudyFormId=@StudyFormId " +
                 "AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId " +
-                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL) " +
+                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL and CommitId=@CommitId) " +
                 "AND IsParallel=@IsParallel AND IsReduced=@IsReduced AND DateOfClose>GETDATE() AND CampaignYear=@Year AND SemesterId=@SemesterId";
 
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -879,7 +879,8 @@ namespace OnlineAbit2013.Controllers
             dic.Add("@IsParallel", bIsParallel);
             dic.Add("@IsReduced", bIsReduced);
             dic.Add("@Year", Util.iPriemYear);
-            dic.Add("@SemesterId", iSemesterId);
+            dic.Add("@SemesterId", iSemesterId); 
+            dic.Add("@CommitId", Guid.Parse(CommitId));
 
             DataTable tblSpecs = Util.AbitDB.GetDataTable(query, dic);
             var Specs =

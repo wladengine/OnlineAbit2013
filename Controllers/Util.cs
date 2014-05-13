@@ -1490,9 +1490,7 @@ WHERE PersonId=@PersonId ";
         { 
             string query = "SELECT [NationalityId] FROM [Person] WHERE Id=@PersonId";
             int? res_nat = (int?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
-
-            
-
+ 
             query = "SELECT [CountryId] FROM [PersonContacts] WHERE PersonId=@PersonId";
             int? res_coun = (int?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
 
@@ -1531,6 +1529,25 @@ WHERE PersonId=@PersonId ";
             {
                 return 0;
             } 
+        }
+        public static int IsGosLine(Guid PersonId)
+        {
+            int result=GetRess(PersonId);
+            if (result == 1)
+                return 0; // только общий прием
+            else if (result == 4)
+                return 1; // только по гослинии
+            else if (result == 3)
+                return -1; // есть выбор
+            else
+            {
+                string query = "SELECT IsSNG from Country Inner Join Person on NationalityId=Country.Id WHERE Person.Id=@PersonId";
+                bool? res_nat = (bool?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+                if (res_nat == true)
+                    return -1; // есть выбор
+                else
+                    return 1; // только по гослинии
+            }  
         }
     }
 }

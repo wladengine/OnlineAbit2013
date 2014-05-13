@@ -3717,7 +3717,7 @@ Order by cnt desc";
                 //    if (eIds.Contains(EntryId))
                 //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
                 //}
-
+                
                 return Json(new { IsOk = true, FreeEntries = true });
             }
         }

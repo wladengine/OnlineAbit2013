@@ -892,7 +892,10 @@ namespace OnlineAbit2013.Controllers
                 NoFree = Specs.Count() == 0 ? true : false,
                 List = Specs.Select(x => new { Id = x.SpecId, Name = x.SpecName })
             };
-            return Json(ret);
+
+            int GosLine = Util.IsGosLine(PersonId);
+
+            return Json(new { ret, GosLine });
         }
 
         #endregion

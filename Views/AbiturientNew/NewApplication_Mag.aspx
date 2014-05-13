@@ -37,12 +37,13 @@
         var CurrlObrazProgram = '#lObrazProgram'+i; 
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
+        var CurrGosLine = '#GosLine'+i; 
 
         $(CurrProfs).show();
         $(CurrObrazPrograms).hide();
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
-
+        $(CurrGosLine).hide();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
             entry: $('#EntryType').val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val() }, function (json_data) 
         {
@@ -75,7 +76,7 @@
         var CurrlObrazProgram = '#lObrazProgram'+i; 
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
-         
+        var CurrGosLine = '#GosLine'+i;  
         var profId = $(CurrlProfession).val();
         var sfId = $('#StudyFormId'+i).val();
 
@@ -86,7 +87,7 @@
         $(CurrObrazPrograms).show();
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
-
+        $(CurrGosLine).hide();
    
         $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
             entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
@@ -123,22 +124,32 @@
         var CurrSpecs = '#Specs'+i;
         var CurrlSpecialization = '#lSpecialization'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
+        var CurrGosLine = '#GosLine'+i;  
+        var CurrGosLineHidden = '#isGosLineHidden'+i;  
         $(CurrProfs).show();
         $(CurrObrazPrograms).show();
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
+        $(CurrGosLine).hide();
         $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
-            var options = '';
-            if (json_data.List.length == 1 && json_data.List[0].Name == 'нет') {
+            var options = ''; 
+            if (json_data.ret.List.length == 1 && json_data.ret.List[0].Name == 'нет') {
                 $(CurrFinishBtn).show();
                 $(CurrObrazProgramsErrors).text('').hide();
+                if (json_data.GosLine==-1) {
+                    $(CurrGosLine).show(); 
+                } 
+                else{
+                    $(CurrGosLineHidden).val(json_data.GosLine); 
+             }
             }
             else {
                 if (json_data.NoFree) {
                     $(CurrObrazProgramsErrors).text('Заявление уже подавалось').show();
                     $(CurrlSpecialization).attr('disabled', 'disabled').hide();
+                    $(CurrGosLine).hide(); 
                 }
                 else {
                     for (var i = 0; i< json_data.List.length; i++) {
@@ -147,6 +158,12 @@
                     $(CurrObrazProgramsErrors).text('').hide();
                     $(CurrlSpecialization).html(options).removeAttr('disabled').show();
                     $(CurrSpecs).show();
+                    if (json_data.GosLine==-1) {
+                        $(CurrGosLine).show(); 
+                    } 
+                     else{
+                        $(CurrGosLineHidden).val(json_data.GosLine); 
+                    }
                 }
             }
         }, 'json');
@@ -183,6 +200,7 @@
             function(json_data) {
             if (json_data.IsOk) {
                 $('#FinishBtn' + i).show();
+               
             }
             else {
                 $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
@@ -217,7 +235,7 @@
         isReduced: $('#IsReducedHidden'+i).val(), 
         isParallel: $('#IsParallelHidden'+i).val(), 
         profession: $('#lProfession'+i).val(), 
-        obrazprogram:  $('#lObrazProgram'+i).val(), 
+        obrazprogram: $('#lObrazProgram'+i).val(), 
         specialization: $('#lSpecialization'+i).val(), 
         NeedHostel: $('#NeedHostel' + i).is(':checked'), 
         CommitId: $('#CommitId').val() 
@@ -242,7 +260,10 @@
             }
         }, 'json');
     }
-
+    
+    function ChangeGosLine(i) {
+        
+    }
 
     function ChangeEType(i) {
         entry = $('#Entry').val();
@@ -515,6 +536,10 @@
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
             <span>Факультет</span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
+        </p> 
+        <p id = "GosLine<%= i.ToString()%>" style="display:none;" >
+             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
+             <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" ></input>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
             <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />

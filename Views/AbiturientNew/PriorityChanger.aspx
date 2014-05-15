@@ -104,6 +104,7 @@
                 </tr>
             </table>
             <input type="hidden" name="<%= s.Id.ToString("N") %>" />
+            <a href="PersonStartPage.aspx">some path...</a>
         </li>
     <% } %>
     </ul>

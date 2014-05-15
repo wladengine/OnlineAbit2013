@@ -135,7 +135,7 @@
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
-            if (if (sbId==1){ <!-- Бюджет -->
+            if (sbId==1){ <!-- Бюджет -->
                 if (json_data.GosLine==0) { <!-- Рф - РФ (только общий прием) -->
                     $(CurrGosLine).hide();
                     $(CurrGosLineHidden).val('0');
@@ -161,13 +161,13 @@
                 $(CurrObrazProgramsErrors).text('').hide(); 
             }
             else {
-                if (json_data.NoFree) {
+                if (json_data.ret.NoFree) {
                     $(CurrObrazProgramsErrors).text('Заявление уже подавалось').show();
                     $(CurrlSpecialization).attr('disabled', 'disabled').hide();
                     $(CurrGosLine).hide();  
                 }
                 else {
-                    for (var i = 0; i< json_data.List.length; i++) {
+                    for (var i = 0; i< json_data.ret.List.length; i++) {
                         options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
                     }
                     $(CurrObrazProgramsErrors).text('').hide();

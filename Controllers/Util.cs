@@ -387,7 +387,7 @@ namespace OnlineAbit2013.Controllers
         /// <returns></returns>
         public static bool CheckPersonReadOnlyStatus(Guid PersonId)
         {
-            string query = "SELECT COUNT(Application.Id) FROM [Application] INNER JOIN Entry ON Entry.Id=[Application].EntryId WHERE PersonId=@PersonId AND Enabled=@Enabled";
+            string query = "SELECT COUNT(Application.Id) FROM [Application] INNER JOIN Entry ON Entry.Id=[Application].EntryId WHERE PersonId=@PersonId AND Enabled=@Enabled AND IsCommited=1";
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@Enabled", true);

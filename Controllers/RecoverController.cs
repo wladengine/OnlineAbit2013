@@ -890,7 +890,7 @@ namespace OnlineAbit2013.Controllers
             var ret = new
             {
                 NoFree = Specs.Count() == 0 ? true : false,
-                List = Specs.Select(x => new { Id = x.SpecId, Name = x.SpecName })
+                List = Specs.Select(x => new { Id = x.SpecId, Name = x.SpecName }).ToList()
             };
 
             int GosLine = Util.IsGosLine(PersonId);

@@ -135,35 +135,27 @@
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
-
-            if (json_data.GosLine==0) {
-                 <!-- Рф - РФ (только общий прием) -->
-                $(CurrGosLine).hide();
-                $(CurrGosLineHidden).val('0');
-            } 
-            else {
-                if (json_data.GosLine==11) { <!-- неРф - неРФ или неСНГ-РФ (только гослиния)-->
+            if (if (sbId==1){ <!-- Бюджет -->
+                if (json_data.GosLine==0) { <!-- Рф - РФ (только общий прием) -->
                     $(CurrGosLine).hide();
-                    $(CurrGosLineHidden).val('1');  
-                }
+                    $(CurrGosLineHidden).val('0');
+                } 
                 else {
-                    if (sbId==1){ <!-- Бюджет -->
-                        $(CurrGosLine).show();
+                    if (json_data.GosLine==11) { <!-- неРф - неРФ или неСНГ-РФ (бд 1, только гослиния)-->
+                        $(CurrGosLine).hide();
+                        $(CurrGosLineHidden).val('1');  
                     }
-                    else { <!-- Договор -->
-                        if (json_data.GosLine==10) { <!-- СНГ - РФ (дог = гослиния, бюджет = выбор)-->
-                            $(CurrGosLine).hide();
-                            $(CurrGosLineHidden).val('1');  
-                        }
-                        else {
-                            if (json_data.GosLine==1) { <!-- Рф - неРф (дог = общий, бюджет = выбор)-->
-                                $(CurrGosLine).hide();
-                                $(CurrGosLineHidden).val('0');
-                            } 
-                        }
+                    else { 
+                        $(CurrGosLine).show();  
                     }
                 }
             }
+            else{
+                $(CurrGosLine).hide();
+                $(CurrGosLineHidden).val('0');
+            }
+
+            
             if (json_data.ret.List.length == 1 && json_data.ret.List[0].Name == 'нет') {
                 $(CurrFinishBtn).show();
                 $(CurrObrazProgramsErrors).text('').hide(); 

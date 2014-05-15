@@ -1038,7 +1038,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult ChangeApplication_AG(string Id)
+        public ActionResult ChangeApplication(string Id)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -1050,119 +1050,134 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
-                AG_ApplicationModel model = new AG_ApplicationModel();
-                model.Applications = new List<AG_ApplicationSipleEntity>();
-                model.CommitId = Id;
-                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
-                if (c != 100)
-                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
-
-                /*int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
-                    new Dictionary<string, object>() { { "@Id", PersonId } });*/
-
-                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
-                   new Dictionary<string, object>() { { "@Id", PersonId } });
-                if (iAG_SchoolTypeId == 4)
+                int? c = (int?)Util.AbitDB.GetValue("SELECT top 1 EntryType FROM Application WHERE CommitId=@Id AND PersonId=@PersonId", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", Guid.Parse(Id) } });
+                if (c != null)
                 {
-                    model.Enabled = false;
+                    if (c == 1) { } // первый курс
+                    else if (c == 2) { } // магистратура
+
                 }
                 else
                 {
-                    // ссылка на объект  и пр., когда SchoolExitClassId = null
-                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
-INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
-                    if (tbl.Rows.Count == 0)
+                    c = (int?)Util.AbitDB.GetValue("SELECT count(Id) FROM AG_Application WHERE CommitId=@Id AND PersonId=@PersonId", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", Guid.Parse(Id) } });
+                    if (c != 0)
                     {
-                        model.Enabled = false;
-                    }
-                    else
-                    {
-                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
-                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+                        AG_ApplicationModel model = new AG_ApplicationModel();
+                        model.Applications = new List<AG_ApplicationSipleEntity>();
+                        model.CommitId = Id;
+                        c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
+                        if (c != 100)
+                            return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
 
-                        if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
+                        /*int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
+                            new Dictionary<string, object>() { { "@Id", PersonId } });*/
+
+                        int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                           new Dictionary<string, object>() { { "@Id", PersonId } });
+                        if (iAG_SchoolTypeId == 4)
                         {
                             model.Enabled = false;
                         }
                         else
                         {
-                            var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
-                            if (CommId.Count() > 0 && CommId.First().HasValue)
+                            // ссылка на объект  и пр., когда SchoolExitClassId = null
+                            DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                            if (tbl.Rows.Count == 0)
                             {
-                                Guid CommitId = CommId.First().Value;
-                                model.CommitId = CommitId.ToString("N");
-                                
+                                model.Enabled = false;
+                            }
+                            else
+                            {
+                                int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                                int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
 
-                                var AppList = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
-                                    .Select(x => new 
-                                    { 
-                                        x.Id, 
-                                        x.AG_Entry.ProgramId, 
-                                        ProgramName = x.AG_Entry.AG_Program.Name, 
-                                        x.AG_Entry.ProfileId, 
-                                        ProfileName = x.AG_Entry.AG_Profile.Name, 
-                                        x.ManualExamId, 
-                                        x.AG_Entry.HasManualExams,
-                                        x.AG_Entry.EntryClassId
-                                    });
-                                foreach (var App in AppList)
+                                if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
                                 {
-                                    var Ent = new AG_ApplicationSipleEntity()
+                                    model.Enabled = false;
+                                }
+                                else
+                                {
+                                    var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
+                                    if (CommId.Count() > 0 && CommId.First().HasValue)
                                     {
-                                        Id = App.Id,
-                                        ProgramId = App.ProgramId,
-                                        ProgramName = App.ProgramName,
-                                        ProfileId = App.ProfileId,
-                                        ProfileName = App.ProfileName,
-                                    };
+                                        Guid CommitId = CommId.First().Value;
+                                        model.CommitId = CommitId.ToString("N");
 
-                                    var ProgramList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId)
-                                        .Select(x => new { x.AG_Program.Id, x.AG_Program.Name }).Distinct().ToList()
-                                        .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProgramId }).ToList();
-                                    Ent.ProgramList = ProgramList;
 
-                                    var ProfileList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId)
-                                        .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
-                                        .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
-                                    if (ProfileList.Count > 1)
-                                        Ent.ProfileList = ProfileList;
-                                    
-                                    if (App.HasManualExams)
-                                    {
-                                        var ManualExamsList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId && x.ProfileId == App.ProfileId)
-                                            .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
-                                            .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
-
-                                        if (App.ManualExamId.HasValue)
+                                        var AppList = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
+                                            .Select(x => new
+                                            {
+                                                x.Id,
+                                                x.AG_Entry.ProgramId,
+                                                ProgramName = x.AG_Entry.AG_Program.Name,
+                                                x.AG_Entry.ProfileId,
+                                                ProfileName = x.AG_Entry.AG_Profile.Name,
+                                                x.ManualExamId,
+                                                x.AG_Entry.HasManualExams,
+                                                x.AG_Entry.EntryClassId
+                                            });
+                                        foreach (var App in AppList)
                                         {
-                                            Ent.ManualExamId = App.ManualExamId.Value;
-                                            Ent.ManualExamList = ManualExamsList;
+                                            var Ent = new AG_ApplicationSipleEntity()
+                                            {
+                                                Id = App.Id,
+                                                ProgramId = App.ProgramId,
+                                                ProgramName = App.ProgramName,
+                                                ProfileId = App.ProfileId,
+                                                ProfileName = App.ProfileName,
+                                            };
+
+                                            var ProgramList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId)
+                                                .Select(x => new { x.AG_Program.Id, x.AG_Program.Name }).Distinct().ToList()
+                                                .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProgramId }).ToList();
+                                            Ent.ProgramList = ProgramList;
+
+                                            var ProfileList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId)
+                                                .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
+                                                .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
+                                            if (ProfileList.Count > 1)
+                                                Ent.ProfileList = ProfileList;
+
+                                            if (App.HasManualExams)
+                                            {
+                                                var ManualExamsList = context.AG_Entry.Where(x => x.EntryClassId == App.EntryClassId && x.ProgramId == App.ProgramId && x.ProfileId == App.ProfileId)
+                                                    .Select(x => new { x.AG_Profile.Id, x.AG_Profile.Name }).Distinct().ToList()
+                                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
+
+                                                if (App.ManualExamId.HasValue)
+                                                {
+                                                    Ent.ManualExamId = App.ManualExamId.Value;
+                                                    Ent.ManualExamList = ManualExamsList;
+                                                }
+                                            }
+
+                                            model.Applications.Add(Ent);
                                         }
                                     }
-
-                                    model.Applications.Add(Ent);
+                                    model.Enabled = true;
+                                    string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
+                                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                                    dic.Add("@PersonId", PersonId);
+                                    dic.Add("@ClassId", iAG_EntryClassId);
+                                    tbl = Util.AbitDB.GetDataTable(query, dic);
+                                    model.Professions = (from DataRow rw in tbl.Rows
+                                                         select new SelectListItem()
+                                                         {
+                                                             Value = rw.Field<int>("ProgramId").ToString(),
+                                                             Text = rw.Field<string>("ProgramName")
+                                                         }).ToList();
+                                    model.EntryClassId = iAG_EntryClassId;
+                                    model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
+                                    //пока что так
+                                    model.MaxBlocks = iAG_EntryClassValue == 9 ? 2 : 1;
                                 }
                             }
-                            model.Enabled = true;
-                            string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
-                            Dictionary<string, object> dic = new Dictionary<string, object>();
-                            dic.Add("@PersonId", PersonId);
-                            dic.Add("@ClassId", iAG_EntryClassId);
-                            tbl = Util.AbitDB.GetDataTable(query, dic);
-                            model.Professions = (from DataRow rw in tbl.Rows
-                                                 select new SelectListItem()
-                                                 {
-                                                     Value = rw.Field<int>("ProgramId").ToString(),
-                                                     Text = rw.Field<string>("ProgramName")
-                                                 }).ToList();
-                            model.EntryClassId = iAG_EntryClassId;
-                            model.EntryClassName = tbl.Rows[0].Field<string>("EntryClassName");
-                            //пока что так
-                            model.MaxBlocks = iAG_EntryClassValue == 9 ? 2 : 1;
                         }
-                    }
+                        return View("NewApplication_AG", model);
+                    } 
                 }
-                return View("NewApplication_AG", model);
+                return RedirectToAction("Index");
             }
         }
 

@@ -127,7 +127,7 @@
             </a>
         </td>
         <td>
-            <a href="<%= string.Format("../../AbiturientNew/ChangeApplication_AG?Id={0}", Model.Id.ToString("N")) %>">
+            <a href="<%= string.Format("../../AbiturientNew/ChangeApplication?Id={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/File_edit064.png" alt="Редактировать заявление" />
             </a>
         </td>

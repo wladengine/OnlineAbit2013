@@ -113,7 +113,7 @@
         var profId = $('#lProfession'+i).val();
         var opId = $('#lObrazProgram'+i).val();
         var sfId = $('#StudyFormId'+i).val();
-
+        var sbId = $('#StudyBasisId'+i).val()
         if (profId == null || opId == null){
             return;
         } 
@@ -134,22 +134,45 @@
         $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
-            var options = ''; 
+            var options = '';
+
+            if (json_data.GosLine==0) {
+                 <!-- Рф - РФ (только общий прием) -->
+                $(CurrGosLine).hide();
+                $(CurrGosLineHidden).val('0');
+            } 
+            else {
+                if (json_data.GosLine==11) { <!-- неРф - неРФ или неСНГ-РФ (только гослиния)-->
+                    $(CurrGosLine).hide();
+                    $(CurrGosLineHidden).val('1');  
+                }
+                else {
+                    if (sbId==1){ <!-- Бюджет -->
+                        $(CurrGosLine).show();
+                    }
+                    else { <!-- Договор -->
+                        if (json_data.GosLine==10) { <!-- СНГ - РФ (дог = гослиния, бюджет = выбор)-->
+                            $(CurrGosLine).hide();
+                            $(CurrGosLineHidden).val('1');  
+                        }
+                        else {
+                            if (json_data.GosLine==1) { <!-- Рф - неРф (дог = общий, бюджет = выбор)-->
+                                $(CurrGosLine).hide();
+                                $(CurrGosLineHidden).val('0');
+                            } 
+                        }
+                    }
+                }
+            }
             if (json_data.ret.List.length == 1 && json_data.ret.List[0].Name == 'нет') {
                 $(CurrFinishBtn).show();
-                $(CurrObrazProgramsErrors).text('').hide();
-                if (json_data.GosLine==-1) {
-                    $(CurrGosLine).show(); 
-                } 
-                else{
-                    $(CurrGosLineHidden).val(json_data.GosLine); 
-             }
+                $(CurrObrazProgramsErrors).text('').hide(); 
             }
             else {
                 if (json_data.NoFree) {
                     $(CurrObrazProgramsErrors).text('Заявление уже подавалось').show();
                     $(CurrlSpecialization).attr('disabled', 'disabled').hide();
-                    $(CurrGosLine).hide(); 
+                    $(CurrGosLine).hide();  
                 }
                 else {
                     for (var i = 0; i< json_data.List.length; i++) {
@@ -157,13 +180,7 @@
                     }
                     $(CurrObrazProgramsErrors).text('').hide();
                     $(CurrlSpecialization).html(options).removeAttr('disabled').show();
-                    $(CurrSpecs).show();
-                    if (json_data.GosLine==-1) {
-                        $(CurrGosLine).show(); 
-                    } 
-                     else{
-                        $(CurrGosLineHidden).val(json_data.GosLine); 
-                    }
+                    $(CurrSpecs).show(); 
                 }
             }
         }, 'json');
@@ -200,7 +217,6 @@
             function(json_data) {
             if (json_data.IsOk) {
                 $('#FinishBtn' + i).show();
-               
             }
             else {
                 $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
@@ -215,6 +231,8 @@
         currSpecs = '#Specs' + i;    
         currObrazProgramErrors = '#ObrazProgramsErrors' + i;  
         currNeedHostel = '#NeedHostel' + i;
+        currGosLineHidden = '#isGosLineHidden'+i;
+        currGosLine = '#isGosLine'+i;
 
         currBlock = '#Block' + i; 
         currBlockData = '#BlockData' + i;
@@ -238,6 +256,7 @@
         obrazprogram: $('#lObrazProgram'+i).val(), 
         specialization: $('#lSpecialization'+i).val(), 
         NeedHostel: $('#NeedHostel' + i).is(':checked'), 
+        IsGosLine: $('#isGosLineHidden'+i).val(),
         CommitId: $('#CommitId').val() 
           }, 
           function(json_data) {
@@ -262,7 +281,14 @@
     }
     
     function ChangeGosLine(i) {
-        
+        if ($('#IsGosLine'+i).is(':checked')){
+            var CurrGosLineHidden = '#isGosLineHidden'+i;  
+            $(CurrGosLineHidden).val('1');
+        }
+        else{
+            var CurrGosLineHidden = '#isGosLineHidden'+i;  
+            $(CurrGosLineHidden).val('0');
+        }
     }
 
     function ChangeEType(i) {
@@ -456,6 +482,10 @@
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
             <span>Факультет</span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
+        </p>
+        <p id = "GosLine<%= i.ToString()%>" style="display:none;" >
+             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
+             <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" ></input>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
             <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />

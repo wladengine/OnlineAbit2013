@@ -3426,7 +3426,7 @@ Order by cnt desc";
         }
 
         [HttpPost]
-        public JsonResult AddApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string CommitId)
+        public JsonResult AddApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string IsGosLine, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -3450,16 +3450,19 @@ Order by cnt desc";
                 int iStudyFormId = Util.ParseSafe(studyform);
                 int iStudyBasisId = Util.ParseSafe(studybasis);
                 int EntryTypeId = Util.ParseSafe(entry);
-                //int iFacultyId = Util.ParseSafe(faculty);
+                 
                 int iProfession = Util.ParseSafe(profession);
                 int iObrazProgram = Util.ParseSafe(obrazprogram);
+
                 int iParallel = Util.ParseSafe(isParallel);
                 int iReduced = Util.ParseSafe(isReduced);
                 int iSecond = Util.ParseSafe(isSecond);
-
+                int iGosLine = Util.ParseSafe(IsGosLine);
+                 
                 bool bIsParallel = iParallel == 1;
                 bool bIsReduced = iReduced == 1;
                 bool bIsSecond = iSecond == 1;
+                bool bIsGosLine = iGosLine == 1;
                 
                 Guid gSpecialization = Guid.Empty;
                 if ((specialization != null) && (specialization != "") && (specialization != "null"))
@@ -3559,6 +3562,7 @@ Order by cnt desc";
                     EntryType = EntryTypeId,
                     DateOfStart = DateTime.Now,
                     CommitId = gCommId,
+                    IsGosLine = bIsGosLine,
                     IsCommited = isCommited
                 });
                 context.SaveChanges();

@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_PersonContacts_Region", "Region", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.Region), "PersonContacts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.PersonContacts), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_PersonContacts_Country", "Country", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.Country), "PersonContacts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.PersonContacts), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Application_Entry", "Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.Entry), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Application), true)]
-[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Entry_Semester", "Semester", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.Semester), "Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Entry), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Entry_Semester", "Semester", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.Semester), "Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Entry), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Application_Person", "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.Person), "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Application), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Person_ForeignCountry", "Country", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.Country), "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Person), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_Person_PassportType", "PassportType", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.PassportType), "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.Person), true)]
@@ -6573,6 +6573,9 @@ namespace OnlineAbit2013
         /// Create a new Entry object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="semesterId">Initial value of the SemesterId property.</param>
+        /// <param name="licenseProgramId">Initial value of the LicenseProgramId property.</param>
+        /// <param name="obrazProgramId">Initial value of the ObrazProgramId property.</param>
         /// <param name="studyBasisId">Initial value of the StudyBasisId property.</param>
         /// <param name="studyFormId">Initial value of the StudyFormId property.</param>
         /// <param name="studyLevelId">Initial value of the StudyLevelId property.</param>
@@ -6583,10 +6586,13 @@ namespace OnlineAbit2013
         /// <param name="isElectronic">Initial value of the IsElectronic property.</param>
         /// <param name="isDistance">Initial value of the IsDistance property.</param>
         /// <param name="isUsedForPriem">Initial value of the IsUsedForPriem property.</param>
-        public static Entry CreateEntry(global::System.Guid id, global::System.Int32 studyBasisId, global::System.Int32 studyFormId, global::System.Int32 studyLevelId, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel, global::System.Boolean isExpress, global::System.Boolean isElectronic, global::System.Boolean isDistance, global::System.Boolean isUsedForPriem)
+        public static Entry CreateEntry(global::System.Guid id, global::System.Int32 semesterId, global::System.Int32 licenseProgramId, global::System.Int32 obrazProgramId, global::System.Int32 studyBasisId, global::System.Int32 studyFormId, global::System.Int32 studyLevelId, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel, global::System.Boolean isExpress, global::System.Boolean isElectronic, global::System.Boolean isDistance, global::System.Boolean isUsedForPriem)
         {
             Entry entry = new Entry();
             entry.Id = id;
+            entry.SemesterId = semesterId;
+            entry.LicenseProgramId = licenseProgramId;
+            entry.ObrazProgramId = obrazProgramId;
             entry.StudyBasisId = studyBasisId;
             entry.StudyFormId = studyFormId;
             entry.StudyLevelId = studyLevelId;
@@ -6634,9 +6640,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> SemesterId
+        public global::System.Int32 SemesterId
         {
             get
             {
@@ -6651,8 +6657,8 @@ namespace OnlineAbit2013
                 OnSemesterIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _SemesterId;
-        partial void OnSemesterIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _SemesterId;
+        partial void OnSemesterIdChanging(global::System.Int32 value);
         partial void OnSemesterIdChanged();
     
         /// <summary>
@@ -6754,9 +6760,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> LicenseProgramId
+        public global::System.Int32 LicenseProgramId
         {
             get
             {
@@ -6771,8 +6777,8 @@ namespace OnlineAbit2013
                 OnLicenseProgramIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _LicenseProgramId;
-        partial void OnLicenseProgramIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _LicenseProgramId;
+        partial void OnLicenseProgramIdChanging(global::System.Int32 value);
         partial void OnLicenseProgramIdChanged();
     
         /// <summary>
@@ -6826,9 +6832,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> ObrazProgramId
+        public global::System.Int32 ObrazProgramId
         {
             get
             {
@@ -6843,8 +6849,8 @@ namespace OnlineAbit2013
                 OnObrazProgramIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _ObrazProgramId;
-        partial void OnObrazProgramIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _ObrazProgramId;
+        partial void OnObrazProgramIdChanging(global::System.Int32 value);
         partial void OnObrazProgramIdChanged();
     
         /// <summary>
@@ -7686,6 +7692,102 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsUsedForPriem;
         partial void OnIsUsedForPriemChanging(global::System.Boolean value);
         partial void OnIsUsedForPriemChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfClose_Foreign
+        {
+            get
+            {
+                return _DateOfClose_Foreign;
+            }
+            set
+            {
+                OnDateOfClose_ForeignChanging(value);
+                ReportPropertyChanging("DateOfClose_Foreign");
+                _DateOfClose_Foreign = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfClose_Foreign");
+                OnDateOfClose_ForeignChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfClose_Foreign;
+        partial void OnDateOfClose_ForeignChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfClose_ForeignChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfStart_Foreign
+        {
+            get
+            {
+                return _DateOfStart_Foreign;
+            }
+            set
+            {
+                OnDateOfStart_ForeignChanging(value);
+                ReportPropertyChanging("DateOfStart_Foreign");
+                _DateOfStart_Foreign = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfStart_Foreign");
+                OnDateOfStart_ForeignChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfStart_Foreign;
+        partial void OnDateOfStart_ForeignChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfStart_ForeignChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfClose_GosLine
+        {
+            get
+            {
+                return _DateOfClose_GosLine;
+            }
+            set
+            {
+                OnDateOfClose_GosLineChanging(value);
+                ReportPropertyChanging("DateOfClose_GosLine");
+                _DateOfClose_GosLine = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfClose_GosLine");
+                OnDateOfClose_GosLineChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfClose_GosLine;
+        partial void OnDateOfClose_GosLineChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfClose_GosLineChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfStart_GosLine
+        {
+            get
+            {
+                return _DateOfStart_GosLine;
+            }
+            set
+            {
+                OnDateOfStart_GosLineChanging(value);
+                ReportPropertyChanging("DateOfStart_GosLine");
+                _DateOfStart_GosLine = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfStart_GosLine");
+                OnDateOfStart_GosLineChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfStart_GosLine;
+        partial void OnDateOfStart_GosLineChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfStart_GosLineChanged();
 
         #endregion
 

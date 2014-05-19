@@ -509,16 +509,16 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="SemesterId" Type="int" />
+          <Property Name="SemesterId" Type="int" Nullable="false" />
           <Property Name="StudyPlanId" Type="uniqueidentifier" />
           <Property Name="StudyPlanNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="FacultyId" Type="int" />
           <Property Name="FacultyName" Type="nvarchar" MaxLength="150" />
-          <Property Name="LicenseProgramId" Type="int" />
+          <Property Name="LicenseProgramId" Type="int" Nullable="false" />
           <Property Name="LicenseProgramName" Type="nvarchar" MaxLength="400" />
           <Property Name="LicenseProgramNameEng" Type="nvarchar" MaxLength="250" />
           <Property Name="LicenseProgramCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="ObrazProgramId" Type="int" />
+          <Property Name="ObrazProgramId" Type="int" Nullable="false" />
           <Property Name="ObrazProgramName" Type="nvarchar" MaxLength="400" />
           <Property Name="ObrazProgramNameEng" Type="nvarchar" MaxLength="250" />
           <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="50" />
@@ -552,6 +552,10 @@
           <Property Name="EducationPeriodName" Type="nvarchar" MaxLength="150" />
           <Property Name="DateOfClose" Type="datetime" />
           <Property Name="DateOfStart" Type="datetime" />
+          <Property Name="DateOfClose_Foreign" Type="datetime" />
+          <Property Name="DateOfStart_Foreign" Type="datetime" />
+          <Property Name="DateOfClose_GosLine" Type="datetime" />
+          <Property Name="DateOfStart_GosLine" Type="datetime" />
           <Property Name="IsUsedForPriem" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ForeignLanguage">
@@ -1181,7 +1185,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Entry_Semester">
-          <End Role="Semester" Type="OnlinePriem2012Model.Store.Semester" Multiplicity="0..1" />
+          <End Role="Semester" Type="OnlinePriem2012Model.Store.Semester" Multiplicity="1" />
           <End Role="Entry" Type="OnlinePriem2012Model.Store.Entry" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -2028,15 +2032,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Int32" Name="SemesterId" />
+          <Property Type="Int32" Name="SemesterId" Nullable="false" />
           <Property Type="Guid" Name="StudyPlanId" />
           <Property Type="String" Name="StudyPlanNumber" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="FacultyId" />
           <Property Type="String" Name="FacultyName" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="LicenseProgramId" />
+          <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
           <Property Type="String" Name="LicenseProgramName" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LicenseProgramCode" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ObrazProgramId" />
+          <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
           <Property Type="String" Name="ObrazProgramName" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ObrazProgramCrypt" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ProfileName" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -2075,6 +2079,10 @@
           <Property Type="String" Name="StudyFormNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsUsedForPriem" Nullable="false" />
           <NavigationProperty Name="Comission" Relationship="OnlinePriem2012Model.ComissionInEntry" FromRole="Entry" ToRole="Comission" />
+          <Property Type="DateTime" Name="DateOfClose_Foreign" Precision="3" />
+          <Property Type="DateTime" Name="DateOfStart_Foreign" Precision="3" />
+          <Property Type="DateTime" Name="DateOfClose_GosLine" Precision="3" />
+          <Property Type="DateTime" Name="DateOfStart_GosLine" Precision="3" />
         </EntityType>
         <EntityType Name="Semester">
           <Key>
@@ -2297,7 +2305,7 @@
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Language" FromRole="Language" ToRole="PersonEducationDocument" />
         </EntityType>
         <Association Name="FK_Entry_Semester">
-          <End Type="OnlinePriem2012Model.Semester" Role="Semester" Multiplicity="0..1" />
+          <End Type="OnlinePriem2012Model.Semester" Role="Semester" Multiplicity="1" />
           <End Type="OnlinePriem2012Model.Entry" Role="Entry" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -3415,6 +3423,10 @@
           <EntitySetMapping Name="Entry">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Entry">
               <MappingFragment StoreEntitySet="Entry">
+                <ScalarProperty Name="DateOfStart_GosLine" ColumnName="DateOfStart_GosLine" />
+                <ScalarProperty Name="DateOfClose_GosLine" ColumnName="DateOfClose_GosLine" />
+                <ScalarProperty Name="DateOfStart_Foreign" ColumnName="DateOfStart_Foreign" />
+                <ScalarProperty Name="DateOfClose_Foreign" ColumnName="DateOfClose_Foreign" />
                 <ScalarProperty Name="IsUsedForPriem" ColumnName="IsUsedForPriem" />
                 <ScalarProperty Name="StudyFormNameEng" ColumnName="StudyFormNameEng" />
                 <ScalarProperty Name="StudyBasisNameEng" ColumnName="StudyBasisNameEng" />

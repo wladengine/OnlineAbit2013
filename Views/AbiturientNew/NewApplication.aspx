@@ -95,7 +95,7 @@
     <br />
 
     <div class = "form panel"> 
-    <h3>Выберите направление для поступления</h3>
+    <h3><%= GetGlobalResourceObject("PersonStartPage", "AppSelectHeader")%></h3>
     <hr />
     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
     <input name="val_h" id="val_h" type="hidden" value="1" />

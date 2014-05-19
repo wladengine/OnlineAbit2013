@@ -213,4 +213,22 @@
   <data name="NewApp_DeleteApp_Fail" xml:space="preserve">
     <value>Ошибка при удалении заявления</value>
   </data>
+  <data name="BlockData_LicenseProgram" xml:space="preserve">
+    <value>Направление</value>
+  </data>
+  <data name="BlockData_ObrazProgram" xml:space="preserve">
+    <value>Образовательная программа</value>
+  </data>
+  <data name="BlockData_Specialization" xml:space="preserve">
+    <value>Специализация</value>
+  </data>
+  <data name="BlockData_StudyBasis" xml:space="preserve">
+    <value>Основа обучения</value>
+  </data>
+  <data name="BlockData_StudyForm" xml:space="preserve">
+    <value>Форма обучения</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
 </root>

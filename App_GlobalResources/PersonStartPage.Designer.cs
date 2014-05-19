@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Поступление на 1 курс (бакалавриат, специалитет, магистратура) гражданам РФ.
+        ///   Ищет локализованную строку, такую же, как Поступление на 1 курс (бакалавриат, специалитет) гражданам РФ.
         /// </summary>
         internal static string AbiturientType1 {
             get {
@@ -156,6 +156,15 @@ namespace Resources {
         internal static string AbiturientType9 {
             get {
                 return ResourceManager.GetString("AbiturientType9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Выберите направление для поступления.
+        /// </summary>
+        internal static string AppSelectHeader {
+            get {
+                return ResourceManager.GetString("AppSelectHeader", resourceCulture);
             }
         }
         

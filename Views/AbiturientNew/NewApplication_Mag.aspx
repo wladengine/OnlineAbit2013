@@ -153,8 +153,7 @@
             else{
                 $(CurrGosLine).hide();
                 $(CurrGosLineHidden).val('0');
-            }
-
+            } 
             
             if (json_data.ret.List.length == 1 && json_data.ret.List[0].Name == 'нет') {
                 $(CurrFinishBtn).show();
@@ -166,10 +165,10 @@
                     $(CurrlSpecialization).attr('disabled', 'disabled').hide();
                     $(CurrGosLine).hide();  
                 }
-                else {
+                else {    
                     for (var i = 0; i< json_data.ret.List.length; i++) {
-                        options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
-                    }
+                        options += '<option value="' + json_data.ret.List[i].Id.toString() + '">' + json_data.ret.List[i].Name.toString() + '</option>';
+                    } 
                     $(CurrObrazProgramsErrors).text('').hide();
                     $(CurrlSpecialization).html(options).removeAttr('disabled').show();
                     $(CurrSpecs).show(); 
@@ -381,6 +380,7 @@
                 $(nextBlockData_Specialization).text('');
                 $(nextBlockData).hide();
                 $(nextBlock).show();
+                GetProfessions(i);  
             }
             else {
                 $(currObrazProgramsErrors_Block).text(json_data.ErrorMessage).show();
@@ -399,8 +399,8 @@
     <% } %>
     
         <input type="hidden" id = "EntryType" name = "EntryType" value="2" />
-        <select id="Entry" name="Entry" onchange="ChangeEType()" disabled>
-            <option value="2">Магистратура</option>
+        <select id="Entry" name="Entry" onchange="ChangeEType()" disabled="disabled">
+            <option value="2"><%= GetGlobalResourceObject("NewApplication", "Select_Magistery")%></option>
         </select>
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
@@ -411,68 +411,68 @@
                 <td style="font-size:1.3em;"><%= i.ToString() %></td>
             </tr>
             <tr>
-                <td style="width:12em;">Форма обучения</td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
                 <td id="BlockData_StudyFormId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyFormName  %></td>
             </tr>
             <tr>
-                <td style="width:12em;">Основа обучения</td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                 <td id="BlockData_StudyBasisId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyBasisName%></td>
             </tr>
             <tr>
-                <td style="width:12em;">Направление</td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_LicenseProgram")%></td>
                 <td id="BlockData_Profession<%= i.ToString()%>" ><%= Model.Applications[i - 1].ProfessionName%></td>
             </tr>
             <tr>
-                <td style="width:12em;">Образовательная программа</td>
-                <td id="BlockData_ObrazProgram" ><%= Model.Applications[i - 1].ObrazProgramName%></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_LicenseProgram")%></td>
+                <td id="BlockData_ObrazProgram<%= i.ToString()%>" ><%= Model.Applications[i - 1].ObrazProgramName%></td>
             </tr>
             <tr>
-                <td style="width:12em;">Специализация</td>
-                <td id="Blockdata_Specialization" ><%= Model.Applications[i - 1].SpecializationName%></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
+                <td id="BlockData_Specialization<%= i.ToString()%>" ><%= Model.Applications[i - 1].SpecializationName%></td>
             </tr>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
         <p id="SForm<%= i.ToString()%>">
-            <span>Форма обучения</span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new Dictionary<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
-            <span>Основа обучения</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new Dictionary<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px">Второе высшее</span><br />
+            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
             <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px">Параллельное обучение</span><br />
+            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
             <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px">Для лиц, имеющих ВО</span><br />
+            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
             <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите направление(специальность)</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
         <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите образовательную программу</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите профиль</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
             <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
-            <span>Факультет</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderFaculty")%></span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p>
         <p id = "GosLine<%= i.ToString()%>" style="display:none;" >
@@ -480,8 +480,8 @@
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" ></input>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
-            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
-            <input id="Submit" type="submit" value="Подать заявление" class="button button-green"/>
+            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>"  /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />
+            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p><br />
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>
         </div>
@@ -495,27 +495,27 @@
                     <td style="font-size:1.3em;"><%= i.ToString() %></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;">Форма обучения</td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
                     <td id="BlockData_StudyFormId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;">Основа обучения</td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                     <td id="BlockData_StudyBasisId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;">Направление</td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_LicenseProgram")%></td>
                     <td id="BlockData_Profession<%= i.ToString() %>" ></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;">Образовательная программа</td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_ObrazProgram")%></td>
                     <td id="BlockData_ObrazProgram<%= i.ToString() %>" ></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;">Специализация</td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
                     <td id="BlockData_Specialization<%= i.ToString() %>" ></td>
                 </tr>
             </table>
-            <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+            <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
             <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
             </div>
         </div>
@@ -531,27 +531,27 @@
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px">Второе высшее</span><br />
+            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
             <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px">Параллельное обучение</span><br />
+            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
             <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px">Для лиц, имеющих ВО</span><br />
+            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
             <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите направление(специальность)</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
         <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите образовательную программу</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span>Выберите профиль</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
             <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
@@ -564,7 +564,7 @@
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" ></input>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
-            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
+            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p><br />
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>

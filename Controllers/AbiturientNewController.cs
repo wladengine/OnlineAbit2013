@@ -1142,16 +1142,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                     SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
                                     SpecializationName = App.ProfileName,
                                     Hostel = App.HostelEduc
-                                };
-                                /*
-                                var ProfessionList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId )//&& x.Semester == 1 && x.StudyLevelId == 17)
-                                    //.Select(x => new { x.LicenseProgram.Id, x.LicenseProgram.Name }).Distinct().ToList()
-                                    .Select(x => new { x.LicenseProgram.Id, x.LicenseProgram.Name }).Distinct().ToList()
-                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.LicenseProgramId }).ToList();
-                                Ent.ProfessionList = ProfessionList;*/
-                                query = @"  Select LicenceProgram.Id as Id, LicenceProgram.Name as Name from Entry 
-                                            Inner join LicenceProgram on LicenceProgram.Id = Entry.LicenceProgramId 
-                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17";
+                                }; 
+                                query = @"  Select LicenseProgram.Id as Id, LicenseProgram.Name as Name from Entry 
+                                            Inner join LicenseProgram on LicenseProgram.Id = Entry.LicenseProgramId 
+                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and SemesterId=1 and StudyLevelId=17";
                                 tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { {"@StudyBasisId", Ent.StudyBasisId},{"@StudyFormId", Ent.StudyFormId} });
                                 var ProfessionList =
                                     (from DataRow rw in tbl.Rows
@@ -1161,16 +1155,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                          Name = rw.Field<string>("Name")
                                      }).ToList();
                                 Ent.ProfessionList = ProfessionList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
-                                /*
-                                var ObrazProgramList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId && x.LicenseProgramId == App.LicenseProgramId)// && x.StudyLevelId == 17 && x.Semester == 1)
-                                    .Select(x => new { x.ObrazProgram.Id, x.Profile.Name }).Distinct().ToList()
-                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ObrazProgramId }).ToList();
-                                if (ProfessionList.Count > 1)
-                                    Ent.ObrazProgramList = ObrazProgramList;*/
+                                
                                 query = @"  Select ObrazProgram.Id as Id, ObrazProgram.Name as Name from Entry 
                                             Inner join ObrazProgram on ObrazProgram.Id = Entry.ObrazProgramId 
-                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17 and LicenceProgramId = @LicenceProgramId";
-                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@LicenceProgramId", Ent.ProfessionId } });
+                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and SemesterId=1 and StudyLevelId=17 and LicenseProgramId = @LicenseProgramId";
+                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@LicenseProgramId", Ent.ProfessionId } });
                                 var ObrazProgramList =
                                     (from DataRow rw in tbl.Rows
                                      select new
@@ -1180,23 +1169,29 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                      }).ToList();
                                 if (ProfessionList.Count > 1)
                                     Ent.ObrazProgramList = ObrazProgramList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
-                                /*
-                                var SpecializationList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId  && x.LicenseProgramId == App.LicenseProgramId && x.ProfileId == App.ProfileId)// && x.Semester == 1 && x.StudyLevelId == 17)
-                                    .Select(x => new { x.Profile.Id, x.Profile.Name }).Distinct().ToList()
-                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
-                                if (ObrazProgramList.Count > 1)
-                                    Ent.SpecializationList = SpecializationList;
-                                */
-                                query = @"  Select ObrazProgram.Id as Id, ObrazProgram.Name as Name from Entry 
-                                            Inner join ObrazProgram on ObrazProgram.Id = Entry.ObrazProgramId 
-                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17 and LicenceProgramId = @LicenceProgramId";
-                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@LicenceProgramId", Ent.ProfessionId } });
+
+                                query = @"SELECT DISTINCT ProfileId, ProfileName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = 2 WHERE StudyFormId=@StudyFormId  
+                                            AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId  
+                                            AND IsParallel=@IsParallel AND IsReduced=@IsReduced AND DateOfClose>GETDATE() AND CampaignYear=@Year AND SemesterId=@SemesterId";
+                                Dictionary<string, object> dic = new Dictionary<string, object>();
+                                dic.Add("@PersonId", PersonId);
+                                dic.Add("@StudyFormId", Ent.StudyFormId);
+                                dic.Add("@StudyBasisId", Ent.StudyBasisId);
+                                dic.Add("@LicenseProgramId", Ent.ProfessionId);
+                                dic.Add("@ObrazProgramId", Ent.ObrazProgramId);
+                                dic.Add("@StudyLevelGroupId", 2);
+                                dic.Add("@IsParallel", Ent.IsParallel);
+                                dic.Add("@IsReduced", Ent.IsReduced);
+                                dic.Add("@Year", Util.iPriemYear);
+                                dic.Add("@SemesterId", 1);
+
+                                tbl = Util.AbitDB.GetDataTable(query, dic);
                                 var SpecializationList =
                                     (from DataRow rw in tbl.Rows
                                      select new
                                      {
-                                         Id = rw.Field<Guid>("Id"),
-                                         Name = rw.Field<string>("Name")
+                                         Id = rw.Field<Guid>("ProfileId"),
+                                         Name = rw.Field<string>("ProfileName")
                                      }).ToList();
                                 if (ObrazProgramList.Count > 1)
                                     Ent.SpecializationList = SpecializationList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();

@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Факультет.
+        /// </summary>
+        internal static string BlockData_Faculty {
+            get {
+                return ResourceManager.GetString("BlockData_Faculty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Направление.
         /// </summary>
         internal static string BlockData_LicenseProgram {
@@ -93,6 +102,15 @@ namespace Resources {
         internal static string BlockData_ObrazProgram {
             get {
                 return ResourceManager.GetString("BlockData_ObrazProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Профиль.
+        /// </summary>
+        internal static string BlockData_Specialization {
+            get {
+                return ResourceManager.GetString("BlockData_Specialization", resourceCulture);
             }
         }
         

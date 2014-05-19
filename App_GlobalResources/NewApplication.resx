@@ -234,4 +234,10 @@
   <data name="HeaderMagProfile" xml:space="preserve">
     <value>Выберите магистерскую программу</value>
   </data>
+  <data name="BlockData_Specialization" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="BlockData_Faculty" xml:space="preserve">
+    <value>Факультет</value>
+  </data>
 </root>

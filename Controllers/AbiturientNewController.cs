@@ -1273,10 +1273,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.Applications.Add(Ent);
                         }
                     }
-                    if (c==2)
-                        return View("NewApplication_Mag", model);
-                    else if (c==1)
-                        return View("NewApplication_1kurs", model);
+
+                    if (c == 2)
+                    {
+                        model.MaxBlocks = maxBlock_mag;
+                        return View("NewApplication_Mag", model); 
+                    }
+                    else if (c == 1)
+                    {
+                        model.MaxBlocks = maxBlock_1kurs;
+                        return View("NewApplication_1kurs", model); 
+                    }
                     // магистратура
 
                 }
@@ -3705,7 +3712,7 @@ Order by cnt desc";
         }
 
         [HttpPost]
-        public JsonResult AddApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string IsGosLine, string CommitId)
+        public JsonResult AddApplication_Mag(string priority, string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string IsGosLine, string CommitId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -3729,6 +3736,7 @@ Order by cnt desc";
                 int iStudyFormId = Util.ParseSafe(studyform);
                 int iStudyBasisId = Util.ParseSafe(studybasis);
                 int EntryTypeId = Util.ParseSafe(entry);
+                int iPriority = Util.ParseSafe(priority);
                  
                 int iProfession = Util.ParseSafe(profession);
                 int iObrazProgram = Util.ParseSafe(obrazprogram);
@@ -3771,6 +3779,8 @@ Order by cnt desc";
                           Ent.DateOfClose_Foreign,
                           Ent.DateOfStart_GosLine,
                           Ent.DateOfClose_GosLine,
+                          Ent.FacultyId,
+                          Ent.FacultyName,
                           StudyFormName = Ent.StudyFormName,
                           StudyBasisName = Ent.StudyBasisName,
                           Profession = Ent.LicenseProgramName,
@@ -3793,6 +3803,7 @@ Order by cnt desc";
                 string Profession = EntryList.First().Profession;
                 string ObrazProgram = EntryList.First().ObrazProgram;
                 string Specialization = EntryList.First().Specialization;
+                string faculty = EntryList.First().FacultyName;
 
                 int res = Util.GetRess(PersonId);
 
@@ -3852,7 +3863,15 @@ Order by cnt desc";
                 //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
                 //}
 
-                int? PriorMax = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
+                int count = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.Priority == iPriority).Select(x => x.Id).Count();
+                if (count == 0)
+                {
+                }
+                else
+                {
+                    int? PriorMax = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
+                    iPriority = PriorMax ?? 1;
+                }
                 // если в коммите уже есть закоммиченные заявления, то добавляемое тоже считаем закоммиченным
 
                 bool isCommited = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == gCommId).Count() > 0;
@@ -3863,7 +3882,7 @@ Order by cnt desc";
                     PersonId = PersonId,
                     EntryId = EntryId,
                     HostelEduc = needHostel,
-                    Priority = PriorMax.HasValue ? PriorMax.Value + 1 : 1,
+                    Priority = iPriority,
                     Enabled = true,
                     EntryType = EntryTypeId,
                     DateOfStart = DateTime.Now,
@@ -3873,7 +3892,7 @@ Order by cnt desc";
                 });
                 context.SaveChanges();
 
-                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N") });
+                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N"), Faculty = faculty });
             }
         }
 

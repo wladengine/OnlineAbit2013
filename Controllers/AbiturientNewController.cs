@@ -3650,7 +3650,11 @@ Order by cnt desc";
                       {
                           EntryId = Ent.Id,
                           Ent.DateOfStart,
-                          Ent.DateOfClose,
+                          Ent.DateOfClose, 
+                          Ent.DateOfStart_Foreign,
+                          Ent.DateOfClose_Foreign,
+                          Ent.DateOfStart_GosLine,
+                          Ent.DateOfClose_GosLine,
                           StudyFormName = Ent.StudyFormName,
                           StudyBasisName = Ent.StudyBasisName,
                           Profession = Ent.LicenseProgramName,
@@ -3665,14 +3669,37 @@ Order by cnt desc";
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoEntry });
 
                 Guid EntryId = EntryList.First().EntryId;
-                DateTime? timeOfStart = EntryList.First().DateOfStart;
-                DateTime? timeOfStop = EntryList.First().DateOfClose;
+                DateTime? timeOfStart; 
+                DateTime? timeOfStop;
+
                 string StudyFormName = EntryList.First().StudyFormName;
                 string StudyBasisName = EntryList.First().StudyBasisName;
                 string Profession = EntryList.First().Profession;
                 string ObrazProgram = EntryList.First().ObrazProgram;
                 string Specialization = EntryList.First().Specialization;
 
+                int res = Util.GetRess(PersonId);
+
+                if (bIsGosLine == true)
+                {
+                    // рф-рф
+                    timeOfStart = EntryList.First().DateOfStart_GosLine;
+                    timeOfStop = EntryList.First().DateOfClose_GosLine;
+                }
+                else
+                {
+                    if ((iStudyBasisId == 2) && ((res == 2) || (res == 4)))
+                    {
+                        timeOfStart = EntryList.First().DateOfStart_Foreign;
+                        timeOfStop = EntryList.First().DateOfClose_Foreign;
+                    }
+                    else
+                    {
+                        timeOfStart = EntryList.First().DateOfStart;
+                        timeOfStop = EntryList.First().DateOfClose;
+                    }
+                } 
+                  
                 if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
 
@@ -3804,11 +3831,11 @@ Order by cnt desc";
                 int iObrazProgram = Util.ParseSafe(obrazprogram);
                 int iParallel = Util.ParseSafe(isParallel);
                 int iReduced = Util.ParseSafe(isReduced);
-                int iSecond = Util.ParseSafe(isSecond);
+                int iSecond = Util.ParseSafe(isSecond);  
 
                 bool bIsParallel = iParallel == 1;
                 bool bIsReduced = iReduced == 1;
-                bool bIsSecond = iSecond == 1;
+                bool bIsSecond = iSecond == 1; 
 
                 Guid gSpecialization = Guid.Empty;
                 if ((specialization != null) && (specialization != "") && (specialization != "null"))
@@ -3848,43 +3875,8 @@ Order by cnt desc";
                 Guid EntryId = EntryList.First().EntryId;
                 DateTime? timeOfStart = EntryList.First().DateOfStart;
                 DateTime? timeOfStop = EntryList.First().DateOfClose;
+               
 
-                //проверка на группы
-                //var EntryGroupList =
-                //    (from Entr in context.AG_Entry
-                //     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                //     join Abit in context.AG_Application on Entr.Id equals Abit.EntryId
-                //     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
-                //     select EntrInEntryGroup.EntryGroupId);
-
-                //var AllNeededEntries =
-                //    (from Entr in context.AG_Entry
-                //     join EntrInEntryGroup in context.AG_EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                //     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId)
-                //     select Entr.Id).ToList();
-
-                //var FreeEntries = AllNeededEntries.Except(
-                //    context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
-
-                //if (FreeEntries.Count == 0)
-                //    return Json(new { IsOk = true, FreeEntries = false });
-                //else
-                //{
-                //    if (timeOfStart.HasValue && timeOfStart > DateTime.Now)
-                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NotOpenedEntry });
-
-                //    if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
-                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
-
-                //    var eIds =
-                //        (from App in context.AG_Application
-                //         where App.PersonId == PersonId && App.Enabled == true && App.CommitId == gCommId
-                //         select App.EntryId).ToList();
-
-                //    if (eIds.Contains(EntryId))
-                //        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_HasApplicationOnEntry });
-                //}
-                
                 return Json(new { IsOk = true, FreeEntries = true });
             }
         }

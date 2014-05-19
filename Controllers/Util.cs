@@ -1540,17 +1540,17 @@ WHERE PersonId=@PersonId ";
             if (result == 1) // Рф - Рф (всегда общий прием)
                 return 0; // только общий прием
              else if (result == 4) // неРф-неРф  (всегда по гослинии)
-                return 11; // только по гослинии
+                return 1; // только по гослинии
             else if (result == 3) // рф -нерф (дог = общий прием, бюдж = выбор)
-                return 1; // есть выбор
+                return -1; // есть выбор
             else
             {   // для договора - только гослиния, для бюджета в зависимости (Снг/не Снг)
                 string query = "SELECT IsSNG from Country Inner Join Person on NationalityId=Country.Id WHERE Person.Id=@PersonId";
                 bool? res_nat = (bool?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
                 if (res_nat == true)
-                    return 10; // есть выбор 
+                    return -1; // есть выбор 
                 else
-                    return 11; // только по гослинии
+                    return 1; // только по гослинии
             }  
         }
     }

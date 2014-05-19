@@ -141,7 +141,7 @@
                     $(CurrGosLineHidden).val('0');
                 } 
                 else {
-                    if (json_data.GosLine==11) { <!-- неРф - неРФ или неСНГ-РФ (бд 1, только гослиния)-->
+                    if (json_data.GosLine==1) { <!-- неРф - неРФ или неСНГ-РФ (бд 1, только гослиния)-->
                         $(CurrGosLine).hide();
                         $(CurrGosLineHidden).val('1');  
                     }
@@ -204,7 +204,7 @@
             obrazprogram:  $('#lObrazProgram'+i).val(), 
             specialization: $('#lSpecialization'+i).val(), 
             NeedHostel: $('#NeedHostel' + i).is(':checked'), 
-            CommitId: $('#CommitId').val()   }, 
+            CommitId: $('#CommitId').val() }, 
             function(json_data) {
             if (json_data.IsOk) {
                 $('#FinishBtn' + i).show();

@@ -22,8 +22,8 @@
                 $('input').attr('readonly', 'readonly');
                 $('select').attr('disabled', 'disabled');
                 <% } %>
-                <% if (Model.Enabled)
-                   { %>
+            <% if (Model.Enabled)
+            { %>
                 SetRequiredFields();
                 $("#PassportInfo_PassportDate").datepicker({
                     changeMonth: true,
@@ -80,7 +80,8 @@
                     $('#label_PassportInfo_PassportAuthor').attr("title", undo);
                     $('#unrequiredfiled_1').show(); $('#unrequiredfiled_2').show();
                 }
-                if (($('#PassportInfo_PassportType').val() == 1) || ($('#PassportInfo_PassportType').val() == 2) || ($('#PassportInfo_PassportType').val() == 6)) {
+                var val = $('#PassportInfo_PassportType').val();
+                if ((val == 1) || (val == 2) || (val == 6)) {
                     $('#snils').show();
                 }
                 else {

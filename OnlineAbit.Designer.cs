@@ -6573,6 +6573,8 @@ namespace OnlineAbit2013
         /// Create a new Entry object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="studyBasisId">Initial value of the StudyBasisId property.</param>
+        /// <param name="studyFormId">Initial value of the StudyFormId property.</param>
         /// <param name="studyLevelId">Initial value of the StudyLevelId property.</param>
         /// <param name="isSecond">Initial value of the IsSecond property.</param>
         /// <param name="isReduced">Initial value of the IsReduced property.</param>
@@ -6581,10 +6583,12 @@ namespace OnlineAbit2013
         /// <param name="isElectronic">Initial value of the IsElectronic property.</param>
         /// <param name="isDistance">Initial value of the IsDistance property.</param>
         /// <param name="isUsedForPriem">Initial value of the IsUsedForPriem property.</param>
-        public static Entry CreateEntry(global::System.Guid id, global::System.Int32 studyLevelId, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel, global::System.Boolean isExpress, global::System.Boolean isElectronic, global::System.Boolean isDistance, global::System.Boolean isUsedForPriem)
+        public static Entry CreateEntry(global::System.Guid id, global::System.Int32 studyBasisId, global::System.Int32 studyFormId, global::System.Int32 studyLevelId, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Boolean isParallel, global::System.Boolean isExpress, global::System.Boolean isElectronic, global::System.Boolean isDistance, global::System.Boolean isUsedForPriem)
         {
             Entry entry = new Entry();
             entry.Id = id;
+            entry.StudyBasisId = studyBasisId;
+            entry.StudyFormId = studyFormId;
             entry.StudyLevelId = studyLevelId;
             entry.IsSecond = isSecond;
             entry.IsReduced = isReduced;
@@ -6918,9 +6922,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> StudyBasisId
+        public global::System.Int32 StudyBasisId
         {
             get
             {
@@ -6935,8 +6939,8 @@ namespace OnlineAbit2013
                 OnStudyBasisIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _StudyBasisId;
-        partial void OnStudyBasisIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _StudyBasisId;
+        partial void OnStudyBasisIdChanging(global::System.Int32 value);
         partial void OnStudyBasisIdChanged();
     
         /// <summary>
@@ -6990,9 +6994,9 @@ namespace OnlineAbit2013
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> StudyFormId
+        public global::System.Int32 StudyFormId
         {
             get
             {
@@ -7007,8 +7011,8 @@ namespace OnlineAbit2013
                 OnStudyFormIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _StudyFormId;
-        partial void OnStudyFormIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _StudyFormId;
+        partial void OnStudyFormIdChanging(global::System.Int32 value);
         partial void OnStudyFormIdChanged();
     
         /// <summary>
@@ -10375,6 +10379,30 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsCreatedByComission;
         partial void OnIsCreatedByComissionChanging(global::System.Boolean value);
         partial void OnIsCreatedByComissionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SNILS
+        {
+            get
+            {
+                return _SNILS;
+            }
+            set
+            {
+                OnSNILSChanging(value);
+                ReportPropertyChanging("SNILS");
+                _SNILS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SNILS");
+                OnSNILSChanged();
+            }
+        }
+        private global::System.String _SNILS;
+        partial void OnSNILSChanging(global::System.String value);
+        partial void OnSNILSChanged();
 
         #endregion
 

@@ -1128,9 +1128,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 var Ent = new Mag_ApplicationSipleEntity()
                                 {
                                     Id = App.Id,
-                                    StudyFormId = (App.StudyFormId == null ? 0 : App.StudyFormId.Value),
+                                    StudyFormId = (App.StudyFormId),
                                     StudyFormName = App.StudyFormName,
-                                    StudyBasisId = App.StudyBasisId.Value,
+                                    StudyBasisId = App.StudyBasisId,
                                     StudyBasisName = App.StudyBasisName,
                                     IsReduced = App.IsReduced,
                                     IsParallel = App.IsParallel,
@@ -1160,7 +1160,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                          Id = rw.Field<int>("Id"),
                                          Name = rw.Field<string>("Name")
                                      }).ToList();
-                                Ent.ProfessionList = ProfessionList;
+                                Ent.ProfessionList = ProfessionList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
                                 /*
                                 var ObrazProgramList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId && x.LicenseProgramId == App.LicenseProgramId)// && x.StudyLevelId == 17 && x.Semester == 1)
                                     .Select(x => new { x.ObrazProgram.Id, x.Profile.Name }).Distinct().ToList()
@@ -1179,7 +1179,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                          Name = rw.Field<string>("Name")
                                      }).ToList();
                                 if (ProfessionList.Count > 1)
-                                    Ent.ObrazProgramList = ObrazProgramList;
+                                    Ent.ObrazProgramList = ObrazProgramList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
                                 /*
                                 var SpecializationList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId  && x.LicenseProgramId == App.LicenseProgramId && x.ProfileId == App.ProfileId)// && x.Semester == 1 && x.StudyLevelId == 17)
                                     .Select(x => new { x.Profile.Id, x.Profile.Name }).Distinct().ToList()
@@ -1199,7 +1199,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                          Name = rw.Field<string>("Name")
                                      }).ToList();
                                 if (ObrazProgramList.Count > 1)
-                                    Ent.SpecializationList = SpecializationList;
+                                    Ent.SpecializationList = SpecializationList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
                                 model.Applications.Add(Ent);
                             }
                         }

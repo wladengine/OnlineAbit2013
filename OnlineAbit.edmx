@@ -524,11 +524,11 @@
           <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="50" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="150" />
           <Property Name="ProfileNameEng" Type="nvarchar" MaxLength="250" />
-          <Property Name="StudyBasisId" Type="int" />
+          <Property Name="StudyBasisId" Type="int" Nullable="false" />
           <Property Name="StudyBasisName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyBasisNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyBasisAcronym" Type="nvarchar" MaxLength="50" />
-          <Property Name="StudyFormId" Type="int" />
+          <Property Name="StudyFormId" Type="int" Nullable="false" />
           <Property Name="StudyFormName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyFormNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelId" Type="int" Nullable="false" />
@@ -682,6 +682,7 @@
           <Property Name="DateReviewDocs" Type="datetime" />
           <Property Name="IsDisabled" Type="bit" />
           <Property Name="IsCreatedByComission" Type="bit" Nullable="false" />
+          <Property Name="SNILS" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PersonAddInfo">
           <Key>
@@ -2039,10 +2040,10 @@
           <Property Type="String" Name="ObrazProgramName" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ObrazProgramCrypt" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ProfileName" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyBasisId" />
+          <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
           <Property Type="String" Name="StudyBasisName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyBasisAcronym" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyFormId" />
+          <Property Type="Int32" Name="StudyFormId" Nullable="false" />
           <Property Type="String" Name="StudyFormName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="StudyLevelId" Nullable="false" />
           <Property Type="String" Name="StudyLevelName" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2353,6 +2354,7 @@
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Person" FromRole="Person" ToRole="PersonEducationDocument" />
           <NavigationProperty Name="Olympiads" Relationship="OnlinePriem2012Model.FK_Olympiads_Person" FromRole="Person" ToRole="Olympiads" />
           <Property Type="Boolean" Name="IsCreatedByComission" Nullable="false" />
+          <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Application_Person">
           <End Type="OnlinePriem2012Model.Person" Role="Person" Multiplicity="1" />
@@ -3642,6 +3644,7 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="SNILS" ColumnName="SNILS" />
                 <ScalarProperty Name="IsCreatedByComission" ColumnName="IsCreatedByComission" />
                 <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
                 <ScalarProperty Name="DateReviewDocs" ColumnName="DateReviewDocs" />

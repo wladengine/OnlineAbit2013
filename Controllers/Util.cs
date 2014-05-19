@@ -393,6 +393,10 @@ namespace OnlineAbit2013.Controllers
             dic.Add("@Enabled", true);
 
             int res = (int)AbitDB.GetValue(query, dic);
+
+            query = "SELECT COUNT(Id) FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled AND IsCommited=1";
+            res += (int)AbitDB.GetValue(query, dic);
+            
             if (res > 0)
                 return true;
             else

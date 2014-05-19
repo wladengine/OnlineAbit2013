@@ -826,13 +826,13 @@ namespace OnlineAbit2013.Models
         public int StudyBasisId { get; set; }
         public string StudyBasisName { get; set; }
         public bool IsReduced { get; set; }
-        public bool IsParalle { get; set; }
+        public bool IsParallel { get; set; }
         public bool IsSecond { get; set; }
         public int ProfessionId { get; set; }
         public string ProfessionName { get; set; }
         public int ObrazProgramId { get; set; }
         public string ObrazProgramName { get; set; }
-        public int SpecializationId { get; set; }
+        public Guid SpecializationId { get; set; }
         public string SpecializationName { get; set; }
         public List<SelectListItem> ProfessionList { get; set; }
         public List<SelectListItem> ObrazProgramList { get; set; }

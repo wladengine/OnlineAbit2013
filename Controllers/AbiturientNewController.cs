@@ -1054,7 +1054,157 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (c != null)
                 {
                     if (c == 1) { } // первый курс
-                    else if (c == 2) { } // магистратура
+                    else if (c == 2) 
+                    {
+                        Mag_ApplicationModel model = new Mag_ApplicationModel();
+                        model.Applications = new List<Mag_ApplicationSipleEntity>();
+                        model.CommitId = Id;
+
+                        DataTable tbl;
+                        model.Enabled = true;
+                        int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                           new Dictionary<string, object>() { { "@Id", PersonId } });
+                        if (iAG_SchoolTypeId != 4)
+                        {
+                            // окончил школу 
+                            model.Enabled = false;
+                        }
+                        else
+                        {
+                            // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
+                            model.MaxBlocks = maxBlock_mag;
+                        }
+                        string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
+                        tbl = Util.AbitDB.GetDataTable(query, null);
+                        model.StudyFormList =
+                            (from DataRow rw in tbl.Rows
+                             select new
+                             {
+                                 Value = rw.Field<int>("StudyFormId"),
+                                 Text = rw.Field<string>("StudyFormName")
+                             }).AsEnumerable()
+                            .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                            .ToList();
+
+                        query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
+                        tbl = Util.AbitDB.GetDataTable(query, null);
+                        model.StudyBasisList =
+                            (from DataRow rw in tbl.Rows
+                             select new
+                             {
+                                 Value = rw.Field<int>("StudyBasisId"),
+                                 Text = rw.Field<string>("StudyBasisName")
+                             }).AsEnumerable()
+                             .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                             .ToList();
+
+                        var CommId = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
+                        if (CommId.Count() > 0 && CommId.First().HasValue)
+                        {
+                            Guid CommitId = CommId.First().Value;
+                            model.CommitId = CommitId.ToString("N");
+
+                            var AppList = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
+                                .Select(x => new
+                                {
+                                    x.Id,
+                                    x.Entry.StudyBasisId,
+                                    x.Entry.StudyBasisName,
+                                    x.Entry.StudyFormId,
+                                    x.Entry.StudyFormName,
+                                    x.Entry.IsReduced,
+                                    x.Entry.IsParallel,
+                                    x.Entry.IsSecond,
+                                    x.Entry.LicenseProgramId,
+                                    x.Entry.LicenseProgramName,
+                                    x.Entry.ObrazProgramId,
+                                    x.Entry.ObrazProgramName,
+                                    x.Entry.ProfileId,
+                                    x.Entry.ProfileName,
+                                    x.HostelEduc,
+                                });
+                            foreach (var App in AppList)
+                            {
+                                var Ent = new Mag_ApplicationSipleEntity()
+                                {
+                                    Id = App.Id,
+                                    StudyFormId = (App.StudyFormId == null ? 0 : App.StudyFormId.Value),
+                                    StudyFormName = App.StudyFormName,
+                                    StudyBasisId = App.StudyBasisId.Value,
+                                    StudyBasisName = App.StudyBasisName,
+                                    IsReduced = App.IsReduced,
+                                    IsParallel = App.IsParallel,
+                                    IsSecond = App.IsSecond,
+                                    ProfessionId = App.LicenseProgramId.Value,
+                                    ProfessionName = App.LicenseProgramName,
+                                    ObrazProgramId = App.ObrazProgramId.Value,
+                                    ObrazProgramName = App.ObrazProgramName,
+                                    SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
+                                    SpecializationName = App.ProfileName,
+                                    Hostel = App.HostelEduc
+                                };
+                                /*
+                                var ProfessionList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId )//&& x.Semester == 1 && x.StudyLevelId == 17)
+                                    //.Select(x => new { x.LicenseProgram.Id, x.LicenseProgram.Name }).Distinct().ToList()
+                                    .Select(x => new { x.LicenseProgram.Id, x.LicenseProgram.Name }).Distinct().ToList()
+                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.LicenseProgramId }).ToList();
+                                Ent.ProfessionList = ProfessionList;*/
+                                query = @"  Select LicenceProgram.Id as Id, LicenceProgram.Name as Name from Entry 
+                                            Inner join LicenceProgram on LicenceProgram.Id = Entry.LicenceProgramId 
+                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17";
+                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { {"@StudyBasisId", Ent.StudyBasisId},{"@StudyFormId", Ent.StudyFormId} });
+                                var ProfessionList =
+                                    (from DataRow rw in tbl.Rows
+                                     select new
+                                     {
+                                         Id = rw.Field<int>("Id"),
+                                         Name = rw.Field<string>("Name")
+                                     }).ToList();
+                                Ent.ProfessionList = ProfessionList;
+                                /*
+                                var ObrazProgramList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId && x.LicenseProgramId == App.LicenseProgramId)// && x.StudyLevelId == 17 && x.Semester == 1)
+                                    .Select(x => new { x.ObrazProgram.Id, x.Profile.Name }).Distinct().ToList()
+                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ObrazProgramId }).ToList();
+                                if (ProfessionList.Count > 1)
+                                    Ent.ObrazProgramList = ObrazProgramList;*/
+                                query = @"  Select ObrazProgram.Id as Id, ObrazProgram.Name as Name from Entry 
+                                            Inner join ObrazProgram on ObrazProgram.Id = Entry.ObrazProgramId 
+                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17 and LicenceProgramId = @LicenceProgramId";
+                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@LicenceProgramId", Ent.ProfessionId } });
+                                var ObrazProgramList =
+                                    (from DataRow rw in tbl.Rows
+                                     select new
+                                     {
+                                         Id = rw.Field<int>("Id"),
+                                         Name = rw.Field<string>("Name")
+                                     }).ToList();
+                                if (ProfessionList.Count > 1)
+                                    Ent.ObrazProgramList = ObrazProgramList;
+                                /*
+                                var SpecializationList = context.Entry.Where(x => x.StudyBasisId == App.StudyBasisId && x.StudyFormId == App.StudyFormId  && x.LicenseProgramId == App.LicenseProgramId && x.ProfileId == App.ProfileId)// && x.Semester == 1 && x.StudyLevelId == 17)
+                                    .Select(x => new { x.Profile.Id, x.Profile.Name }).Distinct().ToList()
+                                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name, Selected = x.Id == App.ProfileId }).ToList();
+                                if (ObrazProgramList.Count > 1)
+                                    Ent.SpecializationList = SpecializationList;
+                                */
+                                query = @"  Select ObrazProgram.Id as Id, ObrazProgram.Name as Name from Entry 
+                                            Inner join ObrazProgram on ObrazProgram.Id = Entry.ObrazProgramId 
+                                            where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and Semester=1 and StudyLevelId=17 and LicenceProgramId = @LicenceProgramId";
+                                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@LicenceProgramId", Ent.ProfessionId } });
+                                var SpecializationList =
+                                    (from DataRow rw in tbl.Rows
+                                     select new
+                                     {
+                                         Id = rw.Field<Guid>("Id"),
+                                         Name = rw.Field<string>("Name")
+                                     }).ToList();
+                                if (ObrazProgramList.Count > 1)
+                                    Ent.SpecializationList = SpecializationList;
+                                model.Applications.Add(Ent);
+                            }
+                        }
+                        return View("NewApplication_Mag", model);
+                    } // магистратура
 
                 }
                 else

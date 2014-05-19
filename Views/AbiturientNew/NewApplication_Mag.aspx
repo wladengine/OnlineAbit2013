@@ -427,7 +427,7 @@
                 <td id="BlockData_ObrazProgram<%= i.ToString()%>" ><%= Model.Applications[i - 1].ObrazProgramName%></td>
             </tr>
             <tr>
-                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_MagSpecialization")%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" ><%= Model.Applications[i - 1].SpecializationName%></td>
             </tr>
         </table>
@@ -467,7 +467,7 @@
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderMagProfile")%></span><br />
             <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
@@ -511,7 +511,7 @@
                     <td id="BlockData_ObrazProgram<%= i.ToString() %>" ></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_MagSpecialization")%></td>
                     <td id="BlockData_Specialization<%= i.ToString() %>" ></td>
                 </tr>
             </table>
@@ -551,7 +551,7 @@
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
-            <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderMagProfile")%></span><br />
             <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>

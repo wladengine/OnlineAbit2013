@@ -159,4 +159,10 @@
   <data name="RF_Series_Message" xml:space="preserve">
     <value>Серия паспорта РФ должна состоять из 4 цифр без пробелов</value>
   </data>
+  <data name="SNILS" xml:space="preserve">
+    <value>СНИЛС</value>
+  </data>
+  <data name="SNILS_title" xml:space="preserve">
+    <value>Страховой номер индивидуального лицевого счёта</value>
+  </data>
 </root>

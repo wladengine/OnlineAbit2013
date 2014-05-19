@@ -64,7 +64,7 @@
                 $('#PassportInfo_PassportDate').blur(function () { setTimeout(CheckDate); });
             });
             function CheckForm() { 
-                return CheckSeries() && CheckNumber() && CheckAuthor() && CheckDate();
+                return CheckSeries() && CheckNumber() && CheckAuthor() && CheckDate() && CheckSnils();
             }
         </script>
         <script type="text/javascript">
@@ -80,6 +80,12 @@
                     $('#label_PassportInfo_PassportAuthor').attr("title", undo);
                     $('#unrequiredfiled_1').show(); $('#unrequiredfiled_2').show();
                 }
+                if (($('#PassportInfo_PassportType').val() == 1) || ($('#PassportInfo_PassportType').val() == 2) || ($('#PassportInfo_PassportType').val() == 6)) {
+                    $('#snils').show();
+                }
+                else {
+                    $('#snils').hide();
+                } 
                 CheckSeries();
                 CheckNumber();
                 CheckAuthor();
@@ -167,6 +173,10 @@
                     $('#PassportInfo_PassportAuthor').removeClass('input-validation-error');
                     $('#PassportInfo_PassportAuthor_Message').hide();
                 }
+                return ret;
+            }
+            function CheckSnils() {
+                var ret = true;
                 return ret;
             }
         </script>
@@ -330,8 +340,13 @@
                             <span id="VisaPostAddressMessage" class="Red" style="display:none;">
                             <%= GetGlobalResourceObject("PersonalOfficeForeign", "VisaPostAddressMessage").ToString()%>
                             </span>
-                        </div><br />
-                        <% } %><hr /> 
+                        </div><br /> 
+                        <% } %>
+                         <div id="snils" class="clearfix" style="display: none;">
+                            <%= Html.LabelFor(x => x.PersonInfo.SNILS, GetGlobalResourceObject("PassportInfo", "SNILS").ToString(), new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
+                            <%= Html.TextBoxFor(x => x.PersonInfo.SNILS, new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
+                        </div>
+                        <hr /> 
                         <div class="clearfix">
                             <input id="Submit2" name = "SubmitSave" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSaveText").ToString()%>" />
                              

@@ -166,6 +166,7 @@ namespace OnlineAbit2013.Models
         public string BirthDate { get; set; }
 
         public string Nationality { get; set; }
+        public string SNILS { get; set; }
 
         public List<SelectListItem> NationalityList { get; set; }
         public string Sex { get; set; }

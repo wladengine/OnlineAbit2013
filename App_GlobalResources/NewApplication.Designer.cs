@@ -79,20 +79,20 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Магистерская программа.
+        /// </summary>
+        internal static string BlockData_MagSpecialization {
+            get {
+                return ResourceManager.GetString("BlockData_MagSpecialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Образовательная программа.
         /// </summary>
         internal static string BlockData_ObrazProgram {
             get {
                 return ResourceManager.GetString("BlockData_ObrazProgram", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, такую же, как Специализация.
-        /// </summary>
-        internal static string BlockData_Specialization {
-            get {
-                return ResourceManager.GetString("BlockData_Specialization", resourceCulture);
             }
         }
         
@@ -174,6 +174,15 @@ namespace Resources {
         internal static string HeaderFirstCourse_2 {
             get {
                 return ResourceManager.GetString("HeaderFirstCourse_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Выберите магистерскую программу.
+        /// </summary>
+        internal static string HeaderMagProfile {
+            get {
+                return ResourceManager.GetString("HeaderMagProfile", resourceCulture);
             }
         }
         

@@ -138,7 +138,7 @@ namespace OnlineAbit2013.Controllers
                 //////////////////////////////////////////----------Index-----////////////////////////////////////////////////////////////////////////
                 else if (model.Stage == 2)
                 {
-
+                    model.PersonInfo = new InfoPerson();
                     model.PassportInfo = new PassportPerson();
                     model.res = Util.GetRess(PersonId);
                     string strTblPsp;
@@ -185,6 +185,7 @@ namespace OnlineAbit2013.Controllers
                         model.VisaInfo.PostAddress = PersonVisaInfo.PostAddress;
                         model.VisaInfo.Town = PersonVisaInfo.Town;
                     }
+                    model.PersonInfo.SNILS = Person.SNILS ?? "";
                     model.Files = Util.GetFileList(PersonId, "1");
                     model.FileTypes = Util.FileTypesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
 
@@ -530,6 +531,8 @@ namespace OnlineAbit2013.Controllers
 
                     if (dtPassportDate.Value.Date > DateTime.Now.Date)
                         dtPassportDate = DateTime.Now.Date;
+
+                    Person.SNILS = model.PersonInfo.SNILS.ToString();
 
                     Person.PassportTypeId = iPassportType;
                     Person.PassportSeries = model.PassportInfo.PassportSeries;

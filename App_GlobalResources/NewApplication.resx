@@ -216,11 +216,11 @@
   <data name="BlockData_LicenseProgram" xml:space="preserve">
     <value>Направление</value>
   </data>
+  <data name="BlockData_MagSpecialization" xml:space="preserve">
+    <value>Магистерская программа</value>
+  </data>
   <data name="BlockData_ObrazProgram" xml:space="preserve">
     <value>Образовательная программа</value>
-  </data>
-  <data name="BlockData_Specialization" xml:space="preserve">
-    <value>Специализация</value>
   </data>
   <data name="BlockData_StudyBasis" xml:space="preserve">
     <value>Основа обучения</value>
@@ -230,5 +230,8 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
+  </data>
+  <data name="HeaderMagProfile" xml:space="preserve">
+    <value>Выберите магистерскую программу</value>
   </data>
 </root>

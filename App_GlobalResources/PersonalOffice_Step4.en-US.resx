@@ -117,79 +117,133 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HeaderPassport" xml:space="preserve">
-    <value>Паспорт</value>
+  <data name="AddMark" xml:space="preserve">
+    <value>Add Grade</value>
   </data>
-  <data name="HeaderVisa" xml:space="preserve">
-    <value>В каком посольстве вы будете получать визу?</value>
+  <data name="AttestatRegion" xml:space="preserve">
+    <value>Region (for Russian High School Diplomas)</value>
   </data>
-  <data name="LongValue_Message" xml:space="preserve">
-    <value>Слишком длинное значение</value>
+  <data name="AttestatRegion_Message" xml:space="preserve">
+    <value>Specify the number of the region</value>
   </data>
-  <data name="PassportAuthor" xml:space="preserve">
-    <value>Кем выдан</value>
+  <data name="AvgMark" xml:space="preserve">
+    <value>Average Grade</value>
   </data>
-  <data name="PassportCode" xml:space="preserve">
-    <value>Код подразделения</value>
+  <data name="CountryEducId" xml:space="preserve">
+    <value>Country of your previous education</value>
   </data>
-  <data name="PassportDate" xml:space="preserve">
-    <value>Дата выдачи</value>
+  <data name="CurrentYear" xml:space="preserve">
+    <value>2014 год</value>
   </data>
-  <data name="PassportExpire" xml:space="preserve">
-    <value>Date of expire</value>
+  <data name="DiplomNumber" xml:space="preserve">
+    <value>Number</value>
   </data>
-  <data name="PassportExpireMessage" xml:space="preserve">
-    <value />
+  <data name="DiplomNumber_Message" xml:space="preserve">
+    <value>Specify the document number</value>
   </data>
-  <data name="PassportInfo_PassportAuthor_Message" xml:space="preserve">
-    <value>Введите, кем выдан паспорт</value>
+  <data name="DiplomSeries" xml:space="preserve">
+    <value>Series</value>
   </data>
-  <data name="PassportInfo_PassportDate_Message" xml:space="preserve">
-    <value>Введите дату выдачи паспорта</value>
+  <data name="DiplomSeries_Message" xml:space="preserve">
+    <value>Specify the document series</value>
   </data>
-  <data name="PassportInfo_PassportNumber_Message" xml:space="preserve">
-    <value>Введите номер паспорта</value>
+  <data name="DiplomTheme" xml:space="preserve">
+    <value>Diploma Thesis</value>
   </data>
-  <data name="PassportInfo_PassportSeries_Message" xml:space="preserve">
-    <value>Введите серию паспорта</value>
+  <data name="EducationDocumentHeader" xml:space="preserve">
+    <value>Document of Education</value>
   </data>
-  <data name="PassportNumber" xml:space="preserve">
-    <value>Номер</value>
+  <data name="EducationHeader" xml:space="preserve">
+    <value>Educational Data</value>
   </data>
-  <data name="PassportSeries" xml:space="preserve">
-    <value>Серия</value>
+  <data name="EducationInfo_SchoolExitYear_MessageFormat" xml:space="preserve">
+    <value>Enter year in 4-digit format</value>
   </data>
-  <data name="PassportType" xml:space="preserve">
-    <value>Тип</value>
+  <data name="EducationInfo_SchoolName_Message" xml:space="preserve">
+    <value>Enter name of educational institution</value>
   </data>
-  <data name="RF_Number_Message" xml:space="preserve">
-    <value>Номер паспорта РФ должен состоять из 6 цифр без пробелов</value>
+  <data name="EGEball" xml:space="preserve">
+    <value>Балл</value>
   </data>
-  <data name="RF_Series_Message" xml:space="preserve">
-    <value>Серия паспорта РФ должна состоять из 4 цифр без пробелов</value>
+  <data name="EGEmarks" xml:space="preserve">
+    <value>Unified State Exam Grades</value>
   </data>
-  <data name="SNILS" xml:space="preserve">
-    <value>СНИЛС</value>
+  <data name="EGEnomarks" xml:space="preserve">
+    <value>No Unified State Exam Grades</value>
   </data>
-  <data name="SNILS_title" xml:space="preserve">
-    <value>Страховой номер индивидуального лицевого счёта</value>
+  <data name="EGEsert" xml:space="preserve">
+    <value>Номер сертификата</value>
   </data>
-  <data name="VisaCountryName" xml:space="preserve">
-    <value>Страна</value>
+  <data name="EGEsubject" xml:space="preserve">
+    <value>Предмет</value>
   </data>
-  <data name="VisaCountryNameMessage" xml:space="preserve">
-    <value>Укажите страну</value>
+  <data name="EnglishMark" xml:space="preserve">
+    <value>Final grade of English (if there are)</value>
   </data>
-  <data name="VisaPostAddress" xml:space="preserve">
-    <value>Адрес</value>
+  <data name="EqualityDocumentNumber" xml:space="preserve">
+    <value>Equality document number</value>
   </data>
-  <data name="VisaPostAddressMessage" xml:space="preserve">
-    <value>Укажите адрес</value>
+  <data name="HasTRKI" xml:space="preserve">
+    <value>I have the TORFL Certificate (ТРКИ)</value>
   </data>
-  <data name="VisaTownName" xml:space="preserve">
-    <value>Город</value>
+  <data name="Header_CurrentEducation" xml:space="preserve">
+    <value>Сведения о текущем месте обучения</value>
   </data>
-  <data name="VisaTownNameMessage" xml:space="preserve">
-    <value>Укажите город</value>
+  <data name="HEDataHeader" xml:space="preserve">
+    <value>Higher Education Data</value>
+  </data>
+  <data name="HEEntryYear" xml:space="preserve">
+    <value>Year of the beginning of study</value>
+  </data>
+  <data name="IsEqual" xml:space="preserve">
+    <value>Have equality document</value>
+  </data>
+  <data name="LanguageId" xml:space="preserve">
+    <value>Foreign languages</value>
+  </data>
+  <data name="PassInSPbSU" xml:space="preserve">
+    <value>Сдаю в СПбГУ</value>
+  </data>
+  <data name="PersonQualification" xml:space="preserve">
+    <value>Qualification</value>
+  </data>
+  <data name="PersonSpecialization" xml:space="preserve">
+    <value>Field of Study</value>
+  </data>
+  <data name="PersonStudyForm" xml:space="preserve">
+    <value>Form of Education</value>
+  </data>
+  <data name="RegionEducId" xml:space="preserve">
+    <value>Select the region</value>
+  </data>
+  <data name="ResidentialPlace" xml:space="preserve">
+    <value>Residential place</value>
+  </data>
+  <data name="SchoolExitClass" xml:space="preserve">
+    <value>Graduate class</value>
+  </data>
+  <data name="SchoolExitYear" xml:space="preserve">
+    <value>Year of graduation</value>
+  </data>
+  <data name="SchoolExitYear_Message" xml:space="preserve">
+    <value>Enter the year of graduation</value>
+  </data>
+  <data name="SchoolName" xml:space="preserve">
+    <value>Name of Educational Institution</value>
+  </data>
+  <data name="SchoolNumber" xml:space="preserve">
+    <value>Number of School</value>
+  </data>
+  <data name="SchoolTypeId" xml:space="preserve">
+    <value>Type of Educational Institution</value>
+  </data>
+  <data name="SecondWave" xml:space="preserve">
+    <value>Сдаю во "второй волне"</value>
+  </data>
+  <data name="TRKICertificateNumber" xml:space="preserve">
+    <value>TORFL Certificate Number</value>
+  </data>
+  <data name="VuzAdditionalTypeId" xml:space="preserve">
+    <value>Select entry type</value>
   </data>
 </root>

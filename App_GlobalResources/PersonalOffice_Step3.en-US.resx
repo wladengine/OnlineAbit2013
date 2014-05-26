@@ -117,4 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdditionalAddress_Header" xml:space="preserve">
+    <value>Residential Address (if different)</value>
+  </data>
+  <data name="AddressData_Message" xml:space="preserve">
+    <value>Enter address</value>
+  </data>
+  <data name="ChangeCountry_Title" xml:space="preserve">
+    <value>You can change country on the page "Personal data"</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="City_Message" xml:space="preserve">
+    <value>Enter city</value>
+  </data>
+  <data name="CountryId" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Flat" xml:space="preserve">
+    <value>Flat number</value>
+  </data>
+  <data name="House" xml:space="preserve">
+    <value>House</value>
+  </data>
+  <data name="House_Message" xml:space="preserve">
+    <value>Enter house</value>
+  </data>
+  <data name="Korpus" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="MainPhone" xml:space="preserve">
+    <value>Main Telephone Number</value>
+  </data>
+  <data name="MainPhone_Message" xml:space="preserve">
+    <value>Enter main phone</value>
+  </data>
+  <data name="PhonesHeader" xml:space="preserve">
+    <value>Contact Telephone Numbers</value>
+  </data>
+  <data name="PostIndex" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="PostIndex_Message" xml:space="preserve">
+    <value>Enter  postal code</value>
+  </data>
+  <data name="RegionId" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="RegistrationHeader" xml:space="preserve">
+    <value>Registered Address</value>
+  </data>
+  <data name="SecondPhone" xml:space="preserve">
+    <value>Additional Telephone Number</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="Street_1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Street_Message" xml:space="preserve">
+    <value>Enter street</value>
+  </data>
 </root>

@@ -118,78 +118,72 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="HeaderPassport" xml:space="preserve">
-    <value>Паспорт</value>
+    <value>Passport</value>
   </data>
   <data name="HeaderVisa" xml:space="preserve">
-    <value>В каком посольстве вы будете получать визу?</value>
+    <value>Ambassy where you are going to recieve visa</value>
   </data>
   <data name="LongValue_Message" xml:space="preserve">
-    <value>Слишком длинное значение</value>
+    <value>Too long value</value>
   </data>
   <data name="PassportAuthor" xml:space="preserve">
-    <value>Кем выдан</value>
+    <value>Issued by</value>
   </data>
   <data name="PassportCode" xml:space="preserve">
-    <value>Код подразделения</value>
+    <value>Department code</value>
   </data>
   <data name="PassportDate" xml:space="preserve">
-    <value>Дата выдачи</value>
+    <value>Date of issue</value>
   </data>
   <data name="PassportExpire" xml:space="preserve">
-    <value>Date of expire</value>
+    <value>Period of validity</value>
   </data>
   <data name="PassportExpireMessage" xml:space="preserve">
     <value />
   </data>
   <data name="PassportInfo_PassportAuthor_Message" xml:space="preserve">
-    <value>Введите, кем выдан паспорт</value>
+    <value>Enter issue info</value>
   </data>
   <data name="PassportInfo_PassportDate_Message" xml:space="preserve">
-    <value>Введите дату выдачи паспорта</value>
+    <value>Enter date of issue</value>
   </data>
   <data name="PassportInfo_PassportNumber_Message" xml:space="preserve">
-    <value>Введите номер паспорта</value>
+    <value>Enter passport series</value>
   </data>
   <data name="PassportInfo_PassportSeries_Message" xml:space="preserve">
-    <value>Введите серию паспорта</value>
+    <value>Enter passport number</value>
   </data>
   <data name="PassportNumber" xml:space="preserve">
-    <value>Номер</value>
+    <value>Number</value>
   </data>
   <data name="PassportSeries" xml:space="preserve">
-    <value>Серия</value>
+    <value>Series</value>
   </data>
   <data name="PassportType" xml:space="preserve">
-    <value>Тип</value>
+    <value>Type</value>
   </data>
   <data name="RF_Number_Message" xml:space="preserve">
-    <value>Номер паспорта РФ должен состоять из 6 цифр без пробелов</value>
+    <value>Number of passport of the Russian Federation must consist of 6 digits with no spaces</value>
   </data>
   <data name="RF_Series_Message" xml:space="preserve">
-    <value>Серия паспорта РФ должна состоять из 4 цифр без пробелов</value>
-  </data>
-  <data name="SNILS" xml:space="preserve">
-    <value>СНИЛС</value>
-  </data>
-  <data name="SNILS_title" xml:space="preserve">
-    <value>Страховой номер индивидуального лицевого счёта</value>
+    <value>Series of passport of the Russian Federation must consist of 4 digits with no spaces</value>
   </data>
   <data name="VisaCountryName" xml:space="preserve">
-    <value>Страна</value>
+    <value>Country</value>
   </data>
   <data name="VisaCountryNameMessage" xml:space="preserve">
-    <value>Укажите страну</value>
+    <value>Specify the country</value>
   </data>
   <data name="VisaPostAddress" xml:space="preserve">
-    <value>Адрес</value>
+    <value>Address</value>
   </data>
   <data name="VisaPostAddressMessage" xml:space="preserve">
-    <value>Укажите адрес</value>
+    <value>Specify the address</value>
   </data>
   <data name="VisaTownName" xml:space="preserve">
-    <value>Город</value>
+    <value>City</value>
   </data>
   <data name="VisaTownNameMessage" xml:space="preserve">
-    <value>Укажите город</value>
+    <value>Specify the city</value>
   </data>
 </root>

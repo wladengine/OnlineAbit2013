@@ -117,4 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdCity" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="AdditionalAddress_Header" xml:space="preserve">
+    <value>Адрес проживания (если отличается):</value>
+  </data>
+  <data name="AddressData_Message" xml:space="preserve">
+    <value>Введите адрес</value>
+  </data>
+  <data name="ChangeCountry_Title" xml:space="preserve">
+    <value>Изменить страну проживания Вы можете на странице "Личные Данные"</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="City_Message" xml:space="preserve">
+    <value>Введите город</value>
+  </data>
+  <data name="CountryId" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="Flat" xml:space="preserve">
+    <value>Квартира</value>
+  </data>
+  <data name="House" xml:space="preserve">
+    <value>Дом</value>
+  </data>
+  <data name="House_Message" xml:space="preserve">
+    <value>Введите дом</value>
+  </data>
+  <data name="Korpus" xml:space="preserve">
+    <value>Корпус</value>
+  </data>
+  <data name="MainPhone" xml:space="preserve">
+    <value>Основной телефон</value>
+  </data>
+  <data name="MainPhone_Message" xml:space="preserve">
+    <value>Введите основной номер</value>
+  </data>
+  <data name="PhonesHeader" xml:space="preserve">
+    <value>Контактные телефоны:</value>
+  </data>
+  <data name="PostIndex" xml:space="preserve">
+    <value>Индекс</value>
+  </data>
+  <data name="PostIndex_Message" xml:space="preserve">
+    <value>Введите индекс</value>
+  </data>
+  <data name="RegionId" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="RegistrationHeader" xml:space="preserve">
+    <value>Адрес регистрации:</value>
+  </data>
+  <data name="SecondPhone" xml:space="preserve">
+    <value>Дополнительный</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Улица</value>
+  </data>
+  <data name="Street_1" xml:space="preserve">
+    <value>&lt;br/&gt; (микрорайон, квартал и пр.)</value>
+  </data>
+  <data name="Street_Message" xml:space="preserve">
+    <value>Введите улицу</value>
+  </data>
 </root>

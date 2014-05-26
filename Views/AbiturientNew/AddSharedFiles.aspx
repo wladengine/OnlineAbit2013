@@ -21,19 +21,23 @@
         $('#FileTypeId').change(SetTitle);
     });
     function ValidateInput() {
+        var size = 0;
         if ($.browser.msie) {
             var myFSO = new ActiveXObject("Scripting.FileSystemObject");
             var filepath = document.getElementById('fileAttachment').value;
             var thefile = myFSO.getFile(filepath);
-            var size = thefile.size;
+            size = thefile.size;
         } else {
             var fileInput = $("#fileAttachment")[0];
-            var size = fileInput.files[0].size; // Size returned in bytes.
+            if (fileInput.files[0] != undefined) {
+                size = fileInput.files[0].size; // Size returned in bytes.
+            }
         }
-        if (size > 41943040) {// 41943040 = 4Mb
+        if (size > 4 * 1024 * 1024) {// 4194304 = 4Mb
             alert('Too big file for uploading (4Mb - max)');
             //Очищаем поле ввода файла
             document.getElementById('fileAttachment').parentNode.innerHTML = document.getElementById('fileAttachment').parentNode.innerHTML;
+            $('#fileAttachment').change(ValidateInput);
         }
     }
     function DeleteFile(id) {

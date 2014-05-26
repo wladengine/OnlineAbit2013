@@ -4378,7 +4378,7 @@ Order by cnt desc";
                         }
                         else if (PersonEducationDocument.SchoolExitClass.IntValue < 11)
                         {
-                            var lst = context.SP_StudyLevel.Where(x => x.Id == 8).Select(x => new { x.Id, x.Name }).ToList();
+                            var lst = context.SP_StudyLevel.Where(x => x.Id == 10).Select(x => new { x.Id, x.Name }).ToList();
                             return Json(new { IsOk = true, List = lst });
                         }
                         else

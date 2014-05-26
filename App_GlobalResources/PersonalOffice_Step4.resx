@@ -117,31 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurrentEducation_AccreditationDate" xml:space="preserve">
-    <value>Дата аккредитации</value>
+  <data name="AddMark" xml:space="preserve">
+    <value>Добавить оценку</value>
   </data>
-  <data name="CurrentEducation_AccreditationNumber" xml:space="preserve">
-    <value>Номер аккредитации</value>
+  <data name="AttestatRegion" xml:space="preserve">
+    <value>Регион (для российских аттестатов)</value>
   </data>
-  <data name="CurrentEducation_EducationName" xml:space="preserve">
-    <value>Название</value>
+  <data name="AttestatRegion_Message" xml:space="preserve">
+    <value>Укажите номер региона</value>
   </data>
-  <data name="CurrentEducation_EducationType" xml:space="preserve">
-    <value>Тип обр. учреждения</value>
+  <data name="AvgMark" xml:space="preserve">
+    <value>Средний балл</value>
   </data>
-  <data name="CurrentEducation_HasAccreditation" xml:space="preserve">
-    <value>Имеет гос. аккредитацию</value>
+  <data name="CountryEducId" xml:space="preserve">
+    <value>Страна, в которой получено предыдущее образование</value>
   </data>
-  <data name="CurrentEducation_Semester" xml:space="preserve">
-    <value>Семестр</value>
+  <data name="DiplomNumber" xml:space="preserve">
+    <value>Номер</value>
   </data>
-  <data name="CurrentEducation_StudyLevel" xml:space="preserve">
-    <value>Уровень обучения</value>
+  <data name="DiplomNumber_Message" xml:space="preserve">
+    <value>Укажите номер документа</value>
+  </data>
+  <data name="DiplomSeries" xml:space="preserve">
+    <value>Серия</value>
+  </data>
+  <data name="DiplomSeries_Message" xml:space="preserve">
+    <value>Укажите серию документа</value>
+  </data>
+  <data name="DiplomTheme" xml:space="preserve">
+    <value>Тема дипломной работы</value>
+  </data>
+  <data name="EducationDocumentHeader" xml:space="preserve">
+    <value>Документ об образовании</value>
+  </data>
+  <data name="EducationHeader" xml:space="preserve">
+    <value>Данные об образовании</value>
+  </data>
+  <data name="EducationInfo_SchoolExitYear_MessageFormat" xml:space="preserve">
+    <value>Укажите год в 4-значном формате</value>
+  </data>
+  <data name="EducationInfo_SchoolName_Message" xml:space="preserve">
+    <value>Укажите название образовательного учреждения</value>
+  </data>
+  <data name="EGEmarks" xml:space="preserve">
+    <value>Баллы ЕГЭ</value>
+  </data>
+  <data name="EGEnomarks" xml:space="preserve">
+    <value>Нет баллов по ЕГЭ</value>
+  </data>
+  <data name="EnglishMark" xml:space="preserve">
+    <value>Итоговая оценка по английскому языку (если изучался)</value>
+  </data>
+  <data name="EnglishNull" xml:space="preserve">
+    <value>Желаю изучать английский в СПбГУ 'с нуля'</value>
+  </data>
+  <data name="EqualityDocumentNumber" xml:space="preserve">
+    <value>Номер свидетельства</value>
+  </data>
+  <data name="HasTRKI" xml:space="preserve">
+    <value>Имею сертификат ТРКИ</value>
   </data>
   <data name="Header_CurrentEducation" xml:space="preserve">
     <value>Сведения о текущем месте обучения</value>
   </data>
-  <data name="Header_PreviousEducation" xml:space="preserve">
-    <value>Сведения о предыдущем образовании</value>
+  <data name="HEDataHeader" xml:space="preserve">
+    <value>Данные о высшем образовании</value>
+  </data>
+  <data name="HEEntryYear" xml:space="preserve">
+    <value>Год начала обучения</value>
+  </data>
+  <data name="IsEqual" xml:space="preserve">
+    <value>Свидетельство об эквивалентности</value>
+  </data>
+  <data name="LanguageId" xml:space="preserve">
+    <value>Иностранный язык</value>
+  </data>
+  <data name="PersonQualification" xml:space="preserve">
+    <value>Квалификация</value>
+  </data>
+  <data name="PersonSpecialization" xml:space="preserve">
+    <value>Направление (специальность)</value>
+  </data>
+  <data name="PersonStudyForm" xml:space="preserve">
+    <value>Форма обучения</value>
+  </data>
+  <data name="RedDiploma" xml:space="preserve">
+    <value>Медалист (красный диплом)</value>
+  </data>
+  <data name="RegionEducId" xml:space="preserve">
+    <value>Выберите регион</value>
+  </data>
+  <data name="ResidentialPlace" xml:space="preserve">
+    <value>Населенный пункт</value>
+  </data>
+  <data name="SchoolAddress" xml:space="preserve">
+    <value>Адрес школы</value>
+  </data>
+  <data name="SchoolExitClass" xml:space="preserve">
+    <value>Оконченный класс</value>
+  </data>
+  <data name="SchoolExitYear" xml:space="preserve">
+    <value>Год окончания обучения</value>
+  </data>
+  <data name="SchoolExitYear_Message" xml:space="preserve">
+    <value>Укажите год окончания обучения</value>
+  </data>
+  <data name="SchoolName" xml:space="preserve">
+    <value>Название образовательного учреждения</value>
+  </data>
+  <data name="SchoolNumber" xml:space="preserve">
+    <value>Номер школы</value>
+  </data>
+  <data name="SchoolTypeId" xml:space="preserve">
+    <value>Тип образовательного учреждения</value>
+  </data>
+  <data name="TRKICertificateNumber" xml:space="preserve">
+    <value>Номер сертификата ТРКИ</value>
+  </data>
+  <data name="VuzAdditionalTypeId" xml:space="preserve">
+    <value>Выберите тип поступления</value>
+  </data>
+  <data name="CurrentYear" xml:space="preserve">
+    <value>2014 год</value>
+  </data>
+  <data name="EGEball" xml:space="preserve">
+    <value>Балл</value>
+  </data>
+  <data name="EGEsert" xml:space="preserve">
+    <value>Номер сертификата</value>
+  </data>
+  <data name="EGEsubject" xml:space="preserve">
+    <value>Предмет</value>
+  </data>
+  <data name="PassInSPbSU" xml:space="preserve">
+    <value>Сдаю в СПбГУ</value>
+  </data>
+  <data name="SecondWave" xml:space="preserve">
+    <value>Сдаю во "второй волне"</value>
   </data>
 </root>

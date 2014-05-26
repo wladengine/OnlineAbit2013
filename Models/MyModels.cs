@@ -64,9 +64,9 @@ namespace OnlineAbit2013.Models
         public WorkPerson WorkInfo { get; set; }
         // список файлов, типов, и тип файла
         public List<SelectListItem> FileTypes { get; set; }
-        public List<AppendedFile> Files { get; set; }
-
+        public List<AppendedFile> Files { get; set; } 
         public PersonPrivileges PrivelegeInfo { get; set; }
+        public Constants ConstInfo { get; set; }
     }
 
     public class PersonalOfficeRecover
@@ -892,5 +892,16 @@ namespace OnlineAbit2013.Models
         public int FacultyId { get; set; }
         public string FacultyName { get; set; }
         public bool Hostel { get; set; }
+    }
+
+    public class Constants
+    {
+        public int? Surname { get; set; }
+        public int? Name { get; set; }
+        public int? SecondName { get; set; }
+        public int? BirthPlace { get; set; } 
+        public int? PassportAuthor { get; set; }
+        public int? Parents { get; set; }
+        public int? AddInfo { get; set; } 
     }
 }

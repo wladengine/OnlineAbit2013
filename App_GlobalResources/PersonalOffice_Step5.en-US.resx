@@ -209,4 +209,13 @@ the theme of your report), published scientific articles, work in scientific lab
   <data name="ScWork_Message" xml:space="preserve">
     <value>Input required data</value>
   </data>
+  <data name="SportCategory" xml:space="preserve">
+    <value>Pазряд:</value>
+  </data>
+  <data name="SportQualification" xml:space="preserve">
+    <value>Спорт. квалификация:</value>
+  </data>
+  <data name="SportQualificationCategory" xml:space="preserve">
+    <value>Спорт. квалификация, разряд:</value>
+  </data>
 </root>

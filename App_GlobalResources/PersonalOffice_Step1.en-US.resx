@@ -117,7 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="BirthPlace" xml:space="preserve">
+    <value>Country, place of birth</value>
+  </data>
+  <data name="ButtonSaveText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ButtonSubmitText" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country of residence</value>
+  </data>
   <data name="FormHeader" xml:space="preserve">
     <value>Registration Form</value>
+  </data>
+  <data name="HeaderPersonalInfo" xml:space="preserve">
+    <value>Personal data</value>
+  </data>
+  <data name="IsEqualWithRussian" xml:space="preserve">
+    <value>I wish to participate in equal competition with the citizens of the Russian Federation</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Country of citizenship</value>
+  </data>
+  <data name="PersonInfo_BirthDate_Message" xml:space="preserve">
+    <value>Enter date of birth</value>
+  </data>
+  <data name="PersonInfo_BirthPlace_Message" xml:space="preserve">
+    <value>Enter the place of birth</value>
+  </data>
+  <data name="PersonInfo_Name_Message" xml:space="preserve">
+    <value>Enter your name</value>
+  </data>
+  <data name="PersonInfo_Surname_Message" xml:space="preserve">
+    <value>Enter your surname</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Required field</value>
+  </data>
+  <data name="SecondName" xml:space="preserve">
+    <value>Second name</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Personal Data</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Passport</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Contact information</value>
+  </data>
+  <data name="Step4" xml:space="preserve">
+    <value>Education</value>
+  </data>
+  <data name="Step5" xml:space="preserve">
+    <value>Work experience</value>
+  </data>
+  <data name="Step6" xml:space="preserve">
+    <value>Additional Comments</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="ValidationSummaryHeader" xml:space="preserve">
+    <value>There are errors while submit:</value>
+  </data>
+  <data name="WarningMessagePersonLocked" xml:space="preserve">
+    <value>The data of the user profile are locked in due to the presence the active applications</value>
   </data>
 </root>

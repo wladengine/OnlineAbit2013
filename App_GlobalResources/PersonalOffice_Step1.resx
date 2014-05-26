@@ -117,7 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Дата рождения</value>
+  </data>
+  <data name="BirthPlace" xml:space="preserve">
+    <value>Место рождения</value>
+  </data>
+  <data name="ButtonSaveText" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="ButtonSubmitText" xml:space="preserve">
+    <value>Далее</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Страна проживания</value>
+  </data>
   <data name="FormHeader" xml:space="preserve">
     <value>Анкета</value>
+  </data>
+  <data name="HeaderPersonalInfo" xml:space="preserve">
+    <value>Личные данные</value>
+  </data>
+  <data name="IsEqualWithRussian" xml:space="preserve">
+    <value>Я желаю принимать участие в равном конкурсе с гражданами РФ</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Гражданство</value>
+  </data>
+  <data name="PersonInfo_BirthDate_Message" xml:space="preserve">
+    <value>Введите дату рождения</value>
+  </data>
+  <data name="PersonInfo_BirthPlace_Message" xml:space="preserve">
+    <value>Введите место рождения</value>
+  </data>
+  <data name="PersonInfo_Name_Message" xml:space="preserve">
+    <value>Введите имя</value>
+  </data>
+  <data name="PersonInfo_Surname_Message" xml:space="preserve">
+    <value>Введите фамилию</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>Необходимое поле </value>
+  </data>
+  <data name="SecondName" xml:space="preserve">
+    <value>Отчество</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Пол</value>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>&lt;span class="Red"&gt;*&lt;/span&gt;</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Личные данные</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Паспорт</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Контактная информация</value>
+  </data>
+  <data name="Step4" xml:space="preserve">
+    <value>Образование</value>
+  </data>
+  <data name="Step5" xml:space="preserve">
+    <value>Опыт работы</value>
+  </data>
+  <data name="Step6" xml:space="preserve">
+    <value>Дополнительные сведения</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="ValidationSummaryHeader" xml:space="preserve">
+    <value>При сохранении информации произошли следующие ошибки:</value>
+  </data>
+  <data name="WarningMessagePersonLocked" xml:space="preserve">
+    <value>Вы уже ввели данные анкеты. Изменить свои персональные данные вы можете в приёмной комиссии.</value>
   </data>
 </root>

@@ -153,4 +153,10 @@
   <data name="DocumentsReturn" xml:space="preserve">
     <value>Way of documents returning</value>
   </data>
+  <data name="Privileges" xml:space="preserve">
+    <value>Право на льготы:</value>
+  </data>
+  <data name="PrivilegesFull" xml:space="preserve">
+    <value>Претендую на льготы (инвалид I,II ст., участник боевых действий, сирота, чернобылец...)</value>
+  </data>
 </root>

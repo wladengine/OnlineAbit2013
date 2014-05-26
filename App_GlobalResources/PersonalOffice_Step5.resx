@@ -207,4 +207,13 @@
   <data name="ScWork_Message" xml:space="preserve">
     <value>Укажите необходимые сведения</value>
   </data>
+  <data name="SportCategory" xml:space="preserve">
+    <value>Pазряд:</value>
+  </data>
+  <data name="SportQualification" xml:space="preserve">
+    <value>Спорт. квалификация:</value>
+  </data>
+  <data name="SportQualificationCategory" xml:space="preserve">
+    <value>Спорт. квалификация, разряд:</value>
+  </data>
 </root>

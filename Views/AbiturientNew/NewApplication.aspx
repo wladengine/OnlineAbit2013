@@ -101,28 +101,32 @@
     <input name="val_h" id="val_h" type="hidden" value="1" />
     <% if (Model.EntryType == 1)
        { %>
-       <% if (Model.ExitClassId < 9)
+       <% if (Model.ExitClassId < 9) //7-8
           { %>
             <!--ag-->
             <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
        <% } %>
-       <% else if (Model.ExitClassId < 11)
+       <% else if (Model.ExitClassId < 10) //9
           {%>
             <!--ag-->
             <input type="button" class="button button-blue" name="Val" onclick="Submit8()" style="width:45em; "value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType8") %>" /><br /><br />
             <!-- СПО -->     
             <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
+            <% }%>
+       <% else if (Model.ExitClassId < 11) //10
+          {%>
+            <!-- СПО -->     
+            <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
        <% } %>
-       <% else if (Model.ExitClassId == 11)
+       <% else if (Model.ExitClassId == 11) // 11
           { %> 
             <!-- 1 курс -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
             <!-- СПО --> 
             <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
         <% } %>
-            <!-- 1 курс иностр граждане -->
-            <!--<input type="button" class="button button-blue" name="Val" onclick="Submit2()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType2") %>" /><br /><br />-->
-    <%}
+             
+     <%}
        else
        {%>
        <% if (Model.VuzAddType == 1) // поступление

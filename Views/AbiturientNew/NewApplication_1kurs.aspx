@@ -407,7 +407,7 @@
         </select>
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
-           <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px;">
+           <div id="BlockData<%= i.ToString()%>" class="message info panel" >
             <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>

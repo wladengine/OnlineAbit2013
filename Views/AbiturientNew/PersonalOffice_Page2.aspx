@@ -309,6 +309,10 @@
                             <%= Html.LabelFor(x => x.PassportInfo.PassportCode, GetGlobalResourceObject("PassportInfo", "PassportCode").ToString())%>
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportCode)%>
                         </div> 
+                        <div id="snils" class="clearfix" style="display: none;">
+                            <%= Html.LabelFor(x => x.PersonInfo.SNILS, GetGlobalResourceObject("PassportInfo", "SNILS").ToString(), new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
+                            <%= Html.TextBoxFor(x => x.PersonInfo.SNILS, new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
+                        </div>
                         <%  if (Model.res== 4) { %>
                          <div class="clearfix">
                             <%= Html.LabelFor(x => x.PassportInfo.PassportValid, GetGlobalResourceObject("PersonalOfficeForeign", "PassportExpire").ToString())%>
@@ -342,11 +346,7 @@
                             <%= GetGlobalResourceObject("PersonalOfficeForeign", "VisaPostAddressMessage").ToString()%>
                             </span>
                         </div><br /> 
-                        <% } %>
-                         <div id="snils" class="clearfix" style="display: none;">
-                            <%= Html.LabelFor(x => x.PersonInfo.SNILS, GetGlobalResourceObject("PassportInfo", "SNILS").ToString(), new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
-                            <%= Html.TextBoxFor(x => x.PersonInfo.SNILS, new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
-                        </div>
+                        <% } %> 
                         <hr /> 
                         <div class="clearfix">
                             <input id="Submit2" name = "SubmitSave" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSaveText").ToString()%>" />

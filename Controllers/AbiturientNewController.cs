@@ -1373,12 +1373,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     
                     model.StudyFormList = Util.GetStudyFormList();
                     model.StudyBasisList = Util.GetStudyBasisList();
+                    Guid CommitId = Guid.Parse(Id);
 
-                    var CommId = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
+                    var CommId = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).Select(x => x.CommitId);
                     if (CommId.Count() > 0)
-                    {
-                        Guid CommitId = CommId.First();
-                        model.CommitId = CommitId.ToString("N");
+                    { 
                         model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     }
 

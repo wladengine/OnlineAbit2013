@@ -382,7 +382,7 @@
         <input type="hidden" id = "EntryType" name = "EntryType" value="1" />
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
-    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px;">
+    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px;">
         <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
@@ -417,7 +417,7 @@
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
-    <div id="Block<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
+    <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SForm<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
@@ -430,19 +430,19 @@
         </p>
         <p id="StudyLevels<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderStudyLevel")%></span><br />
-            <select id="StudyLevel<%= i.ToString()%>" size="2" style="min-width:450px;" onchange="GetProfs(<%= i.ToString()%>)"></select>
+            <select id="StudyLevel<%= i.ToString()%>" size="2" style="width:659px;" onchange="GetProfs(<%= i.ToString()%>)"></select>
         </p>
-        <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
+        <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
-            <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
+            <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
-        <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;">
+        <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
-            <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
+            <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="width:659px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
-        <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
+        <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
-            <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
+            <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="width:659px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
@@ -462,7 +462,7 @@
        <%} %>
     <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)  
        { %> 
-    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
+    <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
@@ -497,7 +497,7 @@
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
-    <div id="Block<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
+    <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SForm<%= i.ToString()%>">
             <span>Форма обучения</span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
@@ -510,19 +510,19 @@
         </p>
         <p id="StudyLevels<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderStudyLevel")%></span><br />
-            <select id="StudyLevel<%= i.ToString()%>" size="2" style="min-width:450px;" onchange="GetProfessions(<%= i.ToString()%>)"></select>
+            <select id="StudyLevel<%= i.ToString()%>" size="2" style="width:659px;" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
-            <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
+            <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
         <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
-            <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="min-width:450px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
+            <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="width:659px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfile")%></span><br />
-            <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="min-width:450px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
+            <select id="lSpecialization<%= i.ToString()%>" size="5" name="lSpecialization" style="width:659px;" onchange="MkBtn(<%= i.ToString()%>)"></select>
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">

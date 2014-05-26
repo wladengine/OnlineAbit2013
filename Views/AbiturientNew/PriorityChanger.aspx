@@ -26,7 +26,6 @@
 <% } %>
 <script type="text/javascript">
     $(function() {
-        $('#UILink').hide();
 		$("#sortable").sortable({
 			placeholder: "message warning"
 		});
@@ -104,7 +103,9 @@
                 </tr>
             </table>
             <input type="hidden" name="<%= s.Id.ToString("N") %>" />
-            <%--<a href="PersonStartPage.aspx">some path...</a>--%>
+            <% if (s.HasSeparateObrazPrograms) { %>
+            <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= s.Id.ToString("N") %>">Для данного конкурса Вы можете указать приоритетность образовательных программ</a>
+            <% } %>
         </li>
     <% } %>
     </ul>

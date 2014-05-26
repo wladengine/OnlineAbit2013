@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.OpenPersonalAccountModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/Site.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.OpenPersonalAccountModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     <%= GetGlobalResourceObject("PersonStartPage", "Header") %>

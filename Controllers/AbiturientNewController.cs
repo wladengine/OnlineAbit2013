@@ -1994,7 +1994,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 return View(mdl);
             }
         }
-        public ActionResult PriorityAppChanger(string AppId)
+        public ActionResult PriorityChangerApplication(string AppId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -2004,38 +2004,50 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(AppId, out gAppId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            bool isEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
-                var apps =
+                var appl =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
+                     join OPIE in context.ObrazProgramInEntry on App.EntryId equals OPIE.EntryId
                      where App.PersonId == PersonId && App.IsCommited == true && App.Enabled == true && App.Id == gAppId
-                     select new SimpleApplication()
+                     select new
                      {
                          Id = App.Id,
-                         Priority = App.Priority,
-                         StudyForm = Entry.StudyFormName,
-                         StudyBasis = Entry.StudyBasisName,
-                         Profession = Entry.LicenseProgramCode + " " + Entry.LicenseProgramName,
-                         ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
-                         Specialization = Entry.ProfileName,
-                         HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0
-                     }).ToList()
-                     .OrderBy(x => x.Priority).ToList();
+                         CommitId = App.Id,
+                         CommitName = isEng ? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
+                         App.EntryId
+                     }).FirstOrDefault();
 
-                MotivateMailModel mdl = new MotivateMailModel()
+                var Ops = context.ObrazProgramInEntry.Where(x => x.EntryId == appl.EntryId).ToList()
+                    .Select(x => new KeyValuePair<Guid, ObrazProgramInEntrySmallEntity>(x.Id, new ObrazProgramInEntrySmallEntity() 
+                    {
+                        Name = isEng ? x.SP_ObrazProgram.Name : x.SP_ObrazProgram.NameEng, 
+                        HasProfileInObrazProgramInEntry = (context.ProfileInObrazProgramInEntry.Where(z => z.ObrazProgramInEntryId == x.Id).Count() > 0)
+                    })).ToList();
+
+                if (Ops.Count == 1)
+                    return RedirectToAction("PriorityChangerProfile", new RouteValueDictionary() { { "AppId", AppId }, { "OPIE", Ops.First().Key.ToString("N") } });
+
+                else //Ops.Count > 1
                 {
-                    Apps = apps,
-                    UILanguage = Util.GetUILang(PersonId)
-                };
-                return View(mdl);
+                    PriorityChangerApplication mdl = new PriorityChangerApplication()
+                    {
+                        ApplicationId = gAppId,
+                        CommitId = appl.CommitId,
+                        CommitName = appl.CommitName,
+                        lstObrazPrograms = Ops,
+                    };
+                    return View(mdl);
+                }
             }
         }
-        public ActionResult PriorityProfileChanger(string AppId)
+        public ActionResult PriorityChangerProfile(string AppId, string OPIE)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -2045,33 +2057,41 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(AppId, out gAppId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            Guid gObrazProgramInEntryId;
+            if (!Guid.TryParse(OPIE, out gObrazProgramInEntryId))
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
+
+            bool isEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
-                var apps =
+                var appl =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
+                     join OPInE in context.ObrazProgramInEntry on App.EntryId equals OPInE.EntryId
+                     join ProfInOPIE in context.ProfileInObrazProgramInEntry on OPInE.Id equals ProfInOPIE.ObrazProgramInEntryId
                      where App.PersonId == PersonId && App.IsCommited == true && App.Enabled == true && App.Id == gAppId
-                     select new SimpleApplication()
+                     && OPInE.Id == gObrazProgramInEntryId
+                     select new
                      {
                          Id = App.Id,
-                         Priority = App.Priority,
-                         StudyForm = Entry.StudyFormName,
-                         StudyBasis = Entry.StudyBasisName,
-                         Profession = Entry.LicenseProgramCode + " " + Entry.LicenseProgramName,
-                         ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
-                         Specialization = Entry.ProfileName,
-                         HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0
-                     }).ToList()
-                     .OrderBy(x => x.Priority).ToList();
+                         CommitId = App.Id,
+                         CommitName = isEng ? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
+                         App.EntryId
+                     }).FirstOrDefault();
 
-                MotivateMailModel mdl = new MotivateMailModel()
+                var profs = context.ProfileInObrazProgramInEntry.Where(x => x.ObrazProgramInEntryId == gObrazProgramInEntryId).Select(x => new { x.Id, x.SP_Profile.Name }).ToList()
+                    .Select(x => new KeyValuePair<Guid, string>(x.Id, x.Name)).ToList();
+
+                PriorityChangerProfile mdl = new PriorityChangerProfile()
                 {
-                    Apps = apps,
-                    UILanguage = Util.GetUILang(PersonId)
+                    ApplicationId = gAppId,
+                    CommitId = appl.CommitId,
+                    CommitName = appl.CommitName,
+                    lstProfiles = profs,
                 };
                 return View(mdl);
             }
@@ -2130,7 +2150,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
         }
         [HttpPost]
-        public ActionResult ChangeAppPriority(MotivateMailModel model)
+        public ActionResult ChangePriorityApplication(MotivateMailModel model)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -2183,7 +2203,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
         }
         [HttpPost]
-        public ActionResult ChangeProfilePriority(MotivateMailModel model)
+        public ActionResult ChangePriorityProfile(MotivateMailModel model)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))

@@ -1610,7 +1610,7 @@ WHERE PersonId=@PersonId ";
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
                         SpecializationName = App.ProfileName,
                         Hostel = App.HostelEduc,
-                        StudyLevelGroupId = App.StudyLevelGroupId ?? 1
+                        StudyLevelGroupId = App.StudyLevelGroupId
                     };
                     string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 
                                         Inner join SP_StudyLevel on SP_StudyLevel.Id=StudyLevelId

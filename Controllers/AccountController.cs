@@ -90,7 +90,7 @@ namespace OnlineAbit2013.Controllers
                 string remixPwd = Util.MD5Str(model.Password);
 
                 string query = "SELECT Id, SID, IsApproved, Ticket, IsForeign, IsDormsAccount FROM [User] LEFT JOIN AuthTicket ON AuthTicket.UserId=[User].Id WHERE Password=@Password AND Email=@Email";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Password", remixPwd);
                 dic.Add("@Email", email);
                 DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
@@ -163,7 +163,7 @@ namespace OnlineAbit2013.Controllers
                 string remixPwd = Util.MD5Str(model.Password);
 
                 string query = "SELECT Id, SID, IsApproved, Ticket, IsForeign FROM [User] LEFT JOIN AuthTicket ON AuthTicket.UserId=[User].Id WHERE Password=@Password AND UserName=@UserName";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Password", remixPwd);
                 dic.Add("@UserName", userName);
                 DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
@@ -258,7 +258,7 @@ namespace OnlineAbit2013.Controllers
             //Изменяем ключ безопасности на какой-нибудь рандомный
             string newTicket = Guid.NewGuid().ToString("N");
             Util.AbitDB.ExecuteQuery("UPDATE AuthTicket SET Ticket=@Ticket WHERE UserId=@UserId",
-                new Dictionary<string, object>() { { "@Ticket", newTicket }, { "@UserId", PersonId } });
+                new SortedList<string, object>() { { "@Ticket", newTicket }, { "@UserId", PersonId } });
             //var ticket = Util.ABDB.AuthTicket.Where(x => x.UserId == PersonId).FirstOrDefault();
             //if (ticket != null)
             //{
@@ -326,7 +326,7 @@ namespace OnlineAbit2013.Controllers
             }
             //string ticket = Util.ABDB.User.Where(x => x.Id == id).Select(x => x.EmailTicket).FirstOrDefault();
             string query = "SELECT EmailTicket FROM [User] WHERE Id=@Id";
-            string ticket = Util.AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", UserId } });
+            string ticket = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", UserId } });
             if (string.IsNullOrEmpty(ticket))
             {
                 ModelState.AddModelError("", "Ошибка при сохранении пользователя. Попробуйте зарегистрироваться ещё раз");
@@ -399,7 +399,7 @@ namespace OnlineAbit2013.Controllers
             }
             //string ticket = Util.ABDB.User.Where(x => x.Id == id).Select(x => x.EmailTicket).FirstOrDefault();
             string query = "SELECT EmailTicket FROM [User] WHERE Id=@Id";
-            string ticket = Util.AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", UserId } });
+            string ticket = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", UserId } });
             if (string.IsNullOrEmpty(ticket))
             {
                 ModelState.AddModelError("", "Error while saving an account. Please, try again");
@@ -463,7 +463,7 @@ namespace OnlineAbit2013.Controllers
                 return View("Error", new AccountErrorModel() { ErrorHtmlString = authError });
 
             string query = "SELECT Password, Email FROM [User] WHERE Id=@Id";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", UserId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", UserId } });
             if (tbl.Rows.Count == 0)
                 return View("Error", new AccountErrorModel()
                 {
@@ -486,7 +486,7 @@ namespace OnlineAbit2013.Controllers
             try//пробуем сохранить новый пароль в базе
             {
                 query = "UPDATE [User] SET Password=@Password WHERE Id=@Id";
-                Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Password", remixPwd }, { "@Id", UserId } });
+                Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Id", UserId } });
             }
             catch//не получилось сохранить
             {
@@ -524,7 +524,7 @@ namespace OnlineAbit2013.Controllers
                     //User.Password = remixPwdOld;
                     //Util.ABDB.SaveChanges();
                     query = "UPDATE [User] SET Password=@Password WHERE Id=@Id";
-                    Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Password", remixPwd }, { "@Id", UserId } });
+                    Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Id", UserId } });
                     ModelState.AddModelError("", System.Threading.Thread.CurrentThread.CurrentUICulture == System.Globalization.CultureInfo.GetCultureInfo("ru-RU") ?
                         "Не удалось отправить письмо на указанный при регистрации e-mail. Возвращён старый пароль" :
                         "Failed to send an email to address, specified during the registration . Old password saved");
@@ -549,7 +549,7 @@ namespace OnlineAbit2013.Controllers
             Util.SetThreadCultureByCookies(Request.Cookies);
             string query = "SELECT Id, IsApproved FROM [User] WHERE Email=@Email AND EmailTicket=@EmailTicket";
             DataTable tbl = Util.AbitDB.GetDataTable(query,
-                new Dictionary<string, object>() { { "@Email", email }, { "@EmailTicket", t } });
+                new SortedList<string, object>() { { "@Email", email }, { "@EmailTicket", t } });
             var usr = (from DataRow rw in tbl.Rows
                        select new { Id = rw.Field<Guid>("Id"), IsApproved = rw.Field<bool?>("IsApproved") }).FirstOrDefault();
             if (usr != null)
@@ -558,7 +558,7 @@ namespace OnlineAbit2013.Controllers
                 //user.IsApproved = true;
                 //Util.ABDB.SaveChanges();
                 query = "UPDATE [User] SET IsApproved=@IsApproved WHERE Id=@Id";
-                Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@IsApproved", true }, { "@Id", usr.Id } });
+                Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@IsApproved", true }, { "@Id", usr.Id } });
                 return View(new EmailConfirmationModel()
                 {
                     RegStatus = EmailConfirmationStatus.Confirmed
@@ -632,7 +632,7 @@ namespace OnlineAbit2013.Controllers
                 string query = "SELECT [User].Id, Person.Surname AS P_SURNAME, Person.BirthDate AS P_BIRTH, ForeignPerson.Surname AS FOR_SURNAME, " +
                     " ForeignPerson.BirthDate AS FOR_BIRTHDATE FROM [User] LEFT JOIN Person ON Person.Id=[User].Id LEFT JOIN ForeignPerson ON ForeignPerson.Id=[User].Id " +
                     " WHERE [User].Email=@Email";
-                DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Email", email } });
+                DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Email", email } });
                 if (tbl.Rows.Count == 0)
                     return Json(new { NoEmail = true });
                 else
@@ -660,7 +660,7 @@ namespace OnlineAbit2013.Controllers
             if (!DateTime.TryParse(birthdate, System.Globalization.CultureInfo.GetCultureInfo("en-US"), System.Globalization.DateTimeStyles.None, out BirthDate))
                 return Json(new { IsOk = false });
             string query = "SELECT [User].Id FROM [User] INNER JOIN Person ON Person.Id=[User].Id WHERE [User].Email=@Email AND Surname=@Surname AND BirthDate=@BirthDate";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.AddItem("@Email", email);
             dic.AddItem("@Surname", surname);
             dic.AddItem("@BirthDate", BirthDate);
@@ -681,7 +681,7 @@ namespace OnlineAbit2013.Controllers
                     if (SendEmail(email, newPass))
                     {
                         query = "UPDATE [User] SET Password=@Password WHERE Email=@Email";
-                        Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
+                        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
                         return Json(new { IsOk = true, Email = true });
                     }
                     else
@@ -698,7 +698,7 @@ namespace OnlineAbit2013.Controllers
                 if (SendEmail(email, newPass))
                 {
                     query = "UPDATE [User] SET Password=@Password WHERE Email=@Email";
-                    Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
+                    Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
                     return Json(new { IsOk = true, Email = true });
                 }
                 else
@@ -765,7 +765,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "";
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Surname", surname);
             dic.Add("@Name", name);
             dic.Add("@SecondName", secondName);
@@ -808,7 +808,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "";
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Surname", surname);
             dic.Add("@Name", name);
             dic.Add("@SecondName", secondName);
@@ -835,7 +835,7 @@ namespace OnlineAbit2013.Controllers
             else
             {
                 query = "SELECT Id FROM [User] WHERE Id=@Id";
-                Guid? id = (Guid?)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", tbl.Rows[0].Field<Guid>("Id") } });
+                Guid? id = (Guid?)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", tbl.Rows[0].Field<Guid>("Id") } });
                 if (id.HasValue)
                     return Json(new { IsOk = false, Action = "red", Message = "Пользователь с указанными данными уже зарегистрирован в Личном кабинете." });
             }
@@ -853,9 +853,9 @@ namespace OnlineAbit2013.Controllers
             string query = string.Format("SELECT Surname, Name, SecondName, BirthDate, RegionId FROM {0}Person WHERE Id=@Id", type == "0" ? "ed." : "");
             DataTable tbl = new DataTable();
             if (type == "0")
-                tbl = Util.Priem2012DB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", UserId } });
+                tbl = Util.Priem2012DB.GetDataTable(query, new SortedList<string, object>() { { "@Id", UserId } });
             else
-                tbl = Util.StudDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", UserId } });
+                tbl = Util.StudDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", UserId } });
 
             if (tbl.Rows.Count < 1)
                 return Json(new { IsOk = false, Message = "Не найдено данных по человеку. Проверьте входные параметры" });
@@ -877,7 +877,7 @@ namespace OnlineAbit2013.Controllers
                 return Json(new { IsOk = false, Message = "Не удалось создать нового пользователя" });
 
             query = "SELECT EmailTicket FROM [User] WHERE Id=@Id";
-            string ticket = Util.AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", UserId } });
+            string ticket = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", UserId } });
             if (string.IsNullOrEmpty(ticket))
                 return Json(new { IsOk = false, Message = "Ошибка при сохранении пользователя. Попробуйте зарегистрироваться ещё раз" });
 
@@ -896,7 +896,7 @@ namespace OnlineAbit2013.Controllers
 
             try
             {
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", UserId);
                 dic.Add("@Surname", tbl.Rows[0].Field<string>("Surname"));
                 dic.Add("@Name", tbl.Rows[0].Field<string>("Name"));

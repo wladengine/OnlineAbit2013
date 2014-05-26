@@ -139,14 +139,14 @@
         <div class="pagelayout">
             <div class="PersonalOfficeLeftMenu_fixed">
                 <ul class="OfficeLeftMenu">
-                    <li><%= Html.ActionLink("Personal Office", "Main", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                    <li><%= Html.ActionLink("Apply", "NewApplication", "ForeignApplication", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                    <li><%= Html.ActionLink("Define priorities", "PriorityChanger", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                    <!--<li><%= Html.ActionLink("Download documents", "AddFiles", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>-->
-                    <li><%= Html.ActionLink("Motivational mail", "MotivateMail", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                    <li><%= Html.ActionLink("List of documents submitted", "FilesList", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                    <!--<li><%= Html.ActionLink("Edit Personal office data", "Index", "ForeignAbiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>-->
-                    <li><%= Html.ActionLink("Change your password", "ChangePassword", "Account", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
+                    <li><%= Html.ActionLink("Personal Office", "Main", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                    <li><%= Html.ActionLink("Apply", "NewApplication", "ForeignApplication", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                    <li><%= Html.ActionLink("Define priorities", "PriorityChanger", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                    <!--<li><%= Html.ActionLink("Download documents", "AddFiles", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>-->
+                    <li><%= Html.ActionLink("Motivational mail", "MotivateMail", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                    <li><%= Html.ActionLink("List of documents submitted", "FilesList", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                    <!--<li><%= Html.ActionLink("Edit Personal office data", "Index", "ForeignAbiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>-->
+                    <li><%= Html.ActionLink("Change your password", "ChangePassword", "Account", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
                 </ul>
             </div>
             <div id="main">

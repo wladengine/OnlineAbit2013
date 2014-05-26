@@ -576,7 +576,7 @@
                         
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.ContactsInfo.AddressData, GetGlobalResourceObject("PersonalOfficeForeign", "Address").ToString())%>
-                            <%= Html.TextAreaFor(x => x.ContactsInfo.AddressData, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
+                            <%= Html.TextAreaFor(x => x.ContactsInfo.AddressData, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
                             <br />
                             <span id="ContactsInfo_AddressData_Message" class="Red" style="display:none">Введите адрес</span>
                         </div>
@@ -953,11 +953,11 @@
                         <div class="clearfix">
                             <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson").ToString()%></h4>
                             <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson_SubHeader").ToString()%></span><br />
-                            <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } }) %>
+                            <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new SortedList<string, object>() { { "class", "noresize" } }) %>
                         </div>
                         <div class="clearfix">
                             <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ExtraInfo").ToString()%></h4>
-                            <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
+                            <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
                         </div>
                         <div class="clearfix">
                             <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "FZ152_Header").ToString()%></h4>

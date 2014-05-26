@@ -11,7 +11,7 @@ namespace OnlineAbit2013.Controllers
 {
     public class ApplicationController : Controller
     {
-        //
+        
         // GET: /Application/
 
         public ActionResult Index(string id)
@@ -26,17 +26,21 @@ namespace OnlineAbit2013.Controllers
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                var tblAppsMain = context.Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()
+                var tblAppsMain = 
+                    (from App in context.Application
+                    join Entry in context.Entry on App.EntryId equals Entry.Id
+                    where App.CommitId == CommitId && App.IsCommited == true && App.Enabled == true
+                    select new SimpleApplication()
                     {
-                        Id = x.Id,
-                        Profession = x.Entry.LicenseProgramName,
-                        ObrazProgram = x.Entry.ObrazProgramName,
-                        Specialization = x.Entry.ProfileName,
-                        StudyForm = x.Entry.StudyFormName,
-                        StudyBasis = x.Entry.StudyBasisName,
-                        StudyLevel = x.Entry.StudyLevelName,
-                        Priority = x.Priority,
-                        Enabled = x.Enabled
+                        Id = App.Id,
+                        Profession = Entry.LicenseProgramName,
+                        ObrazProgram = Entry.ObrazProgramName,
+                        Specialization = Entry.ProfileName,
+                        StudyForm = Entry.StudyFormName,
+                        StudyBasis = Entry.StudyBasisName,
+                        StudyLevel = Entry.StudyLevelName,
+                        Priority = App.Priority,
+                        Enabled = App.Enabled
                     }).ToList().Union(
                     context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()
                     {
@@ -55,7 +59,7 @@ namespace OnlineAbit2013.Controllers
                 //    return RedirectToAction("Main", "AbiturientNew");
 
                 string query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM ApplicationFile WHERE CommitId=@CommitId";
-                DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@CommitId", CommitId } });
+                DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@CommitId", CommitId } });
 
                 List<AppendedFile> lFiles =
                     (from DataRow rw in tbl.Rows
@@ -71,7 +75,7 @@ namespace OnlineAbit2013.Controllers
                      }).ToList();
 
                 query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM PersonFile WHERE PersonId=@PersonId";
-                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", personId } });
+                tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", personId } });
                 var lSharedFiles =
                     (from DataRow rw in tbl.Rows
                      select new AppendedFile()
@@ -111,25 +115,29 @@ namespace OnlineAbit2013.Controllers
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                var ApplicationEntity = context.Application.Where(x => x.Id == ApplicationId && x.IsCommited == true && x.CommitId.HasValue).Select(x => new 
+                var ApplicationEntity = 
+                    (from App in context.Application 
+                     join Entry in context.Entry on App.EntryId equals Entry.Id
+                     where App.Id == ApplicationId && App.IsCommited == true
+                     select new 
                 {
-                    Id = x.Id,
-                    Profession = x.Entry.LicenseProgramName,
-                    ObrazProgram = x.Entry.ObrazProgramName,
-                    Specialization = x.Entry.ProfileName,
-                    StudyForm = x.Entry.StudyFormName,
-                    StudyBasis = x.Entry.StudyBasisName,
-                    StudyLevel = x.Entry.StudyLevelName,
-                    StudyLevelId = x.Entry.StudyLevelId,
-                    Priority = x.Priority,
-                    Enabled = x.Enabled,
-                    ComissionAddress = x.Entry.Comission.Address,
-                    ComissionYaCoord = x.Entry.Comission.YaMapCoord,
-                    DateOfDisable = x.DateOfDisable,
-                    IsApproved = x.IsApprovedByComission,
-                    EntryTypeId = x.EntryType ?? 0,
-                    CommitId = x.CommitId.Value,
-                    CommitName = x.Entry.StudyLevelName
+                    Id = App.Id,
+                    Profession = Entry.LicenseProgramName,
+                    ObrazProgram = Entry.ObrazProgramName,
+                    Specialization = Entry.ProfileName,
+                    StudyForm = Entry.StudyFormName,
+                    StudyBasis = Entry.StudyBasisName,
+                    StudyLevel = Entry.StudyLevelName,
+                    StudyLevelId = Entry.StudyLevelId,
+                    Priority = App.Priority,
+                    Enabled = App.Enabled,
+                    ComissionAddress = App.C_Entry.Comission.Address,
+                    ComissionYaCoord = App.C_Entry.Comission.YaMapCoord,
+                    DateOfDisable = App.DateOfDisable,
+                    IsApproved = App.IsApprovedByComission,
+                    EntryTypeId = App.EntryType,
+                    CommitId = App.CommitId,
+                    CommitName = Entry.StudyLevelName
                 }).FirstOrDefault();
                 if (ApplicationEntity == null)
                 {
@@ -187,7 +195,7 @@ namespace OnlineAbit2013.Controllers
                 //var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
 
                 string query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM ApplicationFile WHERE ApplicationId=@ApplicationId";
-                DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@ApplicationId", ApplicationId } });
+                DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@ApplicationId", ApplicationId } });
 
                 List<AppendedFile> lFiles =
                     (from DataRow rw in tbl.Rows
@@ -203,7 +211,7 @@ namespace OnlineAbit2013.Controllers
                      }).ToList();
 
                 query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM PersonFile WHERE PersonId=@PersonId";
-                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", personId } });
+                tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", personId } });
                 var lSharedFiles =
                     (from DataRow rw in tbl.Rows
                      select new AppendedFile()
@@ -292,7 +300,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
                     " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 1)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@ApplicationId", ApplicationId);
                 dic.Add("@FileName", fileName);
@@ -311,7 +319,7 @@ namespace OnlineAbit2013.Controllers
                 return Json("Ошибка при записи файла");
             }
 
-            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+            return RedirectToAction("AppIndex", new RouteValueDictionary() { { "id", id } });
         }
 
         [HttpPost]
@@ -349,7 +357,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO ApplicationFile (Id, CommitId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
                     " VALUES (@Id, @CommitId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 1)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@CommitId", CommitId);
                 dic.Add("@FileName", fileName);
@@ -382,7 +390,7 @@ namespace OnlineAbit2013.Controllers
                 return Content("Authorization required");
 
             DataTable tbl = Util.AbitDB.GetDataTable("SELECT FileName, FileData, MimeType, FileExtention FROM AllFiles WHERE Id=@Id",
-                new Dictionary<string, object>() { { "@Id", FileId } });
+                new SortedList<string, object>() { { "@Id", FileId } });
 
             if (tbl.Rows.Count == 0)
                 return Content("Файл не найден");
@@ -434,45 +442,53 @@ namespace OnlineAbit2013.Controllers
                 return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Ошибка идентификатора заявления"), "text/plain");
 
             //string query = "SELECT COUNT(Id) FROM Application WHERE CommitId=@Id AND PersonId=@PersonId";
-            //int cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
+            //int cnt = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
             //if (cnt == 0)
             //{
             //    query = "SELECT COUNT(Id) FROM AG_Application WHERE CommitId=@Id AND PersonId=@PersonId";
-            //    cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
+            //    cnt = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", appId }, { "@PersonId", personId } });
             //    if (cnt == 0)
             //        return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");
             //}
 
             byte[] bindata; 
-            //int abitTypeId = Util.CheckAbitType(personId);
-
-            //switch (abitTypeId)
-            //{
-            //    case 1: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 2: { bindata = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 3: { bindata = PDFUtils.GetApplicationPDFTransfer(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 4: { bindata = PDFUtils.GetApplicationPDFTransferForeign(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 5: { bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 6: { bindata = PDFUtils.GetApplicationPDFChangeStudyForm(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 7: { bindata = PDFUtils.GetApplicationPDFChangeObrazProgram(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 8: { bindata = PDFUtils.GetApplicationPDF_AG(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 9: { bindata = PDFUtils.GetApplicationPDF_SPO(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 10: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
-            //    case 11: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
-            //    default: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/")); break; }
-            //}
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                if (context.AG_Application.Where(x => x.CommitId == appId).Count() > 0)
+                if (context.AG_Application.Where(x => x.CommitId == appId && x.PersonId == personId).Count() > 0)
                 {
                     bindata = PDFUtils.GetApplicationBlockPDF_AG(appId, Server.MapPath("~/Templates/"));
                 }
                 else
                 {
+                    var lst = context.Application.Where(x => x.CommitId == appId && x.PersonId == personId).Select(x => x.EntryType).ToList();
+                    if (lst.Count == 0)
+                        return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");
+
                     //дальше должно быть разделение - для 1 курса, магистров, аспирантов, переводящихся и восстанавливающихся
                     //пока что затычка из АГ
-                    bindata = PDFUtils.GetApplicationBlockPDF_AG(appId, Server.MapPath("~/Templates/"));
+                    int EntryType = lst.First();
+
+                    switch (EntryType)
+                    {
+                        //бакалавриат
+                        case 1: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"), false, personId); break; }
+                        //магистратура
+                        case 2: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"), true, personId); break; }
+                        //СПО
+                        case 3: { bindata = PDFUtils.GetApplicationPDF_SPO(appId, Server.MapPath("~/Templates/"), personId); break; }
+                        //Аспирантура
+                        case 4: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+
+                        //case 5: { bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 6: { bindata = PDFUtils.GetApplicationPDFChangeStudyForm(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 7: { bindata = PDFUtils.GetApplicationPDFChangeObrazProgram(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 8: { bindata = PDFUtils.GetApplicationPDF_AG(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 9: { bindata = PDFUtils.GetApplicationPDF_SPO(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 10: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+                        //case 11: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+                        default: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"), false, personId); break; }
+                    }
                 }
             }
             
@@ -506,7 +522,7 @@ namespace OnlineAbit2013.Controllers
                 bool isAg = false;
                 bool? isEnabled = context.Application.Where(x => x.Id == AppId && x.PersonId == PersonId).Select(x => (bool?)x.Enabled).FirstOrDefault();
                 //(bool?)Util.AbitDB.GetValue("SELECT Enabled FROM [Application] WHERE Id=@Id AND PersonId=@PersonId",
-                //new Dictionary<string, object>() { { "@Id", AppId }, { "@PersonId", PersonId } });
+                //new SortedList<string, object>() { { "@Id", AppId }, { "@PersonId", PersonId } });
 
                 //var app = Util.ABDB.Application.Where(x => x.Id == AppId && x.PersonId == PersonId).FirstOrDefault();
                 if (!isEnabled.HasValue)
@@ -530,7 +546,7 @@ namespace OnlineAbit2013.Controllers
                 try
                 {
                     string query = string.Format("UPDATE [{0}Application] SET Enabled=@Enabled, DateOfDisable=@DateOfDisable, Priority=@Priority WHERE Id=@Id", isAg ? "AG_" : "");
-                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    SortedList<string, object> dic = new SortedList<string, object>();
                     dic.Add("@Id", AppId);
                     dic.Add("@DateOfDisable", DateTime.Now);
                     dic.Add("@Priority", 0);
@@ -597,7 +613,7 @@ namespace OnlineAbit2013.Controllers
                 try
                 {
                     string query = string.Format("DELETE FROM [{0}Application] WHERE CommitId=@Id", isAg ? "AG_" : "");
-                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    SortedList<string, object> dic = new SortedList<string, object>();
                     dic.Add("@Id", CommitId);
 
                     Util.AbitDB.ExecuteQuery(query, dic);
@@ -647,7 +663,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
                     " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 2)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@ApplicationId", ApplicationId);
                 dic.Add("@FileName", fileName);
@@ -666,7 +682,7 @@ namespace OnlineAbit2013.Controllers
                 return Json("Ошибка при записи файла");
             }
 
-            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+            return RedirectToAction("AppIndex", new RouteValueDictionary() { { "id", id } });
         }
 
         public ActionResult EssayPost()
@@ -706,7 +722,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType, [FileTypeId]) " +
                     " VALUES (@Id, @ApplicationId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType, 3)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@ApplicationId", ApplicationId);
                 dic.Add("@FileName", fileName);
@@ -725,7 +741,7 @@ namespace OnlineAbit2013.Controllers
                 return Json("Ошибка при записи файла");
             }
 
-            return RedirectToAction("Index", new RouteValueDictionary() { { "id", id } });
+            return RedirectToAction("AppIndex", new RouteValueDictionary() { { "id", id } });
         }
 
         public JsonResult ChangePriority(string id, string pr)
@@ -741,7 +757,7 @@ namespace OnlineAbit2013.Controllers
             try
             {
                 Util.AbitDB.ExecuteQuery("UPDATE Application SET Priority=@Priority WHERE Id=@Id",
-                    new Dictionary<string, object>() { { "@Id", ApplicationId }, { "@Priority", pr } });
+                    new SortedList<string, object>() { { "@Id", ApplicationId }, { "@Priority", pr } });
                 return Json(new { IsOk = true });
             }
             catch
@@ -768,7 +784,7 @@ namespace OnlineAbit2013.Controllers
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID };
                 return Json(res);
             }
-            string attr = Util.AbitDB.GetStringValue("SELECT IsReadOnly FROM ApplicationFile WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", fileId } });
+            string attr = Util.AbitDB.GetStringValue("SELECT IsReadOnly FROM ApplicationFile WHERE Id=@Id", new SortedList<string, object>() { { "@Id", fileId } });
             if (string.IsNullOrEmpty(attr))
             {
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.FileNotFound };
@@ -781,7 +797,7 @@ namespace OnlineAbit2013.Controllers
             }
             try
             {
-                Util.AbitDB.ExecuteQuery("DELETE FROM ApplicationFile WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", fileId } });
+                Util.AbitDB.ExecuteQuery("DELETE FROM ApplicationFile WHERE Id=@Id", new SortedList<string, object>() { { "@Id", fileId } });
             }
             catch
             {

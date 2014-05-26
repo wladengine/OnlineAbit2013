@@ -533,7 +533,7 @@ namespace OnlineAbit2013.Controllers
         //        model.Files = new List<AppendedFile>();
 
         //        string query = "SELECT Surname, Name, SecondName, RegistrationStage FROM PERSON WHERE Id=@Id";
-        //        Dictionary<string, object> dic = new Dictionary<string, object>() { { "@Id", PersonID } };
+        //        SortedList<string, object> dic = new SortedList<string, object>() { { "@Id", PersonID } };
         //        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
         //        if (tbl.Rows.Count != 1)
         //            return RedirectToAction("Index");
@@ -610,7 +610,7 @@ namespace OnlineAbit2013.Controllers
                 }
 
                 ApplicationModel model = new ApplicationModel();
-                int? iScTypeId = (int?)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new Dictionary<string, object>() { { "@Id", PersonId } });
+                int? iScTypeId = (int?)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                 if (iScTypeId.HasValue)
                 {
                     if (iScTypeId.Value != 4)
@@ -695,7 +695,7 @@ namespace OnlineAbit2013.Controllers
                 (ProfileId == Guid.Empty ? " AND ProfileId IS NULL " : " AND ProfileId=@ProfileId ") + (iFacultyId == 0 ? "" : " AND FacultyId=@FacultyId ") +
                 " AND SemesterId=@SemesterId AND CampaignYear=@CampaignYear";
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@LicenseProgramId", iProfession);
             dic.Add("@ObrazProgramId", iObrazProgram);
             dic.Add("@SFormId", iStudyFormId);
@@ -719,13 +719,13 @@ namespace OnlineAbit2013.Controllers
             Guid EntryId = tbl.Rows[0].Field<Guid>("Id");
 
             query = "SELECT DateOfClose FROM [EntryOpeningClosingDates] WHERE EntryId=@Id AND AbiturientTypeId=2";
-            DateTime? DateOfClose = (DateTime?)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", EntryId } });
+            DateTime? DateOfClose = (DateTime?)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", EntryId } });
 
             if (DateOfClose.HasValue && DateTime.Now > DateOfClose)
                 return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Подача заявлений на данное направление прекращена " + DateOfClose.Value.ToString("dd.MM.yyyy") } });
 
             query = "SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
             var eIds =
                 from DataRow rw in tbl.Rows
                 select rw.Field<Guid>("EntryId");
@@ -733,7 +733,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Заявление на данную программу уже подано" } });
 
             DataTable tblPriors = Util.AbitDB.GetDataTable("SELECT Priority FROM [Application] WHERE PersonId=@PersonId AND Enabled=@Enabled",
-                new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
+                new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
             int? PriorMax =
                 (from DataRow rw in tblPriors.Rows
                  select rw.Field<int?>("Priority")).Max();
@@ -741,7 +741,7 @@ namespace OnlineAbit2013.Controllers
             Guid appId = Guid.NewGuid();
             query = "INSERT INTO [Application] (Id, PersonId, EntryId, HostelEduc, Enabled, Priority, EntryType, DateOfStart) " +
                 "VALUES (@Id, @PersonId, @EntryId, @HostelEduc, @Enabled, @Priority, @EntryType, @DateOfStart)";
-            Dictionary<string, object> prms = new Dictionary<string, object>()
+            SortedList<string, object> prms = new SortedList<string, object>()
             {
                 { "@Id", appId },
                 { "@PersonId", PersonId },
@@ -758,7 +758,7 @@ namespace OnlineAbit2013.Controllers
             query = "SELECT Person.Surname, Person.Name, Person.SecondName, Entry.LicenseProgramCode, Entry.LicenseProgramName, Entry.ObrazProgramName " +
                 " FROM [Application] INNER JOIN Person ON Person.Id=[Application].PersonId " +
                 " INNER JOIN Entry ON Application.EntryId=Entry.Id WHERE Application.Id=@AppId";
-            DataTable Tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
+            DataTable Tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@AppId", appId } });
             var fileInfo =
                 (from DataRow rw in Tbl.Rows
                  select new
@@ -824,7 +824,7 @@ namespace OnlineAbit2013.Controllers
                 Util.SetThreadCultureByCookies(Request.Cookies);
 
                 string query = "SELECT Id, FileName, FileSize, Comment, IsApproved FROM PersonFile WHERE PersonId=@PersonId";
-                DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+                DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
                 List<AppendedFile> lst =
                     (from DataRow rw in tbl.Rows
@@ -875,7 +875,7 @@ namespace OnlineAbit2013.Controllers
         //            " SELECT [ForeignApplication].Id, Priority, LicenseProgramName, ObrazProgramName, ProfileName FROM [ForeignApplication] " +
         //            " INNER JOIN Entry ON [ForeignApplication].EntryId=Entry.Id " +
         //            " WHERE PersonId=@PersonId AND Enabled=@Enabled) ORDER BY Priority ";
-        //        Dictionary<string, object> dic = new Dictionary<string, object>()
+        //        SortedList<string, object> dic = new SortedList<string, object>()
         //        {
         //            {"@PersonId", PersonId },
         //            {"@Enabled", true }
@@ -914,7 +914,7 @@ namespace OnlineAbit2013.Controllers
                 "INNER JOIN ForeignLanguage ON ForeignLanguage.Id=ForeignPersonLanguage.ForeignLanguageId " +
                 "INNER JOIN ForeignLanguageLevel ON ForeignLanguageLevel.Id=ForeignPersonLanguage.ForeignLanguageLevelId " +
                 "WHERE ForeignPersonLanguage.PersonId=@Id";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
             var data =
                 (from DataRow rw in tbl.Rows
                  select new
@@ -935,7 +935,7 @@ namespace OnlineAbit2013.Controllers
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
 
             string query = "SELECT Id, NameRus, NameEng FROM ForeignLanguage WHERE Id NOT IN (SELECT ForeignLanguageId FROM ForeignPersonLanguage WHERE PersonId=@Id)";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
             var langs =
                 (from DataRow rw in tbl.Rows
                  select new
@@ -963,7 +963,7 @@ namespace OnlineAbit2013.Controllers
             string query = "INSERT INTO ForeignPersonLanguage (Id, PersonId, ForeignLanguageId, ForeignLanguageLevelId) VALUES " +
                 "(@Id, @PersonId, @ForeignLanguageId, @ForeignLanguageLevelId)";
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", Id);
             dic.Add("@PersonId", PersonId);
             dic.Add("@ForeignLanguageId", iLanguageId);
@@ -972,7 +972,7 @@ namespace OnlineAbit2013.Controllers
             //            query = @"SELECT ForeignLanguage.NameRus, ForeignLanguage.NameEng, ForeignLanguageLevel.NameRus, ForeignLanguageLevel.NameEng FROM ForeignPersonLanguage 
             //FROM ForeignPersonLanguage INNER JOIN ForeignLanguage ON ForeignLanguage.Id = ForeignPersonLanguage.ForeignLanguageId INNER JOIN ForeignLanguageLevel ON
             //ForeignLanguageLevel.Id = ForeignPersonLanguage.ForeignLanguageLevelId WHERE ForeignPersonLanguage.Id=@Id";
-            //            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", Id } });
+            //            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", Id } });
 
             Util.AbitDB.ExecuteQuery(query, dic);
             return Json("OK");
@@ -984,7 +984,7 @@ namespace OnlineAbit2013.Controllers
                 return Json(new { IsOk = false });
 
             string query = "DELETE FROM ForeignPersonLanguage WHERE Id=@Id";
-            Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", Id } });
+            Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", Id } });
             return Json(new { IsOk = true });
         }
 
@@ -1003,7 +1003,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = string.Format("SELECT DISTINCT FacultyId, FacultyName FROM {0} WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId " +
                 "AND IsSecond=@IsSecond ORDER BY FacultyId", iEntryId == 2 ? "extStudyPlan" : "extStudyPlan1K");
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);
             dic.Add("@IsSecond", iEntryId == 3 ? true : false);
@@ -1046,7 +1046,7 @@ namespace OnlineAbit2013.Controllers
             string query = string.Format("SELECT DISTINCT LicenseProgramId, LicenseProgramCode, LicenseProgramName{0} as LicenseProgramName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId " +
                 "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND StudyLevelGroupId=@StudyLevelGroupId AND IsSecond=@IsSecond AND IsParallel=@IsParallel " +
                 "AND IsReduced=@IsReduced AND [CampaignYear]=@Year AND SemesterId=@SemesterId", lang == "en" ? "Eng" : "");
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);
             dic.Add("@StudyLevelGroupId", iEntryId == 2 ? 2 : 1);//2 == mag, 1 == 1kurs
@@ -1096,7 +1096,7 @@ namespace OnlineAbit2013.Controllers
             string query = string.Format("SELECT DISTINCT ObrazProgramId, ObrazProgramName{0} as ObrazProgramName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId " +
                 "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId " +
                 "AND StudyLevelGroupId=@StudyLevelGroupId AND IsSecond=@IsSecond AND IsParallel=@IsParallel AND IsReduced=@IsReduced", lang == "en" ? "Eng" : "");
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);
             dic.Add("@LicenseProgramId", iProfessionId);
@@ -1143,7 +1143,7 @@ namespace OnlineAbit2013.Controllers
                 "AND qEntry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL) " +
                 "AND IsSecond=@IsSecond AND IsParallel=@IsParallel AND IsReduced=@IsReduced";
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);

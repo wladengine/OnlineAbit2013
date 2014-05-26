@@ -184,11 +184,11 @@
     <% } %>
     <p id="SForm">
         <span>Форма обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+        <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
     </p>
     <p id="SBasis">
         <span>Форма обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+        <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
     </p>
     <%= Html.HiddenFor(x => x.SemesterId)%>
     <p id="Reduced" style="display:none; border-collapse:collapse;">

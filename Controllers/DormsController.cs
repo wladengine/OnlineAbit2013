@@ -30,7 +30,7 @@ namespace OnlineAbit2013.Controllers
                 model.isRegistered = false;
 
             string query = @"SELECT Person.Barcode, ApprovedHostel.IsFirstCourse, ApprovedHostel.IsSpb FROM Person INNER JOIN ApprovedHostel ON ApprovedHostel.PersonBarcode=Person.Barcode WHERE Id=@Id";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", UserId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", UserId } });
             int? barc = null;
             DateTime? time = null;
             int? DormsId = null;
@@ -63,7 +63,7 @@ namespace OnlineAbit2013.Controllers
             {
                 //вычисляем, когда юзер регистрировался в последний раз
                 query = "SELECT TOP (1) Id, Date, DormsId FROM Timetable WHERE PersonBarcode=@PersonBarcode ORDER BY Date";
-                tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonBarcode", barc } });
+                tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonBarcode", barc } });
                 //если есть регистрация, то заполняем дату, общагу в модели
                 if (tbl.Rows.Count > 0)
                 {
@@ -79,7 +79,7 @@ namespace OnlineAbit2013.Controllers
 UNION
 SELECT Date, COUNT(Id) AS CNT FROM TimetableLock WHERE CONVERT(date, Date)=@Date AND DormsId=@DormsId AND LockTime > @LockTime GROUP BY Date";
                     tbl = Util.AbitDB.GetDataTable(query,
-                        new Dictionary<string, object>()
+                        new SortedList<string, object>()
                         { 
                             { "@Date", time.Value.Date }, { "@DormsId", DormsId.Value }, { "@LockTime", DateTime.Now.AddMinutes(-30) } 
                         });
@@ -123,7 +123,7 @@ FROM
 UNION
 SELECT Date, COUNT(Id) AS CNT FROM TimetableLock WHERE Date=@Date AND DormsId=@DormsId AND LockTime>@LockTime GROUP BY Date) t
 GROUP BY t.Date";
-            Dictionary<string, object> dic = new Dictionary<string, object>(5);
+            SortedList<string, object> dic = new SortedList<string, object>(5);
             dic.Add("@Date", dtDate.Date);
             dic.Add("@DormsId", iDormsId);
             dic.Add("@LockTime", DateTime.Now.AddMinutes(-10));
@@ -213,7 +213,7 @@ GROUP BY t.Date";
 
             dtDate = dtDate.Date.AddHours(iHour).AddMinutes(iMinute);
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", UserId);
 
             //вычисляем баркод
@@ -271,7 +271,7 @@ SELECT COUNT(Id) AS CNT FROM TimetableLock WHERE Date=@Date AND DormsId=@DormsId
             if (!Guid.TryParse(Id, out TicketId))
                 return Json(new { IsOk = false, Message = Resources.ServerMessages.IncorrectGUID });
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", TicketId);
 
             string query = "SELECT TOP 1 PersonBarcode, Date, DormsId FROM TimetableLock WHERE Id=@Id ORDER BY LockTime DESC";
@@ -302,7 +302,7 @@ SELECT COUNT(Id) AS CNT FROM TimetableLock WHERE Date=@Date AND DormsId=@DormsId
             dic.Clear();
             dic.Add("@Barcode", iPersBarc);
             dic.Add("@Id", PersonId);
-            int cntBarc = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", PersonId }, { "@Barcode", iPersBarc } });
+            int cntBarc = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", PersonId }, { "@Barcode", iPersBarc } });
             if (cntBarc == 0)
                 return Json(new { IsOk = false, Message = "Ошибка сопоставления. Попробуйте перезалогиниться." });
 
@@ -348,7 +348,7 @@ SELECT COUNT(Id) AS CNT FROM TimetableLock WHERE Date=@Date AND DormsId=@DormsId
             if (!Guid.TryParse(Id, out TicketId))
                 return Json(new { IsOk = false, Message = Resources.ServerMessages.IncorrectGUID });
 
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", TicketId);
 
             //получение данных по айдишнику
@@ -366,7 +366,7 @@ SELECT COUNT(Id) AS CNT FROM TimetableLock WHERE Date=@Date AND DormsId=@DormsId
             dic.Clear();
             dic.Add("@Barcode", iPersBarc);
             dic.Add("@Id", PersonId);
-            int cntBarc = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", PersonId }, { "@Barcode", iPersBarc } });
+            int cntBarc = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", PersonId }, { "@Barcode", iPersBarc } });
             if (cntBarc == 0)
                 return Json(new { IsOk = false, Message = "Ошибка сопоставления. Попробуйте перезалогиниться." });
 

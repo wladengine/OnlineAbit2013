@@ -188,15 +188,15 @@
     </select>
     <p id="SForm">
         <span>Форма обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+        <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
     </p>
     <p id="SBasis">
         <span>Основа обучения</span><br />
-        <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+        <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
     </p>
     <p id="P1">
         <span>Семестр</span><br />
-        <%= Html.DropDownListFor(x => x.SemesterId, Model.SemesterList, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+        <%= Html.DropDownListFor(x => x.SemesterId, Model.SemesterList, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
     </p>
     <p id="Reduced" style="display:none; border-collapse:collapse;">
         <input type="checkbox" id="IsReduced" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced()"/><span style="font-size:13px">Второе высшее</span><br />

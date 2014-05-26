@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbiturientType1" xml:space="preserve">
-    <value>Entering on first course for citizens of Russian Federation</value>
+    <value>Entering on first course</value>
   </data>
   <data name="AbiturientType10" xml:space="preserve">
-    <value>Поступление в аспирантуру гражданам РФ</value>
+    <value>Поступление в аспирантуру</value>
   </data>
   <data name="AbiturientType11" xml:space="preserve">
     <value>Поступление в аспирантуру иностранным гражданам</value>

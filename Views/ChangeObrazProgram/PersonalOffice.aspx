@@ -705,7 +705,7 @@
                         </div>
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.CurrentEducation.LicenseProgramId, "Направление (специальность)") %>
-                            <%= Html.DropDownListFor(x => x.CurrentEducation.LicenseProgramId, Model.CurrentEducation.LicenceProgramList, new Dictionary<string, object>() { { "style", "width:400px" }, { "size", "5" } })%>
+                            <%= Html.DropDownListFor(x => x.CurrentEducation.LicenseProgramId, Model.CurrentEducation.LicenceProgramList, new SortedList<string, object>() { { "style", "width:400px" }, { "size", "5" } })%>
                         </div>
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.CurrentEducation.ProfileName, "Профиль (специализация)")%>
@@ -769,12 +769,12 @@
                         <h4>Лицо, с которым можно связаться в экстренных случаях:</h4>
                         <span>(указать Ф.И.О., степень родства, телефон, моб.телефон, эл.почта)</span><br />
                         <!-- <textarea id="AddPerson_ContactPerson" name="AddPerson.ContactPerson" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } }) %>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new SortedList<string, object>() { { "class", "noresize" } }) %>
                     </div>
                     <div class="clearfix">
                         <h4>О себе дополнительно сообщаю:</h4>
                         <!-- <textarea id="AddPerson_ExtraInfo" name="AddPerson.ExtraInfo" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
                     </div>
                     <div class="clearfix">
                         <h4>Я подтверждаю, что предоставленная мной информация корректна и достоверна. Даю согласие на обработку предоставленных персональных данных в порядке, установленном Федеральным законом от 27 июля 2006 года № 152-ФЗ «О персональных данных».</h4>

@@ -103,7 +103,7 @@
                 for (var i = 0; i < json_data.List.length; i++) {
                     options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
                 }
-                $(CurrlObrazProgram).html(options).removeAttr('disabled');
+                $(CurrlObrazProgram).html(options).removeAttr('disabled').show();
                 $(CurrlSpecialization).html('');
             }
         }, 'json');
@@ -445,26 +445,26 @@
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
         <p id="SForm<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
-            <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new Dictionary<string, object>() { { "size", "1" },
+            <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
-            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new Dictionary<string, object>() { { "size", "1" }, 
+            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
-        <p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
+        <input type="hidden" name="IsReducedHidden" id="Hidden1" value="0"/>
+        <input type="hidden" name="IsParallelHidden" id="Hidden2" value="0"/>
+        <input type="hidden" name="IsSecondHidden" id="Hidden3" value="0"/>
+        <%--<p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
-            <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
-            <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
-            <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
-        </p>
+        </p>--%>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
@@ -495,7 +495,7 @@
        <%} %>
     <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)  
        { %> 
-        <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
+       <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
             <table class="nopadding" cellspacing="0" cellpadding="0">
                 <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
@@ -533,26 +533,26 @@
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:450px; display:none;">
         <p id="SForm<%= i.ToString()%>">
             <span>Форма обучения</span><br /> 
-            <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new Dictionary<string, object>() { { "size", "1" },
+            <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
             <span>Основа обучения</span><br />
-            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new Dictionary<string, object>() { { "size", "1" }, 
+            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
-        <p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
+        <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
+        <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
+           <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
+        <%--<p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
-            <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
-            <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
         </p>
         <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
             <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
-            <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
-        </p>
+        </p>--%>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="min-width:450px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>

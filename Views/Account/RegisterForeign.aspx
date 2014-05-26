@@ -56,7 +56,7 @@
                     <%: Html.LabelFor(m => m.UserName) %>
                 </div>
                 <div class="editor-field">
-                    <%: Html.TextBoxFor(m => m.UserName, new System.Collections.Generic.Dictionary<string, object>() { {"class", "ui-widget-content ui-corner-all"} })%>
+                    <%: Html.TextBoxFor(m => m.UserName, new System.Collections.Generic.SortedList<string, object>() { {"class", "ui-widget-content ui-corner-all"} })%>
                     <%: Html.ValidationMessageFor(m => m.UserName) %>
                 </div>
                 
@@ -64,7 +64,7 @@
                     <%: Html.LabelFor(m => m.Email) %>
                 </div>
                 <div class="editor-field">
-                    <%: Html.TextBoxFor(m => m.Email, new System.Collections.Generic.Dictionary<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
+                    <%: Html.TextBoxFor(m => m.Email, new System.Collections.Generic.SortedList<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
                     <%: Html.ValidationMessageFor(m => m.Email) %>
                 </div>
                 
@@ -72,7 +72,7 @@
                     <%: Html.LabelFor(m => m.Password) %>
                 </div>
                 <div class="editor-field">
-                    <%: Html.PasswordFor(m => m.Password, new System.Collections.Generic.Dictionary<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
+                    <%: Html.PasswordFor(m => m.Password, new System.Collections.Generic.SortedList<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
                     <%: Html.ValidationMessageFor(m => m.Password) %>
                 </div>
                 
@@ -80,7 +80,7 @@
                     <%: Html.LabelFor(m => m.ConfirmPassword) %>
                 </div>
                 <div class="editor-field">
-                    <%: Html.PasswordFor(m => m.ConfirmPassword, new System.Collections.Generic.Dictionary<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
+                    <%: Html.PasswordFor(m => m.ConfirmPassword, new System.Collections.Generic.SortedList<string, object>() { { "class", "ui-widget-content ui-corner-all" } })%>
                     <%: Html.ValidationMessageFor(m => m.ConfirmPassword) %>
                 </div>
                 <div class="editor-field">

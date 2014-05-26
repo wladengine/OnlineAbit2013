@@ -531,7 +531,7 @@
         <hr />
         <div class="clearfix">
             <%= Html.LabelFor(x => x.Address, GetGlobalResourceObject("PersonalOfficeForeign", "Address").ToString())%>
-            <%= Html.TextAreaFor(x => x.Address, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
+            <%= Html.TextAreaFor(x => x.Address, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
             <br />
             <span id="AddressMessage" class="Red" style="display:none;">
             <%= GetGlobalResourceObject("PersonalOfficeForeign", "AddressMessage").ToString()%>
@@ -614,7 +614,7 @@
     <h4><%= GetGlobalResourceObject("PersonalOfficeForeign", "HeaderJob").ToString()%></h4>
     <hr />
     <div class="clearfix">
-        <%= Html.TextAreaFor(x => x.Works, 8, 100, new Dictionary<string, object>() { { "class", "noresize" } })%>
+        <%= Html.TextAreaFor(x => x.Works, 8, 100, new SortedList<string, object>() { { "class", "noresize" } })%>
     </div>
     <hr />
     <div class="clearfix" style=" font-size: 1.3em;">

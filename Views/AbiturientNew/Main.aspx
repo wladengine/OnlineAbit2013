@@ -43,7 +43,7 @@
         <thead>
             <tr>
                 <th>Уровень</th>
-                <th>Тип поступления</th>
+                <%--<th>Тип поступления</th>--%>
                 <th>Просмотр заявлений</th>
             </tr>
         </thead>
@@ -51,45 +51,10 @@
         { %>
          <tr>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel) %></td>
-            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType) %></td>
+            <%--<td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType) %></td>--%>
             <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">Просмотр</a></td>
          </tr>
      <% } %>
      </table>
-    <%--<br />
-    <h4>Отозванные заявления</h4>
-    <hr />
-    <% if (Model.Applications.Where(x => x.Enabled == false).Count() > 0)
-       { %>
-        <table class="paginate">
-            <thead>
-                <tr>
-                    <th>Направление</th>
-                    <th>Образовательная программа</th>
-                    <th>Профиль</th>
-                    <th>Форма обучения</th>
-                    <th>Основа обучения</th>
-                    <th>Просмотр заявления</th>
-                </tr>
-            </thead>
-    <% foreach (OnlineAbit2013.Models.SimpleApplication app in Model.Applications.Where(x => x.Enabled == false).OrderBy(x => x.Priority).ToList())
-       { %>
-            <tbody>
-                <tr>
-                    <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.Profession)%></td>
-                    <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.ObrazProgram)%></td>
-                    <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.Specialization)%></td>
-                    <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyForm)%></td>
-                    <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyBasis)%></td>
-                    <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id) %>">Просмотр</a></td>
-                </tr>
-            </tbody>
-     <% } %>
-     </table>
-     <% }
-       else
-       { %>
-        <h5>Нет отозванных заявлений</h5>
-    <% } %>--%>
     <hr />
 </asp:Content>

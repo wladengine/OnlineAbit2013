@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbiturientType1" xml:space="preserve">
-    <value>Поступление на 1 курс (бакалавриат, специалитет) гражданам РФ</value>
+    <value>Поступление на 1 курс (бакалавриат, специалитет)</value>
   </data>
   <data name="AbiturientType10" xml:space="preserve">
-    <value>Поступление в аспирантуру гражданам РФ</value>
+    <value>Поступление в аспирантуру</value>
   </data>
   <data name="AbiturientType11" xml:space="preserve">
     <value>Поступление в аспирантуру иностранным гражданам</value>
@@ -148,7 +148,7 @@
     <value>Поступление в Академическую Гимназию</value>
   </data>
   <data name="AbiturientType9" xml:space="preserve">
-    <value>Поступление в СПбГУ на программы среднего профессионального образования</value>
+    <value>Поступление на программы среднего профессионального образования</value>
   </data>
   <data name="Header" xml:space="preserve">
     <value>Выберите действие, которое вы хотите совершить в Личном Кабинете</value>

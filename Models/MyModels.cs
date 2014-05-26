@@ -462,6 +462,8 @@ namespace OnlineAbit2013.Models
         public string SocialStatus { get; set; }
         public string MaritalStatus { get; set; }
 
+        
+
         public List<SelectListItem> ReturnDocumentTypeList { get; set; }
         public string ReturnDocumentTypeId { get; set; }
 
@@ -502,6 +504,11 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> OlympValueList { get; set; }
 
         public List<OlympiadInformation> pOlympiads { get; set; }
+
+        public string SportQualificationId { get; set; }
+        public List<SelectListItem> SportQualificationList { get; set; }
+        public string SportQualificationLevel { get; set; }
+        public string OtherSportQualification { get; set; }
     }
     public class PrivilegeInformation
     {
@@ -537,6 +544,7 @@ namespace OnlineAbit2013.Models
     public class SimpleApplication
     {
         public Guid Id { get; set; }
+        public Guid EntryId { get; set; }
         public int Priority { get; set; }
         public string Profession { get; set; }
         public string ObrazProgram { get; set; }
@@ -545,6 +553,7 @@ namespace OnlineAbit2013.Models
         public string StudyBasis { get; set; }
         public string StudyLevel { get; set; }
         public bool Enabled { get; set; }
+        public bool HasSeparateObrazPrograms { get; set; }
     }
     public class SimpleApplicationPackage
     {
@@ -807,8 +816,8 @@ namespace OnlineAbit2013.Models
         public bool Enabled { get; set; } // доступно?
         public int MaxBlocks { get; set; } // макс количество блоков
         public string CommitId { get; set; } // коммит
-
-
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
         public List<SelectListItem> StudyFormList { get; set; }
         public List<SelectListItem> StudyBasisList { get; set; }
 
@@ -820,6 +829,48 @@ namespace OnlineAbit2013.Models
     }
 
     public class Mag_ApplicationSipleEntity
+    {
+        public Guid Id { get; set; }
+        public int StudyFormId { get; set; }
+        public string StudyFormName { get; set; }
+        public int StudyBasisId { get; set; }
+        public string StudyBasisName { get; set; }
+        public bool IsReduced { get; set; }
+        public bool IsParallel { get; set; }
+        public bool IsSecond { get; set; }
+        public int ProfessionId { get; set; }
+        public string ProfessionName { get; set; }
+        public int ObrazProgramId { get; set; }
+        public string ObrazProgramName { get; set; }
+        public Guid SpecializationId { get; set; }
+        public string SpecializationName { get; set; }
+        public List<SelectListItem> ProfessionList { get; set; }
+        public List<SelectListItem> ObrazProgramList { get; set; }
+        public List<SelectListItem> SpecializationList { get; set; }
+        public int FacultyId { get; set; }
+        public string FacultyName { get; set; }
+        public bool Hostel { get; set; }
+        public int StudyLevelGroupId { get; set; }
+    }
+
+    public class SPO_ApplicationModel
+    {
+        public bool Enabled { get; set; } // доступно?
+        public int MaxBlocks { get; set; } // макс количество блоков
+        public string CommitId { get; set; } // коммит
+        public bool can11kl { get; set; } //можно ли подавать на 11 классов
+
+        public List<SelectListItem> StudyFormList { get; set; }
+        public List<SelectListItem> StudyBasisList { get; set; }
+
+        public List<SelectListItem> FacultyList { get; set; }
+
+        public List<SPO_ApplicationSipleEntity> Applications { get; set; }
+
+        public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
+    }
+
+    public class SPO_ApplicationSipleEntity
     {
         public Guid Id { get; set; }
         public int StudyFormId { get; set; }

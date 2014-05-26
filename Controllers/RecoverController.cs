@@ -902,7 +902,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "SELECT DISTINCT ProfileId, ProfileName FROM Entry WHERE StudyFormId=@StudyFormId " +
                 "AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId " +
-                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND IsCommited='True' AND EntryId IS NOT NULL and CommitId=@CommitId) " +
+                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND IsCommited='True' AND EntryId IS NOT NULL and CommitId=@CommitId and IsDeleted=0) " +
                 "AND IsParallel=@IsParallel AND IsReduced=@IsReduced "+ 
                 "AND CampaignYear=@Year AND SemesterId=@SemesterId ";
 

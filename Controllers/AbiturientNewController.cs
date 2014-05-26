@@ -112,6 +112,8 @@ namespace OnlineAbit2013.Controllers
                     stage = Person.RegistrationStage;
 
                 PersonalOffice model = new PersonalOffice() { Lang = "ru", Stage = stage != 0 ? stage : 1, Enabled = !Util.CheckPersonReadOnlyStatus(PersonId) };
+                model.ConstInfo = new Constants();
+                model.ConstInfo = Util.getConstInfo();
                 //////////////////////////////////////////----------Index-----////////////////////////////////////////////////////////////////////////
                 if (model.Stage == 1)
                 {
@@ -128,14 +130,15 @@ namespace OnlineAbit2013.Controllers
                     model.ContactsInfo.CountryId = PersonContacts.CountryId.ToString();
                     model.PersonInfo.BirthPlace = Server.HtmlDecode(Person.BirthPlace);
                     model.PersonInfo.BirthDate = Person.BirthDate.HasValue ? Person.BirthDate.Value.ToString("dd.MM.yyyy") : "";
-
+                    
                     model.PersonInfo.NationalityList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
                     model.ContactsInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
                     model.PersonInfo.SexList = new List<SelectListItem>()
                     {
                         new SelectListItem() { Text = LangPack.GetValue(5, model.Lang), Value = "M" }, 
                         new SelectListItem() { Text = LangPack.GetValue(6, model.Lang), Value = "F" }
-                    };
+                    }; 
+
                     return View("PersonalOffice_Page1", model);
                 }
                 //////////////////////////////////////////----------Index-----////////////////////////////////////////////////////////////////////////
@@ -4130,7 +4133,7 @@ Order by cnt desc";
 
                 Guid EntryId = EntryList.First().EntryId;
 
-                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId && x.EntryId == EntryId).Count() > 0)
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId && x.EntryId == EntryId && x.IsDeleted==false).Count() > 0)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.ErrorHasApplication }); 
 
                 DateTime? timeOfStart; 

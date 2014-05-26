@@ -1694,9 +1694,25 @@ WHERE PersonId=@PersonId ";
             {
                 var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
                 context.Application.DeleteObject(App);
-            }
-
+            } 
             context.SaveChanges();
+        }
+
+        public static Constants getConstInfo()
+        {
+            Constants constant = new Constants();
+
+            constant.Surname = 150;
+            constant.Name = 150;
+            constant.SecondName = 150;
+
+            constant.BirthPlace = 500;
+            constant.PassportAuthor = 2500;
+
+            constant.AddInfo = 4000;
+            constant.Parents = 4000;
+ 
+            return constant;
         }
     }
 }

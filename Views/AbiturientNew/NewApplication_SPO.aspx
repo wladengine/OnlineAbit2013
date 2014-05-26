@@ -379,7 +379,7 @@
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
     <% } %>
     
-        <input type="hidden" id = "EntryType" name = "EntryType" value="1" />
+        <input type="hidden" id = "EntryType" name = "EntryType" value="3" />
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
     <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px;">
@@ -430,7 +430,7 @@
         </p>
         <p id="StudyLevels<%= i.ToString()%>" style="border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderStudyLevel")%></span><br />
-            <select id="StudyLevel<%= i.ToString()%>" size="2" style="width:659px;" onchange="GetProfs(<%= i.ToString()%>)"></select>
+            <select id="StudyLevel<%= i.ToString()%>" size="2" style="width:659px;" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />

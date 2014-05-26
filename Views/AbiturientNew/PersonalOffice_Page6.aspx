@@ -47,9 +47,9 @@
                         <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "HostelAbit").ToString()%></span>
                     </div>
                     <div class="clearfix">
-                        <h4>Право на льготы:</h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "Privileges").ToString()%></h4>
                         <%= Html.CheckBoxFor(x => x.AddInfo.HasPrivileges) %>
-                        <span>Претендую на льготы (инвалид I,II ст., участник боевых действий, сирота, чернобылец...)</span>
+                        <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "PrivilegesFull").ToString()%></span>
                     </div>
                     <div class="clearfix">
                         <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson").ToString()%></h4>

@@ -79,9 +79,16 @@
                     $('#PersonInfo_Surname').addClass('input-validation-error');
                 }
                 else {
-                    $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
-                    $('#PersonInfo_Surname_Message').hide();
-                    $('#PersonInfo_Surname').removeClass('input-validation-error');
+                    if (val.length > <%=Model.ConstInfo.Surname %>) {
+                        $('#PersonInfo_Surname_Message').text('Превышена максимальная длина');
+                        $('#PersonInfo_Surname_Message').show();
+                        $('#PersonInfo_Surname').addClass('input-validation-error');
+                    }
+                    else {
+                        $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
+                        $('#PersonInfo_Surname_Message').hide();
+                        $('#PersonInfo_Surname').removeClass('input-validation-error');
+                    }
                 }
             }
             return ret;
@@ -104,9 +111,17 @@
                     ret = false;
                 }
                 else {
-                    $('#PersonInfo_Name_Message').text(PersonInfo_Name_Message);
-                    $('#PersonInfo_Name_Message').hide();
-                    $('#PersonInfo_Name').removeClass('input-validation-error');
+                    if (val.length > <%=Model.ConstInfo.Name %>) { 
+                        $('#PersonInfo_Name_Message').text('Превышена максимальная длина');
+                        $('#PersonInfo_Name_Message').show();
+                        $('#PersonInfo_Name').addClass('input-validation-error');
+                        ret = false;
+                    }
+                    else {
+                        $('#PersonInfo_Name_Message').text(PersonInfo_Name_Message);
+                        $('#PersonInfo_Name_Message').hide();
+                        $('#PersonInfo_Name').removeClass('input-validation-error');
+                    }
                 }
             }
             return ret;
@@ -121,8 +136,18 @@
                     ret = false;
                 }
                 else {
-                    $('#PersonInfo_SecondName_Message').hide();
-                    $('#PersonInfo_SecondName').removeClass('input-validation-error');
+                    if (val.length > <%=Model.ConstInfo.SecondName %>) { 
+                        $('#PersonInfo_SecondName_Message').text('Превышена максимальная длина');
+                        $('#PersonInfo_SecondName_Message').show();
+                        $('#PersonInfo_SecondName').addClass('input-validation-error');
+                        ret = false;
+                    }
+                    else {
+                        
+                        $('#PersonInfo_SecondName_Message').hide();
+                        $('#PersonInfo_SecondName').removeClass('input-validation-error');
+                    }
+                   
                 }
             }
         }
@@ -143,12 +168,21 @@
             var ret = true;
             if ($('#PersonInfo_BirthPlace').val() == '') {
                 ret = false;
+                $('#PersonInfo_BirthPlace_Message').text('Введите место рождения');
                 $('#PersonInfo_BirthPlace').addClass('input-validation-error');
                 $('#PersonInfo_BirthPlace_Message').show();
             }
             else {
-                $('#PersonInfo_BirthPlace').removeClass('input-validation-error');
-                $('#PersonInfo_BirthPlace_Message').hide();
+                 if ($('#PersonInfo_BirthPlace').val().length > <%=Model.ConstInfo.BirthPlace %>) { 
+                    $('#PersonInfo_BirthPlace_Message').text('Превышена максимальная длина');
+                    $('#PersonInfo_BirthPlace').addClass('input-validation-error');
+                    $('#PersonInfo_BirthPlace_Message').show();
+                 }
+                 else
+                 {
+                    $('#PersonInfo_BirthPlace').removeClass('input-validation-error');
+                    $('#PersonInfo_BirthPlace_Message').hide();
+                 }
             }
             return ret;
         }
@@ -163,7 +197,7 @@
                 </div>
             <% } %>
             <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
-                <h3><%= GetGlobalResourceObject("PersonInfo", "HeaderPersonalInfo").ToString()%></h3>
+                <h3><%= GetGlobalResourceObject("PersonalOffice_Step1", "HeaderPersonalInfo").ToString()%></h3>
                 <hr />
                 <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                 <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
@@ -171,26 +205,26 @@
                 <fieldset> 
                     <div class="clearfix">
                         <label for="PersonInfo_Surname" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonInfo, Surname %>"></asp:Literal><asp:Literal ID="Literal2" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Surname %>"></asp:Literal><asp:Literal  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Surname)%>
                         <br /><p></p>
                         <span id="PersonInfo_Surname_Message" class="Red" style="display:none">
-                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_Surname_Message").ToString()%> 
+                            <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_Surname_Message").ToString()%> 
                         </span>
                     </div>
                     <div class="clearfix">
                         <label for="PersonInfo_Name" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal3" runat="server" Text="<%$Resources:PersonInfo, Name %>"></asp:Literal><asp:Literal ID="Literal4" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Name %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Name)%>
                         <br /><p></p>
                         <span id="PersonInfo_Name_Message" class="Red" style="display:none">
-                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_Name_Message").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_Name_Message").ToString()%>
                         </span>
                     </div>
                     <div class="clearfix">
-                        <%= Html.LabelFor(x => x.PersonInfo.SecondName, GetGlobalResourceObject("PersonInfo", "SecondName").ToString())%>
+                        <%= Html.LabelFor(x => x.PersonInfo.SecondName, GetGlobalResourceObject("PersonalOffice_Step1", "SecondName").ToString())%>
                         <%= Html.TextBoxFor(x => x.PersonInfo.SecondName)%>
                         <br /><p></p>
                         <span id="PersonInfo_SecondName_Message" class="Red" style="display:none"> 
@@ -198,39 +232,39 @@
                     </div>
                     <div class="clearfix">
                         <label for="PersonInfo_Sex" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal5" runat="server" Text="<%$Resources:PersonInfo, Sex %>"></asp:Literal><asp:Literal ID="Literal6" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Sex %>"></asp:Literal><asp:Literal  runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.DropDownListFor(x => x.PersonInfo.Sex, Model.PersonInfo.SexList)%>
                     </div>
                     <div class="clearfix">
                         <label for="PersonInfo_BirthDate" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal7" runat="server" Text="<%$Resources:PersonInfo, BirthDate %>"></asp:Literal><asp:Literal ID="Literal8" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, BirthDate %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.BirthDate)%>
                         <br /><p></p>
                         <span id="PersonInfo_BirthDate_Message" class="Red" style="display:none">
-                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_BirthDate_Message").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_BirthDate_Message").ToString()%>
                         </span>
                     </div>
                     <div class="clearfix">
                         <label for="PersonInfo_BirthPlace" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal9" runat="server" Text="<%$Resources:PersonInfo, BirthPlace %>"></asp:Literal><asp:Literal ID="Literal10" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal  runat="server" Text="<%$Resources:PersonalOffice_Step1, BirthPlace %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.BirthPlace)%>
                         <br /><p></p>
                         <span id="PersonInfo_BirthPlace_Message" class="Red" style="display:none">
-                            <%= GetGlobalResourceObject("PersonInfo", "PersonInfo_BirthPlace_Message").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_BirthPlace_Message").ToString()%>
                         </span>
                     </div>
                     <div class="clearfix">
                         <label for="PersonInfo_Nationality" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal11" runat="server" Text="<%$Resources:PersonInfo, Nationality %>"></asp:Literal><asp:Literal ID="Literal12" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Nationality %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.DropDownListFor(x => x.PersonInfo.Nationality, Model.PersonInfo.NationalityList)%>
                     </div>
                      <div class="clearfix">
                         <label for="ContactsInfo_CountryId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                        <asp:Literal ID="Literal13" runat="server" Text="<%$Resources:PersonInfo, Country %>"></asp:Literal><asp:Literal ID="Literal14" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Country %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.DropDownListFor(x => x.ContactsInfo.CountryId, Model.ContactsInfo.CountryList)%>
                     </div>
@@ -240,7 +274,7 @@
                     <input id="btnSubmit" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
                 </div>
                 <div> 
-                <asp:Literal ID="Literal15" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal> - <asp:Literal ID="Literal16" runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>  
+                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Star %>"></asp:Literal> - <asp:Literal  runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>  
                 </div>
             </form> 
             </div>

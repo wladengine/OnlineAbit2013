@@ -358,11 +358,11 @@
                         <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                         <fieldset><br />
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolTypeId, GetGlobalResourceObject("EducationInfo", "SchoolTypeId").ToString())%>
+                            <%= Html.LabelFor(x => x.EducationInfo.SchoolTypeId, GetGlobalResourceObject("PersonalOffice_Step4", "SchoolTypeId").ToString())%>
                             <%= Html.DropDownListFor(x => x.EducationInfo.SchoolTypeId, Model.EducationInfo.SchoolTypeList) %>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolName, GetGlobalResourceObject("EducationInfo", "SchoolName").ToString())%>
+                            <%= Html.LabelFor(x => x.EducationInfo.SchoolName, GetGlobalResourceObject("PersonalOffice_Step4", "SchoolName").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolName)%>
                             <br />
                             <span id="EducationInfo_SchoolName_Message" class="Red" style="display:none">Укажите название образовательного учреждения</span>
@@ -386,7 +386,7 @@
                             <span id="EducationInfo_SchoolExitYear_MessageFormat" class="Red" style="display:none; border-collapse:collapse;">Укажите год в 4-значном формате</span>
                         </div>
                         <div id="AvgMark" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.AvgMark, GetGlobalResourceObject("EducationInfo", "AvgMark").ToString()) %>
+                            <%= Html.LabelFor(x => x.EducationInfo.AvgMark, GetGlobalResourceObject("PersonalOffice_Step4", "AvgMark").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.AvgMark) %>
                         </div>
                         <div id="_IsExcellent" class="clearfix">
@@ -394,14 +394,14 @@
                             <%= Html.CheckBoxFor(x => x.EducationInfo.IsExcellent)%>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.CountryEducId, GetGlobalResourceObject("EducationInfo", "CountryEducId").ToString()) %>
+                            <%= Html.LabelFor(x => x.EducationInfo.CountryEducId, GetGlobalResourceObject("PersonalOffice_Step4", "CountryEducId").ToString())%>
                             <%= Html.DropDownListFor(x => x.EducationInfo.CountryEducId, Model.EducationInfo.CountryList) %>
                         </div>
                         <div id="CountryMessage" class="message info" style="display:none; border-collapse:collapse;">
                             Пожалуйста, укажите в названии ВУЗа страну, где Вы обучались (например, "Oxford, UK", "Oberwolfach, Germany")
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.LanguageId, GetGlobalResourceObject("EducationInfo", "LanguageId").ToString())%>
+                            <%= Html.LabelFor(x => x.EducationInfo.LanguageId, GetGlobalResourceObject("PersonalOffice_Step4", "LanguageId").ToString())%>
                             <%= Html.DropDownListFor(x => x.EducationInfo.LanguageId, Model.EducationInfo.LanguageList) %>
                         </div>
                         <div id="EnglishMark" class="clearfix">

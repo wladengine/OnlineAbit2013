@@ -532,15 +532,15 @@
                     <hr />
                     <div class="form">
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationId, "Спорт. квалификация:") %>
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationId, GetGlobalResourceObject("PersonalOffice_Step5", "SportQualification").ToString())%>
                             <%= Html.DropDownListFor(x => x.PrivelegeInfo.SportQualificationId, Model.PrivelegeInfo.SportQualificationList) %>
                         </div>
                         <div id="dSportQualificationLevel" class="clearfix">
-                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationLevel, "Pазряд:") %>
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationLevel, GetGlobalResourceObject("PersonalOffice_Step5", "SportCategory").ToString()) %>
                             <%= Html.TextBoxFor(x => x.PrivelegeInfo.SportQualificationLevel) %>
                         </div>
                         <div id="dOtherSport" class="clearfix" style=" display:none; border-collapse:collapse;">
-                            <%= Html.LabelFor(x => x.PrivelegeInfo.OtherSportQualification, "Спорт. квалификация, разряд:") %>
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.OtherSportQualification, GetGlobalResourceObject("PersonalOffice_Step5", "SportQualificationCategory").ToString())%>
                             <%= Html.TextBoxFor(x => x.PrivelegeInfo.OtherSportQualification) %>
                         </div>
                     </div>

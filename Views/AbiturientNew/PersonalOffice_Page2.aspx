@@ -242,108 +242,108 @@
                         </div>
                     <% } %>
                     <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
-                        <h3><%= GetGlobalResourceObject("PassportInfo", "HeaderPassport").ToString()%></h3>
+                        <h3><%= GetGlobalResourceObject("PersonalOffice_Step2", "HeaderPassport").ToString()%></h3>
                         <hr />
                         <%= Html.ValidationSummary(GetGlobalResourceObject("PersonInfo", "ValidationSummaryHeader").ToString())%>
                         <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                         <input name="Enabled" type="hidden" value="<%= Model.Enabled %>" />
                         <div class="clearfix">
                             <label for="PassportInfo_PassportType" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportType %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step2, PassportType %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label>
                              <%= Html.DropDownListFor(x => x.PassportInfo.PassportType, Model.PassportInfo.PassportTypeList) %>
                         </div>
                         <div class="clearfix">
                             <label id="label_PassportInfo_PassportSeries"  for="PassportInfo_PassportSeries" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportSeries %>"></asp:Literal><span id="unrequiredfiled_1"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
+                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step2, PassportSeries %>"></asp:Literal><span id="unrequiredfiled_1"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
                             </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportSeries)%>
                             <br /><p></p> 
                             <span id="PassportInfo_PassportSeries_Message" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "PassportInfo_PassportSeries_Message").ToString()%>
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportSeries_Message").ToString()%>
                             </span>
                             <span id="PassportInfo_PassportSeries_Message_2" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "RF_Series_Message").ToString()%>
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "RF_Series_Message").ToString()%>
                             </span>
                             <span id="PassportInfo_PassportSeries_Message_3" class="Red" style="display:none">
-                               <%= GetGlobalResourceObject("PassportInfo", "LongValue_Message").ToString()%>
+                               <%= GetGlobalResourceObject("PersonalOffice_Step2", "LongValue_Message").ToString()%>
                             </span> 
                         </div>
                         <div class="clearfix">
                             <label id="label_PassportInfo_PassportNumber" for="PassportInfo_PassportNumber" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportNumber %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step2, PassportNumber %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportNumber)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportNumber_Message" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "PassportInfo_PassportNumber_Message").ToString()%>
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportNumber_Message").ToString()%>
                             </span>
                             <span id="PassportInfo_PassportNumber_Message_2" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "RF_Number_Message").ToString()%> 
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "RF_Number_Message").ToString()%> 
                             </span>
                             <span id="PassportInfo_PassportNumber_Message_3" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "LongValue_Message").ToString()%> 
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "LongValue_Message").ToString()%> 
                             </span> 
                         </div>
                         <div class="clearfix">
                             <label id="label_PassportInfo_PassportAuthor"   for="PassportInfo_PassportAuthor" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportAuthor %>"></asp:Literal><span id="unrequiredfiled_2"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
+                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step2, PassportAuthor %>"></asp:Literal><span id="unrequiredfiled_2"><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal></span>
                             </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportAuthor)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportAuthor_Message" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "PassportInfo_PassportAuthor_Message").ToString()%>
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportAuthor_Message").ToString()%>
                             </span>
                         </div>
                         <div class="clearfix">
                             <label for="PassportInfo_PassportDate" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PassportInfo, PassportDate %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step2, PassportDate %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label> 
                              <%= Html.TextBoxFor(x => x.PassportInfo.PassportDate)%>
                             <br /><p></p>
                             <span id="PassportInfo_PassportDate_Message" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PassportInfo", "PassportInfo_PassportDate_Message").ToString()%>
+                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportDate_Message").ToString()%>
                             </span>
                         </div>
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportCode, GetGlobalResourceObject("PassportInfo", "PassportCode").ToString())%>
+                            <%= Html.LabelFor(x => x.PassportInfo.PassportCode, GetGlobalResourceObject("PersonalOffice_Step2", "PassportCode").ToString())%>
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportCode)%>
                         </div> 
                         <div id="snils" class="clearfix" style="display: none;">
-                            <%= Html.LabelFor(x => x.PersonInfo.SNILS, GetGlobalResourceObject("PassportInfo", "SNILS").ToString(), new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
-                            <%= Html.TextBoxFor(x => x.PersonInfo.SNILS, new { title = GetGlobalResourceObject("PassportInfo", "SNILS_title").ToString() })%>
+                            <%= Html.LabelFor(x => x.PersonInfo.SNILS, GetGlobalResourceObject("PersonalOffice_Step2", "SNILS").ToString(), new { title = GetGlobalResourceObject("PersonalOffice_Step2", "SNILS_title").ToString() })%>
+                            <%= Html.TextBoxFor(x => x.PersonInfo.SNILS, new { title = GetGlobalResourceObject("PersonalOffice_Step2", "SNILS_title").ToString() })%>
                         </div>
                         <%  if (Model.res== 4) { %>
                          <div class="clearfix">
-                            <%= Html.LabelFor(x => x.PassportInfo.PassportValid, GetGlobalResourceObject("PersonalOfficeForeign", "PassportExpire").ToString())%>
+                            <%= Html.LabelFor(x => x.PassportInfo.PassportValid, GetGlobalResourceObject("PersonalOffice_Step2", "PassportExpire").ToString())%>
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportValid)%>
                             <br /><p></p> 
-                            <span id="PassportExpireMessage" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOfficeForeign", "PassportExpireMessage").ToString()%></span>
+                            <span id="PassportExpireMessage" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportExpireMessage").ToString()%></span>
                         </div> 
-                        <h4><%= GetGlobalResourceObject("PersonalOfficeForeign", "HeaderVisa").ToString()%></h4>
+                        <h4><%= GetGlobalResourceObject("PersonalOffice_Step2", "HeaderVisa").ToString()%></h4>
                         <hr />
                         <div class="clearfix">
-                                <%= Html.LabelFor(x => x.VisaInfo.CountryId, GetGlobalResourceObject("PersonalOfficeForeign", "VisaCountryName").ToString())%>
+                                <%= Html.LabelFor(x => x.VisaInfo.CountryId, GetGlobalResourceObject("PersonalOffice_Step2", "VisaCountryName").ToString())%>
                                 <%= Html.DropDownListFor(x => x.VisaInfo.CountryId, Model.VisaInfo.CountryList)%>
                             <br /><p></p>
                             <span id="VisaCountryNameMessage" class="Red" style="display:none;">
-                            <%= GetGlobalResourceObject("PersonalOfficeForeign", "VisaCountryNameMessage").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step2", "VisaCountryNameMessage").ToString()%>
                             </span>
                         </div><br />
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.VisaInfo.Town, GetGlobalResourceObject("PersonalOfficeForeign", "VisaTownName").ToString())%>
+                            <%= Html.LabelFor(x => x.VisaInfo.Town, GetGlobalResourceObject("PersonalOffice_Step2", "VisaTownName").ToString())%>
                             <%= Html.TextBoxFor(x => x.VisaInfo.Town) %>
                             <br /><p></p>
                             <span id="VisaTownNameMessage" class="Red" style="display:none;">
-                            <%= GetGlobalResourceObject("PersonalOfficeForeign", "VisaTownNameMessage").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step2", "VisaTownNameMessage").ToString()%>
                             </span>
                         </div><br />
                         <div class="clearfix">
-                            <%= Html.LabelFor(x => x.VisaInfo.PostAddress, GetGlobalResourceObject("PersonalOfficeForeign", "VisaPostAddress").ToString())%>
+                            <%= Html.LabelFor(x => x.VisaInfo.PostAddress, GetGlobalResourceObject("PersonalOffice_Step2", "VisaPostAddress").ToString())%>
                             <%= Html.TextBoxFor(x => x.VisaInfo.PostAddress)%>
                             <br /><p></p>
                             <span id="VisaPostAddressMessage" class="Red" style="display:none;">
-                            <%= GetGlobalResourceObject("PersonalOfficeForeign", "VisaPostAddressMessage").ToString()%>
+                            <%= GetGlobalResourceObject("PersonalOffice_Step2", "VisaPostAddressMessage").ToString()%>
                             </span>
                         </div><br /> 
                         <% } %> 

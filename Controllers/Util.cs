@@ -12,6 +12,7 @@ using System.Web.Configuration;
 using System.Web.UI;
 using Recaptcha;
 using System.IO;
+using BDClassLib;
 
 namespace OnlineAbit2013.Controllers
 {
@@ -84,7 +85,7 @@ namespace OnlineAbit2013.Controllers
         {
             InitDB();
             string query = "SELECT Id, Name FROM {0} WHERE 1=@x ORDER BY Id";
-            Dictionary<string, object> dic = new Dictionary<string, object>() { { "@x", 1 } };
+            SortedList<string, object> dic = new SortedList<string, object>() { { "@x", 1 } };
             DataTable tbl = _abitDB.GetDataTable(string.Format(query, "EgeExam"), dic);
 
             CacheSID_User = new SortedList<string, Guid>();
@@ -171,7 +172,7 @@ namespace OnlineAbit2013.Controllers
         private static string GetValueByKey(string key)
         {
             string query = "SELECT [Value] FROM _appsettings WHERE [Key]=@Key";
-            return _abitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Key", key } });
+            return _abitDB.GetStringValue(query, new SortedList<string, object>() { { "@Key", key } });
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace OnlineAbit2013.Controllers
             if (CacheSID_User.ContainsKey(SID))
                 id = CacheSID_User[SID];
 
-            string sId = AbitDB.GetStringValue("SELECT Id FROM [User] WHERE SID=@SID", new Dictionary<string, object>() { { "@SID", SID } });
+            string sId = AbitDB.GetStringValue("SELECT Id FROM [User] WHERE SID=@SID", new SortedList<string, object>() { { "@SID", SID } });
             try
             {
                 id = Guid.Parse(sId);
@@ -205,7 +206,7 @@ namespace OnlineAbit2013.Controllers
         /// <returns></returns>
         public static string GetSIDById(Guid id)
         {
-            return AbitDB.GetStringValue("SELECT SID FROM User WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", id } });
+            return AbitDB.GetStringValue("SELECT SID FROM User WHERE Id=@Id", new SortedList<string, object>() { { "@Id", id } });
         }
 
         public static bool CheckRegistrationInfo(string password, string email, out List<string> errList)
@@ -214,7 +215,7 @@ namespace OnlineAbit2013.Controllers
             errList = new List<string>();
 
             string query = "SELECT Id FROM [User] WHERE [Email]=@Email";
-            string result = AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Email", email } });
+            string result = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Email", email } });
             if (!string.IsNullOrEmpty(result))
             {
                 res = false;
@@ -249,7 +250,7 @@ namespace OnlineAbit2013.Controllers
             string md5pwd = MD5Str(password);
 
             string query = "INSERT INTO [User] (Id, Password, SID, Email, IsApproved, EmailTicket) VALUES (@Id, @Password, @SID, @Email, @IsApproved, @EmailTicket)";
-            Dictionary<string, object> dic = new Dictionary<string, object>()
+            SortedList<string, object> dic = new SortedList<string, object>()
             {
                 {"@Id", id},
                 {"@Password", md5pwd},
@@ -279,7 +280,7 @@ namespace OnlineAbit2013.Controllers
                     string md5pwd = MD5Str(password);
 
                     string query = "INSERT INTO [User] (Id, Password, SID, Email, IsApproved, EmailTicket, IsForeign, IsDormsAccount) VALUES (@Id, @Password, @SID, @Email, @IsApproved, @EmailTicket, @IsForeign, @IsDormsAccount)";
-                    Dictionary<string, object> dic = new Dictionary<string, object>()
+                    SortedList<string, object> dic = new SortedList<string, object>()
                     {
                         {"@Id", id},
                         {"@Password", md5pwd},
@@ -320,7 +321,7 @@ namespace OnlineAbit2013.Controllers
         {
             IntStage = 1;
             string query = "SELECT RegistrationStage FROM Person WHERE Id=@Id";
-            string stage = AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            string stage = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
             if (string.IsNullOrEmpty(stage))
                 return false;
 
@@ -338,7 +339,7 @@ namespace OnlineAbit2013.Controllers
         public static bool CheckIsForeign(Guid PersonId)
         {
             string query = "SELECT IsForeign FROM [User] WHERE Id=@Id";
-            string res = AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            string res = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
             if (!string.IsNullOrEmpty(res) && string.Compare(res, "true", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 return true;
@@ -349,7 +350,7 @@ namespace OnlineAbit2013.Controllers
         public static int CheckAbitType(Guid PersonId)
         {
             string query = "SELECT [AbiturientTypeId] FROM [Person] WHERE Id=@Id";
-            int? res = (int?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            int? res = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
             if (res.HasValue)
                 return res.Value;
             else
@@ -359,7 +360,7 @@ namespace OnlineAbit2013.Controllers
         public static bool CheckIsNew(Guid PersonId)
         {
             string query = "SELECT Id FROM [Person] WHERE Id=@Id";
-            string res = AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            string res = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
             if (string.IsNullOrEmpty(res))
                 return true;
             else
@@ -369,10 +370,10 @@ namespace OnlineAbit2013.Controllers
         public static bool CreateNew(Guid PersonId)
         {
             string query = "INSERT INTO [Person] (Id, UserId, RegistrationStage, AbiturientTypeId) VALUES (@Id, @Id, 1, 1)";
-            AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", PersonId } });
 
             query = "SELECT Id FROM [Person] WHERE Id=@Id";
-            string res = AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            string res = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
             
             if (string.IsNullOrEmpty(res))
                 return true;
@@ -388,7 +389,7 @@ namespace OnlineAbit2013.Controllers
         public static bool CheckPersonReadOnlyStatus(Guid PersonId)
         {
             string query = "SELECT COUNT(Application.Id) FROM [Application] INNER JOIN Entry ON Entry.Id=[Application].EntryId WHERE PersonId=@PersonId AND Enabled=@Enabled AND IsCommited=1";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@Enabled", true);
 
@@ -411,7 +412,7 @@ namespace OnlineAbit2013.Controllers
         public static bool CheckPersonReadOnlyStatus_AG(Guid PersonId)
         {
             string query = "SELECT COUNT([AG_Application].Id) FROM [AG_Application] INNER JOIN AG_Entry ON AG_Entry.Id=[AG_Application].EntryId WHERE PersonId=@PersonId AND Enabled=@Enabled";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@Enabled", true);
 
@@ -504,7 +505,7 @@ namespace OnlineAbit2013.Controllers
 
             Guid uid = personId;
 
-            string t = AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@UserId", new Dictionary<string, object>() { { "@UserId", personId } });
+            string t = AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@UserId", new SortedList<string, object>() { { "@UserId", personId } });
             //string t = ABDB.AuthTicket.Where(x => x.UserId == uid).Select(x => x.Ticket).FirstOrDefault();
             if (string.IsNullOrEmpty(t) || (t != ticket))
                 return false;
@@ -521,7 +522,7 @@ namespace OnlineAbit2013.Controllers
             string query = "SELECT Id, Approved FROM Admins WHERE Id=@Id AND Approved='True'";
             try
             {
-                DataTable tbl = AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", personId } });
+                DataTable tbl = AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", personId } });
                 if (tbl.Rows.Count == 1)
                     return true;
                 else
@@ -561,6 +562,11 @@ namespace OnlineAbit2013.Controllers
             }
         }
 
+        public static bool GetCurrentThreadLanguageIsEng()
+        {
+            return GetCurrentThreadLanguage() == "en";
+        }
+
         public static bool SetUILang(Guid PersonId, string lang)
         {
             if (lang.StrCmp("ru"))
@@ -571,7 +577,7 @@ namespace OnlineAbit2013.Controllers
             string query = "UPDATE [User] SET UILanguage=@Language WHERE Id=@Id";
             try
             {
-                AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Language", lang }, { "@Id", PersonId } });
+                AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Language", lang }, { "@Id", PersonId } });
                 return true;
             }
             catch
@@ -583,7 +589,7 @@ namespace OnlineAbit2013.Controllers
         public static string GetUILang(Guid PersonId)
         {
             string query = "SELECT UILanguage, IsForeign FROM [User] WHERE Id=@Id";
-            DataTable tbl = AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+            DataTable tbl = AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
             if (tbl.Rows.Count == 0)
                 return "ru";
             string UILang = tbl.Rows[0].Field<string>("UILanguage");
@@ -1214,14 +1220,14 @@ namespace OnlineAbit2013.Controllers
             //User person = ABDB.User.Where(x => x.Id == userId).FirstOrDefault();
             string query = "SELECT SID, Ticket, UILanguage FROM [User] LEFT JOIN AuthTicket ON AuthTicket.UserId=[User].Id " +
                 "WHERE [User].Id=@Id";
-            DataTable tbl = AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", userId } });
+            DataTable tbl = AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", userId } });
             string sid = tbl.Rows[0].Field<string>("SID");
-            //AbitDB.GetStringValue("SELECT SID FROM [User] WHERE Id=@Id", new Dictionary<string, object>() { { "@Id", userId } });
+            //AbitDB.GetStringValue("SELECT SID FROM [User] WHERE Id=@Id", new SortedList<string, object>() { { "@Id", userId } });
             if (string.IsNullOrEmpty(sid))
                 return;
 
             string ticket = tbl.Rows[0].Field<string>("Ticket");
-            //AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@Id", new Dictionary<string, object>() { { "@Id", userId } });
+            //AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@Id", new SortedList<string, object>() { { "@Id", userId } });
             //AuthTicket ticket = ABDB.AuthTicket.Where(x => x.UserId == userId).FirstOrDefault();
             if (string.IsNullOrEmpty(ticket))
                 return;
@@ -1265,7 +1271,7 @@ namespace OnlineAbit2013.Controllers
         /// <param name="dic"></param>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public static void AddItem(this Dictionary<string, object> dic, string key, object value)
+        public static void AddItem(this SortedList<string, object> dic, string key, object value)
         {
             if (dic.ContainsKey(key))
                 return;
@@ -1311,7 +1317,7 @@ namespace OnlineAbit2013.Controllers
             List<PersonalMessage> lst = new List<PersonalMessage>();
 
             string query = "SELECT Id, Type, Text, Time FROM PersonalMessage WHERE PersonId=@PersonId AND IsRead=@IsRead ORDER BY Time";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@IsRead", false);
             try
@@ -1383,7 +1389,7 @@ namespace OnlineAbit2013.Controllers
             string query = "INSERT INTO LogMessages(Message) VALUES (@Message)";
             try
             {
-                AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Message", errMessage } });
+                AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Message", errMessage } });
             }
             catch (Exception e)
             {
@@ -1419,7 +1425,7 @@ namespace OnlineAbit2013.Controllers
         public static void LogMailMessage(string email, System.Net.Mail.MailMessage msg)
         {
             string query = "INSERT INTO User_SentEmails([From], [Email], [Text]) VALUES (@From, @Email, @Text)";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             try
             {
                 dic.Add("@From", "no-reply@spb.edu");
@@ -1465,7 +1471,7 @@ WHERE PersonId=@PersonId ";
             }
             string order = " order by LoadDate desc";
             query = query + where + order;
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             
             try
@@ -1493,10 +1499,10 @@ WHERE PersonId=@PersonId ";
         public static int GetRess(Guid PersonId)
         { 
             string query = "SELECT [NationalityId] FROM [Person] WHERE Id=@PersonId";
-            int? res_nat = (int?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            int? res_nat = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
  
             query = "SELECT [CountryId] FROM [PersonContacts] WHERE PersonId=@PersonId";
-            int? res_coun = (int?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            int? res_coun = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
             if (res_nat.HasValue)
             {
@@ -1546,12 +1552,149 @@ WHERE PersonId=@PersonId ";
             else
             {   // для договора - только гослиния, для бюджета в зависимости (Снг/не Снг)
                 string query = "SELECT IsSNG from Country Inner Join Person on NationalityId=Country.Id WHERE Person.Id=@PersonId";
-                bool? res_nat = (bool?)AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+                bool? res_nat = (bool?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
                 if (res_nat == true)
                     return -1; // есть выбор 
                 else
                     return 1; // только по гослинии
             }  
+        }
+
+        public static List<Mag_ApplicationSipleEntity> GetApplicationListInCommit(Guid CommitId, Guid PersonId)
+        {
+            List<Mag_ApplicationSipleEntity> lstRet = new List<Mag_ApplicationSipleEntity>();
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var AppList =
+                    (from App in context.Application
+                     join Entry in context.Entry on App.EntryId equals Entry.Id
+                     where App.PersonId == PersonId && App.CommitId == CommitId
+                     orderby App.Priority
+                     select new
+                     {
+                         App.Id,
+                         Entry.StudyBasisId,
+                         Entry.StudyBasisName,
+                         Entry.StudyFormId,
+                         Entry.StudyFormName,
+                         Entry.IsReduced,
+                         Entry.IsParallel,
+                         Entry.IsSecond,
+                         Entry.LicenseProgramId,
+                         Entry.LicenseProgramName,
+                         Entry.ObrazProgramId,
+                         Entry.ObrazProgramName,
+                         Entry.ProfileId,
+                         Entry.ProfileName,
+                         App.HostelEduc,
+                         Entry.StudyLevelGroupId
+                     }).ToList();
+                foreach (var App in AppList)
+                {
+                    var Ent = new Mag_ApplicationSipleEntity()
+                    {
+                        Id = App.Id,
+                        StudyFormId = (App.StudyFormId),
+                        StudyFormName = App.StudyFormName,
+                        StudyBasisId = App.StudyBasisId,
+                        StudyBasisName = App.StudyBasisName,
+                        IsReduced = App.IsReduced,
+                        IsParallel = App.IsParallel,
+                        IsSecond = App.IsSecond,
+                        ProfessionId = App.LicenseProgramId,
+                        ProfessionName = App.LicenseProgramName,
+                        ObrazProgramId = App.ObrazProgramId,
+                        ObrazProgramName = App.ObrazProgramName,
+                        SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
+                        SpecializationName = App.ProfileName,
+                        Hostel = App.HostelEduc,
+                        StudyLevelGroupId = App.StudyLevelGroupId ?? 1
+                    };
+                    string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 
+                                        Inner join SP_StudyLevel on SP_StudyLevel.Id=StudyLevelId
+                                        Inner join SP_LicenseProgram on SP_LicenseProgram.Id = Entry.LicenseProgramId 
+                                        where StudyBasisId=@StudyBasisId and StudyFormId =@StudyFormId and SemesterId=1 and SP_StudyLevel.StudyLevelGroupId = @StudyLevelId";
+                    DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@StudyBasisId", Ent.StudyBasisId }, { "@StudyFormId", Ent.StudyFormId }, { "@StudyLevelId", Ent.StudyLevelGroupId } });
+                    var ProfessionList =
+                        (from DataRow rw in tbl.Rows
+                         select new
+                         {
+                             Id = rw.Field<int>("Id"),
+                             Name = rw.Field<string>("Name")
+                         }).ToList();
+                    Ent.ProfessionList = ProfessionList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
+
+                    lstRet.Add(Ent);
+
+                    //ВАЖНО!!! При изменении заявления нужно, чтобы все конкурсы были "не удалёнными"
+                    var Applic = context.Application.Where(x => x.Id == Ent.Id).FirstOrDefault();
+                    if (Applic != null)
+                        Applic.IsDeleted = false;
+                }
+
+                context.SaveChanges();
+
+                return lstRet;
+            }
+        }
+
+        public static List<SelectListItem> GetStudyBasisList()
+        {
+            string query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("StudyBasisId"),
+                     Text = rw.Field<string>("StudyBasisName")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        }
+
+        public static List<SelectListItem> GetStudyFormList()
+        {
+            string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("StudyFormId"),
+                     Text = rw.Field<string>("StudyFormName")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        }
+
+        public static void CommitApplication(Guid CommitId, Guid PersonId, OnlinePriemEntities context)
+        {
+            var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+            foreach (var AppId in Ids)
+            {
+                var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                App.IsCommited = true;
+            }
+            context.SaveChanges();
+
+            //всё, что вне коммита - удаляем
+            Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == false).Select(x => x.Id).ToList();
+            foreach (var AppId in Ids)
+            {
+                var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                context.Application.DeleteObject(App);
+            }
+
+            //всё, что удалено из коммита - удаляем
+            Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && x.IsDeleted == true).Select(x => x.Id).ToList();
+            foreach (var AppId in Ids)
+            {
+                var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                context.Application.DeleteObject(App);
+            }
+
+            context.SaveChanges();
         }
     }
 }

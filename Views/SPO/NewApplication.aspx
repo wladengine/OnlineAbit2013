@@ -115,7 +115,7 @@
     %>
     <p id="ObrProg">
         <span>Выберите образовательную программу</span><br />
-        <%= Html.DropDownList("ObrazProgram", Model.ObrazPrograms, new Dictionary<string, object>() { { "size", "2" }, { "style", "min-width:450px;" } }) %>
+        <%= Html.DropDownList("ObrazProgram", Model.ObrazPrograms, new SortedList<string, object>() { { "size", "2" }, { "style", "min-width:450px;" } }) %>
     </p>
     <% } %>
     <p id="SForm">

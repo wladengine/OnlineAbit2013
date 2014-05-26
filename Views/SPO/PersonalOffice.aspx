@@ -509,13 +509,13 @@
                         <hr />
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.ContactsInfo.MainPhone, GetGlobalResourceObject("ContactsInfo", "MainPhone").ToString())%>
-                            <%= Html.TextBoxFor(x => x.ContactsInfo.MainPhone, new Dictionary<string, object>() {{"maxlength", "50"}})%>
+                            <%= Html.TextBoxFor(x => x.ContactsInfo.MainPhone, new SortedList<string, object>() {{"maxlength", "50"}})%>
                             <br />
                             <span id="ContactsInfo_MainPhone_Message" class="Red" style="display:none">Введите основной номер</span>
                         </div>
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.ContactsInfo.SecondPhone, GetGlobalResourceObject("ContactsInfo", "SecondPhone").ToString())%>
-                            <%= Html.TextBoxFor(x => x.ContactsInfo.SecondPhone, new Dictionary<string, object>() { { "maxlength", "50" } })%>
+                            <%= Html.TextBoxFor(x => x.ContactsInfo.SecondPhone, new SortedList<string, object>() { { "maxlength", "50" } })%>
                         </div>
                         <h3>Адрес регистрации:</h3>
                         <hr />
@@ -1173,12 +1173,12 @@
                         <h4>Родители (законные представители)</h4>
                         <span>(указать Ф.И.О., степень родства, телефон, моб.телефон, эл.почта)</span><br />
                         <!-- <textarea id="AddPerson_ContactPerson" name="AddPerson.ContactPerson" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new Dictionary<string, object>() { { "class", "noresize" } })%>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
                     </div>
                     <div class="clearfix">
                         <h4>Дополнительное образование:</h4>
                         <!-- <textarea id="AddPerson_ExtraInfo" name="AddPerson.ExtraInfo" cols="40" rows="4"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new Dictionary<string, object>(){ { "class", "noresize" } })%>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new SortedList<string, object>(){ { "class", "noresize" } })%>
                     </div>
                     <div class="clearfix">
                         <h4>Я подтверждаю, что предоставленная мной информация корректна и достоверна. Даю согласие на обработку предоставленных персональных данных в порядке, установленном Федеральным законом от 27 июля 2006 года № 152-ФЗ «О персональных данных».</h4>

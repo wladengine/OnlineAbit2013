@@ -10,7 +10,7 @@
 
 <asp:Content ContentPlaceHolderID="NavigationList" runat="server">
     <ul class="clearfix">
-        <li class="active"><a href="../../Abiturient/Main"><%= GetGlobalResourceObject("Common", "MainNavLogon").ToString()%></a></li>
+        <li class="active"><a href="../../AbiturientNew/Main"><%= GetGlobalResourceObject("Common", "MainNavLogon").ToString()%></a></li>
         <li><a href="../../Account/Register"><%= GetGlobalResourceObject("Common", "MainNavRegister").ToString()%></a></li>
     </ul>
 </asp:Content>
@@ -38,7 +38,7 @@
                     <hr />
                     <div class="clearfix">
                         <%= Html.LabelFor(m => m.Email, GetGlobalResourceObject("LogOn", "Email").ToString()) %>
-                        <%: Html.TextBoxFor(m => m.Email, new Dictionary<string, object>() { {"required", "required" } })%>
+                        <%: Html.TextBoxFor(m => m.Email, new SortedList<string, object>() { {"required", "required" } })%>
                         <%: Html.ValidationMessageFor(m => m.Email, GetGlobalResourceObject("LogOn", "EmailValidationMessage").ToString())%>
                     </div><br />
                     <div class="clearfix">

@@ -77,7 +77,7 @@
         <thead>
             <tr>
                 <th>Уровень</th>
-                <th>Тип поступления</th>
+                <%--<th>Тип поступления</th>--%>
                 <th>Просмотр заявлений</th>
             </tr>
         </thead>
@@ -85,7 +85,7 @@
        { %>
          <tr>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel)%></td>
-            <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType)%></td>
+            <%--<td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType)%></td>--%>
             <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">Просмотр</a></td>
          </tr>
      <% } %>

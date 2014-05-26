@@ -173,13 +173,13 @@
                         <div class="grid_2 first">
                             <div class="panel">
                                 <ul style="list-style-type: none; padding-left: 0.7em; padding-right:0.7em;">
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturientMain").ToString(), "Main", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplication").ToString(), "NewApplication", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuPriorityChanger").ToString(), "PriorityChanger", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAddSharedFiles").ToString(), "AddSharedFiles", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <%--<li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplicationRectorScholarship").ToString(), "NewApplicationRectorScholarship", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>--%>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturient").ToString(), "Index", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuChangePassword").ToString(), "ChangePassword", "Account", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturientMain").ToString(), "Main", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplication").ToString(), "NewApplication", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuPriorityChanger").ToString(), "PriorityChanger", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAddSharedFiles").ToString(), "AddSharedFiles", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <%--<li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplicationRectorScholarship").ToString(), "NewApplicationRectorScholarship", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>--%>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturient").ToString(), "Index", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuChangePassword").ToString(), "ChangePassword", "Account", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
                                 </ul>
                             </div>
                         </div>

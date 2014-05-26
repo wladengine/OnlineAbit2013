@@ -99,7 +99,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="NavigationList" runat="server">
     <ul class="clearfix">
-        <li><a href="../../Abiturient/Main"><%= GetGlobalResourceObject("Common", "MainNavLogon").ToString()%></a></li>
+        <li><a href="../../AbiturientNew/Main"><%= GetGlobalResourceObject("Common", "MainNavLogon").ToString()%></a></li>
         <li><a href="../../Account/Register"><%= GetGlobalResourceObject("Common", "MainNavRegister").ToString()%></a></li>
         <li class="active"><a><%= GetGlobalResourceObject("ForgotPassword", "Header").ToString()%></a></li>
     </ul>

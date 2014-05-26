@@ -85,7 +85,7 @@ namespace OnlineAbit2013.Controllers
                 else if (model.Stage == 2)
                 {
                     model.PassportInfo = new PassportPerson();
-                    DataTable tblPsp = Util.AbitDB.GetDataTable("SELECT Id, Name FROM PassportType WHERE 1=@x", new Dictionary<string, object>() { { "@x", 1 } });
+                    DataTable tblPsp = Util.AbitDB.GetDataTable("SELECT Id, Name FROM PassportType WHERE 1=@x", new SortedList<string, object>() { { "@x", 1 } });
                     model.PassportInfo.PassportTypeList =
                         (from DataRow rw in tblPsp.Rows
                          select new SelectListItem() { Value = rw.Field<int>("Id").ToString(), Text = rw.Field<string>("Name") }).
@@ -179,7 +179,7 @@ namespace OnlineAbit2013.Controllers
                     model.PrivelegeInfo = new PersonPrivileges();
 
                     query = "SELECT Id, Name FROM AG_PrivilegeType WHERE Id NOT IN (SELECT PrivilegeTypeId FROM AG_PersonPrivilege WHERE PersonId=@PersonId)";
-                    DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+                    DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
                     model.PrivelegeInfo.PrivilegesList =
                         (from DataRow rw in tbl.Rows
@@ -191,7 +191,7 @@ namespace OnlineAbit2013.Controllers
 
                     string qPSW = "SELECT AG_PersonPrivilege.Id, AG_PersonPrivilege.DocumentNumber, AG_PrivilegeType.Name FROM AG_PersonPrivilege " +
                         " INNER JOIN AG_PrivilegeType ON AG_PrivilegeType.Id=AG_PersonPrivilege.PrivilegeTypeId WHERE AG_PersonPrivilege.PersonId=@Id";
-                    DataTable tblPSW = Util.AbitDB.GetDataTable(qPSW, new Dictionary<string, object>() { { "@Id", PersonId } });
+                    DataTable tblPSW = Util.AbitDB.GetDataTable(qPSW, new SortedList<string, object>() { { "@Id", PersonId } });
 
                     model.PrivelegeInfo.pPrivileges =
                         (from DataRow rw in tblPSW.Rows
@@ -204,7 +204,7 @@ namespace OnlineAbit2013.Controllers
 
                     query = "SELECT AG_Olympiads.Id, AG_OlympType.Name, AG_Olympiads.DocumentSeries, AG_Olympiads.DocumentNumber, AG_Olympiads.DocumentDate" +
                         " FROM AG_Olympiads INNER JOIN AG_OlympType ON AG_OlympType.Id=AG_Olympiads.OlympTypeId WHERE AG_Olympiads.PersonId=@Id";
-                    DataTable _tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@Id", PersonId } });
+                    DataTable _tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
                     model.PrivelegeInfo.pOlympiads =
                         (from DataRow rw in _tbl.Rows
                          select new OlympiadInformation()
@@ -539,7 +539,7 @@ namespace OnlineAbit2013.Controllers
         //        model.Files = new List<AppendedFile>();
 
         //        string query = "SELECT Surname, Name, SecondName, RegistrationStage FROM PERSON WHERE Id=@Id";
-        //        Dictionary<string, object> dic = new Dictionary<string, object>() { { "@Id", PersonID } };
+        //        SortedList<string, object> dic = new SortedList<string, object>() { { "@Id", PersonID } };
         //        DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
         //        if (tbl.Rows.Count != 1)
         //            return RedirectToAction("Index");
@@ -612,15 +612,15 @@ namespace OnlineAbit2013.Controllers
 
                 AG_ApplicationModel model = new AG_ApplicationModel();
 
-                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new Dictionary<string, object>() { { "@Id", PersonId } });
+                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new SortedList<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
 
                 int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
-                    new Dictionary<string, object>() { { "@Id", PersonId } });
+                    new SortedList<string, object>() { { "@Id", PersonId } });
 
                 string query = "SELECT DISTINCT ProgramId, ProgramName, EntryClassName FROM AG_qEntry WHERE EntryClassId=@ClassId";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@PersonId", PersonId);
                 dic.Add("@ClassId", iAG_EntryClassId);
                 DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
@@ -660,7 +660,7 @@ namespace OnlineAbit2013.Controllers
 
             //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
             string query = "SELECT Id, DateOfStartEntry, DateOfStopEntry FROM AG_Entry WHERE ProgramId=@ProgramId AND EntryClassId=@EntryClassId ";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@ProgramId", iProfession);
             dic.Add("@EntryClassId", iEntryClassId);
             if (iProfileId != 0)
@@ -685,7 +685,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Приём заявлений на данное направление закрыт." } });
 
             query = "SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
             var eIds =
                 from DataRow rw in tbl.Rows
                 select rw.Field<Guid>("EntryId");
@@ -693,7 +693,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("NewApplication", new RouteValueDictionary() { { "errors", "Заявление на данную программу уже подано" } });
 
             DataTable tblPriors = Util.AbitDB.GetDataTable("SELECT Priority FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled",
-                new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
+                new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Enabled", true } });
             int? PriorMax =
                 (from DataRow rw in tblPriors.Rows
                  select rw.Field<int?>("Priority")).Max();
@@ -701,7 +701,7 @@ namespace OnlineAbit2013.Controllers
             Guid appId = Guid.NewGuid();
             query = "INSERT INTO [AG_Application] (Id, PersonId, EntryId, HostelEduc, Enabled, DateOfStart, ManualExamId, Priority) " +
                 "VALUES (@Id, @PersonId, @EntryId, @HostelEduc, @Enabled, @DateOfStart, @ManualExamId, @Priority)";
-            Dictionary<string, object> prms = new Dictionary<string, object>();
+            SortedList<string, object> prms = new SortedList<string, object>();
             prms.Add("@Id", appId);
             prms.Add("@PersonId", PersonId);
             prms.Add("@EntryId", EntryId);
@@ -716,7 +716,7 @@ namespace OnlineAbit2013.Controllers
             //query = "SELECT Person.Surname, Person.Name, Person.SecondName, AG_Entry.ProgramName, AG_Entry.ObrazProgramName " +
             //    " FROM [AG_Application] INNER JOIN Person ON Person.Id=[AG_Application].PersonId " +
             //    " INNER JOIN AG_qAG_Entry ON AG_Application.AG_EntryId=AG_qAG_Entry.Id WHERE AG_Application.Id=@AppId";
-            //DataTable Tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
+            //DataTable Tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@AppId", appId } });
             //var fileInfo =
             //    (from DataRow rw in Tbl.Rows
             //     select new
@@ -759,7 +759,7 @@ namespace OnlineAbit2013.Controllers
             if (!Guid.TryParse(id, out appId))
                 return RedirectToAction("Main", "Abiturient");
 
-            Dictionary<string, object> prms = new Dictionary<string, object>()
+            SortedList<string, object> prms = new SortedList<string, object>()
             {
                 { "@PersonId", personId },
                 { "@Id", appId }
@@ -798,7 +798,7 @@ namespace OnlineAbit2013.Controllers
 
 
             string query = "SELECT Id, FileName, FileSize, Comment FROM ApplicationFile WHERE ApplicationId=@AppId";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@AppId", appId } });
+            tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@AppId", appId } });
             var lFiles =
                 (from DataRow row in tbl.Rows
                  select new AppendedFile()
@@ -811,7 +811,7 @@ namespace OnlineAbit2013.Controllers
                  }).ToList();
 
             query = "SELECT Id, FileName, FileSize, Comment FROM PersonFile WHERE PersonId=@PersonId";
-            tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", personId } });
+            tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", personId } });
             var lSharedFiles =
                 (from DataRow row in tbl.Rows
                  select new AppendedFile()
@@ -863,7 +863,7 @@ namespace OnlineAbit2013.Controllers
             }
 
             bool? isEnabled = (bool?)Util.AbitDB.GetValue("SELECT Enabled FROM [AG_Application] WHERE Id=@Id AND PersonId=@PersonId",
-                new Dictionary<string, object>() { { "@Id", AppId }, { "@PersonId", PersonId } });
+                new SortedList<string, object>() { { "@Id", AppId }, { "@PersonId", PersonId } });
 
             //var app = Util.ABDB.Application.Where(x => x.Id == AppId && x.PersonId == PersonId).FirstOrDefault();
             if (!isEnabled.HasValue)
@@ -881,7 +881,7 @@ namespace OnlineAbit2013.Controllers
             try
             {
                 string query = "UPDATE [AG_Application] SET Enabled=@Enabled, DateOfDisable=@DateOfDisable, Priority=@Priority WHERE Id=@Id";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", AppId);
                 dic.Add("@DateOfDisable", DateTime.Now);
                 dic.Add("@Priority", 0);
@@ -912,7 +912,7 @@ namespace OnlineAbit2013.Controllers
         //    string query = "SELECT [AG_Application].Id, Priority, ProgramName, ObrazProgramName FROM [AG_Application] " + 
         //        " INNER JOIN AG_Entry ON [AG_Application].AG_EntryId=AG_Entry.Id " +
         //        " WHERE PersonId=@PersonId AND Enabled=@Enabled ORDER BY Priority";
-        //    Dictionary<string, object> dic = new Dictionary<string, object>()
+        //    SortedList<string, object> dic = new SortedList<string, object>()
         //    {
         //        {"@PersonId", PersonId },
         //        {"@Enabled", true }
@@ -949,7 +949,7 @@ namespace OnlineAbit2013.Controllers
                     continue;
                 
                 string query = "UPDATE [AG_Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.AddItem("@Priority", ++prior);
                 dic.AddItem("@Id", appId);
                 dic.AddItem("@PersonId", PersonId);
@@ -971,7 +971,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("LogOn", "Account");
 
             string query = "SELECT Id, FileName, FileSize, Comment FROM PersonFile WHERE PersonId=@PersonId";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
             List<AppendedFile> lst =
                 (from DataRow rw in tbl.Rows
@@ -993,7 +993,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("Index", new RouteValueDictionary() { { "step", regStage } });
 
             string query = "SELECT Id, FileName, FileSize, Comment FROM PersonFile WHERE PersonId=@PersonId";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
             List<AppendedFile> lst =
                 (from DataRow rw in tbl.Rows
@@ -1015,7 +1015,7 @@ namespace OnlineAbit2013.Controllers
             if (!string.IsNullOrEmpty(errMessage))
             {
                 string query = "INSERT INTO ErrorFeedBack(Id, Text) VALUES (@Id, @Text)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@Text", errMessage);
                 Util.AbitDB.ExecuteQuery(query, dic);
@@ -1055,7 +1055,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO PersonFile (Id, PersonId, FileName, FileData, FileSize, FileExtention, LoadDate, Comment, MimeType) " +
                     " VALUES (@Id, @PersonId, @FileName, @FileData, @FileSize, @FileExtention, @LoadDate, @Comment, @MimeType)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@PersonId", PersonId);
                 dic.Add("@FileName", fileName);
@@ -1105,7 +1105,7 @@ namespace OnlineAbit2013.Controllers
             {
                 string query = "INSERT INTO PersonFile (Id, PersonId, FileName, FileData, FileSize, FileExtention, IsReadOnly, LoadDate, Comment, MimeType) " +
                     " VALUES (@Id, @PersonId, @FileName, @FileData, @FileSize, @FileExtention, @IsReadOnly, @LoadDate, @Comment, @MimeType)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 dic.Add("@Id", Guid.NewGuid());
                 dic.Add("@PersonId", PersonId);
                 dic.Add("@FileName", fileName);
@@ -1138,7 +1138,7 @@ namespace OnlineAbit2013.Controllers
                 return Content("Authorization required");
 
             DataTable tbl = Util.AbitDB.GetDataTable("SELECT FileName, FileData, MimeType, FileExtention FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id",
-                new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", FileId } });
+                new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", FileId } });
             
             if (tbl.Rows.Count == 0)
                 return Content("Файл не найден");
@@ -1208,7 +1208,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "SELECT DISTINCT ProgramId, ProgramName FROM AG_Entry WHERE EntryClassId=@ClassId AND " + 
                 " Id NOT IN (SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='False')";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
             dic.Add("@ClassId", iEntryClassId);
             DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
@@ -1228,7 +1228,7 @@ namespace OnlineAbit2013.Controllers
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
 
             string query = "SELECT COUNT(Id) FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled='True'";
-            int cnt = (int)Util.AbitDB.GetValue(query, new Dictionary<string, object>() { { "@PersonId", PersonId } });
+            int cnt = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
             if (cnt >= 2)
                 return Json(new { IsOk = false, ErrorMessage = "У абитуриента уже имеется 2 активных заявления" });
@@ -1244,7 +1244,7 @@ namespace OnlineAbit2013.Controllers
                 "Id NOT IN (SELECT EntryId FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled)";
 
             DataTable tbl = Util.AbitDB.GetDataTable(query, 
-                new Dictionary<string, object>() 
+                new SortedList<string, object>() 
                 { 
                     { "@ClassId", iClassId },
                     { "@ProgramId", iProgramId },
@@ -1378,14 +1378,14 @@ namespace OnlineAbit2013.Controllers
 
             string query = "INSERT INTO AG_PersonPrivilege(Id, PersonId, PrivilegeTypeId, DocumentNumber) VALUES" +
                 "(@Id, @PersonId, @PrivilegeTypeId, @DocumentNumber)";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", Guid.NewGuid());
             dic.Add("@PersonId", PersonId);
             dic.Add("@PrivilegeTypeId", iPrivelegeId);
             dic.Add("@DocumentNumber", docNum);
             Util.AbitDB.ExecuteQuery(query, dic);
             query = "SELECT Name FROM AG_PrivilegeType WHERE Id=@Id";
-            string res = Util.AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", iPrivelegeId } });
+            string res = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", iPrivelegeId } });
             return Json(new { IsOk = true, Id = ((Guid)dic["@Id"]).ToString("N"), Type = res, Doc = Server.HtmlDecode(docNum) });
         }
         public JsonResult DeletePrivilege(string id)
@@ -1397,7 +1397,7 @@ namespace OnlineAbit2013.Controllers
             if (!Guid.TryParse(id,  out PrivId))
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
             string query = "DELETE FROM AG_PersonPrivilege WHERE Id=@Id";
-            Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", PrivId } });
+            Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", PrivId } });
             return Json(new { IsOk = true });
         }
 
@@ -1417,7 +1417,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "INSERT INTO AG_Olympiads(Id, PersonId, OlympTypeId, DocumentSeries, DocumentNumber, DocumentDate) VALUES " +
                 "(@Id, @PersonId, @OlympTypeId, @DocumentSeries, @DocumentNumber, @DocumentDate)";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", Guid.NewGuid());
             dic.Add("@PersonId", PersonId);
             dic.Add("@OlympTypeId", iOlympId);
@@ -1428,7 +1428,7 @@ namespace OnlineAbit2013.Controllers
             Util.AbitDB.ExecuteQuery(query, dic);
 
             query = "SELECT Name FROM AG_OlympType WHERE Id=@Id";
-            string type = Util.AbitDB.GetStringValue(query, new Dictionary<string, object>() { { "@Id", iOlympId } });
+            string type = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", iOlympId } });
             
             return Json(new { IsOk = true, Id = ((Guid)dic["@Id"]).ToString("N"), Type = type, 
                 Doc = Series + " " + Number + " от " + _date.ToShortDateString() });
@@ -1444,7 +1444,7 @@ namespace OnlineAbit2013.Controllers
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
             string query = "DELETE FROM AG_Olympiads WHERE Id=@Id";
-            Util.AbitDB.ExecuteQuery(query, new Dictionary<string, object>() { { "@Id", OlympId } });
+            Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", OlympId } });
             return Json(new { IsOk = true });
         }
 
@@ -1464,7 +1464,7 @@ namespace OnlineAbit2013.Controllers
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID };
                 return Json(res);
             }
-            string attr = Util.AbitDB.GetStringValue("SELECT IsReadOnly FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
+            string attr = Util.AbitDB.GetStringValue("SELECT IsReadOnly FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
             if (string.IsNullOrEmpty(attr))
             {
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.FileNotFound };
@@ -1477,7 +1477,7 @@ namespace OnlineAbit2013.Controllers
             }
             try
             {
-                Util.AbitDB.ExecuteQuery("DELETE FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
+                Util.AbitDB.ExecuteQuery("DELETE FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
             }
             catch
             {
@@ -1503,7 +1503,7 @@ namespace OnlineAbit2013.Controllers
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID };
                 return Json(res);
             }
-            string attr = Util.AbitDB.GetStringValue("SELECT ISNULL([IsReadOnly], 'False') FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
+            string attr = Util.AbitDB.GetStringValue("SELECT ISNULL([IsReadOnly], 'False') FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
             if (string.IsNullOrEmpty(attr))
             {
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.FileNotFound };
@@ -1516,7 +1516,7 @@ namespace OnlineAbit2013.Controllers
             }
             try
             {
-                Util.AbitDB.ExecuteQuery("DELETE FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new Dictionary<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
+                Util.AbitDB.ExecuteQuery("DELETE FROM PersonFile WHERE PersonId=@PersonId AND Id=@Id", new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", fileId } });
             }
             catch
             {
@@ -1538,7 +1538,7 @@ namespace OnlineAbit2013.Controllers
                 return Json(new { IsOk = false, ErrorMessage="" });
 
             string query = "UPDATE PersonalMessage SET IsRead=@IsRead WHERE Id=@Id";
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@IsRead", true);
             dic.Add("@Id", MessageId);
 

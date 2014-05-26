@@ -105,7 +105,7 @@
         <h5>Выберите направление подготовки</h5>
         <p id="Profs<%= i.ToString() %>">
             <span>Направление</span><br />
-            <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new Dictionary<string, object>() { { "size", "5" }, 
+            <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new SortedList<string, object>() { { "size", "5" }, 
 { "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} }) %>
         </p>
         <p id="Specs<%= i.ToString() %>" style="display:none;">

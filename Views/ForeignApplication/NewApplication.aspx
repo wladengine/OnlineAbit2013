@@ -107,11 +107,11 @@
         
         <p id="SForm">
             <span><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyForm").ToString()%></span><br />
-            <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+            <%= Html.DropDownListFor(x => x.StudyFormId, Model.StudyForms, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
         </p>
         <p id="SBasis">
             <span><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyBasis").ToString()%></span><br />
-            <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new Dictionary<string, object>() { { "onchange", "GetProfessions()" } })%>
+            <%= Html.DropDownListFor(x => x.StudyBasisId, Model.StudyBasises, new SortedList<string, object>() { { "onchange", "GetProfessions()" } })%>
         </p>
         <input type="hidden" id="Entry" name="EntryType" value="<%= Model.EntryType.ToString() %>" />
         <div id="Faculties" class="clearfix" style="display:none;">

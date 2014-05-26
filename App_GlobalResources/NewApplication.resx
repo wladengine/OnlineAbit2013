@@ -217,7 +217,7 @@
     <value>Направление</value>
   </data>
   <data name="BlockData_MagSpecialization" xml:space="preserve">
-    <value>Магистерская программа</value>
+    <value>Профиль</value>
   </data>
   <data name="BlockData_ObrazProgram" xml:space="preserve">
     <value>Образовательная программа</value>

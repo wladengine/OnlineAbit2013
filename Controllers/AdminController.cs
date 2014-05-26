@@ -13,7 +13,7 @@ namespace OnlineAbit2013.Controllers
     {
         private DataTable GetEntryList(string faculty, string profession, string obrazprogram, string profile)
         {
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             int iFacultyId = 0;
             if (!int.TryParse(faculty, out iFacultyId))
                 iFacultyId = 1;
@@ -57,8 +57,8 @@ namespace OnlineAbit2013.Controllers
             string query = "SELECT FacultyId, Faculty, ProfessionId, Profession, ObrazProgramId, ObrazProgram, SpecializationId, Specialization, " +
                 " Count(Id) AS 'CNT' FROM extApplicationAll WHERE StudyBasisId={0} AND EntryType=@EType GROUP BY FacultyId, Faculty, ProfessionId, Profession, ObrazProgramId, " +
                 " ObrazProgram, SpecializationId, Specialization";
-            DataTable tblBudzh = Util.AbitDB.GetDataTable(string.Format(query, "1"), new Dictionary<string, object>() { { "@EType", iEntryType } });
-            DataTable tblPlatn = Util.AbitDB.GetDataTable(string.Format(query, "2"), new Dictionary<string, object>() { { "@EType", iEntryType } });
+            DataTable tblBudzh = Util.AbitDB.GetDataTable(string.Format(query, "1"), new SortedList<string, object>() { { "@EType", iEntryType } });
+            DataTable tblPlatn = Util.AbitDB.GetDataTable(string.Format(query, "2"), new SortedList<string, object>() { { "@EType", iEntryType } });
 
             var cntB =
                 from DataRow rw in tblBudzh.Rows
@@ -157,7 +157,7 @@ WHERE Person.Barcode > 0";
 
                 var toInsert = barcsPriem.Where(x => !lstExists.Contains(x.Barcode));
                 query = "INSERT INTO ApprovedHostel (PersonBarcode, IsFirstCourse, IsSpb) VALUES (@PersonBarcode, @IsFirstCourse, @IsSpb)";
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                SortedList<string, object> dic = new SortedList<string, object>();
                 foreach (var ins in toInsert)
                 {
                     dic.Clear();

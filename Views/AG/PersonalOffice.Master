@@ -175,14 +175,14 @@
                         <div class="grid_2 first">
                             <div class="panel">
                                 <ul style="list-style-type: none; padding-left: 0.7em; padding-right:0.7em;">
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturientMain").ToString(), "Main", "AG", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplication").ToString(), "NewApplication", "AG", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <%--<li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuPriorityChanger").ToString(), "PriorityChanger", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>--%>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAddSharedFiles").ToString(), "AddSharedFiles", "AG", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <%--<li><%= Html.ActionLink("Мотивационное письмо", "MotivateMail", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink("Опись поданых документов", "FilesList", "Abiturient", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>--%>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturient").ToString(), "Index", "AG", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
-                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuChangePassword").ToString(), "ChangePassword", "Account", null, new Dictionary<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturientMain").ToString(), "Main", "AG", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuNewApplication").ToString(), "NewApplication", "AG", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <%--<li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuPriorityChanger").ToString(), "PriorityChanger", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>--%>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAddSharedFiles").ToString(), "AddSharedFiles", "AG", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <%--<li><%= Html.ActionLink("Мотивационное письмо", "MotivateMail", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink("Опись поданых документов", "FilesList", "Abiturient", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>--%>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuAbiturient").ToString(), "Index", "AG", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
+                                    <li><%= Html.ActionLink(GetGlobalResourceObject("Locales", "LeftMenuChangePassword").ToString(), "ChangePassword", "Account", null, new SortedList<string, object>() { { "class", "MenuButton" } })%></li>
                                 </ul>
                             </div>
                         </div>

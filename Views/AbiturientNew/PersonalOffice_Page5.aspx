@@ -313,6 +313,22 @@
             }, 'json');
         }
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#PrivelegeInfo_SportQualificationId').change(function () { setTimeout(fChangeSportQualification); });
+        });
+        function fChangeSportQualification() {
+            var val = $('#PrivelegeInfo_SportQualificationId').val();
+            if (val == 44) {
+                $('#dSportQualificationLevel').hide();
+                $('#dOtherSport').show();
+            }
+            else {
+                $('#dSportQualificationLevel').show();
+                $('#dOtherSport').hide();
+            }
+        }
+        </script>
     <div class="grid">
         <div class="wrapper">
             <div class="grid_4 first">
@@ -431,19 +447,19 @@
                 <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "OlympiadsHeader").ToString()%></h3>
                     <div class="clearfix">
                         <%= Html.DropDownList("OlympType", Model.PrivelegeInfo.OlympTypeList, 
-                        new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
+                        new SortedList<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
                     </div>
                     <div class="clearfix" id="_OlympName" style="display:none">
                         <%= Html.DropDownList("OlympName", Model.PrivelegeInfo.OlympNameList, 
-                        new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "6"} }) %>
+                        new SortedList<string, object>() { {"style", "width:460px;"} , {"size", "6"} }) %>
                     </div>
                     <div class="clearfix" id="_OlympSubject" style="display:none">
                         <%= Html.DropDownList("OlympSubject", Model.PrivelegeInfo.OlympSubjectList, 
-                        new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "6"} }) %>
+                        new SortedList<string, object>() { {"style", "width:460px;"} , {"size", "6"} }) %>
                     </div>
                     <div class="clearfix" id="_OlympValue" style="display:none">
                         <%= Html.DropDownList("OlympValue", Model.PrivelegeInfo.OlympValueList,
-                        new Dictionary<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
+                        new SortedList<string, object>() { {"style", "width:460px;"} , {"size", "4"} }) %>
                     </div>
                     <div>
                         <h4><%= GetGlobalResourceObject("PersonalOffice_Step5", "DocumentHeader").ToString()%></h4>
@@ -510,8 +526,24 @@
                 <hr style="color:#A6C9E2;" />
 
                 <% using (Html.BeginForm("NextStep", "AbiturientNew", FormMethod.Post))
-                    {
+                   {
                 %>
+                    <h3>Спортивные достижения</h3>
+                    <hr />
+                    <div class="form">
+                        <div class="clearfix">
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationId, "Спорт. квалификация:") %>
+                            <%= Html.DropDownListFor(x => x.PrivelegeInfo.SportQualificationId, Model.PrivelegeInfo.SportQualificationList) %>
+                        </div>
+                        <div id="dSportQualificationLevel" class="clearfix">
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.SportQualificationLevel, "Pазряд:") %>
+                            <%= Html.TextBoxFor(x => x.PrivelegeInfo.SportQualificationLevel) %>
+                        </div>
+                        <div id="dOtherSport" class="clearfix" style=" display:none; border-collapse:collapse;">
+                            <%= Html.LabelFor(x => x.PrivelegeInfo.OtherSportQualification, "Спорт. квалификация, разряд:") %>
+                            <%= Html.TextBoxFor(x => x.PrivelegeInfo.OtherSportQualification) %>
+                        </div>
+                    </div>
                     <input name="Stage" type="hidden" value="<%= Model.Stage %>" />
                     <input id="Submit4" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />
                 <% } %>

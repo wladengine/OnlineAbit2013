@@ -114,7 +114,7 @@ namespace OnlineAbit2013.Controllers
             string query = "SELECT KladrCode FROM Region WHERE Id=@Id";
             int iRegionId = 0;
             int.TryParse(regionId, out iRegionId);
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@Id", iRegionId);
             DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
 

@@ -1588,6 +1588,7 @@ WHERE PersonId=@PersonId ";
                          Entry.ProfileId,
                          Entry.ProfileName,
                          App.HostelEduc,
+                         App.IsGosLine,
                          Entry.StudyLevelGroupId
                      }).ToList();
                 foreach (var App in AppList)
@@ -1610,6 +1611,7 @@ WHERE PersonId=@PersonId ";
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
                         SpecializationName = App.ProfileName,
                         Hostel = App.HostelEduc,
+                        IsGosLine = App.IsGosLine,
                         StudyLevelGroupId = App.StudyLevelGroupId
                     };
                     string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 
@@ -1707,7 +1709,7 @@ WHERE PersonId=@PersonId ";
             constant.SecondName = 150;
 
             constant.BirthPlace = 500;
-            constant.PassportAuthor = 2500;
+            constant.PassportAuthor = 25;
 
             constant.AddInfo = 4000;
             constant.Parents = 4000;

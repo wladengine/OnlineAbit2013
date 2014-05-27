@@ -135,7 +135,7 @@
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
-            if (sbId==1) { 
+            if (sbId==1) {  
                 if (json_data.GosLine==0) {  
                     $(CurrGosLine).hide();
                     $(CurrGosLineHidden).val('0');
@@ -261,7 +261,6 @@
                 $(currBlockData_ObrazProgram).text(json_data.ObrazProgram);
                 $(currBlockData_Specialization).text(json_data.Specialization); 
                 $(currBlockData_Faculty).text(json_data.Faculty);
-                $(currBlock).hide();
                 if (json_data.isgosline==1){
                     $(currBlockData_GosLine).show();
                 }
@@ -269,6 +268,7 @@
                 {
                     $(currBlockData_GosLine).hide();
                 }
+                $(currBlock).hide();
                 $(currBlockData).show();
                 if (BlockIds[nxt] == undefined) {
                     $(nextBlock).show(); 
@@ -399,23 +399,23 @@
         }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewApp_Mag", "AbiturientNew", FormMethod.Post))
+<% using (Html.BeginForm("NewApp_Asp", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <% if (Model.HasError) 
        { %>
         <div class="error message"><%= Model.ErrorMessage %></div>
     <% } %>
-    <%= Html.ValidationSummary() %>
+     <%= Html.ValidationSummary() %>
      <%= Html.HiddenFor(x => x.CommitId)%>
     <% if (2 == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
     <% } %>
     
-        <input type="hidden" id = "EntryType" name = "EntryType" value="2" />
+        <input type="hidden" id = "EntryType" name = "EntryType" value="4" />
         <select id="Entry" name="Entry" onchange="ChangeEType()" disabled="disabled">
-            <option value="2"><%= GetGlobalResourceObject("NewApplication", "Select_Magistery")%></option>
+            <option value="4"><%= GetGlobalResourceObject("NewApplication", "Select_Aspirantura")%></option>
         </select>
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
@@ -597,7 +597,7 @@
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
              <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
-             <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" />
+             <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" /> 
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
             <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />

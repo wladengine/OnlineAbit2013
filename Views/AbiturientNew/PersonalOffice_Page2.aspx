@@ -165,14 +165,24 @@
             }
             function CheckAuthor() {
                 var ret = true;
+                var text = $('#PassportInfo_PassportAuthor_Message_Empty').text();
+
                 if ($('#PassportInfo_PassportType').val() == '1' && $('#PassportInfo_PassportAuthor').val() == '') {
                     ret = false;
                     $('#PassportInfo_PassportAuthor').addClass('input-validation-error');
+                    $('#PassportInfo_PassportAuthor_Message').text(text);
                     $('#PassportInfo_PassportAuthor_Message').show();
                 }
                 else {
                     $('#PassportInfo_PassportAuthor').removeClass('input-validation-error');
                     $('#PassportInfo_PassportAuthor_Message').hide();
+                }
+                if ($('#PassportInfo_PassportAuthor').val().length >  <%=Model.ConstInfo.PassportAuthor %>) {
+                    ret = false;
+                    $('#PassportInfo_PassportAuthor').addClass('input-validation-error');
+                    var text = $('#MessageMaxLength').text();
+                    $('#PassportInfo_PassportAuthor_Message').text(text);
+                    $('#PassportInfo_PassportAuthor_Message').show();
                 }
                 return ret;
             }
@@ -195,7 +205,7 @@
                     var fileInput = $("#fileAttachment")[0];
                     var size = fileInput.files[0].size; // Size returned in bytes.
                 }
-                if (size > 41943040) {// 41943040 = 4Mb
+                if (size > 4*1024*1024) {// 41943040 = 4Mb
                     alert('Too big file for uploading (4Mb - max)');
                     //Очищаем поле ввода файла
                     document.getElementById('fileAttachment').parentNode.innerHTML = document.getElementById('fileAttachment').parentNode.innerHTML;
@@ -241,6 +251,9 @@
                             <span class="ui-icon ui-icon-alert"></span><%= GetGlobalResourceObject("PersonInfo", "WarningMessagePersonLocked").ToString()%>
                         </div>
                     <% } %>
+                    <span id = "MessageLatinSymbols" style="display: none;"><%= GetGlobalResourceObject("PersonInfo", "MessageLatinSymbols").ToString()%></span>
+                    <span id = "MessageMaxLength" style="display: none;"><%= GetGlobalResourceObject("PersonInfo", "MessageMaxLength").ToString()%></span>
+
                     <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
                         <h3><%= GetGlobalResourceObject("PersonalOffice_Step2", "HeaderPassport").ToString()%></h3>
                         <hr />
@@ -291,8 +304,10 @@
                             </label> 
                             <%= Html.TextBoxFor(x => x.PassportInfo.PassportAuthor)%>
                             <br /><p></p>
-                            <span id="PassportInfo_PassportAuthor_Message" class="Red" style="display:none">
-                                <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportAuthor_Message").ToString()%>
+                            <span id = "PassportInfo_PassportAuthor_Message_Long" style="display:none">Слишком длинное значение</span>
+                            <span id = "PassportInfo_PassportAuthor_Message_Empty"  style="display:none"><%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportAuthor_Message").ToString()%></span>
+                            <span id="PassportInfo_PassportAuthor_Message" class="Red" style="display:none"> 
+                            <%= GetGlobalResourceObject("PersonalOffice_Step2", "PassportInfo_PassportAuthor_Message").ToString()%>
                             </span>
                         </div>
                         <div class="clearfix">

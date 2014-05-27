@@ -210,4 +210,7 @@
   <data name="NewApp_DeleteApp_Fail" xml:space="preserve">
     <value>Ошибка при удалении заявления</value>
   </data>
+  <data name="BlockData_GosLine" xml:space="preserve">
+    <value>Gosline</value>
+  </data>
 </root>

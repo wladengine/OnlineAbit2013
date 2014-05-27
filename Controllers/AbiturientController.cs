@@ -89,7 +89,7 @@ namespace OnlineAbit2013.Controllers
                 return RedirectToAction("OpenPersonalAccount");
 
             return RedirectToAction("Index", "AbiturientNew", new RouteValueDictionary() { { "step", step }});
-
+            /*
             int stage = 0;
             if (!int.TryParse(step, out stage))
                 stage = 1;
@@ -318,7 +318,7 @@ namespace OnlineAbit2013.Controllers
                     return View("PersonalOffice_Page6", model);
                 }
                 //return View("PersonalOffice_Page", model);
-            }
+            }*/
         }
 
         [HttpPost]
@@ -712,7 +712,7 @@ namespace OnlineAbit2013.Controllers
                     return RedirectToAction("Index");
 
                 return RedirectToAction("NewApplication", "AbiturientNew");
-
+                /*
                 //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
                 switch (PersonInfo.AbiturientTypeId)
                 {
@@ -770,7 +770,7 @@ namespace OnlineAbit2013.Controllers
                      .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                      .ToList();
 
-                return View("NewApplication", model);
+                return View("NewApplication", model);*/
             }
         }
 
@@ -1068,7 +1068,7 @@ namespace OnlineAbit2013.Controllers
                     return RedirectToAction("Index");
 
                 return RedirectToAction("AddSharedFiles", "AbiturientNew");
-
+                /*
                 //СДЕЛАТЬ ЗАХОД В НУЖНЫЙ КОНТРОЛЛЕР!!!
                 switch (PersonInfo.AbiturientTypeId)
                 {
@@ -1103,7 +1103,7 @@ namespace OnlineAbit2013.Controllers
                      }).ToList();
 
                 AppendFilesModel model = new AppendFilesModel() { Files = lst };
-                return View(model);
+                return View(model);*/
             }
         }
 

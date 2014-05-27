@@ -137,8 +137,14 @@
             <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
             <!-- Магистратура -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit2()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType2") %>" /><br /><br />
-            
-       <% } else if (Model.VuzAddType == 2) // перевод
+            <% if (Model.ExitClassId != 1) {%> 
+            <!-- аспирантура рф -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit10()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType10") %>" /><br /><br />
+            <!-- аспирантура иностр -->
+            <!-- <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />-->
+            <% } %> 
+       <% }
+          else if (Model.VuzAddType == 2) // перевод
           { %>
             <!-- Перевод РФ-спбгу -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br />
@@ -153,13 +159,9 @@
           {%>
             <!-- восстановление -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit5()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType5") %>" /><br /><br />
-       <% } %>
-    
-    <!-- аспирантура рф -->
-    <input type="button" class="button button-blue" name="Val" onclick="Submit10()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType10") %>" /><br /><br />
-   <!-- аспирантура иностр -->
-    <!-- <input type="button" class="button button-blue" name="Val" onclick="Submit11()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType11") %>" /><br /><br />-->
-<%} %>
+       <% }%> 
+
+  <%   } %>
 </form>
  </div>
 </asp:Content>

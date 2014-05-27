@@ -14,20 +14,74 @@
     <script type="text/javascript" src="../../Scripts/jquery-1.5.1-vsdoc.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery.validate-vsdoc.js"></script>
 <% } %>
-    <script type="text/javascript">
+    <script type="text/javascript"> 
+      
         $(function () {
-            $('form').submit(function () {
-                var FZAgree = $('#AddInfo_FZ_152Agree').is(':checked');
+            $('form').submit(function () { 
+                var FZAgree = $('#AddInfo_FZ_152Agree').is(':checked'); 
                 if (FZAgree) {
                     $('#FZ').hide();
-                    return true;
+                    return true&&AddInfoCheck() &&ContactPersonCheck();
                 }
                 else {
                     $('#FZ').show();
-                    return false;
-                }
+                    return false && AddInfoCheck() &&ContactPersonCheck();
+                }  
             });
-        });
+            $('#AddInfo_ExtraInfo').keyup(function (){ setTimeout(AddInfoCheck) });
+            $('#AddInfo_ContactPerson').keyup(function() { setTimeout(ContactPersonCheck) });
+            $('#AddInfo_ExtraInfo').change(function (){ setTimeout(AddInfoCheck) });
+            $('#AddInfo_ContactPerson').change(function() { setTimeout(ContactPersonCheck) });
+            $('#AddInfo_ExtraInfo').blur(function (){ setTimeout(AddInfoCheck) });
+            $('#AddInfo_ContactPerson').blur(function() { setTimeout(ContactPersonCheck) });
+        }); 
+
+        function AddInfoCheck() {
+            var ret = true;
+            var val = $('#AddInfo_ExtraInfo').val(); 
+            if (val.length > <%=Model.ConstInfo.AddInfo %>) { 
+                var len = val.length-<%=Model.ConstInfo.AddInfo %> ;
+                $('#AddInfo_ExtraInfo_Message').text('Максимальная допустимая длина превышена на '+len+' символов');
+                $('#AddInfo_ExtraInfo_Message').show();
+                $('#AddInfo_ExtraInfo').addClass('input-validation-error');
+                ret = false;
+            } 
+            else{  
+                if (val.length < <%=Model.ConstInfo.AddInfo %>-100) { 
+                    $('#AddInfo_ExtraInfo_Message').hide();
+                    $('#AddInfo_ExtraInfo').removeClass('input-validation-error'); 
+                } else { 
+                    var len = <%=Model.ConstInfo.AddInfo %> - val.length;
+                    $('#AddInfo_ExtraInfo_Message').text('Осталось ' +len+' символов'); 
+                    $('#AddInfo_ExtraInfo_Message').show();  
+                    $('#AddInfo_ExtraInfo').removeClass('input-validation-error'); 
+                } 
+            }
+            return ret;
+        } 
+        function ContactPersonCheck() {
+            var ret = true;
+            var val = $('#AddInfo_ContactPerson').val(); 
+            if (val.length > <%=Model.ConstInfo.Parents %>) { 
+                var len = val.length-<%=Model.ConstInfo.Parents %> ;
+                $('#AddInfo_ContactPerson_Message').text('Максимальная допустимая длина превышена на '+len+' символов');
+                $('#AddInfo_ContactPerson_Message').show();
+                $('#AddInfo_ContactPerson').addClass('input-validation-error');
+                ret = false;
+            } 
+            else{  
+                if (val.length < <%=Model.ConstInfo.Parents %>-100) { 
+                    $('#AddInfo_ContactPerson_Message').hide();
+                    $('#AddInfo_ContactPerson').removeClass('input-validation-error'); 
+                } else { 
+                    var len = <%=Model.ConstInfo.AddInfo %> - val.length;
+                    $('#AddInfo_ContactPerson_Message').text('Осталось ' +len+' символов');
+                    $('#AddInfo_ContactPerson_Message').show();  
+                    $('#AddInfo_ContactPerson').removeClass('input-validation-error'); 
+                } 
+            } 
+            return ret;
+        } 
     </script>
     <div class="grid">
         <div class="wrapper">
@@ -55,12 +109,18 @@
                         <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson").ToString()%></h4>
                         <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "ContactPerson_SubHeader").ToString()%></span><br />
                         <!-- <textarea id="AddPerson_ContactPerson" name="AddPerson.ContactPerson" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 70, new SortedList<string, object>() { { "class", "noresize" } }) %>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ContactPerson, 5, 85, new SortedList<string, object>() { { "class", "noresize" } }) %>
+                        <br /><p></p>
+                        <span id="AddInfo_ContactPerson_Message" class="Red" style="display:none"> 
+                        </span>
                     </div>
                     <div class="clearfix">
                         <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "ExtraInfo").ToString()%></h4>
                         <!-- <textarea id="AddPerson_ExtraInfo" name="AddPerson.ExtraInfo" cols="40" rows="4" class="ui-widget-content ui-corner-all"></textarea> -->
-                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 70, new SortedList<string, object>() { { "class", "noresize" } })%>
+                        <%= Html.TextAreaFor(x => x.AddInfo.ExtraInfo, 5, 85, new SortedList<string, object>() { { "class", "noresize" } })%>
+                        <br /><p></p>
+                        <span id="AddInfo_ExtraInfo_Message" class="Red" style="display:none"> 
+                        </span>
                     </div>
                     <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "DocumentsReturn").ToString()%></h4>
                     <div class="clearfix">

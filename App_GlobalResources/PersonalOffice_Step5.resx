@@ -216,4 +216,19 @@
   <data name="SportQualificationCategory" xml:space="preserve">
     <value>Спорт. квалификация, разряд:</value>
   </data>
+  <data name="SportValue" xml:space="preserve">
+    <value>Спортивные достижения</value>
+  </data>
+  <data name="validationMsgPersonWorksDuties" xml:space="preserve">
+    <value>Введите должностные обязанности</value>
+  </data>
+  <data name="validationMsgPersonWorksExperience" xml:space="preserve">
+    <value>Введите целое число</value>
+  </data>
+  <data name="validationMsgPersonWorksLevel" xml:space="preserve">
+    <value>Введите должность</value>
+  </data>
+  <data name="validationMsgPersonWorksPlace" xml:space="preserve">
+    <value>Введите место работы</value>
+  </data>
 </root>

@@ -240,4 +240,10 @@
   <data name="BlockData_Faculty" xml:space="preserve">
     <value>Факультет</value>
   </data>
+  <data name="Select_Aspirantura" xml:space="preserve">
+    <value>Аспирантура</value>
+  </data>
+  <data name="BlockData_GosLine" xml:space="preserve">
+    <value>Гослиния</value>
+  </data>
 </root>

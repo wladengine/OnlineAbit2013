@@ -1707,7 +1707,7 @@ WHERE PersonId=@PersonId ";
             constant.SecondName = 150;
 
             constant.BirthPlace = 500;
-            constant.PassportAuthor = 2500;
+            constant.PassportAuthor = 25;
 
             constant.AddInfo = 4000;
             constant.Parents = 4000;

@@ -18,38 +18,38 @@
     <script type="text/javascript" src="../../Scripts/jquery.ui.datepicker-ru.js"></script>
     <script type="text/javascript">
         $(function () {
-            
+
             $('#WorkPlace').keyup(function () {
                 var str = $('#WorkPlace').val();
                 if (str != "") {
                     $('#WorkPlace').removeClass('input-validation-error');
-                    $('#validationMsgPersonWorksPlace').text('');
+                    $('#validationMsgPersonWorksPlace').hide(); ;
                 }
                 else {
-                    $('#WorkPlace').addClass('input-validation-error'); 
-                    $('#validationMsgPersonWorksPlace').text('Введите место работы');
+                    $('#WorkPlace').addClass('input-validation-error');
+                    $('#validationMsgPersonWorksPlace').show();
                 }
             });
             $('#WorkProf').keyup(function () {
                 var str = $('#WorkProf').val();
                 if (str != "") {
                     $('#WorkProf').removeClass('input-validation-error');
-                    $('#validationMsgPersonWorksLevel').text('');
+                    $('#validationMsgPersonWorksLevel').hide(); ;
                 }
                 else {
                     $('#WorkProf').addClass('input-validation-error');
-                    $('#validationMsgPersonWorksLevel').text('Введите должность');
+                    $('#validationMsgPersonWorksLevel').show() ;
                 }
             });
             $('#WorkSpec').keyup(function () {
                 var str = $('#WorkSpec').val();
                 if (str != "") {
                     $('#WorkSpec').removeClass('input-validation-error');
-                    $('#validationMsgPersonWorksDuties').text('');
+                    $('#validationMsgPersonWorksDuties').hide();
                 }
                 else {
                     $('#WorkSpec').addClass('input-validation-error');
-                    $('#validationMsgPersonWorksDuties').text('Введите должностные обязанности');
+                    $('#validationMsgPersonWorksDuties').show();
                 }
             });
         });
@@ -107,17 +107,17 @@
              
             if (params['WorkPlace'] == "") {
                 $('#WorkPlace').addClass('input-validation-error');
-                $('#validationMsgPersonWorksPlace').text('Введите место работы');
+                $('#validationMsgPersonWorksPlace').show();
                 Ok = false;
             }
             if (params['WorkProf'] == "") {
                 $('#WorkProf').addClass('input-validation-error');
-                $('#validationMsgPersonWorksLevel').text('Введите должность');
+                $('#validationMsgPersonWorksLevel').show() ;
                 Ok = false;
             }
             if (params['WorkSpec'] == "") {
                 $('#WorkSpec').addClass('input-validation-error');
-                $('#validationMsgPersonWorksDuties').text('Введите должностные обязанности');
+                $('#validationMsgPersonWorksDuties').show();
                 Ok = false;
             }
             if (Ok) {
@@ -159,7 +159,7 @@
             if (val != '') {
                 if (!regex.test(val)) {
                     $('#WorkStag').addClass('input-validation-error');
-                    $('#validationMsgPersonWorksExperience').text('Введите целое число').show();
+                    $('#validationMsgPersonWorksExperience').show();
                     return false;
                 }
                 else {
@@ -389,22 +389,22 @@
                     <div class="clearfix">
                         <label for="WorkStag"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></label>
                         <input id="WorkStag" onkeyup="CheckRegExp()" type="text"/>
-                        <br /><p></p><span id="validationMsgPersonWorksExperience" style="display:none; color:Red;"></span>
+                        <br /><p></p><span id="validationMsgPersonWorksExperience" style="display:none; color:Red;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "validationMsgPersonWorksExperience").ToString()%></span>
                     </div>
                     <div class="clearfix">
                         <label for="WorkPlace"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></label>
-                        <input id="WorkPlace" type="text" /><br /><p></p><span id="validationMsgPersonWorksPlace" class="Red"></span>
+                        <input id="WorkPlace" type="text" /><br /><p></p><span id="validationMsgPersonWorksPlace" class="Red"  style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "validationMsgPersonWorksPlace").ToString()%></span>
                     </div>
                     <div class="clearfix">
                         <label for="WorkProf"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobPosition").ToString()%></label>
-                        <input id="WorkProf" type="text" /><br /><p></p><span id="validationMsgPersonWorksLevel" class="Red"></span>
+                        <input id="WorkProf" type="text" /><br /><p></p><span id="validationMsgPersonWorksLevel" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "validationMsgPersonWorksLevel").ToString()%></span>
                     </div>
                     <div class="clearfix">
                         <label for="WorkSpec"><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobFunctions").ToString()%></label>
                         <textarea id="WorkSpec" cols="80" rows="4" ></textarea>
                     </div>
                     <div>
-                        <span id="validationMsgPersonWorksDuties" class="Red"></span>
+                        <span id="validationMsgPersonWorksDuties" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "validationMsgPersonWorksDuties").ToString()%></span>
                     </div> 
                 <div class="clearfix">
                     <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
@@ -528,7 +528,7 @@
                 <% using (Html.BeginForm("NextStep", "AbiturientNew", FormMethod.Post))
                    {
                 %>
-                    <h3>Спортивные достижения</h3>
+                    <h3><%= GetGlobalResourceObject("PersonalOffice_Step5", "SportValue").ToString()%></h3>
                     <hr />
                     <div class="form">
                         <div class="clearfix">

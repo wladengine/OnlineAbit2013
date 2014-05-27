@@ -58,15 +58,16 @@
         }
     </script>
     <script type="text/javascript">
-        var PersonInfo_Surname_Message = $('#PersonInfo_Surname_Message').text(); // введите фамилию
-        var PersonInfo_Name_Message = $('#PersonInfo_Name_Message').text();       // введите имя
+
         var regexp = /^[А-Яа-яё\-\'\s]+$/i;
         function CheckSurname() {
             var ret = true;
             var val = $('#PersonInfo_Surname').val().trim();
+            var PersonInfo_Surname_Message = $('#PersonInfo_Surname_Message_Hidden').text();
             if (val == '') {
                 ret = false;
                 $('#PersonInfo_Surname').addClass('input-validation-error');
+                                $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
                 $('#PersonInfo_Surname_Message').show();
             }
             else {
@@ -74,18 +75,20 @@
                 $('#PersonInfo_Surname_Message').hide();
                 if (!regexp.test(val)) {
                     ret = false;
-                    $('#PersonInfo_Surname_Message').text('Использование латинских символов не допускается');
+                    var text = $('#MessageLatinSymbols').text();
+                    $('#PersonInfo_Surname_Message').text(text);
                     $('#PersonInfo_Surname_Message').show();
                     $('#PersonInfo_Surname').addClass('input-validation-error');
                 }
                 else {
                     if (val.length > <%=Model.ConstInfo.Surname %>) {
-                        $('#PersonInfo_Surname_Message').text('Превышена максимальная длина');
+                        var text = $('#MessageMaxLength').text();
+                        $('#PersonInfo_Surname_Message').text(text);
                         $('#PersonInfo_Surname_Message').show();
                         $('#PersonInfo_Surname').addClass('input-validation-error');
+                        ret=false;
                     }
                     else {
-                        $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
                         $('#PersonInfo_Surname_Message').hide();
                         $('#PersonInfo_Surname').removeClass('input-validation-error');
                     }
@@ -99,26 +102,29 @@
             if (val == '') {
                 ret = false;
                 $('#PersonInfo_Name').addClass('input-validation-error');
+                var PersonInfo_Name_Message = $('#PersonInfo_Name_Message_Hidden').text(); 
+                $('#PersonInfo_Name_Message').text(PersonInfo_Name_Message);
                 $('#PersonInfo_Name_Message').show();
             }
             else {
                 $('#PersonInfo_Name').removeClass('input-validation-error');
                 $('#PersonInfo_Name_Message').hide();
                 if (!regexp.test(val)) {
-                    $('#PersonInfo_Name_Message').text('Использование латинских символов не допускается');
+                    var text = $('#MessageLatinSymbols').text();
+                    $('#PersonInfo_Name_Message').text(text);
                     $('#PersonInfo_Name_Message').show();
                     $('#PersonInfo_Name').addClass('input-validation-error');
                     ret = false;
                 }
                 else {
                     if (val.length > <%=Model.ConstInfo.Name %>) { 
-                        $('#PersonInfo_Name_Message').text('Превышена максимальная длина');
+                        var text = $('#MessageMaxLength').text();
+                        $('#PersonInfo_Name_Message').text(text);
                         $('#PersonInfo_Name_Message').show();
                         $('#PersonInfo_Name').addClass('input-validation-error');
                         ret = false;
                     }
                     else {
-                        $('#PersonInfo_Name_Message').text(PersonInfo_Name_Message);
                         $('#PersonInfo_Name_Message').hide();
                         $('#PersonInfo_Name').removeClass('input-validation-error');
                     }
@@ -130,14 +136,16 @@
             var val = $('#PersonInfo_SecondName').val();
             if (val != '') {
                 if (!regexp.test(val)) {
-                    $('#PersonInfo_SecondName_Message').text('Использование латинских символов не допускается');
+                    var text = $('#MessageLatinSymbols').text();
+                    $('#PersonInfo_SecondName_Message').text(text);
                     $('#PersonInfo_SecondName_Message').show();
                     $('#PersonInfo_SecondName').addClass('input-validation-error');
                     ret = false;
                 }
                 else {
                     if (val.length > <%=Model.ConstInfo.SecondName %>) { 
-                        $('#PersonInfo_SecondName_Message').text('Превышена максимальная длина');
+                        var text = $('#MessageMaxLength').text();
+                        $('#PersonInfo_SecondName_Message').text(text);
                         $('#PersonInfo_SecondName_Message').show();
                         $('#PersonInfo_SecondName').addClass('input-validation-error');
                         ret = false;
@@ -164,22 +172,27 @@
             }
             return ret;
         }
+
         function CheckBirthPlace() {
             var ret = true;
             if ($('#PersonInfo_BirthPlace').val() == '') {
                 ret = false;
-                $('#PersonInfo_BirthPlace_Message').text('Введите место рождения');
-                $('#PersonInfo_BirthPlace').addClass('input-validation-error');
+                var PersonInfo_BirthPlace_Message =$('#PersonInfo_BirthPlace_Message_Hidden').text();
+                $('#PersonInfo_BirthPlace_Message').text(PersonInfo_BirthPlace_Message);                
                 $('#PersonInfo_BirthPlace_Message').show();
+                $('#PersonInfo_BirthPlace').addClass('input-validation-error');
             }
             else {
                  if ($('#PersonInfo_BirthPlace').val().length > <%=Model.ConstInfo.BirthPlace %>) { 
-                    $('#PersonInfo_BirthPlace_Message').text('Превышена максимальная длина');
+                    ret= false;
+                    var text = $('#MessageMaxLength').text();
+                    $('#PersonInfo_BirthPlace_Message').text(text);
                     $('#PersonInfo_BirthPlace').addClass('input-validation-error');
                     $('#PersonInfo_BirthPlace_Message').show();
                  }
                  else
                  {
+                    $('#PersonInfo_BirthPlace_Message').text(PersonInfo_BirthPlace_Message);
                     $('#PersonInfo_BirthPlace').removeClass('input-validation-error');
                     $('#PersonInfo_BirthPlace_Message').hide();
                  }
@@ -196,6 +209,11 @@
                     <span class="ui-icon ui-icon-alert"></span><%= GetGlobalResourceObject("PersonInfo", "WarningMessagePersonLocked").ToString()%>
                 </div>
             <% } %>
+            <span id = "MessageLatinSymbols" style="display: none;"><%= GetGlobalResourceObject("PersonInfo", "MessageLatinSymbols").ToString()%></span>
+            <span id = "MessageMaxLength" style="display: none;"><%= GetGlobalResourceObject("PersonInfo", "MessageMaxLength").ToString()%></span>
+
+
+
             <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">
                 <h3><%= GetGlobalResourceObject("PersonalOffice_Step1", "HeaderPersonalInfo").ToString()%></h3>
                 <hr />
@@ -209,8 +227,10 @@
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Surname)%>
                         <br /><p></p>
-                        <span id="PersonInfo_Surname_Message" class="Red" style="display:none">
+                        <span id="PersonInfo_Surname_Message_Hidden"  style="display:none">
                             <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_Surname_Message").ToString()%> 
+                        </span>
+                        <span id="PersonInfo_Surname_Message" class="Red" style="display:none"> 
                         </span>
                     </div>
                     <div class="clearfix">
@@ -219,8 +239,10 @@
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.Name)%>
                         <br /><p></p>
-                        <span id="PersonInfo_Name_Message" class="Red" style="display:none">
+                        <span id="PersonInfo_Name_Message_Hidden" style="display:none">
                             <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_Name_Message").ToString()%>
+                        </span>
+                        <span id="PersonInfo_Name_Message" class="Red" style="display:none"> 
                         </span>
                     </div>
                     <div class="clearfix">
@@ -252,8 +274,10 @@
                         </label>
                         <%= Html.TextBoxFor(x => x.PersonInfo.BirthPlace)%>
                         <br /><p></p>
-                        <span id="PersonInfo_BirthPlace_Message" class="Red" style="display:none">
+                        <span id="PersonInfo_BirthPlace_Message_Hidden" style="display:none">
                             <%= GetGlobalResourceObject("PersonalOffice_Step1", "PersonInfo_BirthPlace_Message").ToString()%>
+                        </span><br />
+                        <span id="PersonInfo_BirthPlace_Message" class="Red" style="display:none"> 
                         </span>
                     </div>
                     <div class="clearfix">

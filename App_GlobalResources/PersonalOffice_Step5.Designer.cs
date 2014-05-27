@@ -334,6 +334,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Спортивные достижения.
+        /// </summary>
+        internal static string SportValue {
+            get {
+                return ResourceManager.GetString("SportValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Введите должностные обязанности.
+        /// </summary>
+        internal static string validationMsgPersonWorksDuties {
+            get {
+                return ResourceManager.GetString("validationMsgPersonWorksDuties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Введите целое число.
+        /// </summary>
+        internal static string validationMsgPersonWorksExperience {
+            get {
+                return ResourceManager.GetString("validationMsgPersonWorksExperience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Введите должность.
+        /// </summary>
+        internal static string validationMsgPersonWorksLevel {
+            get {
+                return ResourceManager.GetString("validationMsgPersonWorksLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Введите место работы.
+        /// </summary>
+        internal static string validationMsgPersonWorksPlace {
+            get {
+                return ResourceManager.GetString("validationMsgPersonWorksPlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Опыт работы (практики).
         /// </summary>
         internal static string WorkExperienceHeader {

@@ -1041,8 +1041,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 Mag_ApplicationModel model = new Mag_ApplicationModel();
                 model.Applications = new List<Mag_ApplicationSipleEntity>();
                 model.CommitId = Guid.NewGuid().ToString("N");
-
-                DataTable tbl;
+ 
                 model.Enabled = true;
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
                    new SortedList<string, object>() { { "@Id", PersonId } });
@@ -3050,8 +3049,7 @@ SELECT [User].Email
             bool bIsSecondWave = false;
             if (bool.TryParse(IsSecondWave, out bIsSecondWave))
                 bIsSecondWave = false;
-
-            string query;
+             
             SortedList<string, object> dic = new SortedList<string, object>();
             Guid EgeCertificateId = Guid.Empty;
             

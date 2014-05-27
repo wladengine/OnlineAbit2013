@@ -1252,59 +1252,32 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 model.Applications = new List<Mag_ApplicationSipleEntity>();
                 model.CommitId = Guid.NewGuid().ToString("N");
 
-                DataTable tbl;
                 model.Enabled = true;
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
-                  new SortedList<string, object>() { { "@Id", PersonId } });
-                if (iAG_SchoolTypeId == 1)
+                   new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
                 {
-                    // ссылка на объект  и пр., когда SchoolExitClassId = null
-                    tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
-                        INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
-                    if (tbl.Rows.Count == 0)
+                    // окончил не вуз
+                    model.Enabled = false;
+                }
+                else
+                {
+                    int? iQualificationId = (int?)Util.AbitDB.GetValue("SELECT QualificationId FROM PersonHighEducationInfo WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (iQualificationId.HasValue)
                     {
-                        model.Enabled = false;
+                        if ((int)iQualificationId != 1)
+                            model.MaxBlocks = maxBlockAspirant;
+                        else
+                            model.Enabled = false; 
                     }
                     else
-                    {
-                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
-                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
-
-                        if (iAG_EntryClassValue < 11)
-                        {
-                            model.Enabled = false;
-                        }
-                        else
-                        {
-                            model.Enabled = true;
-                        }
-                    }
+                        model.Enabled = false;                    
                 }
-                model.MaxBlocks = maxBlockAspirant;
-                string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
-                tbl = Util.AbitDB.GetDataTable(query, null);
-                model.StudyFormList =
-                    (from DataRow rw in tbl.Rows
-                     select new
-                     {
-                         Value = rw.Field<int>("StudyFormId"),
-                         Text = rw.Field<string>("StudyFormName")
-                     }).AsEnumerable()
-                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                    .ToList();
 
-                query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
-                tbl = Util.AbitDB.GetDataTable(query, null);
-                model.StudyBasisList =
-                    (from DataRow rw in tbl.Rows
-                     select new
-                     {
-                         Value = rw.Field<int>("StudyBasisId"),
-                         Text = rw.Field<string>("StudyBasisName")
-                     }).AsEnumerable()
-                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                     .ToList();
-                return View("NewApplication_1kurs", model);
+                model.StudyFormList = Util.GetStudyFormList();
+                model.StudyBasisList = Util.GetStudyBasisList();
+                  
+                return View("NewApplication_Aspirant", model);
             }
         }
 
@@ -1335,21 +1308,14 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (c == 2)
                     {
                         if (iAG_SchoolTypeId != 4)
-                        {
-                            // окончил школу 
+                        { 
                             model.Enabled = false;
-                        }
-                        else
-                        {
-                            // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
-                            model.MaxBlocks = maxBlock_mag; 
-                        }
+                        } 
                     }
                     else if (c == 1)
                     {
                         if (iAG_SchoolTypeId == 1)
-                        {
-                            // ссылка на объект  и пр., когда SchoolExitClassId = null
+                        { 
                             tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
                              INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                             if (tbl.Rows.Count == 0)
@@ -1364,15 +1330,26 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 if (iAG_EntryClassValue < 11)
                                 {
                                     model.Enabled = false;
-                                }
-                                else
-                                {
-                                    model.Enabled = true;
-                                }
+                                } 
                             }
                         }
                     }
-                    
+                    else if (c == 3)
+                    {
+                        if (iAG_SchoolTypeId == 4)
+                        {
+                            int? iQualificationId = (int?)Util.AbitDB.GetValue("SELECT QualificationId FROM PersonHighEducationInfo WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                            if (iQualificationId.HasValue)
+                            {
+                                if ((int)iQualificationId == 1)
+                                    model.Enabled = false; 
+                            }
+                            else
+                                model.Enabled = false; 
+                        }
+                    }
+
+
                     model.StudyFormList = Util.GetStudyFormList();
                     model.StudyBasisList = Util.GetStudyBasisList();
                     Guid CommitId = Guid.Parse(Id);
@@ -1398,7 +1375,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         model.MaxBlocks = maxBlockSPO;
                         return View("NewApplication_SPO", model);
                     }
-                    // магистратура
+                    else if (c == 4)
+                    {
+                        model.MaxBlocks = maxBlockAspirant;
+                        return View("NewApplication_Aspirant", model);
+                    } 
 
                 }
                 else
@@ -1568,6 +1549,13 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         }
                         else
                             return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });
+                        int? iQualificationId = (int?)Util.AbitDB.GetValue("SELECT QualificationId FROM PersonHighEducationInfo WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                        if (iQualificationId.HasValue)
+                        {
+                            model.ExitClassId = (int)iQualificationId;
+                        }
+                        else
+                            return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });
                     }
                 }
                 else
@@ -1644,7 +1632,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 case "7": { return RedirectToAction("page404", "AbiturientNew"); } //Смена образовательной программы
                 case "8": { return RedirectToAction("NewApplication_AG", "AbiturientNew"); } //Поступление в Академическую Гимназию
                 case "9": { return RedirectToAction("NewApplication_SPO", "AbiturientNew"); } //Поступление в СПО
-                case "10": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление в аспирантуру гражданам РФ
+                case "10": { return RedirectToAction("NewApplication_Aspirant", "AbiturientNew"); } //Поступление в аспирантуру гражданам РФ
                 case "11": { return RedirectToAction("page404", "AbiturientNew"); } //Поступление в аспирантуру иностранным гражданам
                 default: { return RedirectToAction("page404", "AbiturientNew"); }
             }  
@@ -1872,6 +1860,39 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
                 Util.CommitApplication(CommitId, PersonId, context);
             } 
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
+        }
+        [HttpPost]
+        public ActionResult NewApp_Asp(Mag_ApplicationModel model)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+
+            string sCommitId = Request.Form["CommitId"];
+            Guid CommitId;
+            if (!Guid.TryParse(sCommitId, out CommitId))
+                return Json(Resources.ServerMessages.IncorrectGUID);
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 15).Count() > 0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
+                    model.MaxBlocks = maxBlockAspirant;
+                    model.HasError = true;
+                    model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    return View("NewApplication_Aspirant", model);
+                }
+
+                Util.CommitApplication(CommitId, PersonId, context);
+            }
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
         }
         [HttpPost]
@@ -4242,7 +4263,7 @@ Order by cnt desc";
                 });
                 context.SaveChanges();
 
-                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N"), Faculty = faculty });
+                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N"), Faculty = faculty, isgosline = IsGosLine });
             }
         }
 
@@ -4363,8 +4384,7 @@ Order by cnt desc";
 
                 Guid EntryId = EntryList.First().EntryId;
                 DateTime? timeOfStart = EntryList.First().DateOfStart;
-                DateTime? timeOfStop = EntryList.First().DateOfClose;
-               
+                DateTime? timeOfStop = EntryList.First().DateOfClose; 
 
                 return Json(new { IsOk = true, FreeEntries = true });
             }

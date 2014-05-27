@@ -154,7 +154,7 @@
 <hr />
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
-<table class="paginate">
+<table class="paginate" style="width: 659px;">
     <% if (Application.Enabled) { %>
     <tr>
         <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1">Приоритет</abbr></td>

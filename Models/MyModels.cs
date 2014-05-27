@@ -851,6 +851,7 @@ namespace OnlineAbit2013.Models
         public string FacultyName { get; set; }
         public bool Hostel { get; set; }
         public int StudyLevelGroupId { get; set; }
+        public bool? IsGosLine { get; set; }
     }
 
     public class SPO_ApplicationModel

@@ -1588,6 +1588,7 @@ WHERE PersonId=@PersonId ";
                          Entry.ProfileId,
                          Entry.ProfileName,
                          App.HostelEduc,
+                         App.IsGosLine,
                          Entry.StudyLevelGroupId
                      }).ToList();
                 foreach (var App in AppList)
@@ -1610,6 +1611,7 @@ WHERE PersonId=@PersonId ";
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
                         SpecializationName = App.ProfileName,
                         Hostel = App.HostelEduc,
+                        IsGosLine = App.IsGosLine,
                         StudyLevelGroupId = App.StudyLevelGroupId
                     };
                     string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 

@@ -127,7 +127,7 @@
     <value>Поступление в аспирантуру иностранным гражданам</value>
   </data>
   <data name="AbiturientType2" xml:space="preserve">
-    <value>Магистратура</value>
+    <value>Поступление в магистратуру</value>
   </data>
   <data name="AbiturientType3" xml:space="preserve">
     <value>Перевод из российского университета в СПбГУ</value>

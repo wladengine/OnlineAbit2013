@@ -234,4 +234,10 @@
   <data name="HeaderMagProfile" xml:space="preserve">
     <value>Выберите магистерскую программу</value>
   </data>
+  <data name="Select_Aspirantura" xml:space="preserve">
+    <value>Аспирантура</value>
+  </data>
+  <data name="BlockData_GosLine" xml:space="preserve">
+    <value>Гослиния</value>
+  </data>
 </root>

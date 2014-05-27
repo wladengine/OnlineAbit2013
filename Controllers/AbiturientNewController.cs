@@ -1952,6 +1952,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(CommitId, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+
+            Guid VersionId = Guid.NewGuid();
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1989,12 +1992,13 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 MotivateMailModel mdl = new MotivateMailModel()
                 {
                     Apps = apps,
-                    UILanguage = Util.GetUILang(PersonId)
+                    UILanguage = Util.GetUILang(PersonId),
+                    VersionId = VersionId.ToString()
                 };
                 return View(mdl);
             }
         }
-        public ActionResult PriorityChangerApplication(string AppId)
+        public ActionResult PriorityChangerApplication(string AppId, string V)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -2002,6 +2006,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             Guid gAppId;
             if (!Guid.TryParse(AppId, out gAppId))
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
+
+            Guid gVersionId;
+            if (!Guid.TryParse(V, out gVersionId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
             bool isEng = Util.GetCurrentThreadLanguageIsEng();
@@ -2015,39 +2023,69 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
                      join OPIE in context.ObrazProgramInEntry on App.EntryId equals OPIE.EntryId
+
                      where App.PersonId == PersonId && App.IsCommited == true && App.Enabled == true && App.Id == gAppId
                      select new
                      {
                          Id = App.Id,
                          CommitId = App.Id,
                          CommitName = isEng ? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
-                         App.EntryId
+                         App.EntryId,
                      }).FirstOrDefault();
 
-                var Ops = context.ObrazProgramInEntry.Where(x => x.EntryId == appl.EntryId).ToList()
-                    .Select(x => new KeyValuePair<Guid, ObrazProgramInEntrySmallEntity>(x.Id, new ObrazProgramInEntrySmallEntity() 
+                var appPriors = (from AppDetails in context.ApplicationDetails
+                                 where AppDetails.ApplicationId == gAppId
+                                 select new
+                                 {
+                                     AppDetails.ObrazProgramInEntryId,
+                                     AppDetails.ObrazProgramInEntryPriority,
+                                 }).ToList();
+
+                var Ops = 
+                    (from OPInEntry in context.ObrazProgramInEntry
+                     where OPInEntry.EntryId == appl.EntryId
+                     select new StandartObrazProgramInEntryRow()
+                     {
+                         Id =  OPInEntry.Id,
+                         Name = isEng ? OPInEntry.SP_ObrazProgram.NameEng : OPInEntry.SP_ObrazProgram.Name,
+                         Priority = OPInEntry.DefaultPriorityValue,
+                         DefaultPriority = OPInEntry.DefaultPriorityValue
+                     }).ToList();
+                     
+
+                int ind = 0;
+                foreach (var op in Ops)
+                {
+                    if (appPriors.Where(x => x.ObrazProgramInEntryId == op.Id).Count() > 0)
+                        Ops[ind].Priority = appPriors.Where(x => x.ObrazProgramInEntryId == op.Id).First().ObrazProgramInEntryPriority;
+                    ind++;
+                }
+
+                var RetVal = Ops.OrderBy(x => x.Priority)
+                    .Select(x => new KeyValuePair<Guid, ObrazProgramInEntrySmallEntity>(x.Id, new ObrazProgramInEntrySmallEntity()
                     {
-                        Name = isEng ? x.SP_ObrazProgram.Name : x.SP_ObrazProgram.NameEng, 
+                        Name = x.Name,
                         HasProfileInObrazProgramInEntry = (context.ProfileInObrazProgramInEntry.Where(z => z.ObrazProgramInEntryId == x.Id).Count() > 0)
-                    })).ToList();
+                    })).Distinct().ToList();
 
                 if (Ops.Count == 1)
-                    return RedirectToAction("PriorityChangerProfile", new RouteValueDictionary() { { "AppId", AppId }, { "OPIE", Ops.First().Key.ToString("N") } });
+                    return RedirectToAction("PriorityChangerProfile", new RouteValueDictionary() { { "AppId", AppId }, { "OPIE", RetVal.First().Key.ToString("N") } });
 
                 else //Ops.Count > 1
                 {
-                    PriorityChangerApplication mdl = new PriorityChangerApplication()
+                    PriorityChangerApplicationModel mdl = new PriorityChangerApplicationModel()
                     {
                         ApplicationId = gAppId,
                         CommitId = appl.CommitId,
                         CommitName = appl.CommitName,
-                        lstObrazPrograms = Ops,
+                        lstObrazPrograms = RetVal,
+                        ApplicationVersionId = gVersionId
                     };
                     return View(mdl);
                 }
             }
         }
-        public ActionResult PriorityChangerProfile(string AppId, string OPIE)
+        public ActionResult PriorityChangerProfile(string AppId, string OPIE, string V)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -2061,6 +2099,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(OPIE, out gObrazProgramInEntryId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            Guid gVersionId;
+            if (!Guid.TryParse(V, out gVersionId))
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
+
             bool isEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
@@ -2071,27 +2113,52 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 var appl =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
-                     join OPInE in context.ObrazProgramInEntry on App.EntryId equals OPInE.EntryId
-                     join ProfInOPIE in context.ProfileInObrazProgramInEntry on OPInE.Id equals ProfInOPIE.ObrazProgramInEntryId
                      where App.PersonId == PersonId && App.IsCommited == true && App.Enabled == true && App.Id == gAppId
-                     && OPInE.Id == gObrazProgramInEntryId
                      select new
                      {
                          Id = App.Id,
                          CommitId = App.Id,
                          CommitName = isEng ? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
-                         App.EntryId
+                         App.EntryId,
                      }).FirstOrDefault();
 
-                var profs = context.ProfileInObrazProgramInEntry.Where(x => x.ObrazProgramInEntryId == gObrazProgramInEntryId).Select(x => new { x.Id, x.SP_Profile.Name }).ToList()
-                    .Select(x => new KeyValuePair<Guid, string>(x.Id, x.Name)).ToList();
+                var appPriors =
+                    (from AppDetails in context.ApplicationDetails
+                     where AppDetails.ApplicationId == gAppId
+                     select new
+                     {
+                         AppDetails.ProfileInObrazProgramInEntryId,
+                         AppDetails.ProfileInObrazProgramInEntryPriority,
+                     }).ToList();
 
-                PriorityChangerProfile mdl = new PriorityChangerProfile()
+                var Ops =
+                    (from ProfInOPInEntry in context.ProfileInObrazProgramInEntry
+                     where ProfInOPInEntry.ObrazProgramInEntryId == gObrazProgramInEntryId
+                     select new StandartObrazProgramInEntryRow()
+                     {
+                         Id = ProfInOPInEntry.Id,
+                         Name = isEng ? ProfInOPInEntry.SP_Profile.NameEng : ProfInOPInEntry.SP_Profile.Name,
+                         Priority = ProfInOPInEntry.DefaultPriorityValue ?? 0,
+                         DefaultPriority = ProfInOPInEntry.DefaultPriorityValue ?? 0
+                     }).ToList();
+
+                int ind = 0;
+                foreach (var op in Ops)
+                {
+                    if (appPriors.Where(x => x.ProfileInObrazProgramInEntryId == op.Id).Count() > 0)
+                        Ops[ind].Priority = appPriors.Where(x => x.ProfileInObrazProgramInEntryId == op.Id).First().ProfileInObrazProgramInEntryPriority ?? 0;
+                    ind++;
+                }
+
+                var RetVal = Ops.OrderBy(x => x.Priority).Select(x => new KeyValuePair<Guid, string>(x.Id, x.Name)).Distinct().ToList();
+
+                PriorityChangerProfileModel mdl = new PriorityChangerProfileModel()
                 {
                     ApplicationId = gAppId,
                     CommitId = appl.CommitId,
                     CommitName = appl.CommitName,
-                    lstProfiles = profs,
+                    lstProfiles = RetVal,
+                    ApplicationVersionId = gVersionId
                 };
                 return View(mdl);
             }
@@ -2139,8 +2206,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 catch { }
 
-
-
                 query = "UPDATE [AG_Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId";
                 try { 
                     Util.AbitDB.ExecuteQuery(query, dic); 
@@ -2150,108 +2215,339 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
         }
         [HttpPost]
-        public ActionResult ChangePriorityApplication(MotivateMailModel model)
+        public ActionResult PriorityChangeApplication(PriorityChangerApplicationModel model)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
-            Guid gCommId;
-            if (!Guid.TryParse(model.CommitId, out gCommId))
-                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
-
-            //создаём новую версию изменений
-            SortedList<string, object> slParams = new SortedList<string, object>();
-            slParams.Add("CommitId", gCommId);
-            slParams.Add("VersionDate", DateTime.Now);
-            string val = Util.AbitDB.InsertRecordReturnValue("ApplicationCommitVersion", slParams);
-            int iCommitVersionId = 0;
-            int.TryParse(val, out iCommitVersionId);
+            Guid gCommId = model.CommitId;
 
             int prior = 0;
             string[] allKeys = Request.Form.AllKeys;
-            foreach (string key in allKeys)
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                Guid appId;
-                if (!Guid.TryParse(key, out appId))
-                    continue;
+                if (context.ApplicationVersion.Where(x => x.Id == model.ApplicationVersionId).Count() == 0)
+                    context.ApplicationVersion.AddObject(new ApplicationVersion() { Id = model.ApplicationVersionId, ApplicationId = model.ApplicationId, VersionDate = DateTime.Now });
 
-                string query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId;" +
-                    " INSERT INTO [ApplicationCommitVersonDetails] (ApplicationCommitVersionId, ApplicationId, Priority) VALUES (@ApplicationCommitVersionId, @Id, @Priority)";
-                SortedList<string, object> dic = new SortedList<string, object>();
-                dic.AddItem("@Priority", ++prior);
-                dic.AddItem("@Id", appId);
-                dic.AddItem("@PersonId", PersonId);
-                dic.AddItem("@CommitId", gCommId);
-                dic.AddItem("@ApplicationCommitVersionId", iCommitVersionId);
-
-                try
+                var s = context.ApplicationDetails.Where(x => x.ApplicationId == model.ApplicationId).Select(x => new { x.Id, x.ObrazProgramInEntryId, x.ProfileInObrazProgramInEntryId }).ToList();
+                foreach (string key in allKeys)
                 {
-                    Util.AbitDB.ExecuteQuery(query, dic);
+                    Guid ObrazProgramInEntryId;
+                    if (!Guid.TryParse(key, out ObrazProgramInEntryId))
+                        continue;
+
+                    prior++;
+
+                    var ProfInOpInEnt = context.ProfileInObrazProgramInEntry.Where(x => x.ObrazProgramInEntryId == ObrazProgramInEntryId)
+                        .Select(x => new { x.Id, x.DefaultPriorityValue }).ToList();
+
+                    var versDetails = s.Where(x => x.ObrazProgramInEntryId == ObrazProgramInEntryId).ToList();
+
+                    if (versDetails.Count == 0) //ещё ничего не создано
+                    {
+                        if (ProfInOpInEnt.Count > 0)
+                        {
+                            foreach (var p in ProfInOpInEnt)
+                            {
+                                context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    ApplicationId = model.ApplicationId,
+                                    ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                    ProfileInObrazProgramInEntryId = p.Id,
+                                    ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                });
+                                //вставляем в логи
+                                if (context.ApplicationVersionDetails.Where(x => x.ApplicationVersionId == model.ApplicationVersionId && ObrazProgramInEntryId == ObrazProgramInEntryId && x.ObrazProgramInEntryPriority == prior).Count() == 0)
+                                {
+                                    context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                    {
+                                        ApplicationVersionId = model.ApplicationVersionId,
+                                        ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            context.ApplicationDetails.AddObject(new ApplicationDetails()
+                            {
+                                Id = Guid.NewGuid(),
+                                ApplicationId = model.ApplicationId,
+                                ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                ObrazProgramInEntryPriority = prior,
+                            });
+                            //вставляем в логи
+                            context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                            {
+                                ApplicationVersionId = model.ApplicationVersionId,
+                                ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                ObrazProgramInEntryPriority = prior,
+                            });
+                        }
+                    }
+                    else //уже что-то есть - нужно лишь обновить и дополнить, если требуется
+                    {
+                        if (ProfInOpInEnt.Count > 0)
+                        {
+                            foreach (var p in ProfInOpInEnt) //пробегаем по всем профилям
+                            {
+                                if (versDetails.Where(x => x.ProfileInObrazProgramInEntryId == p.Id).Count() == 0) //если нет для профиля записи - создать
+                                {
+                                    context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                    {
+                                        ApplicationId = model.ApplicationId,
+                                        ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue // со стандартным приоритетом
+                                    });
+                                    //вставляем в логи
+                                    context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                    {
+                                        ApplicationVersionId = model.ApplicationVersionId,
+                                        ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                    });
+                                }
+                                else
+                                {
+                                    var avd = context.ApplicationDetails
+                                        .Where(x => x.ProfileInObrazProgramInEntryId == p.Id && x.ObrazProgramInEntryId == ObrazProgramInEntryId && x.ApplicationId == model.ApplicationId)
+                                        .FirstOrDefault();
+                                    if (avd == null)
+                                    {
+                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                        {
+                                            ApplicationId = model.ApplicationId,
+                                            ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                            ObrazProgramInEntryPriority = prior,
+                                            ProfileInObrazProgramInEntryId = p.Id,
+                                            ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue // со стандартным приоритетом
+                                        });
+                                        //вставляем в логи
+                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                        {
+                                            ApplicationVersionId = model.ApplicationVersionId,
+                                            ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                            ObrazProgramInEntryPriority = prior,
+                                            ProfileInObrazProgramInEntryId = p.Id,
+                                            ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                        });
+                                    }
+                                    else // если есть - обновить только приоритет
+                                    {
+                                        avd.ObrazProgramInEntryPriority = prior;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var avd = context.ApplicationDetails
+                                        .Where(x => x.ObrazProgramInEntryId == ObrazProgramInEntryId && x.ApplicationId == model.ApplicationId)
+                                        .FirstOrDefault();
+                            if (avd == null)
+                            {
+                                context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                {
+                                    ApplicationId = model.ApplicationId,
+                                    ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                });
+                                //вставляем в логи
+                                context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                {
+                                    ApplicationVersionId = model.ApplicationVersionId,
+                                    ObrazProgramInEntryId = ObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                });
+                            }
+                            else
+                            {
+                                avd.ObrazProgramInEntryPriority = prior;
+                            }
+                        }
+                    }
+
+                    context.SaveChanges();
                 }
-                catch { }
-
-
-
-                query = "UPDATE [AG_Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId";
-                try
-                {
-                    Util.AbitDB.ExecuteQuery(query, dic);
-                }
-                catch { }
             }
-            return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
+            return RedirectToAction("PriorityChangerApplication", new RouteValueDictionary() { { "AppId", model.ApplicationId.ToString("N") }, { "V", model.ApplicationVersionId.ToString("N") } });
         }
         [HttpPost]
-        public ActionResult ChangePriorityProfile(MotivateMailModel model)
+        public ActionResult ChangePriorityProfile(PriorityChangerProfileModel model)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
-            Guid gCommId;
-            if (!Guid.TryParse(model.CommitId, out gCommId))
-                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
-
-            //создаём новую версию изменений
-            SortedList<string, object> slParams = new SortedList<string, object>();
-            slParams.Add("CommitId", gCommId);
-            slParams.Add("VersionDate", DateTime.Now);
-            string val = Util.AbitDB.InsertRecordReturnValue("ApplicationCommitVersion", slParams);
-            int iCommitVersionId = 0;
-            int.TryParse(val, out iCommitVersionId);
+            Guid gCommId = model.CommitId;
 
             int prior = 0;
             string[] allKeys = Request.Form.AllKeys;
-            foreach (string key in allKeys)
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                Guid appId;
-                if (!Guid.TryParse(key, out appId))
-                    continue;
+                if (context.ApplicationVersion.Where(x => x.Id == model.ApplicationVersionId).Count() == 0)
+                    context.ApplicationVersion.AddObject(new ApplicationVersion() { Id = model.ApplicationVersionId, ApplicationId = model.ApplicationId, VersionDate = DateTime.Now });
 
-                string query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId;" +
-                    " INSERT INTO [ApplicationCommitVersonDetails] (ApplicationCommitVersionId, ApplicationId, Priority) VALUES (@ApplicationCommitVersionId, @Id, @Priority)";
-                SortedList<string, object> dic = new SortedList<string, object>();
-                dic.AddItem("@Priority", ++prior);
-                dic.AddItem("@Id", appId);
-                dic.AddItem("@PersonId", PersonId);
-                dic.AddItem("@CommitId", gCommId);
-                dic.AddItem("@ApplicationCommitVersionId", iCommitVersionId);
-
-                try
+                var s = context.ApplicationDetails.Where(x => x.ApplicationId == model.ApplicationId).Select(x => new { x.Id, x.ProfileInObrazProgramInEntryId, x.ProfileInObrazProgramInEntryPriority }).ToList();
+                foreach (string key in allKeys)
                 {
-                    Util.AbitDB.ExecuteQuery(query, dic);
+                    Guid ProfileInObrazProgramInEntryId;
+                    if (!Guid.TryParse(key, out ProfileInObrazProgramInEntryId))
+                        continue;
+
+                    prior++;
+
+                    var ProfInOpInEnt = context.ProfileInObrazProgramInEntry.Where(x => x.Id == ProfileInObrazProgramInEntryId)
+                        .Select(x => new { x.Id, x.DefaultPriorityValue, x.ObrazProgramInEntryId, ObrazProgramInEntryDefaultPriorityValue = x.ObrazProgramInEntry.DefaultPriorityValue }).ToList();
+                    
+
+                    var versDetails = s.Where(x => x.ProfileInObrazProgramInEntryId == ProfileInObrazProgramInEntryId).ToList();
+
+                    if (versDetails.Count == 0) //ещё ничего не создано
+                    {
+                        if (ProfInOpInEnt.Count > 0)
+                        {
+                            foreach (var p in ProfInOpInEnt)
+                            {
+                                context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    ApplicationId = model.ApplicationId,
+                                    ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                    ProfileInObrazProgramInEntryId = p.Id,
+                                    ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                });
+                                //вставляем в логи
+                                if (context.ApplicationVersionDetails.Where(x => x.ApplicationVersionId == model.ApplicationVersionId && ProfileInObrazProgramInEntryId == ProfileInObrazProgramInEntryId && x.ObrazProgramInEntryPriority == prior).Count() == 0)
+                                {
+                                    context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                    {
+                                        ApplicationVersionId = model.ApplicationVersionId,
+                                        ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            context.ApplicationDetails.AddObject(new ApplicationDetails()
+                            {
+                                Id = Guid.NewGuid(),
+                                ApplicationId = model.ApplicationId,
+                                ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                ObrazProgramInEntryPriority = prior,
+                            });
+                            //вставляем в логи
+                            context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                            {
+                                ApplicationVersionId = model.ApplicationVersionId,
+                                ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                ObrazProgramInEntryPriority = prior,
+                            });
+                        }
+                    }
+                    else //уже что-то есть - нужно лишь обновить и дополнить, если требуется
+                    {
+                        if (ProfInOpInEnt.Count > 0)
+                        {
+                            foreach (var p in ProfInOpInEnt) //пробегаем по всем профилям
+                            {
+                                if (versDetails.Where(x => x.ProfileInObrazProgramInEntryId == p.Id).Count() == 0) //если нет для профиля записи - создать
+                                {
+                                    context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                    {
+                                        ApplicationId = model.ApplicationId,
+                                        ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue // со стандартным приоритетом
+                                    });
+                                    //вставляем в логи
+                                    context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                    {
+                                        ApplicationVersionId = model.ApplicationVersionId,
+                                        ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                        ObrazProgramInEntryPriority = prior,
+                                        ProfileInObrazProgramInEntryId = p.Id,
+                                        ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                    });
+                                }
+                                else
+                                {
+                                    var avd = context.ApplicationDetails
+                                        .Where(x => x.ProfileInObrazProgramInEntryId == p.Id && x.ObrazProgramInEntryId == ProfileInObrazProgramInEntryId && x.ApplicationId == model.ApplicationId)
+                                        .FirstOrDefault();
+                                    if (avd == null)
+                                    {
+                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                        {
+                                            ApplicationId = model.ApplicationId,
+                                            ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                            ObrazProgramInEntryPriority = prior,
+                                            ProfileInObrazProgramInEntryId = p.Id,
+                                            ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue // со стандартным приоритетом
+                                        });
+                                        //вставляем в логи
+                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                        {
+                                            ApplicationVersionId = model.ApplicationVersionId,
+                                            ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                            ObrazProgramInEntryPriority = prior,
+                                            ProfileInObrazProgramInEntryId = p.Id,
+                                            ProfileInObrazProgramInEntryPriority = p.DefaultPriorityValue
+                                        });
+                                    }
+                                    else // если есть - обновить только приоритет
+                                    {
+                                        avd.ObrazProgramInEntryPriority = prior;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var avd = context.ApplicationDetails
+                                        .Where(x => x.ObrazProgramInEntryId == ProfileInObrazProgramInEntryId && x.ApplicationId == model.ApplicationId)
+                                        .FirstOrDefault();
+                            if (avd == null)
+                            {
+                                context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                {
+                                    ApplicationId = model.ApplicationId,
+                                    ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                });
+                                //вставляем в логи
+                                context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                {
+                                    ApplicationVersionId = model.ApplicationVersionId,
+                                    ObrazProgramInEntryId = ProfileInObrazProgramInEntryId,
+                                    ObrazProgramInEntryPriority = prior,
+                                });
+                            }
+                            else
+                            {
+                                avd.ObrazProgramInEntryPriority = prior;
+                            }
+                        }
+                    }
+
+                    context.SaveChanges();
                 }
-                catch { }
-
-
-
-                query = "UPDATE [AG_Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId";
-                try
-                {
-                    Util.AbitDB.ExecuteQuery(query, dic);
-                }
-                catch { }
             }
             return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", model.CommitId } });
         }

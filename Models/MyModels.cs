@@ -698,6 +698,7 @@ namespace OnlineAbit2013.Models
     public class MotivateMailModel : BaseModel
     {
         public string CommitId { get; set; }
+        public string VersionId { get; set; }
         public List<SimpleApplication> Apps { get; set; }
         public List<string> lstApps { get; set; }
     }
@@ -903,5 +904,14 @@ namespace OnlineAbit2013.Models
         public int? PassportAuthor { get; set; }
         public int? Parents { get; set; }
         public int? AddInfo { get; set; } 
+    }
+
+    public class StandartObrazProgramInEntryRow
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public bool HasProfiles { get; set; }
+        public int Priority { get; set; }
+        public int DefaultPriority { get; set; }
     }
 }

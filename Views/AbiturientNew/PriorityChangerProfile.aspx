@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.PriorityChangerProfile>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.PriorityChangerProfileModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     PriemChangerProfile
@@ -24,7 +24,7 @@
     <p class="message info">
         Расставьте приоритеты профилей внутри отдельно заданной образовательной программы.
     </p>
-    <form action="/AbiturientNew/ChangePriorityProfile" method="post">
+    <form action="/AbiturientNew/PriorityChangeProfile" method="post">
         <ul id="sortable">
     <% for (int i = 0; i < Model.lstProfiles.Count; i++) { %>
             <li class="message success">
@@ -39,6 +39,7 @@
             </li>
     <% } %>
         </ul>
+        <button id="btnSave" type="submit" class="button button-green">Сохранить</button><br />
     </form>
 </asp:Content>
 

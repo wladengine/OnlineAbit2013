@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.PriorityChangerApplication>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.PriorityChangerApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     Смена приоритетов внутри конкурса
@@ -24,7 +24,11 @@
     <p class="message info">
         Расставьте приоритеты образовательных программ внутри отдельно заданного конкурса.
     </p>
-    <form>
+    <form action="../AbiturientNew/PriorityChangeApplication" method="post">
+        <%= Html.HiddenFor(x => x.ApplicationId) %>
+        <%= Html.HiddenFor(x => x.ApplicationVersionId) %>
+        <%= Html.HiddenFor(x => x.CommitId) %>
+        <%= Html.HiddenFor(x => x.CommitName) %>
         <ul id="sortable">
         <% for (int i = 0; i < Model.lstObrazPrograms.Count; i++) { %>
             <li class="message success">
@@ -36,11 +40,12 @@
                 </table>
                 <input type="hidden" name="<%= Model.lstObrazPrograms[i].Key.ToString("N") %>" />
                 <% if (Model.lstObrazPrograms[i].Value.HasProfileInObrazProgramInEntry) { %>
-                <a href="../AbiturientNew/PriorityChangerProfile?AppId=<%= Model.ApplicationId.ToString("N") %>&OPIE=<%= Model.lstObrazPrograms[i].Key.ToString("N") %>">Для данной образовательной программы Вы можете указать приоритетность профилей</a>
+                <a href="../AbiturientNew/PriorityChangerProfile?AppId=<%= Model.ApplicationId.ToString("N") %>&OPIE=<%= Model.lstObrazPrograms[i].Key.ToString("N") %>&V=<%= Model.ApplicationVersionId.ToString("N") %>">Для данной образовательной программы Вы можете указать приоритетность профилей</a>
                 <% } %>
             </li>
         <% } %>
         </ul>
+        <button id="btnSave" type="submit" class="button button-green">Сохранить</button><br />
     </form>
 </asp:Content>
 

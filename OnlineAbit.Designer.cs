@@ -71,6 +71,14 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ObrazProgramInEntry__Entry", "C_Entry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.C_Entry), "ObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ObrazProgramInEntry), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ObrazProgramInEntry_SP_ObrazProgram", "SP_ObrazProgram", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.SP_ObrazProgram), "ObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ObrazProgramInEntry), true)]
 [assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ProfileInObrazProgramInEntry_Profile", "SP_Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.SP_Profile), "ProfileInObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ProfileInObrazProgramInEntry), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.ApplicationVersion), "ApplicationVersion1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.ApplicationVersion), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.ApplicationVersion), "ApplicationVersionDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationVersionDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.ObrazProgramInEntry), "ApplicationVersionDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationVersionDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.ProfileInObrazProgramInEntry), "ApplicationVersionDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationVersionDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_Application", "Application", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.Application), "ApplicationDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.ObrazProgramInEntry), "ApplicationDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(OnlineAbit2013.ProfileInObrazProgramInEntry), "ApplicationDetails", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ApplicationDetails), true)]
+[assembly: EdmRelationshipAttribute("OnlinePriem2012Model", "FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OnlineAbit2013.ObrazProgramInEntry), "ProfileInObrazProgramInEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OnlineAbit2013.ProfileInObrazProgramInEntry), true)]
 
 #endregion
 
@@ -1209,6 +1217,54 @@ namespace OnlineAbit2013
             }
         }
         private ObjectSet<SP_Profile> _SP_Profile;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ApplicationVersion> ApplicationVersion
+        {
+            get
+            {
+                if ((_ApplicationVersion == null))
+                {
+                    _ApplicationVersion = base.CreateObjectSet<ApplicationVersion>("ApplicationVersion");
+                }
+                return _ApplicationVersion;
+            }
+        }
+        private ObjectSet<ApplicationVersion> _ApplicationVersion;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ApplicationVersionDetails> ApplicationVersionDetails
+        {
+            get
+            {
+                if ((_ApplicationVersionDetails == null))
+                {
+                    _ApplicationVersionDetails = base.CreateObjectSet<ApplicationVersionDetails>("ApplicationVersionDetails");
+                }
+                return _ApplicationVersionDetails;
+            }
+        }
+        private ObjectSet<ApplicationVersionDetails> _ApplicationVersionDetails;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ApplicationDetails> ApplicationDetails
+        {
+            get
+            {
+                if ((_ApplicationDetails == null))
+                {
+                    _ApplicationDetails = base.CreateObjectSet<ApplicationDetails>("ApplicationDetails");
+                }
+                return _ApplicationDetails;
+            }
+        }
+        private ObjectSet<ApplicationDetails> _ApplicationDetails;
 
         #endregion
 
@@ -1756,6 +1812,30 @@ namespace OnlineAbit2013
         public void AddToSP_Profile(SP_Profile sP_Profile)
         {
             base.AddObject("SP_Profile", sP_Profile);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ApplicationVersion EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplicationVersion(ApplicationVersion applicationVersion)
+        {
+            base.AddObject("ApplicationVersion", applicationVersion);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ApplicationVersionDetails EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplicationVersionDetails(ApplicationVersionDetails applicationVersionDetails)
+        {
+            base.AddObject("ApplicationVersionDetails", applicationVersionDetails);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ApplicationDetails EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToApplicationDetails(ApplicationDetails applicationDetails)
+        {
+            base.AddObject("ApplicationDetails", applicationDetails);
         }
 
         #endregion
@@ -5534,6 +5614,28 @@ namespace OnlineAbit2013
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_Application", "ApplicationDetails")]
+        public EntityCollection<ApplicationDetails> ApplicationDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "ApplicationDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "ApplicationDetails", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -5886,6 +5988,307 @@ namespace OnlineAbit2013
         #endregion
 
     
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="ApplicationDetails")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ApplicationDetails : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ApplicationDetails object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="applicationId">Initial value of the ApplicationId property.</param>
+        /// <param name="obrazProgramInEntryId">Initial value of the ObrazProgramInEntryId property.</param>
+        /// <param name="obrazProgramInEntryPriority">Initial value of the ObrazProgramInEntryPriority property.</param>
+        public static ApplicationDetails CreateApplicationDetails(global::System.Guid id, global::System.Guid applicationId, global::System.Guid obrazProgramInEntryId, global::System.Int32 obrazProgramInEntryPriority)
+        {
+            ApplicationDetails applicationDetails = new ApplicationDetails();
+            applicationDetails.Id = id;
+            applicationDetails.ApplicationId = applicationId;
+            applicationDetails.ObrazProgramInEntryId = obrazProgramInEntryId;
+            applicationDetails.ObrazProgramInEntryPriority = obrazProgramInEntryPriority;
+            return applicationDetails;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ApplicationId
+        {
+            get
+            {
+                return _ApplicationId;
+            }
+            set
+            {
+                OnApplicationIdChanging(value);
+                ReportPropertyChanging("ApplicationId");
+                _ApplicationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApplicationId");
+                OnApplicationIdChanged();
+            }
+        }
+        private global::System.Guid _ApplicationId;
+        partial void OnApplicationIdChanging(global::System.Guid value);
+        partial void OnApplicationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ObrazProgramInEntryId
+        {
+            get
+            {
+                return _ObrazProgramInEntryId;
+            }
+            set
+            {
+                OnObrazProgramInEntryIdChanging(value);
+                ReportPropertyChanging("ObrazProgramInEntryId");
+                _ObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ObrazProgramInEntryId");
+                OnObrazProgramInEntryIdChanged();
+            }
+        }
+        private global::System.Guid _ObrazProgramInEntryId;
+        partial void OnObrazProgramInEntryIdChanging(global::System.Guid value);
+        partial void OnObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ObrazProgramInEntryPriority
+        {
+            get
+            {
+                return _ObrazProgramInEntryPriority;
+            }
+            set
+            {
+                OnObrazProgramInEntryPriorityChanging(value);
+                ReportPropertyChanging("ObrazProgramInEntryPriority");
+                _ObrazProgramInEntryPriority = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ObrazProgramInEntryPriority");
+                OnObrazProgramInEntryPriorityChanged();
+            }
+        }
+        private global::System.Int32 _ObrazProgramInEntryPriority;
+        partial void OnObrazProgramInEntryPriorityChanging(global::System.Int32 value);
+        partial void OnObrazProgramInEntryPriorityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ProfileInObrazProgramInEntryId
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryId;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryIdChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryId");
+                _ProfileInObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryId");
+                OnProfileInObrazProgramInEntryIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ProfileInObrazProgramInEntryId;
+        partial void OnProfileInObrazProgramInEntryIdChanging(Nullable<global::System.Guid> value);
+        partial void OnProfileInObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ProfileInObrazProgramInEntryPriority
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryPriority;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryPriorityChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryPriority");
+                _ProfileInObrazProgramInEntryPriority = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryPriority");
+                OnProfileInObrazProgramInEntryPriorityChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ProfileInObrazProgramInEntryPriority;
+        partial void OnProfileInObrazProgramInEntryPriorityChanging(Nullable<global::System.Int32> value);
+        partial void OnProfileInObrazProgramInEntryPriorityChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_Application", "Application")]
+        public Application Application
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "Application").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "Application").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Application> ApplicationReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Application>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "Application");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Application>("OnlinePriem2012Model.FK_ApplicationDetails_Application", "Application", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry")]
+        public ObrazProgramInEntry ObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ObrazProgramInEntry> ObrazProgramInEntryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ObrazProgramInEntry", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry")]
+        public ProfileInObrazProgramInEntry ProfileInObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ProfileInObrazProgramInEntry> ProfileInObrazProgramInEntryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -6265,6 +6668,544 @@ namespace OnlineAbit2013
         #endregion
 
     
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="ApplicationVersion")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ApplicationVersion : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ApplicationVersion object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="intNumber">Initial value of the IntNumber property.</param>
+        /// <param name="applicationId">Initial value of the ApplicationId property.</param>
+        /// <param name="versionDate">Initial value of the VersionDate property.</param>
+        public static ApplicationVersion CreateApplicationVersion(global::System.Guid id, global::System.Int32 intNumber, global::System.Guid applicationId, global::System.DateTime versionDate)
+        {
+            ApplicationVersion applicationVersion = new ApplicationVersion();
+            applicationVersion.Id = id;
+            applicationVersion.IntNumber = intNumber;
+            applicationVersion.ApplicationId = applicationId;
+            applicationVersion.VersionDate = versionDate;
+            return applicationVersion;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 IntNumber
+        {
+            get
+            {
+                return _IntNumber;
+            }
+            set
+            {
+                OnIntNumberChanging(value);
+                ReportPropertyChanging("IntNumber");
+                _IntNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IntNumber");
+                OnIntNumberChanged();
+            }
+        }
+        private global::System.Int32 _IntNumber;
+        partial void OnIntNumberChanging(global::System.Int32 value);
+        partial void OnIntNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ApplicationId
+        {
+            get
+            {
+                return _ApplicationId;
+            }
+            set
+            {
+                OnApplicationIdChanging(value);
+                ReportPropertyChanging("ApplicationId");
+                _ApplicationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApplicationId");
+                OnApplicationIdChanged();
+            }
+        }
+        private global::System.Guid _ApplicationId;
+        partial void OnApplicationIdChanging(global::System.Guid value);
+        partial void OnApplicationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime VersionDate
+        {
+            get
+            {
+                return _VersionDate;
+            }
+            set
+            {
+                OnVersionDateChanging(value);
+                ReportPropertyChanging("VersionDate");
+                _VersionDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("VersionDate");
+                OnVersionDateChanged();
+            }
+        }
+        private global::System.DateTime _VersionDate;
+        partial void OnVersionDateChanging(global::System.DateTime value);
+        partial void OnVersionDateChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion1")]
+        public ApplicationVersion ApplicationVersion1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion1").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion1").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ApplicationVersion> ApplicationVersion1Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion")]
+        public ApplicationVersion ApplicationVersion2
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ApplicationVersion> ApplicationVersion2Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersion_ApplicationVersion", "ApplicationVersion", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersionDetails")]
+        public EntityCollection<ApplicationVersionDetails> ApplicationVersionDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersionDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersionDetails", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="ApplicationVersionDetails")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ApplicationVersionDetails : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ApplicationVersionDetails object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="applicationVersionId">Initial value of the ApplicationVersionId property.</param>
+        /// <param name="obrazProgramInEntryId">Initial value of the ObrazProgramInEntryId property.</param>
+        /// <param name="obrazProgramInEntryPriority">Initial value of the ObrazProgramInEntryPriority property.</param>
+        public static ApplicationVersionDetails CreateApplicationVersionDetails(global::System.Int32 id, global::System.Guid applicationVersionId, global::System.Guid obrazProgramInEntryId, global::System.Int32 obrazProgramInEntryPriority)
+        {
+            ApplicationVersionDetails applicationVersionDetails = new ApplicationVersionDetails();
+            applicationVersionDetails.Id = id;
+            applicationVersionDetails.ApplicationVersionId = applicationVersionId;
+            applicationVersionDetails.ObrazProgramInEntryId = obrazProgramInEntryId;
+            applicationVersionDetails.ObrazProgramInEntryPriority = obrazProgramInEntryPriority;
+            return applicationVersionDetails;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ApplicationVersionId
+        {
+            get
+            {
+                return _ApplicationVersionId;
+            }
+            set
+            {
+                OnApplicationVersionIdChanging(value);
+                ReportPropertyChanging("ApplicationVersionId");
+                _ApplicationVersionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ApplicationVersionId");
+                OnApplicationVersionIdChanged();
+            }
+        }
+        private global::System.Guid _ApplicationVersionId;
+        partial void OnApplicationVersionIdChanging(global::System.Guid value);
+        partial void OnApplicationVersionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ObrazProgramInEntryId
+        {
+            get
+            {
+                return _ObrazProgramInEntryId;
+            }
+            set
+            {
+                OnObrazProgramInEntryIdChanging(value);
+                ReportPropertyChanging("ObrazProgramInEntryId");
+                _ObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ObrazProgramInEntryId");
+                OnObrazProgramInEntryIdChanged();
+            }
+        }
+        private global::System.Guid _ObrazProgramInEntryId;
+        partial void OnObrazProgramInEntryIdChanging(global::System.Guid value);
+        partial void OnObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ObrazProgramInEntryPriority
+        {
+            get
+            {
+                return _ObrazProgramInEntryPriority;
+            }
+            set
+            {
+                OnObrazProgramInEntryPriorityChanging(value);
+                ReportPropertyChanging("ObrazProgramInEntryPriority");
+                _ObrazProgramInEntryPriority = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ObrazProgramInEntryPriority");
+                OnObrazProgramInEntryPriorityChanged();
+            }
+        }
+        private global::System.Int32 _ObrazProgramInEntryPriority;
+        partial void OnObrazProgramInEntryPriorityChanging(global::System.Int32 value);
+        partial void OnObrazProgramInEntryPriorityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ProfileInObrazProgramInEntryId
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryId;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryIdChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryId");
+                _ProfileInObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryId");
+                OnProfileInObrazProgramInEntryIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ProfileInObrazProgramInEntryId;
+        partial void OnProfileInObrazProgramInEntryIdChanging(Nullable<global::System.Guid> value);
+        partial void OnProfileInObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ProfileInObrazProgramInEntryPriority
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryPriority;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryPriorityChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryPriority");
+                _ProfileInObrazProgramInEntryPriority = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryPriority");
+                OnProfileInObrazProgramInEntryPriorityChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ProfileInObrazProgramInEntryPriority;
+        partial void OnProfileInObrazProgramInEntryPriorityChanging(Nullable<global::System.Int32> value);
+        partial void OnProfileInObrazProgramInEntryPriorityChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion")]
+        public ApplicationVersion ApplicationVersion
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ApplicationVersion> ApplicationVersionReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ApplicationVersion>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion", "ApplicationVersion", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry")]
+        public ObrazProgramInEntry ObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ObrazProgramInEntry> ObrazProgramInEntryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ObrazProgramInEntry", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry")]
+        public ProfileInObrazProgramInEntry ProfileInObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ProfileInObrazProgramInEntry> ProfileInObrazProgramInEntryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ProfileInObrazProgramInEntry", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -10433,6 +11374,72 @@ namespace OnlineAbit2013
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<SP_ObrazProgram>("OnlinePriem2012Model.FK_ObrazProgramInEntry_SP_ObrazProgram", "SP_ObrazProgram", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ObrazProgramInEntry", "ApplicationVersionDetails")]
+        public EntityCollection<ApplicationVersionDetails> ApplicationVersionDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ApplicationVersionDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry", "ApplicationVersionDetails", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ObrazProgramInEntry", "ApplicationDetails")]
+        public EntityCollection<ApplicationDetails> ApplicationDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ApplicationDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry", "ApplicationDetails", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ProfileInObrazProgramInEntry")]
+        public EntityCollection<ProfileInObrazProgramInEntry> ProfileInObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ProfileInObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ProfileInObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ProfileInObrazProgramInEntry", value);
                 }
             }
         }
@@ -17609,6 +18616,88 @@ namespace OnlineAbit2013
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<SP_Profile>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_Profile", "SP_Profile", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ApplicationVersionDetails")]
+        public EntityCollection<ApplicationVersionDetails> ApplicationVersionDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ApplicationVersionDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationVersionDetails>("OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry", "ApplicationVersionDetails", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ApplicationDetails")]
+        public EntityCollection<ApplicationDetails> ApplicationDetails
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ApplicationDetails");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ApplicationDetails>("OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry", "ApplicationDetails", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OnlinePriem2012Model", "FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry")]
+        public ObrazProgramInEntry ObrazProgramInEntry
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ObrazProgramInEntry> ObrazProgramInEntryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ObrazProgramInEntry>("OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry", "ObrazProgramInEntry", value);
                 }
             }
         }

@@ -11,16 +11,18 @@ namespace OnlineAbit2013.Models
         public bool HasProfileInObrazProgramInEntry { get; set; }
     }
 
-    public class PriorityChangerApplication
+    public class PriorityChangerApplicationModel
     {
+        public Guid ApplicationVersionId { get; set; }
         public Guid ApplicationId { get; set; }
         public Guid CommitId { get; set; }
         public string CommitName { get; set; }
         public List<KeyValuePair<Guid, ObrazProgramInEntrySmallEntity>> lstObrazPrograms { get; set; }
     }
 
-    public class PriorityChangerProfile
+    public class PriorityChangerProfileModel
     {
+        public Guid ApplicationVersionId { get; set; }
         public Guid ApplicationId { get; set; }
         public Guid CommitId { get; set; }
         public string CommitName { get; set; }

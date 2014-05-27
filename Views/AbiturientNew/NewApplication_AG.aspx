@@ -4,11 +4,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<AG_ApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Создание нового заявления
+    <%= GetGlobalResourceObject("NewApplication", "PageTitle")%>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-   <h2>Новое заявление</h2>
+   <h2> <%= GetGlobalResourceObject("NewApplication", "PageSubheader")%></h2>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -269,11 +269,11 @@
     <% if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
        { %>
        <div class="message error" style="width:450px;">
-           <strong style="font-size:10pt">Внимание! Приём документов в АГ СПбГУ закрыт.</strong>
+           <strong style="font-size:10pt"><%= GetGlobalResourceObject("NewApplication", "AG_PriemClosed").ToString()%></strong>
        </div>
     <% } %>
     <div class="message info" style="width:450px;">
-        Согласно данным анкеты, Вы поступаете в <strong><%= Model.EntryClassName%></strong>
+        <%= GetGlobalResourceObject("NewApplication", "HeaderFirstCourse_1").ToString()%> <strong><%= Model.EntryClassName%></strong>
     </div>
     <br />
     <%= Html.HiddenFor(x => x.EntryClassId)%>
@@ -299,27 +299,27 @@
                 <td id="BlockData_ManualExam<%= i.ToString()%>" ><%= Model.Applications[i - 1].ManualExamName%></td>
             </tr>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("PriorityChangerForeign", "Delete").ToString()%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
     <div id="Block<%= i.ToString()%>" style="display:none; width:500px;" class="panel">
-        <h5>Выберите направление подготовки</h5>
+        <h5><%= GetGlobalResourceObject("NewApplication", "AGHeaderProgram").ToString()%></h5>
         <p id="Profs<%= i.ToString()%>">
-            <span>Направление</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGProgram").ToString()%></span><br />
             <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new SortedList<string, object>() { { "size", "5" }, 
 { "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} })%>
         </p>
         <p id="Specs<%= i.ToString()%>" style="display:none;">
-            <span>Специализация</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGSpecialization").ToString()%></span><br />
             <select id="Profile<%= i.ToString()%>" name="Profile" size="3" style="min-width:450px;" onchange="CheckSpecialization(<%= i.ToString()%>)"></select>
         </p>
         <p id="ManualExam<%= i.ToString()%>" style="display:none;">
-            <span>Экзамен по выбору</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGExams").ToString()%></span><br />
             <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
-            <input type="checkbox" name="NeedHostel" id="Checkbox1" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
+            <input type="checkbox" name="NeedHostel" id="Checkbox1" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
@@ -348,27 +348,27 @@
                 <td id="BlockData_ManualExam<%= i.ToString()%>" ></td>
             </tr>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error">Удалить</button>
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete").ToString()%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
     </div>
     </div>
     <div id="Block<%= i.ToString()%>" style="display:none; width:500px;" class="panel">
-        <h5>Выберите направление подготовки</h5>
+        <h5><%= GetGlobalResourceObject("NewApplication", "AGHeaderProgram").ToString()%></h5>
         <p id="Profs<%= i.ToString()%>">
-            <span>Направление</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGProgram").ToString()%></span><br />
             <%= Html.DropDownList("Professions" + i.ToString(), Model.Professions, new SortedList<string, object>() { { "size", "5" }, 
 { "style", "min-width:450px;" }, { "onchange", "GetSpecializations(" + i.ToString() + ")"} })%>
         </p>
         <p id="Specs<%= i.ToString()%>" style="display:none;">
-            <span>Специализация</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGSpecialization").ToString()%></span><br />
             <select id="Profile<%= i.ToString()%>" name="Profile" size="3" style="min-width:450px;" onchange="CheckSpecialization(<%= i.ToString()%>)"></select>
         </p>
         <p id="ManualExam<%= i.ToString()%>" style="display:none;">
-            <span>Экзамен по выбору</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "AGExams").ToString()%></span><br />
             <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
-            <input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px">Нуждаюсь в общежитии на время обучения</span><br /><br />
+            <input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">

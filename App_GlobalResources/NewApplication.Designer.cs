@@ -61,11 +61,74 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Entry is closed.
+        ///   Ищет локализованную строку, такую же, как Экзамен по выбору.
+        /// </summary>
+        internal static string AGExams {
+            get {
+                return ResourceManager.GetString("AGExams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Выберите направление подготовки.
+        /// </summary>
+        internal static string AGHeaderProgram {
+            get {
+                return ResourceManager.GetString("AGHeaderProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Направление.
+        /// </summary>
+        internal static string AGProgram {
+            get {
+                return ResourceManager.GetString("AGProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Специализация.
+        /// </summary>
+        internal static string AGSpecialization {
+            get {
+                return ResourceManager.GetString("AGSpecialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Прием закрыт.
         /// </summary>
         internal static string AG_PriemClosed {
             get {
                 return ResourceManager.GetString("AG_PriemClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Уровень.
+        /// </summary>
+        internal static string ApplicationLevel {
+            get {
+                return ResourceManager.GetString("ApplicationLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Поданные заявления.
+        /// </summary>
+        internal static string ApplicationList {
+            get {
+                return ResourceManager.GetString("ApplicationList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Просмотр заявлений.
+        /// </summary>
+        internal static string ApplicationView {
+            get {
+                return ResourceManager.GetString("ApplicationView", resourceCulture);
             }
         }
         
@@ -142,7 +205,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Create an application.
+        ///   Ищет локализованную строку, такую же, как Создать заявление.
         /// </summary>
         internal static string btnCreateApp {
             get {
@@ -151,7 +214,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как I need hostel during education period.
+        ///   Ищет локализованную строку, такую же, как Нуждаюсь в общежитии на время обучения.
         /// </summary>
         internal static string chbNeedHostel {
             get {
@@ -169,7 +232,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как The application has already applied.
+        ///   Ищет локализованную строку, такую же, как Поступать по гослинии.
+        /// </summary>
+        internal static string EnterGosLine {
+            get {
+                return ResourceManager.GetString("EnterGosLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Заявление уже подавалось.
         /// </summary>
         internal static string ErrorHasApplication {
             get {
@@ -178,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select the faculty.
+        ///   Ищет локализованную строку, такую же, как Выберите факультет.
         /// </summary>
         internal static string HeaderFaculty {
             get {
@@ -187,7 +259,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как You are entering on the .
+        ///   Ищет локализованную строку, такую же, как Согласно данным анкеты, вы поступаете на.
         /// </summary>
         internal static string HeaderFirstCourse_1 {
             get {
@@ -196,7 +268,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как first course.
+        ///   Ищет локализованную строку, такую же, как первый курс.
         /// </summary>
         internal static string HeaderFirstCourse_2 {
             get {
@@ -205,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Выберите магистерскую программу.
+        ///   Ищет локализованную строку, такую же, как Выберите профиль.
         /// </summary>
         internal static string HeaderMagProfile {
             get {
@@ -214,7 +286,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select the study program.
+        ///   Ищет локализованную строку, такую же, как Выберите образовательную программу.
         /// </summary>
         internal static string HeaderObrazProgram {
             get {
@@ -223,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Your obtaining level:.
+        ///   Ищет локализованную строку, такую же, как Уровень, который вы желаете получить:.
         /// </summary>
         internal static string HeaderObtainingLevel {
             get {
@@ -232,7 +304,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select the profession.
+        ///   Ищет локализованную строку, такую же, как Выберите направление.
         /// </summary>
         internal static string HeaderProfession {
             get {
@@ -241,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select the profile.
+        ///   Ищет локализованную строку, такую же, как Выберите профиль.
         /// </summary>
         internal static string HeaderProfile {
             get {
@@ -250,7 +322,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Parallel education.
+        ///   Ищет локализованную строку, такую же, как Параллельное обучение.
         /// </summary>
         internal static string IsParallel {
             get {
@@ -259,7 +331,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Second higher education.
+        ///   Ищет локализованную строку, такую же, как Второе высшее.
         /// </summary>
         internal static string IsReduced {
             get {
@@ -268,7 +340,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как For the persons with higher education.
+        ///   Ищет локализованную строку, такую же, как Для лиц, имеющих ВО.
         /// </summary>
         internal static string IsSecond {
             get {
@@ -349,7 +421,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как New Application.
+        ///   Ищет локализованную строку, такую же, как Нет поданых заявлений.
+        /// </summary>
+        internal static string NoApplications {
+            get {
+                return ResourceManager.GetString("NoApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Новое заявление.
         /// </summary>
         internal static string PageSubheader {
             get {
@@ -358,7 +439,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Create a new application.
+        ///   Ищет локализованную строку, такую же, как Создание нового заявления.
         /// </summary>
         internal static string PageTitle {
             get {
@@ -376,7 +457,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Bachelor/Specialist.
+        ///   Ищет локализованную строку, такую же, как Первый курс.
         /// </summary>
         internal static string Select_FirstCourse {
             get {
@@ -385,7 +466,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Magistery.
+        ///   Ищет локализованную строку, такую же, как Магистратура.
         /// </summary>
         internal static string Select_Magistery {
             get {
@@ -394,7 +475,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Budget places.
+        ///   Ищет локализованную строку, такую же, как Госбюджетная.
         /// </summary>
         internal static string Select_StudyBasis1 {
             get {
@@ -403,7 +484,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Paid.
+        ///   Ищет локализованную строку, такую же, как Договорная.
         /// </summary>
         internal static string Select_StudyBasis2 {
             get {
@@ -412,7 +493,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Full-Time.
+        ///   Ищет локализованную строку, такую же, как Дневная.
         /// </summary>
         internal static string Select_StudyForm1 {
             get {
@@ -421,7 +502,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Part-Time.
+        ///   Ищет локализованную строку, такую же, как Вечерняя.
         /// </summary>
         internal static string Select_StudyForm2 {
             get {
@@ -430,7 +511,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select study basis.
+        ///   Ищет локализованную строку, такую же, как Выберите основу обучения.
         /// </summary>
         internal static string StudyBasis {
             get {
@@ -439,11 +520,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Select study form.
+        ///   Ищет локализованную строку, такую же, как Выберите форму обучения.
         /// </summary>
         internal static string StudyForm {
             get {
                 return ResourceManager.GetString("StudyForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Просмотр.
+        /// </summary>
+        internal static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
     }

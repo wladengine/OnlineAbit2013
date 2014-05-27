@@ -4,11 +4,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<ApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Создание нового заявления
+    <%= GetGlobalResourceObject("NewApplication", "PageTitle")%>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-   <h2>Новое заявление</h2>
+   <h2> <%= GetGlobalResourceObject("NewApplication", "PageSubheader")%></h2>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -66,19 +66,19 @@
     <%  if (Model.Applications.Count == 0)
         { %>
          <div class="message error">
-        <b>Нет поданых заявлений</b>
+        <b><%= GetGlobalResourceObject("NewApplication", "NoApplications")%></b>
         </div>
         <%}
         else
         {%>
-    <h3>Поданные заявления</h3>
+    <h3><%= GetGlobalResourceObject("NewApplication", "ApplicationList")%></h3>
     <hr />
     <table class="paginate full">
         <thead>
             <tr>
-                <th>Уровень</th>
+                <th><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></th>
                 <%--<th>Тип поступления</th>--%>
-                <th>Просмотр заявлений</th>
+                <th><%= GetGlobalResourceObject("NewApplication", "ApplicationView")%></th>
             </tr>
         </thead>
     <% foreach (OnlineAbit2013.Models.SimpleApplicationPackage app in Model.Applications.ToList())
@@ -86,7 +86,7 @@
          <tr>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel)%></td>
             <%--<td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType)%></td>--%>
-            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">Просмотр</a></td>
+            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>"><%= GetGlobalResourceObject("NewApplication", "View")%></a></td>
          </tr>
      <% } %>
      </table>

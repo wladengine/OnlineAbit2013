@@ -193,7 +193,7 @@
     <h4 onclick="HidePortfolio()" style="cursor:pointer;">Прикреплённые файлы</h4>
     <div class="message info">
         <b>Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел </b> 
-        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold">Общие файлы</a>
+        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header") %></a>
         <br />
         <b>В данный раздел прикрепляйте подписанный бланк заявления </b>
     </div>

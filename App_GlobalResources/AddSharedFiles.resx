@@ -130,7 +130,7 @@
     <value>Отбраковано</value>
   </data>
   <data name="BigFileMessage" xml:space="preserve">
-    <value>Too big file for uploading (4Mb - max)</value>
+    <value>Размер прикрепляемого файла слишком велик (максимум 4Mb)</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Комментарий</value>

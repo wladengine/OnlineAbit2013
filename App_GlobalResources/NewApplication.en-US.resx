@@ -213,4 +213,49 @@
   <data name="BlockData_GosLine" xml:space="preserve">
     <value>Gosline</value>
   </data>
+  <data name="AG_PriemClosed" xml:space="preserve">
+    <value>Entry is closed</value>
+  </data>
+  <data name="ApplicationLevel" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="ApplicationView" xml:space="preserve">
+    <value>Просмотр заявлений</value>
+  </data>
+  <data name="BlockData_Faculty" xml:space="preserve">
+    <value>Факультет</value>
+  </data>
+  <data name="BlockData_LicenseProgram" xml:space="preserve">
+    <value>Направление</value>
+  </data>
+  <data name="BlockData_MagSpecialization" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="BlockData_ObrazProgram" xml:space="preserve">
+    <value>Образовательная программа</value>
+  </data>
+  <data name="BlockData_Specialization" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="BlockData_StudyBasis" xml:space="preserve">
+    <value>Основа обучения</value>
+  </data>
+  <data name="BlockData_StudyForm" xml:space="preserve">
+    <value>Форма обучения</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="EnterGosLine" xml:space="preserve">
+    <value>Поступать по гослинии</value>
+  </data>
+  <data name="HeaderMagProfile" xml:space="preserve">
+    <value>Выберите магистерскую программу</value>
+  </data>
+  <data name="Select_Aspirantura" xml:space="preserve">
+    <value>Аспирантура</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
 </root>

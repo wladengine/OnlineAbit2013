@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.AppendFilesModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Общие файлы
+    <%= GetGlobalResourceObject("AddSharedFiles", "Header") %>
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="Subheader" runat="server">

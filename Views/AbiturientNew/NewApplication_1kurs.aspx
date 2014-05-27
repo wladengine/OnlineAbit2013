@@ -236,6 +236,7 @@
         currBlockData_ObrazProgram = '#BlockData_ObrazProgram' + i;
         currBlockData_Specialization = '#BlockData_Specialization' + i; 
         currBlockData_Faculty = '#BlockData_Faculty'+i;
+        currBlockData_GosLine = '#BlockData_GosLine'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
@@ -261,6 +262,13 @@
                 $(currBlockData_Specialization).text(json_data.Specialization);
                 $(currBlockData_Faculty).text(json_data.Faculty); 
                 $(currBlock).hide();
+                if (json_data.isgosline==1){
+                    $(currBlockData_GosLine).show();
+                }
+                else
+                {
+                    $(currBlockData_GosLine).hide();
+                }
                 $(currBlockData).show();
                 if (BlockIds[nxt] == undefined) {
                     $(nextBlock).show(); 
@@ -441,6 +449,15 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;" ><%= Model.Applications[i - 1].SpecializationName%></td>
             </tr>
+            <% if (Model.Applications[i - 1].IsGosLine.HasValue)
+               {
+                   if ((bool)Model.Applications[i - 1].IsGosLine) {%>
+                    <tr>
+                        <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
+                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
+                    </tr>
+            <%       } 
+               }%>
         </table>
         <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
@@ -529,6 +546,10 @@
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
                     <td id="BlockData_Specialization<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
+                <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
+                    <td id="Td1" style="font-size:1.3em;">да</td>
+                </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
             <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">

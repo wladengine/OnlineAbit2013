@@ -14230,10 +14230,12 @@ namespace OnlineAbit2013
         /// Create a new PersonAddInfo object.
         /// </summary>
         /// <param name="personId">Initial value of the PersonId property.</param>
-        public static PersonAddInfo CreatePersonAddInfo(global::System.Guid personId)
+        /// <param name="hostelEduc">Initial value of the HostelEduc property.</param>
+        public static PersonAddInfo CreatePersonAddInfo(global::System.Guid personId, global::System.Boolean hostelEduc)
         {
             PersonAddInfo personAddInfo = new PersonAddInfo();
             personAddInfo.PersonId = personId;
+            personAddInfo.HostelEduc = hostelEduc;
             return personAddInfo;
         }
 
@@ -14435,6 +14437,30 @@ namespace OnlineAbit2013
         private Nullable<global::System.Int32> _ReturnDocumentTypeId;
         partial void OnReturnDocumentTypeIdChanging(Nullable<global::System.Int32> value);
         partial void OnReturnDocumentTypeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean HostelEduc
+        {
+            get
+            {
+                return _HostelEduc;
+            }
+            set
+            {
+                OnHostelEducChanging(value);
+                ReportPropertyChanging("HostelEduc");
+                _HostelEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("HostelEduc");
+                OnHostelEducChanged();
+            }
+        }
+        private global::System.Boolean _HostelEduc;
+        partial void OnHostelEducChanging(global::System.Boolean value);
+        partial void OnHostelEducChanged();
 
         #endregion
 

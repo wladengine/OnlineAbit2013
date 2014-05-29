@@ -874,6 +874,7 @@
           <Property Name="HasPrivileges" Type="bit" />
           <Property Name="HostelAbit" Type="bit" />
           <Property Name="ReturnDocumentTypeId" Type="int" />
+          <Property Name="HostelEduc" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonChangeStudyFormReason">
           <Key>
@@ -2427,6 +2428,7 @@
           <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_PersonAddInfo_Person" FromRole="PersonAddInfo" ToRole="Person" />
           <Property Type="Int32" Name="ReturnDocumentTypeId" />
           <NavigationProperty Name="ReturnDocumentType" Relationship="OnlinePriem2012Model.FK_PersonAddInfo_ReturnDocumentType" FromRole="PersonAddInfo" ToRole="ReturnDocumentType" />
+          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonCurrentEducation">
           <Key>
@@ -4171,6 +4173,7 @@
           <EntitySetMapping Name="PersonAddInfo">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonAddInfo">
               <MappingFragment StoreEntitySet="PersonAddInfo">
+                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="ReturnDocumentTypeId" ColumnName="ReturnDocumentTypeId" />
                 <ScalarProperty Name="HostelAbit" ColumnName="HostelAbit" />
                 <ScalarProperty Name="HasPrivileges" ColumnName="HasPrivileges" />

@@ -601,7 +601,7 @@
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
-             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine")%></span><br /><br />
+             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" />
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">

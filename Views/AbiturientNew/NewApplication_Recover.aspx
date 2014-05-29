@@ -417,9 +417,7 @@
     <% } %>
     
         <input type="hidden" id = "EntryType" name = "EntryType" value="2" />
-        <select id="Entry" name="Entry" onchange="ChangeEType()" disabled="disabled">
-            <option value="2"><%= GetGlobalResourceObject("NewApplication", "Select_Magistery")%></option>
-        </select>
+
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
            <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px;">
@@ -601,7 +599,7 @@
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
-             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine")%></span><br /><br />
+             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" />
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">

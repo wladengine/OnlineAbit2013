@@ -553,6 +553,8 @@ namespace OnlineAbit2013.Models
         public string StudyBasis { get; set; }
         public string StudyLevel { get; set; }
         public bool Enabled { get; set; }
+        public bool IsGosLine { get; set; }
+        public bool NeedHostel { get; set; }
         public bool HasSeparateObrazPrograms { get; set; }
     }
     public class SimpleApplicationPackage
@@ -587,6 +589,7 @@ namespace OnlineAbit2013.Models
     {
         public List<SelectListItem> StudyForms { get; set; }
         public int EntryType { get; set; }
+        public bool IsForeign { get; set; }
 
         public List<SimpleApplicationPackage> Applications { get; set; }
 
@@ -819,9 +822,10 @@ namespace OnlineAbit2013.Models
         public string CommitId { get; set; } // коммит
         public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
+        public int SemestrId { get; set; }
         public List<SelectListItem> StudyFormList { get; set; }
         public List<SelectListItem> StudyBasisList { get; set; }
-
+        public List<SelectListItem> SemestrList { get; set; }
         public List<SelectListItem> FacultyList { get; set; }
 
         public List<Mag_ApplicationSipleEntity> Applications { get; set; }

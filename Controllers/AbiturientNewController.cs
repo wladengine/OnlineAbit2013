@@ -19,10 +19,11 @@ namespace OnlineAbit2013.Controllers
 {
     public class AbiturientNewController : Controller
     {
-        int maxBlock_mag = 15;
-        int maxBlock_1kurs = 7;
+        int maxBlockMag = 15;
+        int maxBlock1kurs = 7;
         int maxBlockSPO = 6;
         int maxBlockAspirant = 6;
+        int maxBlockRecover = 1;
         public ActionResult OpenPersonalAccount()
         {
             Request.Cookies.SetThreadCultureByCookies();
@@ -1053,13 +1054,61 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 else
                 {
                     // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
-                    model.MaxBlocks = maxBlock_mag;
+                    model.MaxBlocks = maxBlockMag;
                 }
                 
                 model.StudyFormList = Util.GetStudyFormList();
                 model.StudyBasisList = Util.GetStudyBasisList();
                     
                 return View("NewApplication_Mag", model);
+            }
+        }
+
+        [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult NewApplication_Recover(params string[] errors)
+        {
+            if (errors != null && errors.Length > 0)
+            {
+                foreach (string er in errors)
+                    ModelState.AddModelError("", er);
+            }
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return RedirectToAction("Index");
+
+                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new SortedList<string, object>() { { "@Id", PersonId } });
+                if (c != 100)
+                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
+
+                Mag_ApplicationModel model = new Mag_ApplicationModel();
+                model.Applications = new List<Mag_ApplicationSipleEntity>();
+                model.CommitId = Guid.NewGuid().ToString("N");
+
+                model.Enabled = true;
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                   new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
+                {
+                    // окончил школу 
+                    model.Enabled = false;
+                }
+                else
+                {
+                    // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
+                    model.MaxBlocks = maxBlockRecover;
+                }
+
+                model.StudyFormList = Util.GetStudyFormList();
+                model.StudyBasisList = Util.GetStudyBasisList();
+                //model.SemestrList;
+
+                return View("NewApplication_Recover", model);
             }
         }
 
@@ -1117,7 +1166,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          }
                      }
                  }
-                 model.MaxBlocks = maxBlock_1kurs;
+                 model.MaxBlocks = maxBlock1kurs;
                  string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
                  tbl = Util.AbitDB.GetDataTable(query, null);
                  model.StudyFormList =
@@ -1362,12 +1411,12 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
                     if (c == 2)
                     {
-                        model.MaxBlocks = maxBlock_mag;
+                        model.MaxBlocks = maxBlockMag;
                         return View("NewApplication_Mag", model); 
                     }
                     else if (c == 1)
                     {
-                        model.MaxBlocks = maxBlock_1kurs;
+                        model.MaxBlocks = maxBlock1kurs;
                         return View("NewApplication_1kurs", model); 
                     }
                     else if (c == 3)
@@ -1527,6 +1576,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
 
                 ApplicationModel model = new ApplicationModel();
+                model.IsForeign = Util.GetRess(PersonId) == 4;
                 int? iScTypeId = (int?)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                 if (iScTypeId.HasValue)
                 {
@@ -1852,7 +1902,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.StudyBasisList = Util.GetStudyBasisList();
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
-                    model.MaxBlocks = maxBlock_mag;
+                    model.MaxBlocks = maxBlockMag;
                     model.HasError = true;
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_Mag", model);
@@ -1918,7 +1968,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.StudyBasisList = Util.GetStudyBasisList();
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
-                    model.MaxBlocks = maxBlock_1kurs;
+                    model.MaxBlocks = maxBlock1kurs;
                     model.HasError = true;
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_1kurs", model);
@@ -4160,7 +4210,7 @@ Order by cnt desc";
                 if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });
 
-                bool needHostel = string.IsNullOrEmpty(NeedHostel) ? false : true;
+                bool needHostel = string.Equals(NeedHostel, "false") ? false : true;
 
                 int iEntryClassId = Util.ParseSafe(Entryclass);
                 int iProfession = Util.ParseSafe(profession);
@@ -4322,7 +4372,7 @@ Order by cnt desc";
                 if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });
 
-                bool needHostel = string.IsNullOrEmpty(NeedHostel) ? false : true;
+                bool needHostel = string.Equals(NeedHostel, "false") ? false : true;
 
                 int iStudyFormId = Util.ParseSafe(studyform);
                 int iStudyBasisId = Util.ParseSafe(studybasis);

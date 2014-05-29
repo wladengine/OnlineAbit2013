@@ -114,7 +114,11 @@
             <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
             <% }%>
        <% else if (Model.ExitClassId < 11) //10
-          {%>
+          {
+            if (Model.IsForeign) {%>
+            <!-- 1 курс -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit1()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType1") %>" /><br /><br />
+            <% } %>
             <!-- СПО -->     
             <input type="button" class="button button-blue" name="Val" onclick="Submit9()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType9") %>" /><br /><br />
        <% } %>

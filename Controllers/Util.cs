@@ -1671,6 +1671,32 @@ WHERE PersonId=@PersonId ";
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();
         }
+/*
+        public static List<SelectListItem> GetSemestrList()
+        { 
+            bool bIsIGA = false;
+            if (PersonInfo.PersonDisorderInfo != null)
+                bIsIGA = PersonInfo.PersonDisorderInfo.IsForIGA;
+
+            query = "SELECT DISTINCT Semester.Id, Semester.Name FROM Semester INNER JOIN Entry ON Entry.SemesterId = Semester.Id WHERE Semester.Id > 1 AND Entry.DateOfStart<@Date AND Entry.DateOfClose>@Date";
+            if (bIsIGA)
+                query += " AND Semester.IsIGA=1 ";
+            else
+                query += " AND Semester.IsIGA=0 ";
+
+            string query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("StudyBasisId"),
+                     Text = rw.Field<string>("StudyBasisName")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+
+        }*/
 
         public static void CommitApplication(Guid CommitId, Guid PersonId, OnlinePriemEntities context)
         {

@@ -40,6 +40,8 @@ namespace OnlineAbit2013.Controllers
                         StudyBasis = Entry.StudyBasisName,
                         StudyLevel = Entry.StudyLevelName,
                         Priority = App.Priority,
+                        NeedHostel = App.HostelEduc,
+                        IsGosLine = App.IsGosLine,
                         Enabled = App.Enabled
                     }).ToList().Union(
                     context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()

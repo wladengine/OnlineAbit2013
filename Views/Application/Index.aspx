@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationCommitModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Просмотр заявления
+    <%= GetGlobalResourceObject("ApplicationInfo", "Title")%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-    <h2>Просмотр заявления</h2>
+    <h2><%= GetGlobalResourceObject("ApplicationInfo", "Title")%></h2>
 </asp:Content>
 
 <asp:Content ID="HeaderScripts" ContentPlaceHolderID="HeaderScriptsContent" runat="server">
@@ -111,7 +111,7 @@
     <% if (Model.Applications.Count == 0)
    { %>
     <div class="message error">
-        <b>Вы отозвали это заявление</b>
+        <b><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationCanceled")%></b>
     </div>
 <% } else { %>
 <table>
@@ -134,10 +134,10 @@
         </td>
     </tr>
     <tr>
-        <td>Скачать заявление</td>
-        <td>Удалить заявление целиком</td>
-        <td>Изменить приоритеты</td>
-        <td>Редактировать заявление</td>
+        <td><%= GetGlobalResourceObject("ApplicationInfo", "Download")%></td>
+        <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationDelete")%></td>
+        <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationPriorityChange")%></td>
+        <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationChange")%></td>
     </tr>
 
     <tr>
@@ -150,37 +150,51 @@
     <p>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</p>
     <h4>Вы хотите удалить заявление?</h4>
 </div>
-<h4>Основные сведения</h4>
+<h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
 <table class="paginate" style="width: 659px;">
     <% if (Application.Enabled) { %>
     <tr>
-        <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1">Приоритет</abbr></td>
+        <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%> </abbr></td>
         <td align="left"><%= Html.Encode(Application.Priority) %></td>
     </tr>
     <% } %>
     <tr>
-        <td width="30%" align="right">Направление</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.Profession) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Образовательная программа</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "ObrazProgram").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.ObrazProgram) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Профиль</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.Specialization) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Форма обучения</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyForm").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.StudyForm) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Основа обучения</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyBasis").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.StudyBasis) %></td>
     </tr>
+    <% if (Application.NeedHostel)
+       { %>
+    <tr>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></td>
+        <td align="left">да</td>
+    </tr>
+    <% } %>
+    <% if (Application.IsGosLine)
+       { %>
+    <tr>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine").ToString()%></td>
+        <td align="left">да</td>
+    </tr>
+    <% } %>
     <tr>
         <td width="30%" align="right"></td>
         <td align="left"><a class="button button-orange" href="../../Application/AppIndex/<%= Application.Id.ToString("N") %>">Просмотр / добавить файлы</a></td>
@@ -204,16 +218,16 @@
         <table class="paginate" style="width:99%;">
             <thead>
                 <th></th>
-                <th>Имя файла</th>
-                <th>Размер</th>
-                <th>Комментарий</th>
-                <th>Статус</th>
-                <th>Удалить</th>
+                <th><%= GetGlobalResourceObject("AddSharedFiles", "FileName").ToString()%></th>
+                <th><%= GetGlobalResourceObject("AddSharedFiles", "Size").ToString()%></th>
+                <th><%= GetGlobalResourceObject("AddSharedFiles", "Comment").ToString()%></th>
+                <th><%= GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Header").ToString()%></th>
+                <th><%= GetGlobalResourceObject("AddSharedFiles", "Delete").ToString()%></th>
             </thead>    
     <% }
         else
         { %>
-        <h5>В портфолио нет файлов</h5>
+        <h5><%= GetGlobalResourceObject("AddSharedFiles", "NoFiles").ToString()%></h5>
     <% } %>
             <tbody>
         <% foreach (var file in Model.Files)
@@ -263,7 +277,7 @@
             </tbody>
         </table>
         <div class="panel">
-            <h4>Добавить файл</h4>
+            <h4><%= GetGlobalResourceObject("ApplicationInfo", "HeaderAddFile").ToString()%></h4>
             <hr />
             <form action="/Application/AddFileInCommit" method="post" enctype="multipart/form-data" class="form" id="">
                 <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />

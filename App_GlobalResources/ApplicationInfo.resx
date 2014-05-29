@@ -117,20 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationCanceled" xml:space="preserve">
+    <value>Вы отозвали это заявление</value>
+  </data>
+  <data name="ApplicationChange" xml:space="preserve">
+    <value>Редактировать заявление</value>
+  </data>
+  <data name="ApplicationDelete" xml:space="preserve">
+    <value>Удалить заявление целиком</value>
+  </data>
+  <data name="ApplicationInfoHeader" xml:space="preserve">
+    <value>Основные сведения</value>
+  </data>
+  <data name="ApplicationPriorityChange" xml:space="preserve">
+    <value>Изменить приоритеты</value>
+  </data>
   <data name="AppStatus" xml:space="preserve">
-    <value>Application status:</value>
+    <value>Статус заявления:</value>
   </data>
   <data name="btnCancelApplication" xml:space="preserve">
-    <value>Withdraw the application</value>
+    <value>Отозвать заявление</value>
   </data>
   <data name="btnSaveChanges" xml:space="preserve">
-    <value>Save changes</value>
+    <value>Сохранить изменения</value>
   </data>
   <data name="btnSubmit" xml:space="preserve">
-    <value>Submit</value>
+    <value>Отправить</value>
   </data>
   <data name="btnViewMotivationalMail" xml:space="preserve">
-    <value>View the mail</value>
+    <value>Просмотреть письмо</value>
   </data>
   <data name="CancelAppMessage" xml:space="preserve">
     <value>&lt;h5&gt;Внимание!&lt;/h5&gt;
@@ -138,68 +153,68 @@
     &lt;h4&gt;Вы хотите отказаться от участия в конкурсе?&lt;/h4&gt;</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download the application</value>
+    <value>Скачать заявление</value>
   </data>
   <data name="HeaderAddFile" xml:space="preserve">
-    <value>Add the file</value>
+    <value>Добавить файл</value>
   </data>
   <data name="HeaderBaseInfo" xml:space="preserve">
-    <value>Base info</value>
+    <value>Основная информация</value>
   </data>
   <data name="HeaderDelete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="HeaderFileComments" xml:space="preserve">
-    <value>Comments</value>
+    <value>Комментарии</value>
   </data>
   <data name="HeaderFilename" xml:space="preserve">
-    <value>Filename</value>
+    <value>Имя файла</value>
   </data>
   <data name="HeaderFilesize" xml:space="preserve">
-    <value>Size</value>
+    <value>Размер</value>
   </data>
   <data name="HeaderMotivationalMail" xml:space="preserve">
-    <value>Motivational mail</value>
+    <value>Мотивационное письмо</value>
   </data>
   <data name="HeaderNoFiles" xml:space="preserve">
-    <value>No files in portfilio</value>
+    <value>В портфолио нет файлов</value>
   </data>
   <data name="HeaderPortfolio" xml:space="preserve">
-    <value>Portfolio</value>
+    <value>Портфолио</value>
   </data>
   <data name="MotivationalMailInformation" xml:space="preserve">
-    <value>&lt;/span&gt;&lt;b&gt;The motivational mail must contain:&lt;/b&gt; 
+    <value>&lt;/span&gt;&lt;b&gt;В мотивационном письме должны содержаться:&lt;/b&gt; 
     &lt;ul&gt;
-        &lt;li&gt;the necessary information about the experience of training / activity;&lt;/li&gt;
-        &lt;li&gt;information confirming the need for knowledge / skill development / acquisition of which is possible in the duration of the selected program;&lt;/li&gt;
-        &lt;li&gt;prospects / plans to implement the acquired knowledge / skills for future careers.&lt;/li&gt;
+        &lt;li&gt;необходимые сведения об опыте профессиональной подготовки/деятельности;&lt;/li&gt;
+        &lt;li&gt;сведения, подтверждающие необходимость получения знаний/навыков, освоение/приобретение которых возможно в период обучения на выбранной программе;&lt;/li&gt;
+        &lt;li&gt;перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.&lt;/li&gt;
     &lt;/ul&gt;&lt;span&gt;</value>
   </data>
   <data name="ObrazProgram" xml:space="preserve">
-    <value>Educational program</value>
+    <value>Образовательная программа</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>&lt;abbr title="Наивысший приоритет равен 1"&gt;Приоритет&lt;/abbr&gt;</value>
   </data>
   <data name="Profession" xml:space="preserve">
-    <value>Profession</value>
+    <value>Направление</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Профиль</value>
   </data>
   <data name="StatusActive" xml:space="preserve">
-    <value>Active</value>
+    <value>Подано</value>
   </data>
   <data name="StatusCancelled" xml:space="preserve">
-    <value>Withdrawn</value>
+    <value>Отозвано</value>
   </data>
   <data name="StudyForm" xml:space="preserve">
-    <value>Study form</value>
+    <value>Форма обучения</value>
   </data>
   <data name="Subheader" xml:space="preserve">
-    <value>Application info</value>
+    <value>Информация о заявлении</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>View application</value>
+    <value>Просмотр заявления</value>
   </data>
 </root>

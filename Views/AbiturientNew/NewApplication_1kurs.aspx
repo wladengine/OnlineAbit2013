@@ -4,11 +4,11 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<Mag_ApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Создание нового заявления
+    <%= GetGlobalResourceObject("NewApplication", "PageTitle")%>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-   <h2>Новое заявление</h2>
+   <h2> <%= GetGlobalResourceObject("NewApplication", "PageSubheader")%></h2>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -49,7 +49,8 @@
         {
             var options = '';
             if (json_data.NoFree) {
-                $(CurrObrazProgramsErrors).text('Нет направлений, на которые можно подать заявление').show();
+                var text = $('#NewApp_NoFreeEntries').text();
+                $(CurrObrazProgramsErrors).text(text).show();
                 $(CurrlProfession).attr('disabled', 'disabled').hide();
                 $(CurrlObrazProgram).html('');
                 $(CurrProfs).hide();
@@ -94,7 +95,8 @@
             semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
             if (json_data.NoFree) {
-                $(CurrObrazProgramsErrors).text('Заявление уже подавалось').show();;
+                var text = $('#ErrorHasApplication').text();
+                $(CurrObrazProgramsErrors).text(text).show();
                 $(CurrlObrazProgram).attr('disabled', 'disabled').hide();
                 $(CurrlSpecialization).html('');
             }
@@ -135,13 +137,13 @@
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
-            if (sbId==1){ <!-- Бюджет -->
-                if (json_data.GosLine==0) { <!-- Рф - РФ (только общий прием) -->
+            if (sbId==1){  
+                if (json_data.GosLine==0) { 
                     $(CurrGosLine).hide();
                     $(CurrGosLineHidden).val('0');
                 } 
                 else {
-                    if (json_data.GosLine==1) { <!-- неРф - неРФ или неСНГ-РФ (бд 1, только гослиния)-->
+                    if (json_data.GosLine==1) {  
                         $(CurrGosLine).hide();
                         $(CurrGosLineHidden).val('1');  
                     }
@@ -161,7 +163,8 @@
             }
             else {
                 if (json_data.ret.NoFree) {
-                    $(CurrObrazProgramsErrors).text('Заявление уже подавалось').show();
+                    var text = $('#ErrorHasApplication').text();
+                    $(CurrObrazProgramsErrors).text(text).show();
                     $(CurrlSpecialization).attr('disabled', 'disabled').hide();
                     $(CurrGosLine).hide();  
                 }
@@ -236,6 +239,7 @@
         currBlockData_ObrazProgram = '#BlockData_ObrazProgram' + i;
         currBlockData_Specialization = '#BlockData_Specialization' + i; 
         currBlockData_Faculty = '#BlockData_Faculty'+i;
+        currBlockData_GosLine = '#BlockData_GosLine'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
@@ -261,6 +265,13 @@
                 $(currBlockData_Specialization).text(json_data.Specialization);
                 $(currBlockData_Faculty).text(json_data.Faculty); 
                 $(currBlock).hide();
+                if (json_data.isgosline==1){
+                    $(currBlockData_GosLine).show();
+                }
+                else
+                {
+                    $(currBlockData_GosLine).hide();
+                }
                 $(currBlockData).show();
                 if (BlockIds[nxt] == undefined) {
                     $(nextBlock).show(); 
@@ -441,6 +452,15 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;" ><%= Model.Applications[i - 1].SpecializationName%></td>
             </tr>
+            <% if (Model.Applications[i - 1].IsGosLine.HasValue)
+               {
+                   if ((bool)Model.Applications[i - 1].IsGosLine) {%>
+                    <tr>
+                        <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
+                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
+                    </tr>
+            <%       } 
+               }%>
         </table>
         <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
@@ -497,6 +517,8 @@
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>
         </div>
        <%} %>
+    <span id="NewApp_NoFreeEntries" class="message error" style="display:none;"><%= GetGlobalResourceObject("NewApplication", "NewApp_NoFreeEntries")%></span>
+    <span id="ErrorHasApplication" class="message error" style="display:none;"><%= GetGlobalResourceObject("NewApplication", "ErrorHasApplication")%></span>
     <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)  
        { %> 
         <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
@@ -529,6 +551,10 @@
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
                     <td id="BlockData_Specialization<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
+                <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
+                    <td id="Td1" style="font-size:1.3em;">да</td>
+                </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
             <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
@@ -575,7 +601,7 @@
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
-             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
+             <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine")%></span><br /><br />
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" ></input>
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">

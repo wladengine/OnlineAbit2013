@@ -5,7 +5,6 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
 <style>
 	#sortable { list-style-type: decimal; margin: 10px; padding: 10px; width: 90%; cursor: move; }
 	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; /*height: 1.5em; */}
@@ -21,8 +20,11 @@
     });
 </script>
 <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
+    <a href="../AbiturientNew/PriorityChanger?CommitId=<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a>
+    -> 
+    <span>Приоритеты образовательных программ</span>
     <p class="message info">
-        Расставьте приоритеты образовательных программ внутри отдельно заданного конкурса.
+        Расставьте приоритеты образовательных программ внутри конкурса и нажмите Сохранить.
     </p>
     <form action="../AbiturientNew/PriorityChangeApplication" method="post">
         <%= Html.HiddenFor(x => x.ApplicationId) %>
@@ -40,7 +42,7 @@
                 </table>
                 <input type="hidden" name="<%= Model.lstObrazPrograms[i].Key.ToString("N") %>" />
                 <% if (Model.lstObrazPrograms[i].Value.HasProfileInObrazProgramInEntry) { %>
-                <a href="../AbiturientNew/PriorityChangerProfile?AppId=<%= Model.ApplicationId.ToString("N") %>&OPIE=<%= Model.lstObrazPrograms[i].Key.ToString("N") %>&V=<%= Model.ApplicationVersionId.ToString("N") %>">Для данной образовательной программы Вы можете указать приоритетность профилей</a>
+                <a style="text-decoration:underline" href="../AbiturientNew/PriorityChangerProfile?AppId=<%= Model.ApplicationId.ToString("N") %>&OPIE=<%= Model.lstObrazPrograms[i].Key.ToString("N") %>&V=<%= Model.ApplicationVersionId.ToString("N") %>">Для данной программы Вы можете указать приоритетность профилей</a>
                 <% } %>
             </li>
         <% } %>
@@ -50,4 +52,5 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Subheader" runat="server">
+    <h2>Приоритеты образовательных программ в конкурсе</h2>
 </asp:Content>

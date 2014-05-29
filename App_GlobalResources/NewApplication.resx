@@ -118,76 +118,76 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnCreateApp" xml:space="preserve">
-    <value>Create an application</value>
+    <value>Создать заявление</value>
   </data>
   <data name="chbNeedHostel" xml:space="preserve">
-    <value>I need hostel during education period</value>
+    <value>Нуждаюсь в общежитии на время обучения</value>
   </data>
   <data name="ErrorHasApplication" xml:space="preserve">
-    <value>The application has already applied</value>
+    <value>Заявление уже подавалось</value>
   </data>
   <data name="HeaderFaculty" xml:space="preserve">
-    <value>Select the faculty</value>
+    <value>Выберите факультет</value>
   </data>
   <data name="HeaderObrazProgram" xml:space="preserve">
-    <value>Select the study program</value>
+    <value>Выберите образовательную программу</value>
   </data>
   <data name="HeaderObtainingLevel" xml:space="preserve">
-    <value>Your obtaining level:</value>
+    <value>Уровень, который вы желаете получить:</value>
   </data>
   <data name="HeaderProfession" xml:space="preserve">
-    <value>Select the profession</value>
+    <value>Выберите направление</value>
   </data>
   <data name="HeaderProfile" xml:space="preserve">
-    <value>Select the profile</value>
+    <value>Выберите профиль</value>
   </data>
   <data name="PageSubheader" xml:space="preserve">
-    <value>New Application</value>
+    <value>Новое заявление</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>Create a new application</value>
+    <value>Создание нового заявления</value>
   </data>
   <data name="IsParallel" xml:space="preserve">
-    <value>Parallel education</value>
+    <value>Параллельное обучение</value>
   </data>
   <data name="IsReduced" xml:space="preserve">
-    <value>Second higher education</value>
+    <value>Второе высшее</value>
   </data>
   <data name="IsSecond" xml:space="preserve">
-    <value>For the persons with higher education</value>
+    <value>Для лиц, имеющих ВО</value>
   </data>
   <data name="Select_FirstCourse" xml:space="preserve">
-    <value>Bachelor/Specialist</value>
+    <value>Первый курс</value>
   </data>
   <data name="Select_Magistery" xml:space="preserve">
-    <value>Magistery</value>
+    <value>Магистратура</value>
   </data>
   <data name="Select_StudyBasis1" xml:space="preserve">
-    <value>Budget places</value>
+    <value>Госбюджетная</value>
   </data>
   <data name="Select_StudyBasis2" xml:space="preserve">
-    <value>Paid</value>
+    <value>Договорная</value>
   </data>
   <data name="Select_StudyForm1" xml:space="preserve">
-    <value>Full-Time</value>
+    <value>Дневная</value>
   </data>
   <data name="Select_StudyForm2" xml:space="preserve">
-    <value>Part-Time</value>
+    <value>Вечерняя</value>
   </data>
   <data name="StudyBasis" xml:space="preserve">
-    <value>Select study basis</value>
+    <value>Выберите основу обучения</value>
   </data>
   <data name="StudyForm" xml:space="preserve">
-    <value>Select study form</value>
+    <value>Выберите форму обучения</value>
   </data>
   <data name="HeaderFirstCourse_1" xml:space="preserve">
-    <value>You are entering on the </value>
+    <value>Согласно данным анкеты, вы поступаете на</value>
   </data>
   <data name="HeaderFirstCourse_2" xml:space="preserve">
-    <value>first course</value>
+    <value>первый курс</value>
   </data>
   <data name="AG_PriemClosed" xml:space="preserve">
-    <value>Entry is closed</value>
+    <value>Прием закрыт</value>
   </data>
   <data name="NewApp_2MoreEntry" xml:space="preserve">
     <value>Неоднозначный выбор учебного плана</value>
@@ -232,7 +232,7 @@
     <value>Удалить</value>
   </data>
   <data name="HeaderMagProfile" xml:space="preserve">
-    <value>Выберите магистерскую программу</value>
+    <value>Выберите профиль</value>
   </data>
   <data name="BlockData_Specialization" xml:space="preserve">
     <value>Профиль</value>
@@ -245,5 +245,35 @@
   </data>
   <data name="BlockData_GosLine" xml:space="preserve">
     <value>Гослиния</value>
+  </data>
+  <data name="AGExams" xml:space="preserve">
+    <value>Экзамен по выбору</value>
+  </data>
+  <data name="AGHeaderProgram" xml:space="preserve">
+    <value>Выберите направление подготовки</value>
+  </data>
+  <data name="AGProgram" xml:space="preserve">
+    <value>Направление</value>
+  </data>
+  <data name="AGSpecialization" xml:space="preserve">
+    <value>Специализация</value>
+  </data>
+  <data name="ApplicationLevel" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="ApplicationList" xml:space="preserve">
+    <value>Поданные заявления</value>
+  </data>
+  <data name="ApplicationView" xml:space="preserve">
+    <value>Просмотр заявлений</value>
+  </data>
+  <data name="EnterGosLine" xml:space="preserve">
+    <value>Поступать по гослинии</value>
+  </data>
+  <data name="NoApplications" xml:space="preserve">
+    <value>Нет поданых заявлений</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
   </data>
 </root>

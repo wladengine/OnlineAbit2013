@@ -20,11 +20,21 @@
     });
 </script>
 <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
-    <h2>PriemChangerProfile</h2>
+    <a href="../AbiturientNew/PriorityChanger?CommitId=<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a>
+    -> 
+    <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= Model.ApplicationId.ToString("N") %>&V=<%= Model.ApplicationVersionId.ToString("N") %>"><%= Model.ObrazProgramName %></a>
+    -> 
+    <span>Приоритеты по профилям</span>
+
     <p class="message info">
-        Расставьте приоритеты профилей внутри отдельно заданной образовательной программы.
+        Расставьте приоритеты профилей внутри образовательной программы и нажмите сохранить.
     </p>
     <form action="/AbiturientNew/PriorityChangeProfile" method="post">
+        <%= Html.HiddenFor(x => x.ApplicationId) %>
+        <%= Html.HiddenFor(x => x.ApplicationVersionId) %>
+        <%= Html.HiddenFor(x => x.CommitId) %>
+        <%= Html.HiddenFor(x => x.CommitName) %>
+        <%= Html.HiddenFor(x => x.ObrazProgramInEntryId) %>
         <ul id="sortable">
     <% for (int i = 0; i < Model.lstProfiles.Count; i++) { %>
             <li class="message success">
@@ -44,4 +54,5 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Subheader" runat="server">
+    <h2>Приоритеты профилей в образовательной программе</h2>
 </asp:Content>

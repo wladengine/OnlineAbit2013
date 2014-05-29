@@ -27,6 +27,7 @@ namespace OnlineAbit2013.Models
         public Guid CommitId { get; set; }
         public string CommitName { get; set; }
         public string ObrazProgramName { get; set; }
+        public Guid ObrazProgramInEntryId { get; set; }
         public List<KeyValuePair<Guid, string>> lstProfiles { get; set; }
     }
 }

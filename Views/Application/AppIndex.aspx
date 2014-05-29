@@ -303,7 +303,7 @@
     <h4 onclick="HidePortfolio()" style="cursor:pointer;">Портфолио</h4>
     <div class="message info">
         <b>Пожалуйста, прикрепляйте те файлы, которые общие для каждого заявления (сканы паспорта/документа об образовании и т.п.) в раздел </b> 
-        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold">Общие файлы</a>
+        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header") %></a>
     </div>
     <div id="dPortfolio">
     <hr />

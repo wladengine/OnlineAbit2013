@@ -1,11 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.SimplePerson>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Главная страница
+    <%= GetGlobalResourceObject("Main", "PageHeader")%> 
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-    <h2>Главная страница</h2>
+    <h2><%= GetGlobalResourceObject("Main", "PageHeader")%></h2>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -34,17 +34,16 @@
     </div>
 <% } %>
     <p>
-        Вы находитесь на главной странице Вашего <b>Личного Кабинета</b>. Здесь Вы можете подать заявление, выставить приоритеты, добавить сканы документов, 
-        создать мотивационное письмо, отредактировать свои персональные данные.
+        <%= GetGlobalResourceObject("Main", "TitleInfo")%> 
     </p>
-    <h4>Поданные заявления</h4>
+    <h4> <%= GetGlobalResourceObject("Main", "HeaderActiveApps")%> </h4>
     <hr />
     <table class="paginate full">
         <thead>
             <tr>
-                <th>Уровень</th>
+                <th><%= GetGlobalResourceObject("Main", "AppLevel")%></th>
                 <%--<th>Тип поступления</th>--%>
-                <th>Просмотр заявлений</th>
+                <th><%= GetGlobalResourceObject("Main", "AppView")%></th>
             </tr>
         </thead>
     <% foreach (OnlineAbit2013.Models.SimpleApplicationPackage app in Model.Applications.ToList())
@@ -52,7 +51,7 @@
          <tr>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel) %></td>
             <%--<td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType) %></td>--%>
-            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">Просмотр</a></td>
+            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">View</a></td>
          </tr>
      <% } %>
      </table>

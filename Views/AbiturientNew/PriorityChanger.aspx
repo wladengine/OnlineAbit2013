@@ -9,7 +9,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-<p>
+<p class="message info">
     <%= GetGlobalResourceObject("PriorityChangerForeign", "Info").ToString()%>
 </p>
 

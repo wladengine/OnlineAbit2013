@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppLevel" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="AppView" xml:space="preserve">
+    <value>Просмотр заявлений</value>
+  </data>
   <data name="CampusLink" xml:space="preserve">
     <value>Студгородок СПбГУ</value>
   </data>
@@ -130,10 +136,10 @@
     <value>Cancelled Apps</value>
   </data>
   <data name="HeaderNoActiveApps" xml:space="preserve">
-    <value>- No active application. &lt;a href="../../Abiturient/NewApplication"&gt;Apply&lt;/a&gt;</value>
+    <value>- Нет поданных заявлений. &lt;a href="../../Abiturient/NewApplication"&gt;Подать заявление&lt;/a&gt;</value>
   </data>
   <data name="HeaderNoCancelledApps" xml:space="preserve">
-    <value>- No cancelled applications.</value>
+    <value>- Нет отозванных заявлений.</value>
   </data>
   <data name="InformationHeader" xml:space="preserve">
     <value>Информация</value>
@@ -151,13 +157,15 @@
     <value>Главная страница</value>
   </data>
   <data name="PersonalOfficeHeader" xml:space="preserve">
-    <value>Personal Account</value>
+    <value>Личный кабинет</value>
   </data>
   <data name="ShowApplication" xml:space="preserve">
-    <value>Show application</value>
+    <value>Показать</value>
   </data>
   <data name="TitleInfo" xml:space="preserve">
-    <value>This is the main page of your &lt;b&gt;Personal Account&lt;/b&gt;. You can create a new application, set priorities of your applications, add scanned documents, 
-    create a motivation letter.</value>
+    <value>Это главная страница вашего &lt;b&gt;Личного Кабинета&lt;/b&gt;. Сейчас можете подать заявление, изменить приоритеты уже существующих. Перейдя на страницу заявления, вы можете добавить сканы документов в ваше портфолио, создать мотивационное письмо и отозвать заявление.</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
   </data>
 </root>

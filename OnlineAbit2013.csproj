@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BDClassLib">
+      <HintPath>.\BDClassLib.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
@@ -155,26 +158,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Common.ru-RU.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\ContactsInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ContactsInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ContactsInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ContactsInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\EducationInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EducationInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\EducationInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EducationInfo.en-US.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\EmailConfirmation.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -260,35 +243,50 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NewApplication.ru-RU.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PassportInfo.designer.cs">
+    <Compile Include="App_GlobalResources\oldContactsInfo.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PassportInfo.resx</DependentUpon>
+      <DependentUpon>oldContactsInfo.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PassportInfo.en-US.designer.cs">
+    <Compile Include="App_GlobalResources\oldContactsInfo.en-US.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PassportInfo.en-US.resx</DependentUpon>
+      <DependentUpon>oldContactsInfo.en-US.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOfficeForeign.aspx.en-US.designer.cs">
+    <Compile Include="App_GlobalResources\oldEducationInfo.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PersonalOfficeForeign.aspx.en-US.resx</DependentUpon>
+      <DependentUpon>oldEducationInfo.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOfficeForeign.designer.cs">
+    <Compile Include="App_GlobalResources\oldEducationInfo.en-US.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PersonalOfficeForeign.resx</DependentUpon>
+      <DependentUpon>oldEducationInfo.en-US.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOfficeForeign.en-US.designer.cs">
+    <Compile Include="App_GlobalResources\oldPassportInfo.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PersonalOfficeForeign.en-US.resx</DependentUpon>
+      <DependentUpon>oldPassportInfo.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\PersonalOfficeForeign.ru-RU.designer.cs">
+    <Compile Include="App_GlobalResources\oldPassportInfo.en-US.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PersonalOfficeForeign.ru-RU.resx</DependentUpon>
+      <DependentUpon>oldPassportInfo.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>oldPersonalOfficeForeign.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>oldPersonalOfficeForeign.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>oldPersonalOfficeForeign.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -305,20 +303,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step2.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\PersonalOffice_Step2.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonalOffice_Step2.en-US.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step3.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\PersonalOffice_Step3.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonalOffice_Step3.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step4.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step4.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\PersonalOffice_Step4.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonalOffice_Step4.en-US.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step5.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonalOffice_Step5.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\PersonalOffice_Step5.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonalOffice_Step5.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step6.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -436,6 +454,7 @@
     <Compile Include="Models\LangPack.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\MyModels.cs" />
+    <Compile Include="Models\PriorityChangerApplication.cs" />
     <Compile Include="OnlineAbit.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -500,7 +519,8 @@
     <Content Include="Views\AbiturientNew\NewApplicationRectorScholarshipSuccess.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_1kurs.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_AG.aspx" />
-    <Content Include="Views\AbiturientNew\NewApplication_AG_v.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_Mag.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_SPO.aspx" />
     <Content Include="Views\AbiturientNew\NotOpened.aspx" />
     <Content Include="Views\AbiturientNew\page404.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice.aspx" />
@@ -512,6 +532,8 @@
     <Content Include="Views\AbiturientNew\PersonalOffice_Page6.aspx" />
     <Content Include="Views\AbiturientNew\PersonStartPage.aspx" />
     <Content Include="Views\AbiturientNew\PriorityChanger.aspx" />
+    <Content Include="Views\AbiturientNew\PriorityChangerApplication.aspx" />
+    <Content Include="Views\AbiturientNew\PriorityChangerProfile.aspx" />
     <Content Include="Views\AbiturientNew\SetEqualWithRussia_Success.aspx" />
     <Content Include="Views\Abiturient\AddFiles.aspx" />
     <Content Include="Views\Abiturient\AddSharedFiles.aspx" />
@@ -531,6 +553,7 @@
     <Content Include="Views\Abiturient\PersonalOffice_Page6.aspx" />
     <Content Include="Views\Abiturient\PersonStartPage.aspx" />
     <Content Include="Views\Abiturient\PriorityChanger.aspx" />
+    <Content Include="Views\Abiturient\PriorityChangerApplication.aspx" />
     <Content Include="Views\Abiturient\SetEqualWithRussia_Success.aspx" />
     <Content Include="Views\Account\Captcha.aspx" />
     <Content Include="Views\Account\ChangePassword.aspx" />
@@ -716,14 +739,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Common.ru-RU.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\ContactsInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ContactsInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\EducationInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EducationInfo.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\EmailConfirmation.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EmailConfirmation.en-US.designer.cs</LastGenOutput>
@@ -791,26 +806,6 @@
     <Content Include="App_GlobalResources\NewApplication.ru-RU.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>NewApplication.ru-RU.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PassportInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PassportInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOfficeForeign.aspx.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOfficeForeign.aspx.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOfficeForeign.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOfficeForeign.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOfficeForeign.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOfficeForeign.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\PersonalOfficeForeign.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonalOfficeForeign.ru-RU.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\PersonInfo.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -946,24 +941,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\PassportInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PassportInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\ContactsInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ContactsInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\EducationInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EducationInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_GlobalResources\PersonalOffice_Step6.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOffice_Step6.en-US.designer.cs</LastGenOutput>
@@ -990,6 +967,60 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AbiturientNew\PersonalOffice.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\oldContactsInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldContactsInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldContactsInfo.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldContactsInfo.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldEducationInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldEducationInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldEducationInfo.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldEducationInfo.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldPassportInfo.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldPassportInfo.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldPassportInfo.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldPassportInfo.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldPersonalOfficeForeign.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldPersonalOfficeForeign.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>oldPersonalOfficeForeign.ru-RU.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\PersonalOffice_Step2.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step2.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\PersonalOffice_Step3.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step3.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\PersonalOffice_Step4.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step4.en-US.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\PersonalOffice_Step5.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PersonalOffice_Step5.en-US.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

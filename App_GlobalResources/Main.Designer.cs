@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Active applications.
+        ///   Ищет локализованную строку, такую же, как Поданные заявления.
         /// </summary>
         internal static string HeaderActiveApps {
             get {

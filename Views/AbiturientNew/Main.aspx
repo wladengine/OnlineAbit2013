@@ -51,7 +51,7 @@
          <tr>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.StudyLevel) %></td>
             <%--<td style="vertical-align:middle; text-align:center;"><%= Html.Encode(app.PriemType) %></td>--%>
-            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>">View</a></td>
+            <td style="vertical-align:middle; text-align:center;"><a href="<%= string.Format("../../Application/Index/{0}", app.Id.ToString("N")) %>"><%= GetGlobalResourceObject("Main", "View")%></a></td>
          </tr>
      <% } %>
      </table>

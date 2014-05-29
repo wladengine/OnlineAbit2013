@@ -18,7 +18,6 @@
 <% } %>
     <script type="text/javascript">
         $(function () {
-            $('#UILink').hide();
             $('#fileAttachment').change(ValidateInput);
             $("#rejectBtn")
                 //.button()
@@ -204,7 +203,7 @@
 <% } %>
 
 <div class="panel">
-    <h4 onclick="HidePortfolio()" style="cursor:pointer;">Прикреплённые файлы</h4>
+    <h4 onclick="HidePortfolio()" style="cursor:pointer;"><%= GetGlobalResourceObject("AddSharedFiles", "LoadedFiles")%></h4>
     <div class="message info">
         <b>Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел </b> 
         <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header") %></a>

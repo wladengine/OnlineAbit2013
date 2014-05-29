@@ -130,7 +130,7 @@
     <value>Информация для иностранцев</value>
   </data>
   <data name="HeaderActiveApps" xml:space="preserve">
-    <value>Active applications</value>
+    <value>Поданные заявления</value>
   </data>
   <data name="HeaderCancelledApps" xml:space="preserve">
     <value>Cancelled Apps</value>

@@ -455,6 +455,7 @@ namespace OnlineAbit2013.Models
     public class AdditionalInfoPerson
     {
         public bool HostelAbit { get; set; }
+        public bool HostelEduc { get; set; }
         public bool HasPrivileges { get; set; }
         public string ContactPerson { get; set; }
         public string ExtraInfo { get; set; }
@@ -552,6 +553,8 @@ namespace OnlineAbit2013.Models
         public string StudyForm { get; set; }
         public string StudyBasis { get; set; }
         public string StudyLevel { get; set; }
+        public bool HasManualExams { get; set; }
+        public string ManualExam { get; set; }
         public bool Enabled { get; set; }
         public bool IsGosLine { get; set; }
         public bool NeedHostel { get; set; }

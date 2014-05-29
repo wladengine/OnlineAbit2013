@@ -172,6 +172,13 @@
         <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.Specialization) %></td>
     </tr>
+    <%  if (Application.HasManualExams)
+        {%>
+    <tr>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
+        <td align="left"><%= Html.Encode(Application.ManualExam) %></td>
+    </tr>
+    <%  } %>
     <tr>
         <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyForm").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.StudyForm) %></td>
@@ -180,13 +187,6 @@
         <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyBasis").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.StudyBasis) %></td>
     </tr>
-    <% if (Application.NeedHostel)
-       { %>
-    <tr>
-        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></td>
-        <td align="left">да</td>
-    </tr>
-    <% } %>
     <% if (Application.IsGosLine)
        { %>
     <tr>

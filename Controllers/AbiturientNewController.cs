@@ -459,6 +459,7 @@ namespace OnlineAbit2013.Controllers
                         ExtraInfo = Server.HtmlDecode(AddInfo.AddInfo),
                         HasPrivileges = AddInfo.HasPrivileges ?? false,
                         HostelAbit = AddInfo.HostelAbit ?? false,
+                        HostelEduc = AddInfo.HostelEduc,
                         ContactPerson = Server.HtmlDecode(AddInfo.Parents),
                         ReturnDocumentTypeId = Server.HtmlDecode((AddInfo.ReturnDocumentTypeId ?? 1).ToString()),
                         ReturnDocumentTypeList = context.ReturnDocumentType.Select(x => new { x.Id, x.Name }).ToList().Select(x => new SelectListItem() { Value=x.Id.ToString(), Text = x.Name }).ToList()
@@ -843,6 +844,7 @@ namespace OnlineAbit2013.Controllers
                     PersonAddInfo.Parents = model.AddInfo.ContactPerson;
                     PersonAddInfo.HasPrivileges = model.AddInfo.HasPrivileges;
                     PersonAddInfo.HostelAbit = model.AddInfo.HostelAbit;
+                    PersonAddInfo.HostelEduc = model.AddInfo.HostelEduc;
                     PersonAddInfo.ReturnDocumentTypeId = iReturnDocumentTypeId;
 
                     if (Person.RegistrationStage <= 6)
@@ -1583,10 +1585,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (iScTypeId.Value != 4)
                     {
                         model.EntryType = 1;//1 курс бак-спец, АГ, СПО
-                        int? iScExClassId = (int?)Util.AbitDB.GetValue("SELECT SchoolExitClass.IntValue FROM PersonEducationDocument INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
-                        if (iScExClassId.HasValue)
+                        if (iScTypeId.Value != 1)
                         {
-                            model.ExitClassId = (int)iScExClassId;
+                            model.ExitClassId = 11;
+                        }
+                        else
+                        {
+                            int? iScExClassId = (int?)Util.AbitDB.GetValue("SELECT SchoolExitClass.IntValue FROM PersonEducationDocument INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                            if (iScExClassId.HasValue)
+                            {
+                                model.ExitClassId = (int)iScExClassId;
+                            }
                         }
                     }
                     else
@@ -2044,6 +2053,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          Profession = Entry.LicenseProgramCode + " " + Entry.LicenseProgramName,
                          ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
                          Specialization = Entry.ProfileName,
+                         HasManualExams = false,
                          HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0,
                          EntryId = App.EntryId
                      }).ToList().Union(
@@ -2056,6 +2066,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                           Profession = AG_App.AG_Entry.AG_Program.Name,
                           ObrazProgram = AG_App.AG_Entry.AG_EntryClass.Name,
                           Specialization = AG_App.AG_Entry.AG_Profile.Name,
+                          HasManualExams = AG_App.ManualExamId.HasValue,
+                          ManualExam = AG_App.ManualExamId.HasValue ? AG_App.AG_ManualExam.Name : "",
+                          StudyForm = Resources.Common.StudyFormFullTime,
+                          StudyBasis = Resources.Common.StudyBasisBudget,
                           HasSeparateObrazPrograms = false
                       }).ToList()).OrderBy(x => x.Priority).ToList();
 

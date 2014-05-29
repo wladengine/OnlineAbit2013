@@ -93,6 +93,13 @@
                     <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
                     <td><%=s.Specialization%></td>
                 </tr>
+                <% if (s.HasManualExams)
+                   { %>
+                <tr>
+                    <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
+                    <td><%=s.ManualExam%></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyForm").ToString()%></td>
                     <td><%=s.StudyForm%></td>

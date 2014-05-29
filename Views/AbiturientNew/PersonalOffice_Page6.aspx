@@ -101,6 +101,10 @@
                         <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "HostelAbit").ToString()%></span>
                     </div>
                     <div class="clearfix">
+                        <%= Html.CheckBoxFor(x => x.AddInfo.HostelEduc)%>
+                        <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "HostelAbit").ToString()%></span>
+                    </div>
+                    <div class="clearfix">
                         <h4><%= GetGlobalResourceObject("PersonalOffice_Step6", "Privileges").ToString()%></h4>
                         <%= Html.CheckBoxFor(x => x.AddInfo.HasPrivileges) %>
                         <span><%= GetGlobalResourceObject("PersonalOffice_Step6", "PrivilegesFull").ToString()%></span>

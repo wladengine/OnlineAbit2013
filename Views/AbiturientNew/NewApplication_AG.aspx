@@ -206,14 +206,22 @@
         currBlockData_Profession = '#BlockData_Profession' + i;
         currBlockData_Specialization = '#BlockData_Specialization' + i;
         currBlockData_ManualExam = '#BlockData_ManualExam' + i;
+        currBlockDataTr_ManualExam = '#BlockDataTr_ManualExam' + i;
 
         $.post('/AbiturientNew/AddApplication_AG', { Entryclass: $('#EntryClassId').val(), profession: $(currProfessions).val(), profileid: $(currProfile).val(), manualExam : $(currExams).val(), NeedHostel: $(currNeedHostel).is(':checked'), CommitId : $('#CommitId').val() }, function(json_data) {
             if (json_data.IsOk) {
                 $(currBlockData_Profession).text(json_data.Profession);
                 $(currBlockData_Specialization).text(json_data.Specialization);
-                $(currBlockData_ManualExam).text(json_data.ManualExam);
+                
                 $(currBlock).hide();
                 $(currBlockData).show();
+                if (json_data.ManualExam == null){
+                    $(currBlockData_ManualExam).text('нет');
+                    $(currBlockDataTr_ManualExam).hide(); 
+                }
+                else{
+                    $(currBlockData_ManualExam).text(json_data.ManualExam);
+                }
                 if (BlockIds[nxt] == undefined) {
                     $(nextBlock).show();
                 }
@@ -294,12 +302,14 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].ProfileName%></td>
             </tr>
-            <tr>
+            <% if (Model.Applications[i-1].ManualExamId!=5) { %>
+            <tr id="BlockDataTr_ManualExam<%= i.ToString()%>" >
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
                 <td id="BlockData_ManualExam<%= i.ToString()%>" ><%= Model.Applications[i - 1].ManualExamName%></td>
             </tr>
+            <%} %>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("PriorityChangerForeign", "Delete").ToString()%></button>
+        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete").ToString()%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
@@ -343,7 +353,7 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"></td>
             </tr>
-            <tr>
+            <tr id="BlockDataTr_ManualExam<%= i.ToString()%>" >
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
                 <td id="BlockData_ManualExam<%= i.ToString()%>" ></td>
             </tr>
@@ -368,7 +378,8 @@
             <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
-            <input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><br />
+            <% if (2 == 1)
+               { %><input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><%} %><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">

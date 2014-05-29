@@ -40,8 +40,8 @@ namespace OnlineAbit2013.Controllers
                         StudyBasis = Entry.StudyBasisName,
                         StudyLevel = Entry.StudyLevelName,
                         Priority = App.Priority,
-                        NeedHostel = App.HostelEduc,
                         IsGosLine = App.IsGosLine,
+                        HasManualExams = false,
                         Enabled = App.Enabled
                     }).ToList().Union(
                     context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()
@@ -54,6 +54,8 @@ namespace OnlineAbit2013.Controllers
                         StudyBasis = Resources.Common.StudyBasisBudget,
                         StudyLevel = Resources.Common.AG,
                         Priority = x.Priority,
+                        HasManualExams = x.ManualExamId.HasValue,
+                        ManualExam = x.ManualExamId.HasValue ? x.AG_ManualExam.Name : "",
                         Enabled = x.Enabled
                     }).ToList()).ToList();
 

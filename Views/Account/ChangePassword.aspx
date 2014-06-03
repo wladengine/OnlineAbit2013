@@ -1,6 +1,6 @@
 ﻿<%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="OnlineAbit2013.Models" %>
-<%@ Page Language="C#" MasterPageFile="~/Views/Abiturient/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<ChangePasswordModel>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<ChangePasswordModel>" %>
 
 <asp:Content ID="changePasswordTitle" ContentPlaceHolderID="TitleContent" runat="server">
     <%= GetGlobalResourceObject("ChangePassword", "Header").ToString() %>

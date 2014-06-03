@@ -31,6 +31,7 @@
     function GetProfessions(i) {
         var CurrProfs = '#Profs'+i;
         var CurrlProfession = '#lProfession'+i;
+        var CurrlProfessionLoading = '#lProfession'+i + 'loading';
         var CurrlSpecialization = '#lSpecialization'+i;
         var CurrObrazPrograms = '#ObrazPrograms'+i; 
         var CurrObrazProgramsErrors='#ObrazProgramsErrors'+i;
@@ -44,9 +45,12 @@
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
+        $(CurrlProfession).hide();
+        $(CurrlProfessionLoading).show();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
             entry: $('#EntryType').val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val() }, function (json_data) 
-        {
+            {
+                $(CurrlProfessionLoading).hide();
             var options = '';
             if (json_data.NoFree) {
                 var text = $('#NewApp_NoFreeEntries').text();
@@ -56,6 +60,7 @@
                 $(CurrProfs).hide();
             }
             else {
+                $(CurrlProfession).show();
                 $(CurrProfs).show();
                 $(CurrObrazProgramsErrors).text('').hide();
                 for (var i = 0; i < json_data.length; i++) {
@@ -491,10 +496,12 @@
         </p>--%>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
+            <div id="lProfession<%= i.ToString()%>loading" style="display:none;">Загрузка, подождите... <img src="../../Content/Loading.gif"></img></div>
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
         <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
+
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="width:659px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
@@ -585,10 +592,12 @@
         </p>--%>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
+            <span id="lProfession<%= i.ToString()%>loading" style="display:none;">Загрузка, подождите...</span>
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
         </p>
         <p id="ObrazPrograms<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderObrazProgram")%></span><br />
+            <span id="lObrazProgram<%= i.ToString()%>loading" style="display:none;">Загрузка, подождите... <img src="../../Content/Loading.gif"></img></span>
             <select id="lObrazProgram<%= i.ToString()%>" size="5" name="lObrazProgram" style="width:659px;" onchange="GetSpecializations(<%= i.ToString()%>)"></select>
         </p>
         <p id="Specs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">

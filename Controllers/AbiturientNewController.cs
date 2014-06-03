@@ -1867,6 +1867,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true).Count() > 0)
                     return RedirectToAction("NewApplication_AG", 
                         new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
+                if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Count() == 0)
+                    return RedirectToAction("NewApplication_AG",
+                        new RouteValueDictionary() { { "errors", "Невозможно подать пустое заявление." } });
+                 
 
                 var Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
                 foreach (var AppId in Ids)
@@ -1916,7 +1920,16 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_Mag", model);
                 }
-
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count()==0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.MaxBlocks = maxBlockMag;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    return View("NewApplication_Mag", model);
+                }
                 Util.CommitApplication(CommitId, PersonId, context);
             } 
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
@@ -1949,7 +1962,16 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_Aspirant", model);
                 }
-
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.MaxBlocks = maxBlockAspirant;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    return View("NewApplication_Aspirant", model);
+                }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
@@ -1982,7 +2004,16 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_1kurs", model);
                 }
-
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.MaxBlocks = maxBlock1kurs;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    return View("NewApplication_1kurs", model);
+                }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
@@ -2015,7 +2046,16 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
                     return View("NewApplication_SPO", model);
                 }
-
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.MaxBlocks = maxBlockSPO;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    return View("NewApplication_SPO", model);
+                }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });

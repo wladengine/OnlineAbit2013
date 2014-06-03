@@ -693,6 +693,7 @@
           <Property Name="IsCountry" Type="bit" Nullable="false" />
           <Property Name="IsNationality" Type="bit" Nullable="false" />
           <Property Name="IsSNG" Type="bit" Nullable="false" />
+          <Property Name="IsRussia" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="EgeCertificate">
           <Key>
@@ -744,6 +745,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="NameDat" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MotivationMail">
           <Key>
@@ -800,6 +802,8 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OlympSubject">
           <Key>
@@ -1458,7 +1462,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationDetails_Application">
-          <End Role="Application" Type="OnlinePriem2012Model.Store.Application" Multiplicity="1" />
+          <End Role="Application" Type="OnlinePriem2012Model.Store.Application" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationDetails" Type="OnlinePriem2012Model.Store.ApplicationDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Application">
@@ -2705,6 +2711,7 @@
           <Property Type="Boolean" Name="IsCountry" Nullable="false" />
           <Property Type="Boolean" Name="IsNationality" Nullable="false" />
           <Property Type="Boolean" Name="IsSNG" Nullable="false" />
+          <Property Type="Boolean" Name="IsRussia" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersonContacts_Country">
           <End Type="OnlinePriem2012Model.Country" Role="Country" Multiplicity="0..1" />
@@ -2751,6 +2758,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PersonEducationDocument" Relationship="OnlinePriem2012Model.FK_PersonEducationDocument_Language" FromRole="Language" ToRole="PersonEducationDocument" />
+          <Property Type="String" Name="NameDat" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -3345,6 +3353,8 @@
           <Property Type="Int32" Name="Number" />
           <NavigationProperty Name="OlympBook" Relationship="OnlinePriem2012Model.FK_OlympBook_OlympName" FromRole="OlympName" ToRole="OlympBook" />
           <NavigationProperty Name="Olympiads" Relationship="OnlinePriem2012Model.FK_Olympiads_OlympName" FromRole="OlympName" ToRole="Olympiads" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OlympSubject">
           <Key>
@@ -4423,6 +4433,7 @@
           <EntitySetMapping Name="Country">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Country">
               <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="IsRussia" ColumnName="IsRussia" />
                 <ScalarProperty Name="IsSNG" ColumnName="IsSNG" />
                 <ScalarProperty Name="IsNationality" ColumnName="IsNationality" />
                 <ScalarProperty Name="IsCountry" ColumnName="IsCountry" />
@@ -4466,6 +4477,7 @@
           <EntitySetMapping Name="Language">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Language">
               <MappingFragment StoreEntitySet="Language">
+                <ScalarProperty Name="NameDat" ColumnName="NameDat" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -4694,6 +4706,8 @@
           <EntitySetMapping Name="OlympName">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.OlympName">
               <MappingFragment StoreEntitySet="OlympName">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

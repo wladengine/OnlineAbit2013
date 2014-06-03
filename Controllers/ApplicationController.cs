@@ -482,7 +482,7 @@ namespace OnlineAbit2013.Controllers
                         //СПО
                         case 3: { bindata = PDFUtils.GetApplicationPDF_SPO(appId, Server.MapPath("~/Templates/"), personId); break; }
                         //Аспирантура
-                        case 4: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
+                        case 4: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/"), personId); break; }
 
                         //case 5: { bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/")); break; }
                         //case 6: { bindata = PDFUtils.GetApplicationPDFChangeStudyForm(appId, Server.MapPath("~/Templates/")); break; }

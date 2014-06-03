@@ -8662,13 +8662,15 @@ namespace OnlineAbit2013
         /// <param name="isCountry">Initial value of the IsCountry property.</param>
         /// <param name="isNationality">Initial value of the IsNationality property.</param>
         /// <param name="isSNG">Initial value of the IsSNG property.</param>
-        public static Country CreateCountry(global::System.Int32 id, global::System.Boolean isCountry, global::System.Boolean isNationality, global::System.Boolean isSNG)
+        /// <param name="isRussia">Initial value of the IsRussia property.</param>
+        public static Country CreateCountry(global::System.Int32 id, global::System.Boolean isCountry, global::System.Boolean isNationality, global::System.Boolean isSNG, global::System.Boolean isRussia)
         {
             Country country = new Country();
             country.Id = id;
             country.IsCountry = isCountry;
             country.IsNationality = isNationality;
             country.IsSNG = isSNG;
+            country.IsRussia = isRussia;
             return country;
         }
 
@@ -8894,6 +8896,30 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsSNG;
         partial void OnIsSNGChanging(global::System.Boolean value);
         partial void OnIsSNGChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsRussia
+        {
+            get
+            {
+                return _IsRussia;
+            }
+            set
+            {
+                OnIsRussiaChanging(value);
+                ReportPropertyChanging("IsRussia");
+                _IsRussia = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsRussia");
+                OnIsRussiaChanged();
+            }
+        }
+        private global::System.Boolean _IsRussia;
+        partial void OnIsRussiaChanging(global::System.Boolean value);
+        partial void OnIsRussiaChanged();
 
         #endregion
 
@@ -10953,6 +10979,30 @@ namespace OnlineAbit2013
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String NameDat
+        {
+            get
+            {
+                return _NameDat;
+            }
+            set
+            {
+                OnNameDatChanging(value);
+                ReportPropertyChanging("NameDat");
+                _NameDat = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("NameDat");
+                OnNameDatChanged();
+            }
+        }
+        private global::System.String _NameDat;
+        partial void OnNameDatChanging(global::System.String value);
+        partial void OnNameDatChanged();
 
         #endregion
 
@@ -12262,10 +12312,12 @@ namespace OnlineAbit2013
         /// Create a new OlympName object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static OlympName CreateOlympName(global::System.Int32 id)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympName CreateOlympName(global::System.Int32 id, global::System.Boolean isOpen)
         {
             OlympName olympName = new OlympName();
             olympName.Id = id;
+            olympName.IsOpen = isOpen;
             return olympName;
         }
 
@@ -12347,6 +12399,54 @@ namespace OnlineAbit2013
         private Nullable<global::System.Int32> _Number;
         partial void OnNumberChanging(Nullable<global::System.Int32> value);
         partial void OnNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 

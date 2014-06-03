@@ -240,8 +240,8 @@
                         <%= Html.LabelFor(x => x.ContactsInfo.Flat, GetGlobalResourceObject("PersonalOffice_Step3", "Flat").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.Flat) %>
                     </div>
-                    <% if ((Model.res == 1) || (Model.res == 3))
-                       { %> 
+                    <%--<% if ((Model.res == 1) || (Model.res == 3))
+                       { %> --%>
                     <h4><%= GetGlobalResourceObject("PersonalOffice_Step3", "AdditionalAddress_Header").ToString()%> </h4>
                     <hr />
                     <div class="clearfix">
@@ -268,7 +268,7 @@
                         <%= Html.LabelFor(x => x.ContactsInfo.FlatReal, GetGlobalResourceObject("PersonalOffice_Step3", "Flat").ToString())%>
                         <%= Html.TextBoxFor(x => x.ContactsInfo.FlatReal)%>
                     </div>
-                    <% } %>
+                    <%--<% } %>--%>
                     <hr />
                     <div class="clearfix">
                         <input id="Submit2" class="button button-green" type="submit" value="<%= GetGlobalResourceObject("PersonInfo", "ButtonSubmitText").ToString()%>" />

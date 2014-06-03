@@ -121,7 +121,7 @@
     <value>Город</value>
   </data>
   <data name="AdditionalAddress_Header" xml:space="preserve">
-    <value>Адрес проживания (если отличается):</value>
+    <value>Адрес проживания/почтовый адрес (если отличается):</value>
   </data>
   <data name="AddressData_Message" xml:space="preserve">
     <value>Введите адрес</value>

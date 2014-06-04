@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Нуждаюсь в общежитии на время обучения.
+        /// </summary>
+        internal static string HostelEduc {
+            get {
+                return ResourceManager.GetString("HostelEduc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Общежитие.
         /// </summary>
         internal static string HostelHeader {

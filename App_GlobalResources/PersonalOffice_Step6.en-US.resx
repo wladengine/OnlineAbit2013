@@ -159,4 +159,7 @@
   <data name="PrivilegesFull" xml:space="preserve">
     <value>Претендую на льготы (инвалид I,II ст., участник боевых действий, сирота, чернобылец...)</value>
   </data>
+  <data name="HostelEduc" xml:space="preserve">
+    <value>Нуждаюсь в общежитии на время обучения</value>
+  </data>
 </root>

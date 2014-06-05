@@ -59,7 +59,7 @@
     </script>
     <script type="text/javascript">
 
-        var regexp = /^[А-Яа-яё\-\'\s]+$/i;
+        var regexp = /^[A-Za-z\А-Яа-яё\-\'\s]+$/i;
         function CheckSurname() {
             var ret = true;
             var val = $('#PersonInfo_Surname').val().trim();
@@ -67,7 +67,7 @@
             if (val == '') {
                 ret = false;
                 $('#PersonInfo_Surname').addClass('input-validation-error');
-                                $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
+                $('#PersonInfo_Surname_Message').text(PersonInfo_Surname_Message);
                 $('#PersonInfo_Surname_Message').show();
             }
             else {
@@ -157,6 +157,10 @@
                     }
                    
                 }
+            }
+            else{
+                $('#PersonInfo_SecondName_Message').hide();
+                $('#PersonInfo_SecondName').removeClass('input-validation-error');
             }
         }
         function CheckBirthDate() {

@@ -139,7 +139,7 @@
     <value>Я желаю принимать участие в равном конкурсе с гражданами РФ</value>
   </data>
   <data name="MessageLatinSymbols" xml:space="preserve">
-    <value>Использование латинских букв не допускается.</value>
+    <value>Использование символов кроме букв латинского и русского алфавитов не допускается.</value>
   </data>
   <data name="MessageMaxLength" xml:space="preserve">
     <value>Превышена максимальная длина</value>

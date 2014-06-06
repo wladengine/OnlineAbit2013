@@ -838,7 +838,7 @@ namespace OnlineAbit2013.Controllers
             bool bIsReduced = isReduced == "1" ? true : false;
             bool bIsParallel = isParallel == "1" ? true : false;
 
-            string query = "SELECT DISTINCT ObrazProgramId, ObrazProgramName FROM Entry " +
+            string query = "SELECT DISTINCT ObrazProgramId, ObrazProgramName, ObrazProgramNameEng FROM Entry " +
                 "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId " +
                 "AND StudyLevelGroupId=@StudyLevelGroupId AND IsParallel=@IsParallel AND IsReduced=@IsReduced " +
                 "AND CampaignYear=@Year AND SemesterId=@SemesterId";
@@ -857,9 +857,17 @@ namespace OnlineAbit2013.Controllers
             dic.Add("@Year", Util.iPriemYear);
             dic.Add("@SemesterId", iSemesterId);
 
+            bool isEng = Util.GetCurrentThreadLanguageIsEng();
+
             DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
             var OPs = from DataRow rw in tbl.Rows
-                      select new { Id = rw.Field<int>("ObrazProgramId"), Name = rw.Field<string>("ObrazProgramName") };
+                      select new 
+                      { 
+                          Id = rw.Field<int>("ObrazProgramId"),
+                          Name = isEng ?
+                            (string.IsNullOrEmpty(rw.Field<string>("ObrazProgramNameEng")) ? rw.Field<string>("ObrazProgramName") : rw.Field<string>("ObrazProgramNameEng"))
+                            : rw.Field<string>("ObrazProgramName")
+                      };
 
             return Json(new { NoFree = OPs.Count() > 0 ? false : true, List = OPs });
         }

@@ -1661,14 +1661,18 @@ WHERE PersonId=@PersonId ";
 
         public static List<SelectListItem> GetStudyBasisList()
         {
-            string query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
+            bool isEng = GetCurrentThreadLanguageIsEng();
+            
+            string query = "SELECT DISTINCT StudyBasisId, StudyBasisName, StudyBasisNameEng FROM Entry ORDER BY 1";
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             return
                 (from DataRow rw in tbl.Rows
                  select new
                  {
                      Value = rw.Field<int>("StudyBasisId"),
-                     Text = rw.Field<string>("StudyBasisName")
+                     Text = isEng ?
+                     (string.IsNullOrEmpty(rw.Field<string>("StudyBasisNameEng")) ? rw.Field<string>("StudyBasisName") : rw.Field<string>("StudyBasisNameEng"))
+                     : rw.Field<string>("StudyBasisName")
                  }).AsEnumerable()
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();
@@ -1703,14 +1707,18 @@ WHERE PersonId=@PersonId ";
         }
         public static List<SelectListItem> GetStudyFormList()
         {
-            string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
+            bool isEng = GetCurrentThreadLanguageIsEng();
+
+            string query = "SELECT DISTINCT StudyFormId, StudyFormName, StudyFormNameEng FROM Entry ORDER BY 1";
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             return
                 (from DataRow rw in tbl.Rows
                  select new
                  {
                      Value = rw.Field<int>("StudyFormId"),
-                     Text = rw.Field<string>("StudyFormName")
+                     Text = isEng ? 
+                     (string.IsNullOrEmpty(rw.Field<string>("StudyFormNameEng")) ? rw.Field<string>("StudyFormName") : rw.Field<string>("StudyFormNameEng"))
+                     : rw.Field<string>("StudyFormName")
                  }).AsEnumerable()
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();

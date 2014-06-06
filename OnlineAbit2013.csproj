@@ -108,11 +108,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AddSharedFiles.en-US.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\AddSharedFiles.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AddSharedFiles.ru-RU.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\ApplicationInfo.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -122,11 +117,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ApplicationInfo.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ApplicationInfo.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\ChangePassword.designer.cs">
       <AutoGen>True</AutoGen>
@@ -223,11 +213,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Main.en-US.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Main.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Main.ru-RU.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\NewApplication.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -237,11 +222,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewApplication.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\NewApplication.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewApplication.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\oldContactsInfo.designer.cs">
       <AutoGen>True</AutoGen>
@@ -372,11 +352,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PersonStartPage.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\PersonStartPage.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PersonStartPage.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PriorityChangerForeign.designer.cs">
       <AutoGen>True</AutoGen>
@@ -699,10 +674,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>AddSharedFiles.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AddSharedFiles.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>AddSharedFiles.ru-RU.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\ApplicationInfo.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ApplicationInfo.en-US.designer.cs</LastGenOutput>
@@ -710,10 +681,6 @@
     <Content Include="App_GlobalResources\ApplicationInfo.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ApplicationInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\ApplicationInfo.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ApplicationInfo.ru-RU.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\ChangePassword.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -791,10 +758,6 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Main.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Main.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Main.ru-RU.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\NewApplication.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>NewApplication.en-US.designer.cs</LastGenOutput>
@@ -802,10 +765,6 @@
     <Content Include="App_GlobalResources\NewApplication.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>NewApplication.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\NewApplication.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>NewApplication.ru-RU.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\PersonInfo.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -890,12 +849,6 @@
     <Content Include="App_GlobalResources\PersonStartPage.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonStartPage.Designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\PersonStartPage.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>PersonStartPage.ru-RU.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

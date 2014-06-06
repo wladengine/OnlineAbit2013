@@ -938,6 +938,8 @@ namespace OnlineAbit2013.Controllers
                     model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/AbiturientNew/NewApplication\">\"Подать новое заявление\"</a>" });
                 }
 
+                //model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Уважаемые абитуриенты! Не забудьте проверить свой выбор \"Нуждаюсь в общежитии на время обучения\" на <a href=\"https://cabinet.spbu.ru/AbiturientNew?step=6\">последней странице анкеты</a>" });
+
                 return View("Main", model);
             }
         }

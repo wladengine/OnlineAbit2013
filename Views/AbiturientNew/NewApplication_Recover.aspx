@@ -475,18 +475,11 @@
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
+
         <input type="hidden" name="IsReducedHidden" id="Hidden1" value="0"/>
         <input type="hidden" name="IsParallelHidden" id="Hidden2" value="0"/>
         <input type="hidden" name="IsSecondHidden" id="Hidden3" value="0"/>
-        <%--<p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
-        </p>
-        <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
-        </p>
-        <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
-        </p>--%>
+
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
@@ -560,27 +553,24 @@
         </div>
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SForm<%= i.ToString()%>">
-            <span>Форма обучения</span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
-            <span>Основа обучения</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
+                { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
+        <p id="P1">
+            <span>Семестр</span><br />
+            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
         <input type="hidden" name="IsParallelHidden" id="IsParallelHidden<%= i.ToString()%>" value="0"/>
-           <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
-        <%--<p id="Reduced<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsReduced<%= i.ToString()%>" name="IsReduced" title="Второе высшее" onclick="ChangeIsReduced(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsReduced")%></span><br />
-        </p>
-        <p id="Parallel<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsParallel<%= i.ToString()%>" name="IsParallel" title="Параллельное обучение" onclick="ChangeIsParallel(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsParallel")%></span><br />
-        </p>
-        <p id="Second<%= i.ToString()%>" style=" border-collapse:collapse;">
-            <input type="checkbox" id="IsSecond<%= i.ToString()%>" name="IsSecond" title="Для лиц, имеющих ВО" onclick="ChangeIsSecond(<%= i.ToString()%>)"/><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "IsSecond")%></span><br />
-        </p>--%>
+        <input type="hidden" name="IsSecondHidden" id="IsSecondHidden<%= i.ToString()%>" value="0"/>
+
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>

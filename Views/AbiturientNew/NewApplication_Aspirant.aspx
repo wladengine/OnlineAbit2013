@@ -10,8 +10,17 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
    <h2> <%= GetGlobalResourceObject("NewApplication", "PageSubheader")%></h2>
 </asp:Content>
-
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+<% if (!Model.Enabled)
+   {
+       if (Model.HasError)
+       {  %>
+       <div class="error message"><%= Model.ErrorMessage%></div>  
+       <% } %>
+   
+<%}
+   else
+   { %>
 <script type="text/javascript">
     var entry;
     $(function () {
@@ -405,11 +414,11 @@
 <% using (Html.BeginForm("NewApp_Asp", "AbiturientNew", FormMethod.Post))
    { 
 %> 
-    <% if (Model.HasError) 
+    <% if (Model.HasError)
        { %>
-        <div class="error message"><%= Model.ErrorMessage %></div>
+        <div class="error message"><%= Model.ErrorMessage%></div>
     <% } %>
-     <%= Html.ValidationSummary() %>
+     <%= Html.ValidationSummary()%>
      <%= Html.HiddenFor(x => x.CommitId)%>
     <% if (2 == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
        { %>
@@ -426,11 +435,11 @@
             <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
-                <td style="font-size:1.3em;"><%= i.ToString() %></td>
+                <td style="font-size:1.3em;"><%= i.ToString()%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
-                <td id="BlockData_StudyFormId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyFormName  %></td>
+                <td id="BlockData_StudyFormId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyFormName%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
@@ -454,12 +463,13 @@
             </tr>
             <% if (Model.Applications[i - 1].IsGosLine.HasValue)
                {
-                   if ((bool)Model.Applications[i - 1].IsGosLine) {%>
+                   if ((bool)Model.Applications[i - 1].IsGosLine)
+                   {%>
                     <tr>
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
                         <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
                     </tr>
-            <%       } 
+            <%       }
                }%>
         </table>
         <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
@@ -519,13 +529,13 @@
        <%} %>
     <span id="NewApp_NoFreeEntries" class="message error" style="display:none;"><%= GetGlobalResourceObject("NewApplication", "NewApp_NoFreeEntries")%></span>
     <span id="ErrorHasApplication" class="message error" style="display:none;"><%= GetGlobalResourceObject("NewApplication", "ErrorHasApplication")%></span>
-    <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)  
+    <% for (int i = Model.Applications.Count + 1; i <= Model.MaxBlocks; i++)
        { %> 
        <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
             <table class="nopadding" cellspacing="0" cellpadding="0">
                 <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
-                    <td style="font-size:1.3em;"><%= i.ToString() %></td>
+                    <td style="font-size:1.3em;"><%= i.ToString()%></td>
                 </tr>
                 <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
@@ -615,6 +625,7 @@
     <br />
     <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
 <% 
+   }
    }
 %>
 

@@ -20,6 +20,16 @@
         text-shadow: 0 1px 0 #FFFFFF;
     }
 </style>
+<% if (!Model.Enabled)
+   {
+       if (Model.HasError)
+       {  %>
+       <div class="error message"><%= Model.ErrorMessage%></div>  
+       <% } %>
+   
+<%}
+   else
+   { %>
 <script type="text/javascript">
     var entry;
     $(function () {
@@ -269,7 +279,7 @@
         }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewAppAG", "AbiturientNew", FormMethod.Post))
+<% using (Html.BeginForm("NewApp_AG", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <%= Html.ValidationSummary()%>
@@ -292,7 +302,7 @@
         <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
-                <td style="font-size:1.3em;"><%= i.ToString() %></td>
+                <td style="font-size:1.3em;"><%= i.ToString()%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
@@ -302,7 +312,8 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].ProfileName%></td>
             </tr>
-            <% if (Model.Applications[i-1].ManualExamId!=5) { %>
+            <% if (Model.Applications[i - 1].ManualExamId != 5)
+               { %>
             <tr id="BlockDataTr_ManualExam<%= i.ToString()%>" >
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "ManualExam").ToString()%></td>
                 <td id="BlockData_ManualExam<%= i.ToString()%>" ><%= Model.Applications[i - 1].ManualExamName%></td>
@@ -343,7 +354,7 @@
         <table class="nopadding" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
-                <td style="font-size:1.3em;"><%= i.ToString() %></td>
+                <td style="font-size:1.3em;"><%= i.ToString()%></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
@@ -389,6 +400,7 @@
     <br />
     <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
 <% 
+   }
    }
 %>
 

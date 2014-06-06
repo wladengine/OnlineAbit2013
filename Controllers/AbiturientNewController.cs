@@ -963,27 +963,28 @@ namespace OnlineAbit2013.Controllers
                 AG_ApplicationModel model = new AG_ApplicationModel();
                 model.Applications = new List<AG_ApplicationSipleEntity>();
                 model.CommitId = Guid.NewGuid().ToString("N");
+                model.Enabled = true;
                 int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new SortedList<string, object>() { { "@Id", PersonId } });
                 if (c != 100)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
-
-                /*int iAG_EntryClassId = (int)Util.AbitDB.GetValue("SELECT SchoolExitClassId FROM PersonSchoolInfo WHERE PersonId=@Id",
-                    new SortedList<string, object>() { { "@Id", PersonId } });*/
-                
+                  
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
                    new SortedList<string, object>() { { "@Id", PersonId } });
-                if (iAG_SchoolTypeId == 4)
+                if (iAG_SchoolTypeId != 1)
                 {
-                    model.Enabled = false; 
+                    model.Enabled = false;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)";
                 }
                 else
                 {
-                    // ссылка на объект  и пр., когда SchoolExitClassId = null
                     DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
 INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                     if (tbl.Rows.Count == 0)
                     {
                         model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)";
                     }
                     else
                     {
@@ -993,6 +994,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
                         {
                             model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)";
                         }
                         else
                         {
@@ -1052,11 +1055,31 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 {
                     // окончил школу 
                     model.Enabled = false;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
                 }
                 else
                 {
                     // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
                     model.MaxBlocks = maxBlockMag;
+
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        {
+                            model.Enabled = false; 
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                    }
+
                 }
                 
                 model.StudyFormList = Util.GetStudyFormList();
@@ -1065,55 +1088,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 return View("NewApplication_Mag", model);
             }
         }
-
-        [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult NewApplication_Recover(params string[] errors)
-        {
-            if (errors != null && errors.Length > 0)
-            {
-                foreach (string er in errors)
-                    ModelState.AddModelError("", er);
-            }
-            Guid PersonId;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return RedirectToAction("LogOn", "Account");
-
-            using (OnlinePriemEntities context = new OnlinePriemEntities())
-            {
-                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
-                if (PersonInfo == null)//а что это могло бы значить???
-                    return RedirectToAction("Index");
-
-                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new SortedList<string, object>() { { "@Id", PersonId } });
-                if (c != 100)
-                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
-
-                Mag_ApplicationModel model = new Mag_ApplicationModel();
-                model.Applications = new List<Mag_ApplicationSipleEntity>();
-                model.CommitId = Guid.NewGuid().ToString("N");
-
-                model.Enabled = true;
-                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
-                   new SortedList<string, object>() { { "@Id", PersonId } });
-                if (iAG_SchoolTypeId != 4)
-                {
-                    // окончил школу 
-                    model.Enabled = false;
-                }
-                else
-                {
-                    // остается 4 - закончил вуз (где проверка на то, что действительно закончил?) 
-                    model.MaxBlocks = maxBlockRecover;
-                }
-
-                model.StudyFormList = Util.GetStudyFormList();
-                model.StudyBasisList = Util.GetStudyBasisList();
-                //model.SemestrList;
-
-                return View("NewApplication_Recover", model);
-            }
-        }
-
+ 
         [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult NewApplication_1kurs(params string[] errors)
          {
@@ -1145,53 +1120,55 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                  int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
                    new SortedList<string, object>() { { "@Id", PersonId } });
                  if (iAG_SchoolTypeId == 1)
-                 { 
+                 {
                      // ссылка на объект  и пр., когда SchoolExitClassId = null
                      tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
                         INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                      if (tbl.Rows.Count == 0)
                      {
                          model.Enabled = false;
+                         model.HasError = true;
+                         model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
                      }
                      else
                      {
                          int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
                          int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
 
-                         if (iAG_EntryClassValue < 11 ) 
+                         if (iAG_EntryClassValue < 11)
                          {
                              model.Enabled = false;
+                             model.HasError = true;
+                             model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
                          }
                          else
                          {
-                             model.Enabled = true; 
+                             model.Enabled = true;
                          }
                      }
                  }
-                 model.MaxBlocks = maxBlock1kurs;
-                 string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
-                 tbl = Util.AbitDB.GetDataTable(query, null);
-                 model.StudyFormList =
-                     (from DataRow rw in tbl.Rows
-                      select new
-                      {
-                          Value = rw.Field<int>("StudyFormId"),
-                          Text = rw.Field<string>("StudyFormName")
-                      }).AsEnumerable()
-                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                     .ToList();
-
-                 query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
-                 tbl = Util.AbitDB.GetDataTable(query, null);
-                 model.StudyBasisList =
-                     (from DataRow rw in tbl.Rows
-                      select new
-                      {
-                          Value = rw.Field<int>("StudyBasisId"),
-                          Text = rw.Field<string>("StudyBasisName")
-                      }).AsEnumerable()
-                      .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                      .ToList();
+                 else 
+                 {
+                     int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                     if (VuzAddType.HasValue)
+                     {
+                         if ((int)VuzAddType != 1)
+                         {
+                             model.Enabled = false;
+                             model.HasError = true;
+                             model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                         }
+                     }
+                     else
+                     {
+                         model.Enabled = false;
+                         model.HasError = true;
+                         model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                     }
+                 }
+                 model.MaxBlocks = maxBlock1kurs; 
+                 model.StudyFormList = Util.GetStudyFormList();
+                 model.StudyBasisList = Util.GetStudyBasisList();
                  return View("NewApplication_1kurs", model);
              }
          }
@@ -1234,6 +1211,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (tbl.Rows.Count == 0)
                     {
                         model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
                     }
                     else
                     {
@@ -1248,7 +1227,25 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         }
                     }
                 }
-                
+                else 
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                    }
+                }
                 model.MaxBlocks = maxBlockSPO;
                 string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry WHERE StudyLevelGroupId = 3 ORDER BY 1";
                 tbl = Util.AbitDB.GetDataTable(query, null);
@@ -1310,6 +1307,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 {
                     // окончил не вуз
                     model.Enabled = false;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
                 }
                 else
                 {
@@ -1317,18 +1316,100 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (iQualificationId.HasValue)
                     {
                         if ((int)iQualificationId != 1)
+                        {
                             model.MaxBlocks = maxBlockAspirant;
+                            int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                            if (VuzAddType.HasValue)
+                            {
+                                if ((int)VuzAddType != 1)
+                                {
+                                    model.Enabled = false;
+                                    model.HasError = true;
+                                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                                }
+                            }
+                            else
+                            {
+                                model.Enabled = false;
+                                model.HasError = true;
+                                model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                            }
+                        }
                         else
-                            model.Enabled = false; 
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                        }
                     }
                     else
-                        model.Enabled = false;                    
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    }
                 }
 
                 model.StudyFormList = Util.GetStudyFormList();
                 model.StudyBasisList = Util.GetStudyBasisList();
                   
                 return View("NewApplication_Aspirant", model);
+            }
+        }
+
+        [OutputCache(NoStore = true, Duration = 0)]
+        public ActionResult NewApplication_Recover(params string[] errors)
+        {
+            if (errors != null && errors.Length > 0)
+            {
+                foreach (string er in errors)
+                    ModelState.AddModelError("", er);
+            }
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
+                if (PersonInfo == null)//а что это могло бы значить???
+                    return RedirectToAction("Index");
+
+                int? c = (int?)Util.AbitDB.GetValue("SELECT RegistrationStage FROM Person WHERE Id=@Id AND RegistrationStage=100", new SortedList<string, object>() { { "@Id", PersonId } });
+                if (c != 100)
+                    return RedirectToAction("Index", new RouteValueDictionary() { { "step", (c ?? 6).ToString() } });
+
+                Mag_ApplicationModel model = new Mag_ApplicationModel();
+                model.Applications = new List<Mag_ApplicationSipleEntity>();
+                model.CommitId = Guid.NewGuid().ToString("N");
+
+                model.Enabled = true;
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                   new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
+                {
+                    // окончил не вуз
+                    model.Enabled = false;
+                }
+                else
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType == 3)
+                            model.MaxBlocks = 1;
+                        else
+                            model.Enabled = false;
+                    }
+                    else
+                        model.Enabled = false;
+                }
+
+                model.StudyFormList = Util.GetStudyFormList();
+                model.StudyBasisList = Util.GetStudyBasisList();
+                model.SemestrList = Util.GetSemestrList();
+
+                return View("NewApplication_Recover", model);
             }
         }
 
@@ -1686,7 +1767,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 case "1": { return RedirectToAction("NewApplication_1kurs", "AbiturientNew"); } //Поступление на 1 курс гражданам РФ
                 case "2": { return RedirectToAction("NewApplication_Mag", "AbiturientNew"); } //Поступление в магистратуру
                 case "4": { return RedirectToAction("page404", "AbiturientNew"); } //Перевод из иностранного университета в СПбГУ
-                case "5": { return RedirectToAction("page404", "AbiturientNew"); } //Восстановление в СПбГУ
+                case "5": { return RedirectToAction("NewApplication_Recover", "AbiturientNew"); } //Восстановление в СПбГУ
                 case "6": { return RedirectToAction("page404", "AbiturientNew"); } //Перевод с платной формы обучения на бюджетную
                 case "7": { return RedirectToAction("page404", "AbiturientNew"); } //Смена образовательной программы
                 case "8": { return RedirectToAction("NewApplication_AG", "AbiturientNew"); } //Поступление в Академическую Гимназию
@@ -1848,7 +1929,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
         }
 
         [HttpPost]
-        public ActionResult NewAppAG()
+        public ActionResult NewApp_AG()
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -1864,6 +1945,34 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                   new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 1)
+                {
+                    return RedirectToAction("NewApplication_AG",
+                        new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
+                }
+                else
+                {
+                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (tbl.Rows.Count == 0)
+                    {
+                        return RedirectToAction("NewApplication_AG",
+                        new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
+                    }
+                    else
+                    {
+                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+
+                        if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
+                        {
+                            return RedirectToAction("NewApplication_AG",
+                            new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
+                        }
+                    }
+                }
                 if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true).Count() > 0)
                     return RedirectToAction("NewApplication_AG", 
                         new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
@@ -1909,6 +2018,36 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                       new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
+                {
+                    // окончил не вуз
+                    model.Enabled = false;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
+                    return View("NewApplication_Mag", model);
+                }
+                else
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        { 
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                            return View("NewApplication_Mag", model); 
+                        }
+                    }
+                    else
+                    {   model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        return View("NewApplication_Mag", model);
+                    } 
+                }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 17).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();
@@ -1927,7 +2066,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.MaxBlocks = maxBlockMag;
                     model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    model.ErrorMessage = "Невозможно подать пустое заявление";  
                     return View("NewApplication_Mag", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -1951,6 +2090,48 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                       new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
+                {
+                    // окончил не вуз
+                    model.Enabled = false;
+                    model.HasError = true;
+                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    return View("NewApplication_Aspirant", model);
+                }
+                else
+                {
+                    int? iQualificationId = (int?)Util.AbitDB.GetValue("SELECT QualificationId FROM PersonHighEducationInfo WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (iQualificationId.HasValue)
+                    {
+                        if ((int)iQualificationId == 1)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                            return View("NewApplication_Aspirant", model);
+                        } 
+                    }
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                            return View("NewApplication_Aspirant", model);
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                        return View("NewApplication_Aspirant", model);
+                    } 
+                }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 15).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();
@@ -1993,6 +2174,52 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId == 1)
+                {
+                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+                        INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (tbl.Rows.Count == 0)
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                        return View("NewApplication_1kurs", model);
+                    }
+                    else
+                    {
+                        int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                        int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+                        if (iAG_EntryClassValue < 11)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                            return View("NewApplication_1kurs", model);
+                        }
+                    }
+                }
+                else
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                            return View("NewApplication_1kurs", model);
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                        return View("NewApplication_1kurs", model);
+                    }
+                }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && (x.C_Entry.StudyLevelId == 16 || x.C_Entry.StudyLevelId == 18)).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();
@@ -2035,6 +2262,55 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int iSchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                 new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iSchoolTypeId == 1)
+                {
+                    // ссылка на объект и пр., когда SchoolExitClassId = null
+                    DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
+                        INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (tbl.Rows.Count == 0)
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                        return View("NewApplication_SPO", model);
+                    }
+                    else
+                    {
+                        int iEntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
+                        int iEntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
+
+                        if (iEntryClassValue < 9)
+                        {
+                            model.HasError = true;
+                            model.Enabled = false;
+                            model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                            return View("NewApplication_SPO", model);
+                        }
+                    }
+                }
+                else
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 1)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                            return View("NewApplication_SPO", model);
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        return View("NewApplication_SPO", model);
+                    }
+                }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && (x.C_Entry.StudyLevelId == 10 || x.C_Entry.StudyLevelId == 8)).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();

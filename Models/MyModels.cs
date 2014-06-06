@@ -780,6 +780,8 @@ namespace OnlineAbit2013.Models
         public bool Enabled { get; set; }
         public string EntryClassName { get; set; }
         public int EntryClassId { get; set; }
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
         public List<SelectListItem> Professions { get; set; }
         public List<int> PersonFilesId {get; set;}
         public List<KeyValuePair<int, string>> RequiredFiles { get; set; }

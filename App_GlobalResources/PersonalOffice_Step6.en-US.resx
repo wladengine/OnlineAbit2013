@@ -154,12 +154,12 @@
     <value>Way of documents returning</value>
   </data>
   <data name="Privileges" xml:space="preserve">
-    <value>Право на льготы:</value>
+    <value>Right for privilege</value>
   </data>
   <data name="PrivilegesFull" xml:space="preserve">
-    <value>Претендую на льготы (инвалид I,II ст., участник боевых действий, сирота, чернобылец...)</value>
+    <value>I claim my right for privilege (disability, pariticipant of militray actions, orphan...)</value>
   </data>
   <data name="HostelEduc" xml:space="preserve">
-    <value>Нуждаюсь в общежитии на время обучения</value>
+    <value>I need dormitory for the period of study</value>
   </data>
 </root>

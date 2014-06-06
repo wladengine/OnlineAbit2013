@@ -100,6 +100,7 @@ namespace OnlineAbit2013.Controllers
             if (Util.GetCurrentThreadLanguage() == "en")
                 eng = true; 
 
+            bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 string query;
@@ -131,14 +132,15 @@ namespace OnlineAbit2013.Controllers
                     model.ContactsInfo.CountryId = PersonContacts.CountryId.ToString();
                     model.PersonInfo.BirthPlace = Server.HtmlDecode(Person.BirthPlace);
                     model.PersonInfo.BirthDate = Person.BirthDate.HasValue ? Person.BirthDate.Value.ToString("dd.MM.yyyy") : "";
-                    
-                    model.PersonInfo.NationalityList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.ContactsInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+
+                    model.PersonInfo.NationalityList = Util.GetCountryList(isEng);
+                    model.ContactsInfo.CountryList   = Util.GetCountryList(isEng);
+                     
                     model.PersonInfo.SexList = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Text = LangPack.GetValue(5, model.Lang), Value = "M" }, 
-                        new SelectListItem() { Text = LangPack.GetValue(6, model.Lang), Value = "F" }
-                    }; 
+                        new SelectListItem () {Text = isEng ? "Male" : "Мужской", Value = "M" },
+                        new SelectListItem () {Text = isEng ? "Female" : "Женский", Value = "F" }
+                    };
 
                     return View("PersonalOffice_Page1", model);
                 }
@@ -152,16 +154,16 @@ namespace OnlineAbit2013.Controllers
                     int defaultPsp = 1;
                     switch (model.res)
                     {
-                        case 1: { strTblPsp = "SELECT Id, Name FROM PassportType "; break; }
-                        case 2: { strTblPsp = "SELECT Id, Name FROM PassportType "; break; }
-                        case 3: { strTblPsp = "SELECT Id, Name FROM PassportType "; break; }
-                        case 4: { strTblPsp = "SELECT Id, Name FROM PassportType WHERE IsApprovedForeign=1"; defaultPsp = 2; break; }
-                        default: { strTblPsp = "SELECT Id, Name FROM PassportType "; break; }
+                        case 1: { strTblPsp = "SELECT Id, Name, NameEng FROM PassportType "; break; }
+                        case 2: { strTblPsp = "SELECT Id, Name, NameEng FROM PassportType "; break; }
+                        case 3: { strTblPsp = "SELECT Id, Name, NameEng FROM PassportType "; break; }
+                        case 4: { strTblPsp = "SELECT Id, Name, NameEng FROM PassportType WHERE IsApprovedForeign=1"; defaultPsp = 2; break; }
+                        default: { strTblPsp = "SELECT Id, Name, NameEng FROM PassportType "; break; }
                     }
                     DataTable tblPsp = Util.AbitDB.GetDataTable(strTblPsp, null);
                     model.PassportInfo.PassportTypeList =
                         (from DataRow rw in tblPsp.Rows
-                         select new SelectListItem() { Value = rw.Field<int>("Id").ToString(), Text = rw.Field<string>("Name") }).
+                         select new SelectListItem() { Value = rw.Field<int>("Id").ToString(), Text = isEng? rw.Field<string>("NameEng") : rw.Field<string>("Name") }).
                         ToList();
                     model.PassportInfo.PassportType = (Person.PassportTypeId ?? defaultPsp).ToString();
                     model.PassportInfo.PassportSeries = Server.HtmlDecode(Person.PassportSeries);
@@ -176,13 +178,13 @@ namespace OnlineAbit2013.Controllers
                         model.VisaInfo = new VisaInfo();
                         DataTable tblCountr =
                             Util.AbitDB.GetDataTable(
-                                string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", eng ? "NameEng" : "Name"),
+                                string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", isEng ? "NameEng" : "Name"),
                                 null);
                         model.VisaInfo.CountryList = (from DataRow rw in tblCountr.Rows
                                                       select new SelectListItem()
                                                       {
                                                           Value = rw.Field<int>("Id").ToString(),
-                                                          Text = rw.Field<string>(eng ? "NameEng" : "Name")
+                                                          Text = rw.Field<string>(isEng ? "NameEng" : "Name")
                                                       }).ToList();
 
                         var PersonVisaInfo = Person.PersonVisaInfo;
@@ -226,7 +228,7 @@ namespace OnlineAbit2013.Controllers
                     model.ContactsInfo.KorpusReal = Server.HtmlDecode(PersonContacts.KorpusReal);
                     model.ContactsInfo.FlatReal = Server.HtmlDecode(PersonContacts.FlatReal);
 
-                    model.ContactsInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.ContactsInfo.CountryList = Util.GetCountryList(isEng);
 
                     query = "SELECT Id, Name FROM Region WHERE RegionNumber IS NOT NULL";
                     model.ContactsInfo.RegionList =
@@ -249,20 +251,22 @@ namespace OnlineAbit2013.Controllers
                     if (PersonHighEducationInfo == null)
                         PersonHighEducationInfo = new OnlineAbit2013.PersonHighEducationInfo();
 
-                    model.EducationInfo.QualificationList = Util.QualifaicationAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.EducationInfo.QualificationList = Util.GetQualificationList(isEng);
                     model.EducationInfo.SchoolTypeList = Util.SchoolTypesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.EducationInfo.StudyFormList = Util.StudyFormAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.EducationInfo.StudyFormList = Util.GetStudyFormList(isEng);
                     model.EducationInfo.LanguageList = Util.LanguagesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.EducationInfo.CountryList = Util.CountriesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.EducationInfo.CountryList = Util.GetCountryList(isEng);
 
-                    query = "SELECT Id, Name FROM SchoolTypeAll";
+                    query = "SELECT Id, Name, NameEng FROM SchoolTypeAll";
                     DataTable _tblT = Util.AbitDB.GetDataTable(query, null);
                     model.EducationInfo.SchoolTypeList =
                         (from DataRow rw in _tblT.Rows
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Text = (isEng ?
+                                        (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                                        : rw.Field<string>("Name"))
                          }).ToList();
 
                     model.EducationInfo.SchoolName = Server.HtmlDecode(PersonEducationDocument.SchoolName);
@@ -284,7 +288,9 @@ namespace OnlineAbit2013.Controllers
                         .Select(x => new { x.Id, x.Name }).ToList()
                         .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
 
-                    model.EducationInfo.VuzAdditionalTypeList = context.VuzAdditionalType.Select(x => new { x.Id, x.Name }).ToList()
+                    model.EducationInfo.VuzAdditionalTypeList = isEng? context.VuzAdditionalType.Select(x => new { x.Id, x.NameEng }).ToList()
+                        .Select(x => new SelectListItem() { Text = x.NameEng, Value = x.Id.ToString() }).ToList(): 
+                    context.VuzAdditionalType.Select(x => new { x.Id, x.Name }).ToList()
                         .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
                     model.EducationInfo.RegionList = Util.RegionsAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
@@ -330,7 +336,7 @@ namespace OnlineAbit2013.Controllers
                 {
                     model.WorkInfo = new WorkPerson();
 
-                    query = "SELECT Id, Name FROM ScienceWorkType";
+                    query = "SELECT Id, Name, NameEng FROM ScienceWorkType";
                     DataTable tbl = Util.AbitDB.GetDataTable(query, null);
 
                     model.WorkInfo.ScWorks =
@@ -338,11 +344,11 @@ namespace OnlineAbit2013.Controllers
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Text = rw.Field<string>(isEng ? "NameEng" : "Name")
                          }).ToList();
                     //Util.ScienceWorkTypeAll.Select(x => new SelectListItem() { Text = x.Value, Value = x.Key.ToString() }).ToList();
 
-                    string qPSW = "SELECT PersonScienceWork.Id, ScienceWorkType.Name, PersonScienceWork.WorkInfo FROM PersonScienceWork " +
+                    string qPSW = "SELECT PersonScienceWork.Id, ScienceWorkType.Name, ScienceWorkType.NameEng, PersonScienceWork.WorkInfo FROM PersonScienceWork " +
                         " INNER JOIN ScienceWorkType ON ScienceWorkType.Id=PersonScienceWork.WorkTypeId WHERE PersonScienceWork.PersonId=@Id";
                     DataTable tblPSW = Util.AbitDB.GetDataTable(qPSW, new SortedList<string, object>() { { "@Id", PersonId } });
 
@@ -351,7 +357,7 @@ namespace OnlineAbit2013.Controllers
                          select new ScienceWorkInformation()
                          {
                              Id = rw.Field<Guid>("Id"),
-                             ScienceWorkType = rw.Field<string>("Name"),
+                             ScienceWorkType = rw.Field<string>(isEng? "NameEng":"Name"),
                              ScienceWorkInfo = rw.Field<string>("WorkInfo")
                          }).ToList();
 
@@ -393,34 +399,40 @@ namespace OnlineAbit2013.Controllers
                              Text = rw.Field<string>("Name")
                          }).ToList();
 
-                    query = "SELECT Id, Name FROM OlympType";
+                    query = "SELECT Id, Name, NameEng FROM OlympType";
                     _tbl = Util.AbitDB.GetDataTable(query, null);
                     model.PrivelegeInfo.OlympTypeList =
                         (from DataRow rw in _tbl.Rows
                          select new SelectListItem()
                          {
-                             Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Value = rw.Field<int>("Id").ToString(), 
+                             Text =  (isEng ?
+                                        (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng")) 
+                                        : rw.Field<string>("Name"))
                          }).ToList();
 
-                    query = "SELECT Id, Name FROM OlympSubject";
+                    query = "SELECT Id, Name, NameEng FROM OlympSubject";
                     _tbl = Util.AbitDB.GetDataTable(query, null);
                     model.PrivelegeInfo.OlympSubjectList =
                         (from DataRow rw in _tbl.Rows
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Text = (isEng ?
+                                        (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                                        : rw.Field<string>("Name"))
                          }).ToList();
 
-                    query = "SELECT Id, Name FROM OlympValue";
+                    query = "SELECT Id, Name, NameEng FROM OlympValue";
                     _tbl = Util.AbitDB.GetDataTable(query, null);
                     model.PrivelegeInfo.OlympValueList =
                         (from DataRow rw in _tbl.Rows
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Text = (isEng ?
+                                        (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                                        : rw.Field<string>("Name"))
                          }).ToList();
 
                     query = "SELECT Id, Name FROM SportQualification";
@@ -909,25 +921,25 @@ namespace OnlineAbit2013.Controllers
                 model.Surname = Server.HtmlEncode(PersonInfo.Surname);
                 model.SecondName = Server.HtmlEncode(PersonInfo.SecondName);
 
-                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                var Applications = context.Abiturient.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true)
                     .Select(x => new { x.CommitId, x.StudyLevelGroupNameRus, x.StudyLevelGroupNameEng, x.EntryType }).Distinct();
                 foreach (var app in Applications)
                 {
                     model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.CommitId.Value,
+                        Id = app.CommitId,
                         StudyLevel = bIsEng ? app.StudyLevelGroupNameEng : app.StudyLevelGroupNameRus
                     });
                 }
 
-                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
-                    .Select(x => new { x.CommitId, StudyLevelGroupNameRus = "", StudyLevelGroupNameEng = "", EntryType = (int?)0 }).Distinct();
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true)
+                    .Select(x => new { x.CommitId,  StudyLevelGroupNameRus = "", StudyLevelGroupNameEng = "",  EntryType = 0 }).Distinct();
 
                 foreach (var app in Applications)
                 {
                     model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.CommitId.Value,
+                        Id = app.CommitId,
                         StudyLevel = "АГ"
                     });
                 }
@@ -1406,7 +1418,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     else
                         model.Enabled = false;
                 }
-
+                
+                model.StudyLevelGroupList = Util.GetStudyLevelGroupList();
                 model.StudyFormList = Util.GetStudyFormList();
                 model.StudyBasisList = Util.GetStudyBasisList();
                 model.SemestrList = Util.GetSemestrList();
@@ -1558,9 +1571,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 else
                                 {
                                     var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
-                                    if (CommId.Count() > 0 && CommId.First().HasValue)
+                                    if (CommId.Count() > 0 )
                                     {
-                                        Guid CommitId = CommId.First().Value;
+                                        Guid CommitId = CommId.First();
                                         model.CommitId = CommitId.ToString("N");
 
                                         var AppList = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
@@ -1731,26 +1744,26 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
                 //выборка активных заявлений
                 model.Applications = new List<SimpleApplicationPackage>();
-                var Applications = context.Abiturient.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                var Applications = context.Abiturient.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true)
                     .Select(x => new { x.CommitId, x.StudyLevelGroupNameEng, x.StudyLevelGroupNameRus, x.EntryType }).Distinct();
                 foreach (var app in Applications)
                 {
                     model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.CommitId.Value,
-                        PriemType = app.EntryType.HasValue ? app.EntryType.Value.ToString() : "",
+                        Id = app.CommitId,
+                        PriemType = app.EntryType.ToString(),
                         StudyLevel = bIsEng ? app.StudyLevelGroupNameEng : app.StudyLevelGroupNameRus
                     });
                 }
 
-                Applications = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
-                    .Select(x => new { x.CommitId, StudyLevelGroupNameEng = "", StudyLevelGroupNameRus = "", EntryType = (int?)0 }).Distinct();
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true)
+                    .Select(x => new { x.CommitId, StudyLevelGroupNameEng = "", StudyLevelGroupNameRus = "", EntryType = 0 }).Distinct();
 
                 foreach (var app in Applications)
                 {
                     model.Applications.Add(new SimpleApplicationPackage()
                     {
-                        Id = app.CommitId.Value,
+                        Id = app.CommitId,
                         PriemType = "",
                         StudyLevel = "АГ"
                     });

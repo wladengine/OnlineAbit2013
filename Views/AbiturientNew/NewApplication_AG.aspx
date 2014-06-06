@@ -391,14 +391,14 @@
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
             <% if (2 == 1)
                { %><input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><%} %><br />
-            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
+            <input id="Submit<%= i.ToString()%>" type="button" value=<%=GetGlobalResourceObject("NewApplication", "btnAdd").ToString()%> onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
     <% } %>
     <br />
-    <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
+    <input id="Submit" type="submit" value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%> class="button button-green"/>
 <% 
    }
    }

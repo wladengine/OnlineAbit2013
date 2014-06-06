@@ -276,4 +276,10 @@
   <data name="View" xml:space="preserve">
     <value>Просмотр</value>
   </data>
+  <data name="btnAdd" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="btnSubmit" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
 </root>

@@ -118,16 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbiturientType1" xml:space="preserve">
-    <value>Entering on first course</value>
+    <value>Bachelor and Specialist's degree</value>
   </data>
   <data name="AbiturientType10" xml:space="preserve">
-    <value>Поступление в аспирантуру</value>
-  </data>
-  <data name="AbiturientType11" xml:space="preserve">
-    <value>Поступление в аспирантуру иностранным гражданам</value>
+    <value>PhD degree</value>
   </data>
   <data name="AbiturientType2" xml:space="preserve">
-    <value>Магистратура</value>
+    <value>Master Programs</value>
   </data>
   <data name="AbiturientType3" xml:space="preserve">
     <value>Transition from Russian University at SPbSU</value>
@@ -148,7 +145,7 @@
     <value>Entering into Academic Gymnasium</value>
   </data>
   <data name="AbiturientType9" xml:space="preserve">
-    <value>Entering on the programs of middle education</value>
+    <value>Entering on the programs of vocational training </value>
   </data>
   <data name="Header" xml:space="preserve">
     <value>Choose the action that you want to do in the Personal Account</value>

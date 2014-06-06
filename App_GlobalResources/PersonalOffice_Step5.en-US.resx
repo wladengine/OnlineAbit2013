@@ -195,13 +195,13 @@ the theme of your report), published scientific articles, work in scientific lab
     <value>Type</value>
   </data>
   <data name="DocumentDateMessage" xml:space="preserve">
-    <value>Input the date of the document</value>
+    <value>Enter the date of the document</value>
   </data>
   <data name="DocumentNumberMessage" xml:space="preserve">
-    <value>Input the number of the document</value>
+    <value>Enter the number of the document</value>
   </data>
   <data name="DocumentSeriesMessage" xml:space="preserve">
-    <value>Input the series of the document</value>
+    <value>Enter the series of the document</value>
   </data>
   <data name="NoWorks" xml:space="preserve">
     <value>none</value>
@@ -210,27 +210,27 @@ the theme of your report), published scientific articles, work in scientific lab
     <value>Input required data</value>
   </data>
   <data name="SportCategory" xml:space="preserve">
-    <value>Pазряд:</value>
+    <value>Degree</value>
   </data>
   <data name="SportQualification" xml:space="preserve">
-    <value>Спорт. квалификация:</value>
+    <value>Sport qualification</value>
   </data>
   <data name="SportQualificationCategory" xml:space="preserve">
-    <value>Спорт. квалификация, разряд:</value>
+    <value>Sport qualificatin (category)</value>
   </data>
   <data name="SportValue" xml:space="preserve">
-    <value>Спортивные достижения</value>
+    <value>Sport achievments</value>
   </data>
   <data name="validationMsgPersonWorksDuties" xml:space="preserve">
-    <value>Введите должностные обязанности</value>
+    <value>Enter work duties</value>
   </data>
   <data name="validationMsgPersonWorksExperience" xml:space="preserve">
-    <value>Введите целое число</value>
+    <value>Enter integer figure</value>
   </data>
   <data name="validationMsgPersonWorksLevel" xml:space="preserve">
-    <value>Введите должность</value>
+    <value>Enter post</value>
   </data>
   <data name="validationMsgPersonWorksPlace" xml:space="preserve">
-    <value>Введите место работы</value>
+    <value>Enter work place</value>
   </data>
 </root>

@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master" Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.ExtApplicationModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    Просмотр условий поступления
+    <%= GetGlobalResourceObject("ApplicationInfo", "AppDetails")%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Subheader" runat="server">
-    <h2>Просмотр условий поступления</h2>
+    <h2><%= GetGlobalResourceObject("ApplicationInfo", "AppDetails")%></h2>
 </asp:Content>
 
 <asp:Content ID="HeaderScripts" ContentPlaceHolderID="HeaderScriptsContent" runat="server">
@@ -40,8 +40,7 @@
 <% if (Model.Enabled)
    { %>
     <script type="text/javascript">
-        $(function () {
-            $('#UILink').hide();
+        $(function () { 
             $('#fileAttachment').change(ValidateInput);
             $('#MotivateAttachment').change(ValidateInput_Motivate);
             $('#EssayAttachment').change(ValidateInput_Essay);
@@ -216,38 +215,38 @@
     }
     </script>
 
-<a href="../../AbiturientNew/Main/">Главное меню</a> - 
+<a href="../../AbiturientNew/Main/"><%= GetGlobalResourceObject("ApplicationInfo", "LinkMainMenu")%></a> - 
 <a href="../../Application/Index/<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a> - 
-Детали условий поступления
+<%= GetGlobalResourceObject("ApplicationInfo", "AppDetails")%>
 <br />
-<h4>Основные сведения</h4>
+<h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%></h4>
 <hr />
 <table class="paginate">
 <% if (Model.Enabled)
    { %>
     <tr>
-        <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1">Приоритет</abbr></td>
+        <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></abbr></td>
         <td align="left"><%= Html.Encode(Model.Priority)%></td>
     </tr>
 <% } %>
     <tr>
-        <td width="30%" align="right">Направление</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "BlockData_LicenseProgram")%></td>
         <td align="left"><%= Html.Encode(Model.Profession) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Образовательная программа</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "BlockData_ObrazProgram")%></td>
         <td align="left"><%= Html.Encode(Model.ObrazProgram) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Профиль</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "BlockData_Specialization")%></td>
         <td align="left"><%= Html.Encode(Model.Specialization) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Форма обучения</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
         <td align="left"><%= Html.Encode(Model.StudyForm) %></td>
     </tr>
     <tr>
-        <td width="30%" align="right">Основа обучения</td>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
         <td align="left"><%= Html.Encode(Model.StudyBasis) %></td>
     </tr>
 </table>
@@ -255,23 +254,19 @@
 <% if (Model.EntryTypeId != 2 && (Model.AbiturientType == OnlineAbit2013.Models.AbitType.AG || Model.AbiturientType == OnlineAbit2013.Models.AbitType.FirstCourseBakSpec))
    { %>
    <div class="message info">
-    <b>Вам следует <a href="<%= string.Format("../../Application/GetPrint/{0}", Model.CommitId.ToString("N")) %>">распечатать заявление</a> и прийти с ним в приёмную комиссию</b> 
+    <b><%= GetGlobalResourceObject("NewApplication", "PrintFormWarning1")%><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.CommitId.ToString("N")) %>"><%= GetGlobalResourceObject("NewApplication", "PrintFormWarning2")%></b> 
    </div>
    <div id="map" style="width:600px;height:300px"></div>
 <% } %>
 <% else if (Model.EntryTypeId == 2)
    { %>
     <div class="panel">
-    <h4 style="cursor:pointer;" onclick="HideMotivationMail()">Мотивационное письмо</h4>
+    <h4 style="cursor:pointer;" onclick="HideMotivationMail()"> <%= GetGlobalResourceObject("ApplicationInfo", "HeaderMotivationalMail")%></h4>
     <div id="MotivationMail">
     <hr />
     <div id="MotivationInfoHelp" class="message info">
-        <b>В мотивационном письме должны содержаться:</b> 
-        <ul>
-            <li>необходимые сведения об опыте профессиональной подготовки/деятельности;</li>
-            <li>сведения, подтверждающие необходимость получения знаний/навыков, освоение/приобретение которых возможно в период обучения на выбранной программе;</li>
-            <li>перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.</li>
-        </ul>
+        <%= GetGlobalResourceObject("ApplicationInfo", "MotivationalMailInformation")%>
+        <a href ='http://abiturient.spbu.ru/images/2014/foreigns/kriterii_en.htm'><%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetterDetails")%></a>
     </div>
     <form action="../../Application/MotivatePost" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
@@ -279,13 +274,13 @@
             <input id="MotivateAttachment" type="file" name="File" />
         </div><br />
         <div class="clearfix">
-            <input id="MotivateSubmit" type="submit" value="Отправить" class="button button-gray"/>
+            <input id="MotivateSubmit" type="submit" value=<%= GetGlobalResourceObject("NewApplication", "btnSubmit")%> class="button button-gray"/>
         </div>
     </form>
     </div>
     </div>
     <div class="panel">
-    <h4 style="cursor:pointer;" onclick="HideEssay()">Эссе</h4>
+    <h4 style="cursor:pointer;" onclick="HideEssay()"><%= GetGlobalResourceObject("ApplicationInfo", "HeaderEssay")%></h4>
     <div id="Essay">
     <hr />
     <form action="../../Application/EssayPost" enctype="multipart/form-data" method="post">
@@ -294,15 +289,15 @@
             <input id="EssayAttachment" type="file" name="File" />
         </div><br />
         <div class="clearfix">
-            <input id="EssaySubmit" type="submit" value="Отправить" class="button button-gray"/>
+            <input id="EssaySubmit" type="submit" value=<%= GetGlobalResourceObject("NewApplication", "btnSubmit")%> class="button button-gray"/>
         </div>
     </form>
     </div>
     </div>
     <div class="panel">
-    <h4 onclick="HidePortfolio()" style="cursor:pointer;">Портфолио</h4>
+    <h4 onclick="HidePortfolio()" style="cursor:pointer;"><%= GetGlobalResourceObject("ApplicationInfo", "HeaderPortfolio")%> </h4>
     <div class="message info">
-        <b>Пожалуйста, прикрепляйте те файлы, которые общие для каждого заявления (сканы паспорта/документа об образовании и т.п.) в раздел </b> 
+        <b><%= GetGlobalResourceObject("ApplicationInfo", "FilesWarning1")%> </b> 
         <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header") %></a>
     </div>
     <div id="dPortfolio">
@@ -312,16 +307,16 @@
         <table class="paginate">
         <tr>
             <th></th>
-            <th>Имя файла</th>
-            <th>Размер</th>
-            <th>Комментарий</th>
-            <th>Статус</th>
-            <th>Удалить</th>
+            <th><%= GetGlobalResourceObject("AddSharedFiles", "FileName")%></th>
+            <th><%= GetGlobalResourceObject("AddSharedFiles", "Size")%></th>
+            <th><%= GetGlobalResourceObject("AddSharedFiles", "Comment")%></th>
+            <th><%= GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Header")%></th>
+            <th><%= GetGlobalResourceObject("AddSharedFiles", "Delete")%></th>
         </tr>    
     <% }
        else
        { %>
-       <h5>В портфолио нет файлов</h5>
+       <h5><%= GetGlobalResourceObject("NewApplication", "NoFiles")%></h5>
     <% } %>
         <tbody>
     <% foreach (var file in Model.Files)
@@ -368,12 +363,12 @@
     <% } %>
     </tbody>
     </table><br />
-    <a class="button button-blue" href="../../Abiturient/FilesList?id=<%= Model.Id.ToString("N") %>" target="_blank">Опись поданных документов</a><br />
+    <a class="button button-blue" href="../../Abiturient/FilesList?id=<%= Model.Id.ToString("N") %>" target="_blank"><%=GetGlobalResourceObject("AddSharedFiles", "FileList")%></a><br />
     <% if (Model.Enabled)
        { %>
     <br />
     <div class="panel">
-    <h4>Добавить файл</h4>
+    <h4><%=GetGlobalResourceObject("AddSharedFiles", "LoadedFiles")%></h4>
     <hr />
     <form action="/Application/AddFile" method="post" enctype="multipart/form-data" class="form">
         <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />
@@ -384,7 +379,7 @@
             <textarea id="fileComment" class="noresize" name="Comment" maxlength="1000" cols="80" rows="5"></textarea>
         </div><br />
         <div class="clearfix">
-            <input id="btnSubmit" type="submit" value="Отправить" class="button button-gray"/>
+            <input id="btnSubmit" type="submit" value=<%= GetGlobalResourceObject("NewApplication", "btnSubmit")%> class="button button-gray"/>
         </div>
     </form>
     <% } %>
@@ -395,13 +390,13 @@
 <% } %>
 <% if (0 == 1) //no exams 'till now
    { %>
-    <h4>Экзамены</h4>
+    <h4><%=GetGlobalResourceObject("ApplicationInfo", "HeaderExams")%></h4>
     <table class="paginate">
         <% if (Model.Exams.Count > 0)
            { %>
             <tr>
-                <th align="right">Состояние</th>
-                <th>Название</th>
+                <th align="right"><%=GetGlobalResourceObject("ApplicationInfo", "ExamsStage")%></th>
+                <th><%=GetGlobalResourceObject("ApplicationInfo", "ExamsName")%></th>
             </tr>
             <% foreach (string exam in Model.Exams)
                { %>

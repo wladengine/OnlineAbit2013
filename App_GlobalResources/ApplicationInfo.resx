@@ -187,7 +187,8 @@
     &lt;ul&gt;
         &lt;li&gt;необходимые сведения об опыте профессиональной подготовки/деятельности;&lt;/li&gt;
         &lt;li&gt;сведения, подтверждающие необходимость получения знаний/навыков, освоение/приобретение которых возможно в период обучения на выбранной программе;&lt;/li&gt;
-        &lt;li&gt;перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.&lt;/li&gt;
+        &lt;li&gt;перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.&lt;/li&gt; 
+&lt;li&gt; Файл не должен содержать информацию, способствующую установлению авторства работы&lt;/li&gt;
     &lt;/ul&gt;&lt;span&gt;</value>
   </data>
   <data name="ObrazProgram" xml:space="preserve">
@@ -216,5 +217,47 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>Просмотр заявления</value>
+  </data>
+  <data name="FilesWarning1" xml:space="preserve">
+    <value>Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел</value>
+  </data>
+  <data name="FilesWarning2" xml:space="preserve">
+    <value>В данный раздел прикрепляйте подписанный бланк заявления</value>
+  </data>
+  <data name="ViewAddFiles" xml:space="preserve">
+    <value>Просмотр/Добавить файлы</value>
+  </data>
+  <data name="AppInnerProirity" xml:space="preserve">
+    <value>Для данного конкурса Вы можете указать приоритетность образовательных программ</value>
+  </data>
+  <data name="AppDetails" xml:space="preserve">
+    <value>Просмотр условий поступления</value>
+  </data>
+  <data name="ExamsName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ExamsStage" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="HeaderEssay" xml:space="preserve">
+    <value>Эссе</value>
+  </data>
+  <data name="HeaderExams" xml:space="preserve">
+    <value>Экзамены</value>
+  </data>
+  <data name="LinkMainMenu" xml:space="preserve">
+    <value>Главное меню</value>
+  </data>
+  <data name="MotiveLetter" xml:space="preserve">
+    <value>Мотивационное письмо</value>
+  </data>
+  <data name="MotiveLetterDetails" xml:space="preserve">
+    <value>Подробно (на английском)</value>
+  </data>
+  <data name="PrintFormWarning1" xml:space="preserve">
+    <value>Вам следует</value>
+  </data>
+  <data name="PrintFormWarning2" xml:space="preserve">
+    <value>распечатать заявление&lt;/a&gt; и прийти с ним в приёмную комиссию</value>
   </data>
 </root>

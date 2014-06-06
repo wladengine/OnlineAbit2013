@@ -38,6 +38,8 @@
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
         var CurrGosLine = '#GosLine'+i; 
+        var CurrSemestrId = '#semesterId'+i;
+        
 
         $(CurrProfs).show();
         $(CurrObrazPrograms).hide();
@@ -45,7 +47,8 @@
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
-            entry: $('#EntryType').val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val() }, function (json_data) 
+            entry: $('#StudyLevelGroupId'+i).val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), 
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('semestrId'+i).val() }, function (json_data) 
         {
             var options = '';
             if (json_data.NoFree) {
@@ -91,7 +94,7 @@
         $(CurrGosLine).hide();
    
         $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
-            entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
+            entry: $('#StudyLevelGroupId'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
             semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
             if (json_data.NoFree) {
@@ -134,7 +137,7 @@
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
         $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
-            studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
+            studybasis: $('#StudyBasisId'+i).val(), entry: $('#StudyLevelGroupId'+i).val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
             if (sbId==1) { 
@@ -199,7 +202,7 @@
         $.post('/AbiturientNew/CheckApplication_Mag', {
             studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), 
-            entry: $('#EntryType').val(),
+            entry: $('#StudyLevelGroupId'+i).val(),
             isSecond:  $('#IsSecondHidden'+i).val(), 
             isReduced: $('#IsReducedHidden'+i).val(), 
             isParallel: $('#IsParallelHidden'+i).val(), 
@@ -245,7 +248,7 @@
         priority: i,
         studyform: $('#StudyFormId'+i).val(), 
         studybasis: $('#StudyBasisId'+i).val(), 
-        entry: $('#EntryType').val(),
+        entry: $('#StudyLevelGroupId'+i).val(),
         isSecond:  $('#IsSecondHidden'+i).val(), 
         isReduced: $('#IsReducedHidden'+i).val(), 
         isParallel: $('#IsParallelHidden'+i).val(), 
@@ -411,10 +414,6 @@
     <% } %>
     <%= Html.ValidationSummary() %>
      <%= Html.HiddenFor(x => x.CommitId)%>
-    <% if (2 == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
-       { %>
-       <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
-    <% } %>
     
         <input type="hidden" id = "EntryType" name = "EntryType" value="2" />
 
@@ -425,6 +424,10 @@
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%></td>
                 <td style="font-size:1.3em;"><%= i.ToString() %></td>
+            </tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
+                <td id="Td2" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyLevelGroupName %></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
@@ -465,6 +468,11 @@
         </div>
     </div>
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
+        <p id="SLevelGroup<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
+            <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
+                 { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
         <p id="SForm<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
@@ -475,11 +483,11 @@
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
-
+        <%  if (1 == 2)  {%>
         <input type="hidden" name="IsReducedHidden" id="Hidden1" value="0"/>
         <input type="hidden" name="IsParallelHidden" id="Hidden2" value="0"/>
         <input type="hidden" name="IsSecondHidden" id="Hidden3" value="0"/>
-
+        <%}  %>
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
@@ -520,6 +528,10 @@
                 </tr>
                 <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
+                    <td id="BlockData_StudyLevelGroupId<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                </tr>
+                <tr>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
                     <td id="BlockData_StudyFormId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
@@ -552,6 +564,11 @@
             </div>
         </div>
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
+        <p id="SLevelGroup<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
+            <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
+                 { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
         <p id="SForm<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
@@ -564,7 +581,7 @@
         </p>
         <p id="P1">
             <span>Семестр</span><br />
-            <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
+            <%= Html.DropDownList("semesterId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
@@ -594,13 +611,13 @@
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
             <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />
-            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
+            <input id="Submit<%= i.ToString()%>" type="button" value=<%=GetGlobalResourceObject("NewApplication", "btnAdd").ToString()%> onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </div><br />
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>
         </div>
     <%} %>
     <br />
-    <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
+    <input id="Submit" type="submit" value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%> class="button button-green"/>
 <% 
    }
 %>

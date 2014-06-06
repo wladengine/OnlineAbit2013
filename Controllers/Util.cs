@@ -84,7 +84,9 @@ namespace OnlineAbit2013.Controllers
         static Util()
         {
             InitDB();
-            string query = "SELECT Id, Name FROM {0} WHERE 1=@x ORDER BY Id";
+            bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
+            string query = "SELECT Id, Name  FROM {0} WHERE 1=@x ORDER BY Id";
+            string queryENG = "SELECT Id, Name, NameEng  FROM {0} WHERE 1=@x ORDER BY Id";
             SortedList<string, object> dic = new SortedList<string, object>() { { "@x", 1 } };
             DataTable tbl = _abitDB.GetDataTable(string.Format(query, "EgeExam"), dic);
 
@@ -99,10 +101,10 @@ namespace OnlineAbit2013.Controllers
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            tbl = _abitDB.GetDataTable(string.Format(query, "StudyForm"), dic);
+            tbl = _abitDB.GetDataTable(string.Format(queryENG, "StudyForm"), dic);
             StudyFormAll =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name =  isEng ? rw.Field<string>("NameEng"): rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
             tbl = _abitDB.GetDataTable("SELECT Id, NameEng FROM StudyForm", null);
             ForeignStudyFormAll =
@@ -139,16 +141,16 @@ namespace OnlineAbit2013.Controllers
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            tbl = _abitDB.GetDataTable(string.Format(query, "Qualification"), dic);
+            tbl = _abitDB.GetDataTable(string.Format(queryENG, "Qualification"), dic);
             QualifaicationAll =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name = isEng?  rw.Field<string>("NameEng") : rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            query = "SELECT Id, Name FROM Qualification WHERE IsForAspirant=1";
+            query = "SELECT Id, Name, NameEng FROM Qualification WHERE IsForAspirant=1";
             tbl = _abitDB.GetDataTable(query, null);
             QualifaicationForAspirant =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name = isEng ? rw.Field<string>("NameEng") : rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
             sPriemYear = GetValueByKey("PriemYear");
             if (string.IsNullOrEmpty(sPriemYear))
@@ -1357,16 +1359,16 @@ namespace OnlineAbit2013.Controllers
             return lst;
         }
 
-        public static List<SelectListItem> GetCountryList()
+        public static List<SelectListItem> GetCountryList(bool isEng=false)
         {
-            string query = "SELECT Id, Name FROM [Country] ORDER BY LevelOfUsing DESC, Name";
+            string query = string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", isEng ? "NameEng" : "Name" );
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             List<SelectListItem> lst =
                 (from DataRow rw in tbl.Rows
                  select new SelectListItem()
                  {
                      Value = rw.Field<int>("Id").ToString(),
-                     Text = rw.Field<string>("Name")
+                     Text = isEng ? rw.Field<string>("NameEng") : rw.Field<string>("Name")
                  }).ToList();
 
             return lst;
@@ -1642,6 +1644,21 @@ WHERE PersonId=@PersonId ";
             }
         }
 
+        public static List<SelectListItem> GetStudyLevelGroupList()
+        {
+            string query = "SELECT Id, NameRus FROM StudyLevelGroup ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("Id"),
+                     Text = rw.Field<string>("NameRus")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        }
+
         public static List<SelectListItem> GetStudyBasisList()
         {
             string query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
@@ -1656,7 +1673,34 @@ WHERE PersonId=@PersonId ";
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();
         }
-
+        public static List<SelectListItem> GetStudyFormList(bool IsEng)
+        {
+            string query = "SELECT Id, Name, NameEng FROM StudyForm ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("Id"),
+                     Text = IsEng ? (String.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng")) : rw.Field<string>("Name")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        } 
+        public static List<SelectListItem> GetQualificationList(bool IsEng)
+        {
+            string query = "SELECT Id, Name, NameEng FROM Qualification ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("Id"),
+                     Text = IsEng ? (String.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng")) : rw.Field<string>("Name")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        }
         public static List<SelectListItem> GetStudyFormList()
         {
             string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";

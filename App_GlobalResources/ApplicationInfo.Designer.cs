@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Просмотр условий поступления.
+        /// </summary>
+        internal static string AppDetails {
+            get {
+                return ResourceManager.GetString("AppDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Для данного конкурса Вы можете указать приоритетность образовательных программ.
+        /// </summary>
+        internal static string AppInnerProirity {
+            get {
+                return ResourceManager.GetString("AppInnerProirity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Вы отозвали это заявление.
         /// </summary>
         internal static string ApplicationCanceled {
@@ -171,6 +189,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Название.
+        /// </summary>
+        internal static string ExamsName {
+            get {
+                return ResourceManager.GetString("ExamsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Состояние.
+        /// </summary>
+        internal static string ExamsStage {
+            get {
+                return ResourceManager.GetString("ExamsStage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел.
+        /// </summary>
+        internal static string FilesWarning1 {
+            get {
+                return ResourceManager.GetString("FilesWarning1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как В данный раздел прикрепляйте подписанный бланк заявления.
+        /// </summary>
+        internal static string FilesWarning2 {
+            get {
+                return ResourceManager.GetString("FilesWarning2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Добавить файл.
         /// </summary>
         internal static string HeaderAddFile {
@@ -194,6 +248,24 @@ namespace Resources {
         internal static string HeaderDelete {
             get {
                 return ResourceManager.GetString("HeaderDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Эссе.
+        /// </summary>
+        internal static string HeaderEssay {
+            get {
+                return ResourceManager.GetString("HeaderEssay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Экзамены.
+        /// </summary>
+        internal static string HeaderExams {
+            get {
+                return ResourceManager.GetString("HeaderExams", resourceCulture);
             }
         }
         
@@ -252,16 +324,43 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Главное меню.
+        /// </summary>
+        internal static string LinkMainMenu {
+            get {
+                return ResourceManager.GetString("LinkMainMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как &lt;/span&gt;&lt;b&gt;В мотивационном письме должны содержаться:&lt;/b&gt; 
         ///    &lt;ul&gt;
         ///        &lt;li&gt;необходимые сведения об опыте профессиональной подготовки/деятельности;&lt;/li&gt;
         ///        &lt;li&gt;сведения, подтверждающие необходимость получения знаний/навыков, освоение/приобретение которых возможно в период обучения на выбранной программе;&lt;/li&gt;
-        ///        &lt;li&gt;перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.&lt;/li&gt;
-        ///    &lt;/ul&gt;&lt;span&gt;.
+        ///        &lt;li&gt;перспективы/планы реализации полученных знаний/навыков в будущей профессиональной деятельности.&lt;/li&gt; 
+        ///&lt;li&gt; Файл не должен содержать информацию, способствующую установлению авто [остаток строки был усечен]&quot;;.
         /// </summary>
         internal static string MotivationalMailInformation {
             get {
                 return ResourceManager.GetString("MotivationalMailInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Мотивационное письмо.
+        /// </summary>
+        internal static string MotiveLetter {
+            get {
+                return ResourceManager.GetString("MotiveLetter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Подробно (на английском).
+        /// </summary>
+        internal static string MotiveLetterDetails {
+            get {
+                return ResourceManager.GetString("MotiveLetterDetails", resourceCulture);
             }
         }
         
@@ -271,6 +370,24 @@ namespace Resources {
         internal static string ObrazProgram {
             get {
                 return ResourceManager.GetString("ObrazProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Вам следует.
+        /// </summary>
+        internal static string PrintFormWarning1 {
+            get {
+                return ResourceManager.GetString("PrintFormWarning1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как распечатать заявление&lt;/a&gt; и прийти с ним в приёмную комиссию.
+        /// </summary>
+        internal static string PrintFormWarning2 {
+            get {
+                return ResourceManager.GetString("PrintFormWarning2", resourceCulture);
             }
         }
         
@@ -343,6 +460,15 @@ namespace Resources {
         internal static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Просмотр/Добавить файлы.
+        /// </summary>
+        internal static string ViewAddFiles {
+            get {
+                return ResourceManager.GetString("ViewAddFiles", resourceCulture);
             }
         }
     }

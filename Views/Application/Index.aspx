@@ -196,7 +196,7 @@
     <% } %>
     <tr>
         <td width="30%" align="right"></td>
-        <td align="left"><a class="button button-orange" href="../../Application/AppIndex/<%= Application.Id.ToString("N") %>">Просмотр / добавить файлы</a></td>
+        <td align="left"><a class="button button-orange" href="../../Application/AppIndex/<%= Application.Id.ToString("N") %>"><%= GetGlobalResourceObject("ApplicationInfo", "ViewAddFiles")%>  </a></td>
     </tr>
 </table>
 <br />
@@ -205,10 +205,10 @@
 <div class="panel">
     <h4 onclick="HidePortfolio()" style="cursor:pointer;"><%= GetGlobalResourceObject("AddSharedFiles", "LoadedFiles")%></h4>
     <div class="message info">
-        <b>Пожалуйста, прикрепляйте общие для каждого заявления файлы (сканы паспорта / документа об образовании и т.п.) в раздел </b> 
-        <a href="../../Abiturient/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header") %></a>
+        <b><%= GetGlobalResourceObject("ApplicationInfo", "FilesWarning1")%></b> 
+        <a href="../../AbiturientNew/AddSharedFiles" style="font-weight:bold"><%= GetGlobalResourceObject("AddSharedFiles", "Header")%></a>
         <br />
-        <b>В данный раздел прикрепляйте подписанный бланк заявления </b>
+        <b><%= GetGlobalResourceObject("ApplicationInfo", "FilesWarning2")%></b>
     </div>
     <div id="dPortfolio">
         <hr />
@@ -287,7 +287,7 @@
                     <textarea id="fileComment" class="noresize" name="Comment" maxlength="1000" cols="80" rows="5"></textarea>
                 </div><br />
                 <div class="clearfix">
-                    <input id="btnSubmit" type="submit" value="Отправить" class="button button-gray"/>
+                    <input id="btnSubmit" type="submit" value=<%= GetGlobalResourceObject("AddSharedFiles", "Submit").ToString()%> class="button button-gray"/>
                 </div>
             </form>
             <br />

@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как - Нет поданных заявлений. &lt;a href=&quot;../../Abiturient/NewApplication&quot;&gt;Подать заявление&lt;/a&gt;.
+        ///   Ищет локализованную строку, такую же, как - Нет поданных заявлений. &lt;a href=&quot;../../AbiturientNew/NewApplication&quot;&gt;Подать заявление&lt;/a&gt;.
         /// </summary>
         internal static string HeaderNoActiveApps {
             get {
@@ -160,11 +160,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Каталог образовательных программ.
+        ///   Ищет локализованную строку, такую же, как Каталог образовательных программ (на русском).
         /// </summary>
         internal static string ObrazProgramCatalogLink {
             get {
                 return ResourceManager.GetString("ObrazProgramCatalogLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Каталог образовательных программ (на английском).
+        /// </summary>
+        internal static string ObrazProgramCatalogLinkEn {
+            get {
+                return ResourceManager.GetString("ObrazProgramCatalogLinkEn", resourceCulture);
             }
         }
         

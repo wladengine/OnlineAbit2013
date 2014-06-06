@@ -163,7 +163,7 @@
     <value>Enter name of educational institution</value>
   </data>
   <data name="EGEball" xml:space="preserve">
-    <value>Балл</value>
+    <value>Score of Unified State Exam Grades</value>
   </data>
   <data name="EGEmarks" xml:space="preserve">
     <value>Unified State Exam Grades</value>
@@ -172,10 +172,10 @@
     <value>No Unified State Exam Grades</value>
   </data>
   <data name="EGEsert" xml:space="preserve">
-    <value>Номер сертификата</value>
+    <value>Number of Unified State Exam Grades certificate</value>
   </data>
   <data name="EGEsubject" xml:space="preserve">
-    <value>Предмет</value>
+    <value>Subject (Unified State Exam Grades)</value>
   </data>
   <data name="EnglishMark" xml:space="preserve">
     <value>Final grade of English (if there are)</value>
@@ -245,5 +245,11 @@
   </data>
   <data name="VuzAdditionalTypeId" xml:space="preserve">
     <value>Select entry type</value>
+  </data>
+  <data name="EnglishNull" xml:space="preserve">
+    <value>I would like to learn Enlish from "zero" level</value>
+  </data>
+  <data name="RedDiploma" xml:space="preserve">
+    <value>Dimploma with distinction</value>
   </data>
 </root>

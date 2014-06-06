@@ -136,7 +136,7 @@
     <value>Cancelled Apps</value>
   </data>
   <data name="HeaderNoActiveApps" xml:space="preserve">
-    <value>- Нет поданных заявлений. &lt;a href="../../Abiturient/NewApplication"&gt;Подать заявление&lt;/a&gt;</value>
+    <value>- Нет поданных заявлений. &lt;a href="../../AbiturientNew/NewApplication"&gt;Подать заявление&lt;/a&gt;</value>
   </data>
   <data name="HeaderNoCancelledApps" xml:space="preserve">
     <value>- Нет отозванных заявлений.</value>
@@ -151,7 +151,10 @@
     <value>Дни открытых дверей образовательных программ магистратуры</value>
   </data>
   <data name="ObrazProgramCatalogLink" xml:space="preserve">
-    <value>Каталог образовательных программ</value>
+    <value>Каталог образовательных программ (на русском)</value>
+  </data>
+  <data name="ObrazProgramCatalogLinkEn" xml:space="preserve">
+    <value>Каталог образовательных программ (на английском)</value>
   </data>
   <data name="PageHeader" xml:space="preserve">
     <value>Главная страница</value>

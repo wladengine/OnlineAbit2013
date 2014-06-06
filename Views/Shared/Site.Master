@@ -190,8 +190,9 @@
                     <div class="accordion top">
                         <h2 class="current"><%= GetGlobalResourceObject("Main", "InformationHeader")%></h2>
                         <div class="pane" style="display:block">
-                            <ul>
+                            <ul> 
                                 <li><a target="_blank" href="http://abiturient.spbu.ru/index.php/russkij/informatsiya-ob-obrazovatelnykh-programmakh"><%= GetGlobalResourceObject("Main", "ObrazProgramCatalogLink")%></a></li>
+                                <li><a target="_blank" href="http://abiturient.spbu.ru/data/mag/Master_Book_2014_en.pdf"><%= GetGlobalResourceObject("Main", "ObrazProgramCatalogLinkEn")%></a></li>
                                 <%--<li><a target="_blank" href="http://abiturient.spbu.ru/index.php/russkij/znakomstvo-s-spbgu/dni-otkrytykh-dverej-spbgu"><%= GetGlobalResourceObject("Main", "MagOpenDoorsDaysLink")%></a></li>--%>
                                 <li><a target="_blank" href="http://campus.spbu.ru/"><%= GetGlobalResourceObject("Main", "CampusLink")%></a></li>
                                 <li><a target="_blank" href="../../Home/AboutRussianCitizens"><%= GetGlobalResourceObject("Main", "ForeigersInfoLink")%></a></li>

@@ -159,7 +159,7 @@
     <value>Size</value>
   </data>
   <data name="HeaderMotivationalMail" xml:space="preserve">
-    <value>Motivational mail</value>
+    <value>Motivation letter</value>
   </data>
   <data name="HeaderNoFiles" xml:space="preserve">
     <value>No files in portfilio</value>
@@ -203,18 +203,57 @@
     <value>View application</value>
   </data>
   <data name="ApplicationCanceled" xml:space="preserve">
-    <value>Вы отозвали это заявление</value>
+    <value>You have withdrawn your application</value>
   </data>
   <data name="ApplicationChange" xml:space="preserve">
-    <value>Редактировать заявление</value>
+    <value>Edit application</value>
   </data>
   <data name="ApplicationDelete" xml:space="preserve">
-    <value>Удалить заявление целиком</value>
+    <value>Delete application</value>
   </data>
   <data name="ApplicationInfoHeader" xml:space="preserve">
-    <value>Основные сведения</value>
+    <value>Basic data</value>
   </data>
   <data name="ApplicationPriorityChange" xml:space="preserve">
-    <value>Изменить приоритеты</value>
+    <value>Change prioritries</value>
+  </data>
+  <data name="FilesWarning1" xml:space="preserve">
+    <value>Please attach common for each application files (scans passport, document confirming education, etc.) on the page: </value>
+  </data>
+  <data name="FilesWarning2" xml:space="preserve">
+    <value>Here you can attach signed application form</value>
+  </data>
+  <data name="ViewAddFiles" xml:space="preserve">
+    <value>View applications/add files</value>
+  </data>
+  <data name="AppInnerProirity" xml:space="preserve">
+    <value>For this contest, you can specify the priority of educational programs</value>
+  </data>
+  <data name="AppDetails" xml:space="preserve">
+    <value>View Application details</value>
+  </data>
+  <data name="ExamsName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ExamsStage" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="HeaderEssay" xml:space="preserve">
+    <value>Essay</value>
+  </data>
+  <data name="HeaderExams" xml:space="preserve">
+    <value>Exams</value>
+  </data>
+  <data name="LinkMainMenu" xml:space="preserve">
+    <value>Main page</value>
+  </data>
+  <data name="MotiveLetterDetails" xml:space="preserve">
+    <value>detailed view (in English)</value>
+  </data>
+  <data name="PrintFormWarning1" xml:space="preserve">
+    <value>You should</value>
+  </data>
+  <data name="PrintFormWarning2" xml:space="preserve">
+    <value>print your application form&lt;/a&gt; and come with it to admissions office</value>
   </data>
 </root>

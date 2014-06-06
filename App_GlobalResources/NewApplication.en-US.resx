@@ -160,13 +160,13 @@
     <value>Bachelor/Specialist</value>
   </data>
   <data name="Select_Magistery" xml:space="preserve">
-    <value>Magistery</value>
+    <value>Master Programs</value>
   </data>
   <data name="Select_StudyBasis1" xml:space="preserve">
-    <value>Budget places</value>
+    <value>Government-funded basis</value>
   </data>
   <data name="Select_StudyBasis2" xml:space="preserve">
-    <value>Paid</value>
+    <value>Contractual basis</value>
   </data>
   <data name="Select_StudyForm1" xml:space="preserve">
     <value>Full-Time</value>
@@ -184,7 +184,7 @@
     <value>You are entering on the </value>
   </data>
   <data name="HeaderFirstCourse_2" xml:space="preserve">
-    <value>first course</value>
+    <value>First year</value>
   </data>
   <data name="NewApp_2MoreEntry" xml:space="preserve">
     <value>2 more entries are aviable</value>
@@ -199,7 +199,7 @@
     <value>Entry is closed</value>
   </data>
   <data name="NewApp_HasApplicationOnEntry" xml:space="preserve">
-    <value>Заявление на данную программу уже подано</value>
+    <value>Application for this program is allready submitted</value>
   </data>
   <data name="NewApp_NoFreeEntries" xml:space="preserve">
     <value>No free entries are aviable</value>
@@ -208,7 +208,7 @@
     <value>Can't delete commited application!</value>
   </data>
   <data name="NewApp_DeleteApp_Fail" xml:space="preserve">
-    <value>Ошибка при удалении заявления</value>
+    <value>Error while deleting application</value>
   </data>
   <data name="BlockData_GosLine" xml:space="preserve">
     <value>Gosline</value>
@@ -217,45 +217,51 @@
     <value>Entry is closed</value>
   </data>
   <data name="ApplicationLevel" xml:space="preserve">
-    <value>Уровень</value>
+    <value>Level</value>
   </data>
   <data name="ApplicationView" xml:space="preserve">
-    <value>Просмотр заявлений</value>
+    <value>Your applications</value>
   </data>
   <data name="BlockData_Faculty" xml:space="preserve">
-    <value>Факультет</value>
+    <value>Faculty</value>
   </data>
   <data name="BlockData_LicenseProgram" xml:space="preserve">
-    <value>Направление</value>
+    <value>Study area </value>
   </data>
   <data name="BlockData_MagSpecialization" xml:space="preserve">
-    <value>Профиль</value>
+    <value>Profile</value>
   </data>
   <data name="BlockData_ObrazProgram" xml:space="preserve">
-    <value>Образовательная программа</value>
+    <value>Educational program</value>
   </data>
   <data name="BlockData_Specialization" xml:space="preserve">
-    <value>Профиль</value>
+    <value>Profile</value>
   </data>
   <data name="BlockData_StudyBasis" xml:space="preserve">
-    <value>Основа обучения</value>
+    <value>Educatuion basis</value>
   </data>
   <data name="BlockData_StudyForm" xml:space="preserve">
-    <value>Форма обучения</value>
+    <value>Education form</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Delete</value>
   </data>
   <data name="EnterGosLine" xml:space="preserve">
-    <value>Поступать по гослинии</value>
+    <value>Application for state-funded places for foreigners</value>
   </data>
   <data name="HeaderMagProfile" xml:space="preserve">
-    <value>Выберите магистерскую программу</value>
+    <value>Chose MA Program</value>
   </data>
   <data name="Select_Aspirantura" xml:space="preserve">
-    <value>Аспирантура</value>
+    <value>PhD studies</value>
   </data>
   <data name="View" xml:space="preserve">
-    <value>Просмотр</value>
+    <value>View</value>
+  </data>
+  <data name="btnAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="btnSubmit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

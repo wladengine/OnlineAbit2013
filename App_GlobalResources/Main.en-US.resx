@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppLevel" xml:space="preserve">
-    <value>Уровень</value>
+    <value>Level</value>
   </data>
   <data name="AppView" xml:space="preserve">
-    <value>Просмотр заявлений</value>
+    <value>Your applications</value>
   </data>
   <data name="CampusLink" xml:space="preserve">
     <value>SPbSU Campus</value>
@@ -136,7 +136,7 @@
     <value>Cancelled Apps</value>
   </data>
   <data name="HeaderNoActiveApps" xml:space="preserve">
-    <value>- No active application. &lt;a href="../../Abiturient/NewApplication"&gt;Apply&lt;/a&gt;</value>
+    <value>- No active application. &lt;a href="../../AbiturientNew/NewApplication"&gt;Apply&lt;/a&gt;</value>
   </data>
   <data name="HeaderNoCancelledApps" xml:space="preserve">
     <value>- No cancelled applications.</value>
@@ -153,6 +153,9 @@
   <data name="ObrazProgramCatalogLink" xml:space="preserve">
     <value>Catalog of educational programs (in Russian)</value>
   </data>
+  <data name="ObrazProgramCatalogLinkEn" xml:space="preserve">
+    <value>Catalog of educational programs (in English)</value>
+  </data>
   <data name="PageHeader" xml:space="preserve">
     <value>Main page</value>
   </data>
@@ -167,6 +170,6 @@
     create a motivation letter.</value>
   </data>
   <data name="View" xml:space="preserve">
-    <value>Просмотр</value>
+    <value>View</value>
   </data>
 </root>

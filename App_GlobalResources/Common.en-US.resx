@@ -169,16 +169,16 @@
     <value>Profile</value>
   </data>
   <data name="StudyBasis" xml:space="preserve">
-    <value>Educatuion basis</value>
+    <value>Education basis</value>
   </data>
   <data name="StudyForm" xml:space="preserve">
     <value>Education form</value>
   </data>
   <data name="txtShow" xml:space="preserve">
-    <value>Show</value>
+    <value>View</value>
   </data>
   <data name="txtShowHeader" xml:space="preserve">
-    <value>Show application</value>
+    <value>View application</value>
   </data>
   <data name="UILangSetCookie" xml:space="preserve">
     <value>ru</value>
@@ -199,13 +199,13 @@
     <value>Personal account for graduate school applicants</value>
   </data>
   <data name="StartPageNav" xml:space="preserve">
-    <value>Выбор формата поступления</value>
+    <value> </value>
   </data>
   <data name="StudyBasisBudget" xml:space="preserve">
-    <value>Госбютжетная</value>
+    <value>Government-funded basis</value>
   </data>
   <data name="StudyFormFullTime" xml:space="preserve">
-    <value>Очная</value>
+    <value>Full-Time</value>
   </data>
   <data name="AG" xml:space="preserve">
     <value>Academic Gymnasium</value>

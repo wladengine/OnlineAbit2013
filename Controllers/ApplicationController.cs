@@ -23,7 +23,7 @@ namespace OnlineAbit2013.Controllers
             Guid CommitId = new Guid();
             if (!Guid.TryParse(id, out CommitId))
                 return RedirectToAction("Main", "AbiturientNew");
-
+            bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var tblAppsMain = 
@@ -33,12 +33,12 @@ namespace OnlineAbit2013.Controllers
                     select new SimpleApplication()
                     {
                         Id = App.Id,
-                        Profession = Entry.LicenseProgramName,
-                        ObrazProgram = Entry.ObrazProgramName,
+                        Profession = isEng? (String.IsNullOrEmpty(Entry.LicenseProgramNameEng)? Entry.LicenseProgramName : Entry.LicenseProgramNameEng): Entry.LicenseProgramName,
+                        ObrazProgram = isEng ? (String.IsNullOrEmpty(Entry.ObrazProgramNameEng) ? Entry.ObrazProgramName : Entry.ObrazProgramNameEng) : Entry.ObrazProgramName,
                         Specialization = Entry.ProfileName,
-                        StudyForm = Entry.StudyFormName,
-                        StudyBasis = Entry.StudyBasisName,
-                        StudyLevel = Entry.StudyLevelName,
+                        StudyForm = isEng ? (String.IsNullOrEmpty(Entry.StudyFormNameEng) ? Entry.StudyFormName : Entry.StudyFormNameEng) : Entry.StudyFormName,
+                        StudyBasis = /*isEng ? (String.IsNullOrEmpty(Entry.StudyBasisNameEng) ? Entry.StudyBasisName : Entry.StudyBasisNameEng) : */Entry.StudyBasisName, 
+                        StudyLevel = isEng ? (String.IsNullOrEmpty(Entry.StudyLevelName) ? Entry.StudyLevelName : Entry.StudyLevelName) : Entry.StudyLevelName, 
                         Priority = App.Priority,
                         IsGosLine = App.IsGosLine,
                         HasManualExams = false,
@@ -116,7 +116,7 @@ namespace OnlineAbit2013.Controllers
             Guid ApplicationId = new Guid();
             if (!Guid.TryParse(id, out ApplicationId))
                 return RedirectToAction("Main", "Abiturient");
-
+            bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var ApplicationEntity = 
@@ -126,12 +126,12 @@ namespace OnlineAbit2013.Controllers
                      select new 
                 {
                     Id = App.Id,
-                    Profession = Entry.LicenseProgramName,
-                    ObrazProgram = Entry.ObrazProgramName,
-                    Specialization = Entry.ProfileName,
-                    StudyForm = Entry.StudyFormName,
-                    StudyBasis = Entry.StudyBasisName,
-                    StudyLevel = Entry.StudyLevelName,
+                    Profession = isEng ? (String.IsNullOrEmpty(Entry.LicenseProgramNameEng) ? Entry.LicenseProgramName : Entry.LicenseProgramNameEng) : Entry.LicenseProgramName,
+                    ObrazProgram = isEng ? (String.IsNullOrEmpty(Entry.ObrazProgramNameEng) ? Entry.ObrazProgramName : Entry.ObrazProgramNameEng) : Entry.ObrazProgramName,
+                    Specialization =  Entry.ProfileName,
+                    StudyForm = isEng ? (String.IsNullOrEmpty(Entry.StudyFormNameEng) ? Entry.StudyFormName : Entry.StudyFormNameEng) : Entry.StudyFormName,
+                    StudyBasis = /*isEng ? (String.IsNullOrEmpty(Entry.StudyBasisNameEng) ? Entry.StudyBasisName : Entry.StudyBasisNameEng) :*/ Entry.StudyBasisName,
+                    StudyLevel = /*isEng ? (String.IsNullOrEmpty(Entry.StudyLevelNameEng) ? Entry.StudyLevelName : Entry.StudyLevelNameEng) : */Entry.StudyLevelName,
                     StudyLevelId = Entry.StudyLevelId,
                     Priority = App.Priority,
                     Enabled = App.Enabled,
@@ -141,11 +141,11 @@ namespace OnlineAbit2013.Controllers
                     IsApproved = App.IsApprovedByComission,
                     EntryTypeId = App.EntryType,
                     CommitId = App.CommitId,
-                    CommitName = Entry.StudyLevelName
+                    CommitName = /*isEng ? (String.IsNullOrEmpty(Entry.StudyLevelNameEng) ? Entry.StudyLevelName : Entry.StudyLevelNameEng) :*/Entry.StudyLevelName
                 }).FirstOrDefault();
                 if (ApplicationEntity == null)
                 {
-                    ApplicationEntity = context.AG_Application.Where(x => x.Id == ApplicationId && x.IsCommited == true && x.CommitId.HasValue).Select(x => new 
+                    ApplicationEntity = context.AG_Application.Where(x => x.Id == ApplicationId && x.IsCommited == true).Select(x => new 
                     {
                         Id = x.Id,
                         Profession = x.AG_Entry.AG_Program.Name,
@@ -162,7 +162,7 @@ namespace OnlineAbit2013.Controllers
                         DateOfDisable = x.DateOfDisable,
                         IsApproved = x.IsApprovedByComission,
                         EntryTypeId = 0,
-                        CommitId = x.CommitId.Value,
+                        CommitId = x.CommitId,
                         CommitName = Resources.Common.AG
                     }).FirstOrDefault();
                 }

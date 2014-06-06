@@ -832,7 +832,7 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> StudyBasisList { get; set; }
         public List<SelectListItem> SemestrList { get; set; }
         public List<SelectListItem> FacultyList { get; set; }
-
+        public List<SelectListItem> StudyLevelGroupList { get; set; }
         public List<Mag_ApplicationSipleEntity> Applications { get; set; }
 
         public List<KeyValuePair<int, string>> RequiredFiles { get; set; }
@@ -861,6 +861,7 @@ namespace OnlineAbit2013.Models
         public string FacultyName { get; set; }
         public bool Hostel { get; set; }
         public int StudyLevelGroupId { get; set; }
+        public string StudyLevelGroupName { get; set; }
         public bool? IsGosLine { get; set; }
     }
 

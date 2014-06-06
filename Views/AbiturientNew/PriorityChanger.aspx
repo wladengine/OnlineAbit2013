@@ -112,7 +112,7 @@
             <input type="hidden" name="<%= s.Id.ToString("N") %>" />
             <% if (s.HasSeparateObrazPrograms) { %>
             
-            <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= s.Id.ToString("N") %>&V=<%= Model.VersionId %>">Для данного конкурса Вы можете указать приоритетность образовательных программ</a>
+            <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= s.Id.ToString("N") %>&V=<%= Model.VersionId %>"><%= GetGlobalResourceObject("ApplicationInfo", "AppInnerProirity").ToString()%></a>
             <% } %>
         </li>
     <% } %>

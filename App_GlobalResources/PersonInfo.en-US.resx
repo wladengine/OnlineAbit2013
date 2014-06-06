@@ -139,10 +139,10 @@
     <value>I wish to participate in equal competition with the citizens of the Russian Federation</value>
   </data>
   <data name="LatinSymbols" xml:space="preserve">
-    <value>Использование символов кроме букв латинского и русского алфавитов не допускается.</value>
+    <value>No symbols except Latin and Cyrilic letters are allowed </value>
   </data>
   <data name="MessageMaxLength" xml:space="preserve">
-    <value>Превышена максимальная длина</value>
+    <value>The maximum length is exceeded</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>

@@ -141,6 +141,9 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="FileList" xml:space="preserve">
+    <value>File list (pdf)</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>File name</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Header" xml:space="preserve">
     <value>Shared files</value>
+  </data>
+  <data name="HeaderLoadFile" xml:space="preserve">
+    <value>Load file</value>
   </data>
   <data name="HelpMessage" xml:space="preserve">
     <value>This is the shared files folder. &lt;br /&gt;
@@ -184,7 +190,7 @@ Other documents can be attached in the window "General documents".&lt;/br&gt;</v
   </data>
   <data name="RulesInformation" xml:space="preserve">
     <value>&lt;h3&gt;Information for applicants:&lt;/h3&gt;
-In accordance with paragraph 2.21 of the Rules of admission to the St. Petersburg State University on basic educational programs of higher education (bachelor's degree programs, training programs, graduate programs) in 2012 (hereinafter - the Rules of admission) to participate in the competition for the basic educational program you graduate must submit the following documents:
+In accordance with paragraph 2.21 of the Rules of admission to the St. Petersburg State University on basic educational programs of higher education (bachelor's degree programs, training programs, graduate programs) in 2014 (hereinafter - the Rules of admission) to participate in the competition for the basic educational program you graduate must submit the following documents:
     &lt;ul&gt;
         &lt;li&gt; a copy of the document certifying identity and citizenship coming;&lt;/li&gt;
         &lt;li&gt; application for admission to an educational program on the form prescribed by the Admissions Committee;&lt;/li&gt;

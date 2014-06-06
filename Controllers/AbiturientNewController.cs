@@ -2068,7 +2068,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.MaxBlocks = maxBlockMag;
                     model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";  
+                    model.Enabled = true;
+                    model.ErrorMessage = "Невозможно подать пустое заявление";
                     return View("NewApplication_Mag", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -2152,6 +2153,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.MaxBlocks = maxBlockAspirant;
                     model.HasError = true;
+                    model.Enabled = true;
                     model.ErrorMessage = "Невозможно подать пустое заявление";
                     return View("NewApplication_Aspirant", model);
                 }
@@ -2240,6 +2242,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.MaxBlocks = maxBlock1kurs;
                     model.HasError = true;
+                    model.Enabled = true;
                     model.ErrorMessage = "Невозможно подать пустое заявление";
                     return View("NewApplication_1kurs", model);
                 }
@@ -2331,6 +2334,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.MaxBlocks = maxBlockSPO;
                     model.HasError = true;
+                    model.Enabled = true;
                     model.ErrorMessage = "Невозможно подать пустое заявление";
                     return View("NewApplication_SPO", model);
                 }

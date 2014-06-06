@@ -1680,7 +1680,7 @@ WHERE PersonId=@PersonId ";
             else
                 query += " AND Semester.IsIGA=0 ";
             */
-            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Date", DateTime.Now }});
             return
                 (from DataRow rw in tbl.Rows
                  select new
@@ -1689,8 +1689,7 @@ WHERE PersonId=@PersonId ";
                      Text = rw.Field<string>("Name")
                  }).AsEnumerable()
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                    .ToList();
-
+                    .ToList(); 
         }
 
         public static void CommitApplication(Guid CommitId, Guid PersonId, OnlinePriemEntities context)

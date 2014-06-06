@@ -133,7 +133,7 @@
     <value>You have successfully registered on website</value>
   </data>
   <data name="SuccessLink" xml:space="preserve">
-    <value>&lt;a href="../../Abiturient/Main"&gt;Log on&lt;/a&gt; to start</value>
+    <value>&lt;a href="../../AbiturientNew/Main"&gt;Log on&lt;/a&gt; to start</value>
   </data>
   <data name="WrongEmail" xml:space="preserve">
     <value>Wrong email</value>

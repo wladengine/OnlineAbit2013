@@ -130,7 +130,7 @@
     <value>Вы успешно прошли регистрацию на сайте.</value>
   </data>
   <data name="SuccessLink" xml:space="preserve">
-    <value>&lt;a href="../../Abiturient/Main"&gt;Войдите на сайт&lt;/a&gt; для начала работы</value>
+    <value>&lt;a href="../../AbiturientNew/Main"&gt;Войдите на сайт&lt;/a&gt; для начала работы</value>
   </data>
   <data name="WrongEmail" xml:space="preserve">
     <value>Неверный EMail адрес</value>

@@ -256,4 +256,7 @@
   <data name="PrintFormWarning2" xml:space="preserve">
     <value>print your application form&lt;/a&gt; and come with it to admissions office</value>
   </data>
+  <data name="AppInnerProirityProfile" xml:space="preserve">
+    <value>For this contest, you should specify the priority of profiles</value>
+  </data>
 </root>

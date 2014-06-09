@@ -111,8 +111,14 @@
             </table>
             <input type="hidden" name="<%= s.Id.ToString("N") %>" />
             <% if (s.HasSeparateObrazPrograms) { %>
-            
-            <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= s.Id.ToString("N") %>&V=<%= Model.VersionId %>"><%= GetGlobalResourceObject("ApplicationInfo", "AppInnerProirity").ToString()%></a>
+            <% if (s.ObrazProgramInEntryId.HasValue && s.ObrazProgramInEntryId.Value != Guid.Empty) { %>
+            <a href="../AbiturientNew/PriorityChangerProfile?AppId=<%= s.Id.ToString("N") %>&OPIE=<%= s.ObrazProgramInEntryId.Value.ToString("N") %>&V=<%= Model.VersionId %>">
+                <%= GetGlobalResourceObject("ApplicationInfo", "AppInnerProirityProfile").ToString()%></a>
+            <% } else
+               { %>
+            <a href="../AbiturientNew/PriorityChangerApplication?AppId=<%= s.Id.ToString("N") %>&V=<%= Model.VersionId %>">
+                <%= GetGlobalResourceObject("ApplicationInfo", "AppInnerProirity").ToString()%></a>
+            <% } %>
             <% } %>
         </li>
     <% } %>

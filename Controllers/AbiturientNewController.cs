@@ -2366,7 +2366,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(CommitId, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
-
             Guid VersionId = Guid.NewGuid();
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
@@ -2390,6 +2389,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          Specialization = Entry.ProfileName,
                          HasManualExams = false,
                          HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0,
+                         ObrazProgramInEntryId = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() == 1 ? context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Select(x => x.Id).FirstOrDefault() : Guid.Empty,
                          EntryId = App.EntryId
                      }).ToList().Union(
                      (from AG_App in context.AG_Application
@@ -2412,7 +2412,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 {
                     Apps = apps,
                     UILanguage = Util.GetUILang(PersonId),
-                    VersionId = VersionId.ToString()
+                    VersionId = VersionId.ToString("N")
                 };
                 return View(mdl);
             }
@@ -5058,5 +5058,19 @@ Order by cnt desc";
             }
         }
         #endregion
+
+        public ActionResult HeartBeat()
+        {
+            try
+            {
+                string query = "SELECT Id FROM [dbo].[_HeartBeat] WHERE Id=@Id";
+                Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@Id", Guid.NewGuid() } });
+                return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message + (ex.InnerException == null ? "" : "\nINNER EXCEPTION: " + ex.InnerException), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

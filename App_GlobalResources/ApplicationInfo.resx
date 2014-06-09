@@ -260,4 +260,7 @@
   <data name="PrintFormWarning2" xml:space="preserve">
     <value>распечатать заявление&lt;/a&gt; и прийти с ним в приёмную комиссию</value>
   </data>
+  <data name="AppInnerProirityProfile" xml:space="preserve">
+    <value>Для данного конкурса Вам необходимо указать приоритетность профилей</value>
+  </data>
 </root>

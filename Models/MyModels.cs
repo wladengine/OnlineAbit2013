@@ -559,6 +559,7 @@ namespace OnlineAbit2013.Models
         public bool IsGosLine { get; set; }
         public bool NeedHostel { get; set; }
         public bool HasSeparateObrazPrograms { get; set; }
+        public Guid? ObrazProgramInEntryId { get; set; }
     }
     public class SimpleApplicationPackage
     {

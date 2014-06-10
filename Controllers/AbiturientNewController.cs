@@ -932,8 +932,8 @@ namespace OnlineAbit2013.Controllers
                     });
                 }
 
-                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true)
-                    .Select(x => new { x.CommitId,  StudyLevelGroupNameRus = "", StudyLevelGroupNameEng = "",  EntryType = 0 }).Distinct();
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonID && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { CommitId = x.CommitId.Value, StudyLevelGroupNameRus = "", StudyLevelGroupNameEng = "", EntryType = 0 }).Distinct();
 
                 foreach (var app in Applications)
                 {
@@ -1573,7 +1573,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                     var CommId = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true).Select(x => x.CommitId);
                                     if (CommId.Count() > 0 )
                                     {
-                                        Guid CommitId = CommId.First();
+                                        Guid CommitId = CommId.First().Value;
                                         model.CommitId = CommitId.ToString("N");
 
                                         var AppList = context.AG_Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId).OrderBy(x => x.Priority)
@@ -1678,6 +1678,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 int? iScTypeId = (int?)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                 if (iScTypeId.HasValue)
                 {
+                    string ScTypeName = Util.AbitDB.GetStringValue("SELECT Name FROM SchoolTypeAll WHERE Id=@Id", new SortedList<string, object>() { { "@Id", iScTypeId ?? 1 } });
+                    model.SchoolType = ScTypeName;
                     if (iScTypeId.Value != 4)
                     {
                         model.EntryType = 1;//1 курс бак-спец, АГ, СПО
@@ -1756,8 +1758,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     });
                 }
 
-                Applications = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true)
-                    .Select(x => new { x.CommitId, StudyLevelGroupNameEng = "", StudyLevelGroupNameRus = "", EntryType = 0 }).Distinct();
+                Applications = context.AG_Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.IsCommited == true && x.CommitId.HasValue)
+                    .Select(x => new { CommitId = x.CommitId.Value, StudyLevelGroupNameEng = "", StudyLevelGroupNameRus = "", EntryType = 0 }).Distinct();
 
                 foreach (var app in Applications)
                 {

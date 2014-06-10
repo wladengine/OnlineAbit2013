@@ -107,7 +107,6 @@
       [Abiturient].[StudyLevelId] AS [StudyLevelId], 
       [Abiturient].[StudyLevelName] AS [StudyLevelName], 
       [Abiturient].[IsApprovedByComission] AS [IsApprovedByComission], 
-      [Abiturient].[IsImported] AS [IsImported], 
       [Abiturient].[SecondTypeId] AS [SecondTypeId], 
       [Abiturient].[IsSecond] AS [IsSecond], 
       [Abiturient].[IsReduced] AS [IsReduced], 
@@ -127,7 +126,9 @@
       [Abiturient].[StudyLevelGroupNameRus] AS [StudyLevelGroupNameRus], 
       [Abiturient].[StudyLevelGroupId] AS [StudyLevelGroupId], 
       [Abiturient].[IsGosLine] AS [IsGosLine], 
-      [Abiturient].[ApplicationCommitNumber] AS [ApplicationCommitNumber]
+      [Abiturient].[ApplicationCommitNumber] AS [ApplicationCommitNumber], 
+      [Abiturient].[HasInnerPriorities] AS [HasInnerPriorities], 
+      [Abiturient].[IsImported] AS [IsImported]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Store.Entry" store:Type="Views" store:Schema="dbo" store:Name="Entry">
@@ -177,6 +178,21 @@
       [Entry].[StudyLevelGroupNameRus] AS [StudyLevelGroupNameRus], 
       [Entry].[StudyLevelNameEng] AS [StudyLevelNameEng]
       FROM [dbo].[Entry] AS [Entry]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="extApplicationDetails" EntityType="OnlinePriem2012Model.Store.extApplicationDetails" store:Type="Views" store:Schema="dbo" store:Name="extApplicationDetails">
+            <DefiningQuery>SELECT 
+      [extApplicationDetails].[Id] AS [Id], 
+      [extApplicationDetails].[ApplicationId] AS [ApplicationId], 
+      [extApplicationDetails].[ObrazProgramInEntryId] AS [ObrazProgramInEntryId], 
+      [extApplicationDetails].[ObrazProgramName] AS [ObrazProgramName], 
+      [extApplicationDetails].[ObrazProgramInEntryPriority] AS [ObrazProgramInEntryPriority], 
+      [extApplicationDetails].[ProfileInObrazProgramInEntryId] AS [ProfileInObrazProgramInEntryId], 
+      [extApplicationDetails].[ProfileName] AS [ProfileName], 
+      [extApplicationDetails].[ProfileInObrazProgramInEntryPriority] AS [ProfileInObrazProgramInEntryPriority], 
+      [extApplicationDetails].[CurrVersion] AS [CurrVersion], 
+      [extApplicationDetails].[CurrDate] AS [CurrDate], 
+      [extApplicationDetails].[ObrazProgramCrypt] AS [ObrazProgramCrypt]
+      FROM [dbo].[extApplicationDetails] AS [extApplicationDetails]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AG_Application_AG_Entry" Association="OnlinePriem2012Model.Store.FK_AG_Application_AG_Entry">
             <End Role="AG_Entry" EntitySet="AG_Entry" />
@@ -600,6 +616,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="IntNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IsPrinted" Type="bit" Nullable="false" />
+          <Property Name="IsImported" Type="bit" Nullable="false" />
+          <Property Name="DateReviewDocs" Type="datetime" />
         </EntityType>
         <EntityType Name="ApplicationCommitVersion">
           <Key>
@@ -802,7 +820,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -812,7 +830,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -1237,8 +1255,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1260,7 +1278,6 @@
             
             
             
-            <PropertyRef Name="IsImported" />
             
             
             
@@ -1270,6 +1287,7 @@
             
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
+            <PropertyRef Name="IsImported" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -1300,7 +1318,6 @@
           <Property Name="StudyLevelId" Type="int" Nullable="false" />
           <Property Name="StudyLevelName" Type="nvarchar" MaxLength="50" />
           <Property Name="IsApprovedByComission" Type="bit" Nullable="false" />
-          <Property Name="IsImported" Type="bit" Nullable="false" />
           <Property Name="SecondTypeId" Type="int" />
           <Property Name="IsSecond" Type="bit" Nullable="false" />
           <Property Name="IsReduced" Type="bit" Nullable="false" />
@@ -1321,9 +1338,11 @@
           <Property Name="StudyLevelGroupId" Type="int" Nullable="false" />
           <Property Name="IsGosLine" Type="bit" Nullable="false" />
           <Property Name="ApplicationCommitNumber" Type="int" Nullable="false" />
+          <Property Name="HasInnerPriorities" Type="bit" />
+          <Property Name="IsImported" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1391,6 +1410,30 @@
           <Property Name="StudyLevelGroupNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelGroupNameRus" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelNameEng" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="extApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="ObrazProgramInEntryId" />
+            
+            <PropertyRef Name="ObrazProgramInEntryPriority" />
+            <PropertyRef Name="ObrazProgramCrypt" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="ObrazProgramInEntryPriority" Type="int" Nullable="false" />
+          <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
+          <Property Name="ProfileName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ProfileInObrazProgramInEntryPriority" Type="int" />
+          <Property Name="CurrVersion" Type="int" />
+          <Property Name="CurrDate" Type="datetime" />
+          <Property Name="ObrazProgramCrypt" Type="nvarchar" Nullable="false" MaxLength="53" />
         </EntityType>
         <Association Name="FK_AG_Application_AG_Entry">
           <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="1" />
@@ -2424,6 +2467,7 @@
             <End Role="ApplicationVersionDetails" EntitySet="ApplicationVersionDetails" />
           </AssociationSet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Entry" />
+          <EntitySet Name="extApplicationDetails" EntityType="OnlinePriem2012Model.extApplicationDetails" />
           </EntityContainer>
         <EntityType Name="PassportType">
           <Key>
@@ -2643,6 +2687,7 @@
           <Property Type="Int32" Name="StudyLevelGroupId" Nullable="false" />
           <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
           <Property Type="Int32" Name="ApplicationCommitNumber" Nullable="false" />
+          <Property Type="Boolean" Name="HasInnerPriorities" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -3538,7 +3583,7 @@
           <Property Type="Int32" Name="ManualExamId" />
           <Property Type="Boolean" Name="IsApprovedByComission" Nullable="false" />
           <Property Type="Boolean" Name="IsCommited" Nullable="false" />
-          <Property Type="Guid" Name="CommitId" Nullable="false" />
+          <Property Type="Guid" Name="CommitId" />
           <NavigationProperty Name="AG_Entry" Relationship="OnlinePriem2012Model.FK_AG_Application_AG_Entry" FromRole="AG_Application" ToRole="AG_Entry" />
           <NavigationProperty Name="AG_ManualExam" Relationship="OnlinePriem2012Model.FK_AG_Application_AG_ManualExam" FromRole="AG_Application" ToRole="AG_ManualExam" />
         </EntityType>
@@ -3877,6 +3922,8 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="IntNumber" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Boolean" Name="IsPrinted" Nullable="false" />
+          <Property Type="Boolean" Name="IsImported" Nullable="false" />
+          <Property Type="DateTime" Name="DateReviewDocs" Precision="3" />
         </EntityType>
         <EntityType Name="ApplicationCommitVersion">
           <Key>
@@ -4165,12 +4212,12 @@
           <Property Type="Boolean" Name="IsElectronic" Nullable="false" />
           <Property Type="Boolean" Name="IsDistance" Nullable="false" />
           <Property Type="Int32" Name="CampaignYear" />
-          <Property Type="DateTime" Name="DateOfClose" />
-          <Property Type="DateTime" Name="DateOfStart" />
-          <Property Type="DateTime" Name="DateOfClose_Foreign" />
-          <Property Type="DateTime" Name="DateOfStart_Foreign" />
-          <Property Type="DateTime" Name="DateOfClose_GosLine" />
-          <Property Type="DateTime" Name="DateOfStart_GosLine" />
+          <Property Type="DateTime" Name="DateOfClose" Precision="3" />
+          <Property Type="DateTime" Name="DateOfStart" Precision="3" />
+          <Property Type="DateTime" Name="DateOfClose_Foreign" Precision="3" />
+          <Property Type="DateTime" Name="DateOfStart_Foreign" Precision="3" />
+          <Property Type="DateTime" Name="DateOfClose_GosLine" Precision="3" />
+          <Property Type="DateTime" Name="DateOfStart_GosLine" Precision="3" />
           <Property Type="Boolean" Name="IsUsedForPriem" Nullable="false" />
           <Property Type="String" Name="ObrazProgramName" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ObrazProgramNameEng" MaxLength="1000" FixedLength="false" Unicode="true" />
@@ -4189,6 +4236,26 @@
           <Property Type="String" Name="StudyLevelGroupNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyLevelGroupNameRus" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyLevelNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="extApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="ObrazProgramInEntryId" />
+            <PropertyRef Name="ObrazProgramInEntryPriority" />
+            <PropertyRef Name="ObrazProgramCrypt" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="ObrazProgramInEntryId" Nullable="false" />
+          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="Int32" Name="ObrazProgramInEntryPriority" Nullable="false" />
+          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
+          <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ProfileInObrazProgramInEntryPriority" />
+          <Property Type="Int32" Name="CurrVersion" />
+          <Property Type="DateTime" Name="CurrDate" Precision="3" />
+          <Property Type="String" Name="ObrazProgramCrypt" Nullable="false" MaxLength="53" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4350,6 +4417,7 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="HasInnerPriorities" ColumnName="HasInnerPriorities" />
                 <ScalarProperty Name="ApplicationCommitNumber" ColumnName="ApplicationCommitNumber" />
                 <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
                 <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
@@ -5030,6 +5098,8 @@
           <EntitySetMapping Name="ApplicationCommit">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.ApplicationCommit">
               <MappingFragment StoreEntitySet="ApplicationCommit">
+                <ScalarProperty Name="DateReviewDocs" ColumnName="DateReviewDocs" />
+                <ScalarProperty Name="IsImported" ColumnName="IsImported" />
                 <ScalarProperty Name="IsPrinted" ColumnName="IsPrinted" />
                 <ScalarProperty Name="IntNumber" ColumnName="IntNumber" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -5195,6 +5265,23 @@
                 <ScalarProperty Name="StudyPlanNumber" ColumnName="StudyPlanNumber" />
                 <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
                 <ScalarProperty Name="SemesterId" ColumnName="SemesterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="extApplicationDetails">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.extApplicationDetails">
+              <MappingFragment StoreEntitySet="extApplicationDetails">
+                <ScalarProperty Name="ObrazProgramCrypt" ColumnName="ObrazProgramCrypt" />
+                <ScalarProperty Name="CurrDate" ColumnName="CurrDate" />
+                <ScalarProperty Name="CurrVersion" ColumnName="CurrVersion" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryPriority" ColumnName="ProfileInObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
+                <ScalarProperty Name="ObrazProgramInEntryPriority" ColumnName="ObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ObrazProgramName" ColumnName="ObrazProgramName" />
+                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5513,6 +5600,7 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.Entry" Width="2.75" PointX="17.375" PointY="0.75" Height="9.4800423177083317" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.extApplicationDetails" Width="1.5" PointX="3.5096489281904177" PointY="12.708090475158809" />
         </Diagram>
     </Diagrams>
   </Designer>

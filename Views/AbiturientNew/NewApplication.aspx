@@ -97,10 +97,12 @@
     <div class = "form panel"> 
     <h3><%= GetGlobalResourceObject("PersonStartPage", "AppSelectHeader")%></h3>
     <hr />
+    
     <form id="form" method="post" action="/AbiturientNew/NewApplicationSelect"> 
     <input name="val_h" id="val_h" type="hidden" value="1" />
     <% if (Model.EntryType == 1)
        { %>
+        <p class="message info">Вы закончили: <%= Model.SchoolType %> <%= Model.SchoolType.ToLower() == "школа" ? Model.ExitClassId + " классов" : "" %><br />Вам доступны следующие возможности</p>
        <% if (Model.ExitClassId < 9) //7-8
           { %>
             <!--ag-->
@@ -133,6 +135,7 @@
      <%}
        else
        {%>
+        <p>Вы закончили: <%= Model.SchoolType %><br />Вам доступны следующие возможности</p>
        <% if (Model.VuzAddType == 1) // поступление
           { %>
             <!-- 1 курс -->

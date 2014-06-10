@@ -597,7 +597,9 @@ namespace OnlineAbit2013.Models
 
         public List<SimpleApplicationPackage> Applications { get; set; }
 
+        public string SchoolType { get; set; }
         public int ExitClassId { get; set; }
+        public int ExitClassIntValue { get; set; }
         public int VuzAddType { get; set; }
         public string StudyFormId { get; set; }
 

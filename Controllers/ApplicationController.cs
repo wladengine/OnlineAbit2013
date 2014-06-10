@@ -145,7 +145,7 @@ namespace OnlineAbit2013.Controllers
                 }).FirstOrDefault();
                 if (ApplicationEntity == null)
                 {
-                    ApplicationEntity = context.AG_Application.Where(x => x.Id == ApplicationId && x.IsCommited == true).Select(x => new 
+                    ApplicationEntity = context.AG_Application.Where(x => x.Id == ApplicationId && x.IsCommited == true && x.CommitId.HasValue).Select(x => new 
                     {
                         Id = x.Id,
                         Profession = x.AG_Entry.AG_Program.Name,
@@ -162,7 +162,7 @@ namespace OnlineAbit2013.Controllers
                         DateOfDisable = x.DateOfDisable,
                         IsApproved = x.IsApprovedByComission,
                         EntryTypeId = 0,
-                        CommitId = x.CommitId,
+                        CommitId = x.CommitId.Value,
                         CommitName = Resources.Common.AG
                     }).FirstOrDefault();
                 }

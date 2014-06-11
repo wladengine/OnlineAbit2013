@@ -4950,7 +4950,7 @@ Order by cnt desc";
 
                 Guid EntryId = EntryList.First().EntryId;
 
-                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId && x.EntryId == EntryId && x.IsDeleted==false).Count() > 0)
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId && x.EntryId == EntryId && x.IsDeleted == false && x.IsGosLine == bIsGosLine).Count() > 0)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.ErrorHasApplication }); 
 
                 DateTime? timeOfStart; 
@@ -5142,6 +5142,7 @@ Order by cnt desc";
                              Ent.IsParallel == bIsParallel &&
                              Ent.IsReduced == bIsReduced &&
                              Ent.IsSecond == bIsSecond &&
+                             
                             (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
                        select new
                        {

@@ -32,7 +32,15 @@ namespace OnlineAbit2013.Controllers
         /// <summary>
         /// ADO-Powered
         /// </summary>
-        public static SQLClass AbitDB { get { return _abitDB; } }
+        public static SQLClass AbitDB 
+        { 
+            get 
+            {
+                if (!_abitDB.IsOpen)
+                    _abitDB.OpenDatabase(ConstClass.AbitDB);
+                return _abitDB; 
+            }
+        }
         /// <summary>
         /// ADO-Powered
         /// </summary>

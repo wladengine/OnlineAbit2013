@@ -335,7 +335,7 @@ namespace OnlineAbit2013.Controllers
                                 Faculty = Entry.FacultyName,
                                 Profession = Entry.LicenseProgramName,
                                 ProfessionCode = Entry.LicenseProgramCode,
-                                ObrazProgram = Entry.ObrazProgramName,
+                                ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
                                 Specialization = Entry.ProfileName,
                                 Entry.StudyFormId,
                                 Entry.StudyFormName,
@@ -442,10 +442,10 @@ namespace OnlineAbit2013.Controllers
                 //pdfStm.SetEncryption(PdfWriter.STRENGTH128BITS, "", "", PdfWriter.ALLOW_SCREENREADERS | PdfWriter.ALLOW_PRINTING | PdfWriter.AllowPrinting);
                 AcroFields acrFlds = pdfStm.AcroFields;
 
-                var Version = context.ApplicationCommitVersion.Where(x => x.CommitId == appId).Select(x => new { x.VersionDate, x.Id }).FirstOrDefault();
+                var Version = context.ApplicationCommitVersion.Where(x => x.CommitId == appId).Select(x => new { x.VersionDate, x.Id }).ToList().LastOrDefault();
                 string sVersion = "";
                 if (Version != null)
-                    sVersion = "Версия №" + Version.Id + (Version.VersionDate.HasValue ? " от " + Version.VersionDate.Value.ToString("dd.MM.yyyy HH:MM") : "");
+                    sVersion = "Версия №" + Version.Id + (Version.VersionDate.HasValue ? " от " + Version.VersionDate.Value.ToString("dd.MM.yyyy HH:mm") : "");
                 string FIO = ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim();
 
                 List<ShortAppcation> lstApps = abitList
@@ -484,32 +484,32 @@ namespace OnlineAbit2013.Controllers
                 string code = ((multiplyer * 100000) + abitList.First().CommitIntNumber).ToString();
 
                 //добавляем первый файл
-                lstFiles.Add(GetApplicationPDF_FirstPage(lstAppsFirst, lstApps, dirPath, isMag ? "ApplicationMag_page1.pdf" : "Application_2014_page1.pdf", FIO, sVersion, code, isMag));
+                lstFiles.Add(GetApplicationPDF_FirstPage(lstAppsFirst, lstApps, dirPath, isMag ? "ApplicationMag_page1.pdf" : "Application_page1.pdf", FIO, sVersion, code, isMag));
                 acrFlds.SetField("Version", sVersion);
                 
-                //первые 3 вставляем как есть
-                for (int rowInd = 1; rowInd < 4 || rowInd <= abitList.Count; rowInd++)
-                {
-                    var abit = abitList[rowInd - 1];
-                    acrFlds.SetField("Profession" + rowInd, abit.ProfessionCode + " " + abit.Profession);
-                    acrFlds.SetField("Specialization" + rowInd, abit.Specialization);
-                    acrFlds.SetField("ObrazProgram" + rowInd, abit.ObrazProgram);
-                    acrFlds.SetField("Priority" + rowInd, abit.Priority.ToString());
+                ////первые 3 вставляем как есть
+                //for (int rowInd = 1; rowInd < 4 || rowInd <= abitList.Count; rowInd++)
+                //{
+                //    var abit = abitList[rowInd - 1];
+                //    acrFlds.SetField("Profession" + rowInd, abit.ProfessionCode + " " + abit.Profession);
+                //    acrFlds.SetField("Specialization" + rowInd, abit.Specialization);
+                //    acrFlds.SetField("ObrazProgram" + rowInd, abit.ObrazProgram);
+                //    acrFlds.SetField("Priority" + rowInd, abit.Priority.ToString());
 
-                    acrFlds.SetField("StudyForm" + abit.StudyFormId + rowInd, "1");
-                    acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rowInd, "1");
+                //    acrFlds.SetField("StudyForm" + abit.StudyFormId + rowInd, "1");
+                //    acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rowInd, "1");
 
-                    if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
-                        acrFlds.SetField("IsPriority" + rowInd, "1");
-                    rowInd++;
-                }
+                //    if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
+                //        acrFlds.SetField("IsPriority" + rowInd, "1");
+                //    rowInd++;
+                //}
 
                 //остальные - по 4 на новую страницу
                 int appcount = 3;
                 while (appcount < lstApps.Count)
                 {
                     lstAppsFirst = new List<ShortAppcation>();
-                    for (int u = 0; u < 3; u++)
+                    for (int u = 0; u < 4; u++)
                     {
                         if (lstApps.Count > appcount)
                             lstAppsFirst.Add(lstApps[appcount]);
@@ -611,7 +611,7 @@ namespace OnlineAbit2013.Controllers
                     acrFlds.SetField("HasPrivileges", "1");
 
                 acrFlds.SetField("ReturnDocumentType" + person.ReturnDocumentTypeId, "1");
-                if ((person.SchoolTypeId == 1) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") > 0))
+                if ((person.SchoolTypeId == 1) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") < 0))
                     acrFlds.SetField("NoEduc", "1");
                 else
                 {
@@ -703,24 +703,24 @@ namespace OnlineAbit2013.Controllers
 
                 
 
-                int rwInd = 1;
-                if (!isMag)
-                {
-                    foreach (var abit in abitList.OrderBy(x => x.Priority))
-                    {
-                        acrFlds.SetField("Profession" + rwInd, abit.ProfessionCode + " " + abit.Profession);
-                        acrFlds.SetField("Specialization" + rwInd, abit.Specialization);
-                        acrFlds.SetField("ObrazProgram" + rwInd, abit.ObrazProgram);
-                        acrFlds.SetField("Priority" + rwInd, abit.Priority.ToString());
+                //int rwInd = 1;
+                //if (!isMag)
+                //{
+                //    foreach (var abit in abitList.OrderBy(x => x.Priority))
+                //    {
+                //        acrFlds.SetField("Profession" + rwInd, abit.ProfessionCode + " " + abit.Profession);
+                //        acrFlds.SetField("Specialization" + rwInd, abit.Specialization);
+                //        acrFlds.SetField("ObrazProgram" + rwInd, abit.ObrazProgram);
+                //        acrFlds.SetField("Priority" + rwInd, abit.Priority.ToString());
 
-                        acrFlds.SetField("StudyForm" + abit.StudyFormId + rwInd, "1");
-                        acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rwInd, "1");
+                //        acrFlds.SetField("StudyForm" + abit.StudyFormId + rwInd, "1");
+                //        acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rwInd, "1");
 
-                        if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
-                            acrFlds.SetField("IsPriority" + rwInd, "1");
-                        rwInd++;
-                    }
-                }
+                //        if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
+                //            acrFlds.SetField("IsPriority" + rwInd, "1");
+                //        rwInd++;
+                //    }
+                //}
 
                 pdfStm.FormFlattening = true;
                 pdfStm.Close();
@@ -800,7 +800,7 @@ namespace OnlineAbit2013.Controllers
             {
                 acrFlds.SetField("Priority" + rwind, p.Priority.ToString());
                 acrFlds.SetField("Profession" + rwind, p.LicenseProgramName);
-                acrFlds.SetField("ObrazProgram" + rwind, p.LicenseProgramName);
+                acrFlds.SetField("ObrazProgram" + rwind, p.ObrazProgramName);
                 acrFlds.SetField("Specialization" + rwind, p.HasInnerPriorities ? "Приложение к заявлению № " + p.InnerPrioritiesNum : p.ProfileName);
                 acrFlds.SetField("StudyForm" +  p.StudyFormId.ToString() + rwind.ToString(), "1");
                 acrFlds.SetField("StudyBasis" + p.StudyBasisId.ToString() + rwind.ToString(), "1");
@@ -837,7 +837,7 @@ namespace OnlineAbit2013.Controllers
             {
                 acrFlds.SetField("Priority" + rwind, p.Priority.ToString());
                 acrFlds.SetField("Profession" + rwind, p.LicenseProgramName);
-                acrFlds.SetField("ObrazProgram" + rwind, p.LicenseProgramName);
+                acrFlds.SetField("ObrazProgram" + rwind, p.ObrazProgramName);
                 acrFlds.SetField("Specialization" + rwind, p.HasInnerPriorities ? "Приложение к заявлению № " + p.InnerPrioritiesNum : p.ProfileName);
                 acrFlds.SetField("StudyForm" + p.StudyFormId.ToString() + rwind.ToString(), "1");
                 acrFlds.SetField("StudyBasis" + p.StudyBasisId.ToString() + rwind.ToString(), "1");

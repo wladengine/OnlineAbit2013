@@ -19,7 +19,7 @@ namespace OnlineAbit2013.Controllers
 {
     public class AbiturientNewController : Controller
     {
-        int maxBlockMag = 15;
+        int maxBlockMag = 50;
         int maxBlock1kurs = 7;
         int maxBlockSPO = 6;
         int maxBlockAspirant = 6;

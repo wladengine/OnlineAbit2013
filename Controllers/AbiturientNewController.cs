@@ -4927,6 +4927,7 @@ Order by cnt desc";
                             Ent.IsReduced == bIsReduced &&
                             Ent.IsSecond == bIsSecond &&
                            (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
+                           && Ent.SemesterId == 1
                       select new
                       {
                           EntryId = Ent.Id,
@@ -5144,8 +5145,8 @@ Order by cnt desc";
                              Ent.IsParallel == bIsParallel &&
                              Ent.IsReduced == bIsReduced &&
                              Ent.IsSecond == bIsSecond &&
-                             
                             (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
+                            && Ent.SemesterId == 1
                        select new
                        {
                            EntryId = Ent.Id,

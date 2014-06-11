@@ -48,7 +48,7 @@
         $(CurrGosLine).hide();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
             entry: $('#StudyLevelGroupId'+i).val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), 
-            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('semestrId'+i).val() }, function (json_data) 
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('semesterId'+i).val() }, function (json_data) 
         {
             var options = '';
             if (json_data.NoFree) {

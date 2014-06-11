@@ -263,4 +263,13 @@
   <data name="AppInnerProirityProfile" xml:space="preserve">
     <value>Для данного конкурса Вам необходимо указать приоритетность профилей</value>
   </data>
+  <data name="DeleteApp_Warning1" xml:space="preserve">
+    <value>Внимание!</value>
+  </data>
+  <data name="DeleteApp_Warning2" xml:space="preserve">
+    <value>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</value>
+  </data>
+  <data name="DeleteApp_Warning3" xml:space="preserve">
+    <value>Вы хотите удалить заявление?</value>
+  </data>
 </root>

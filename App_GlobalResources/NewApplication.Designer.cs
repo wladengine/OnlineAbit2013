@@ -250,6 +250,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Вы закончили:.
+        /// </summary>
+        internal static string Educ_Mes1 {
+            get {
+                return ResourceManager.GetString("Educ_Mes1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Вам доступны следующие возможности.
+        /// </summary>
+        internal static string Educ_Mes2 {
+            get {
+                return ResourceManager.GetString("Educ_Mes2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Поступать по гослинии.
         /// </summary>
         internal static string EnterGosLine {

@@ -24,6 +24,16 @@
                    { %>
                 $('input').attr('readonly', 'readonly');
                 $('select').attr('disabled', 'disabled');
+                $(function () { setTimeout(ValidateCountry, 50) });
+                function ValidateCountry() {
+                    var countryid = $('#ContactsInfo_CountryId').val();
+                    if (countryid == '193') {
+                        $('#Region').show();
+                    }
+                    else {
+                        $('#Region').hide();
+                    }
+                }
                 <% }
                    else
                    { %>

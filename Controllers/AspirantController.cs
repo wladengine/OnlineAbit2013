@@ -919,15 +919,7 @@ LEFT JOIN PersonFileType ON PersonFileType.Id=PersonFile.PersonFileTypeId WHERE 
 
                 AppendFilesModel model = new AppendFilesModel() { Files = lst };
                 
-                query = string.Format("SELECT Id, Name{0} AS Name FROM PersonFileType", Util.GetCurrentThreadLanguage() == "en" ? "Eng" : "");
-                tbl = Util.AbitDB.GetDataTable(query, null);
-                model.FileTypes =
-                    (from DataRow rw in tbl.Rows
-                     select new SelectListItem()
-                     {
-                         Value = rw.Field<int>("Id").ToString(), 
-                         Text = rw.Field<string>("Name")
-                     }).ToList();
+                model.FileTypes = Util.GetPersonFileTypeList();
 
                 return View(model);
             }

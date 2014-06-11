@@ -123,7 +123,7 @@
         </li>
     <% } %>
     </ul>
-    <button id="btnSave" type="submit" class="button button-green">Сохранить</button><br />
+    <button id="btnSave" type="submit" class="button button-green"><%= GetGlobalResourceObject("PriorityChangerForeign", "BtnSave").ToString()%></button><br />
 </form>
 
 <span id="saveStatus"></span>

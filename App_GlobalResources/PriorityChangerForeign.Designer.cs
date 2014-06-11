@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Сохранить.
+        /// </summary>
+        internal static string BtnSave {
+            get {
+                return ResourceManager.GetString("BtnSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Заявления отсортированы в порядке по возрастанию. Наивысший приоритет имеет самое верхнее заявление. Чтобы изменить приоритет заявления, просто перетащите его на нужную позицию.
         /// </summary>
         internal static string Info {
@@ -111,6 +120,24 @@ namespace Resources {
         internal static string ObrazProgram {
             get {
                 return ResourceManager.GetString("ObrazProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Приоритеты образовательных программ.
+        /// </summary>
+        internal static string ObrazPr_Message1 {
+            get {
+                return ResourceManager.GetString("ObrazPr_Message1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Расставьте приоритеты образовательных программ внутри конкурса и нажмите Сохранить..
+        /// </summary>
+        internal static string ObrazPr_Message2 {
+            get {
+                return ResourceManager.GetString("ObrazPr_Message2", resourceCulture);
             }
         }
         

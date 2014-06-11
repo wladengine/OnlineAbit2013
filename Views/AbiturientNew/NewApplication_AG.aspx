@@ -340,7 +340,6 @@
             <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
-            <input type="checkbox" name="NeedHostel" id="Checkbox1" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
@@ -389,8 +388,6 @@
             <select id="Exams<%= i.ToString()%>" name="Exam" size="3" style="min-width:450px;" onchange="mkButton(<%= i.ToString()%>)"></select>
         </p>
         <p id="FinishBtn<%= i.ToString()%>" style="display:none;">
-            <% if (2 == 1)
-               { %><input type="checkbox" name="NeedHostel" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel").ToString()%></span><br /><%} %><br />
             <input id="Submit<%= i.ToString()%>" type="button" value=<%=GetGlobalResourceObject("NewApplication", "btnAdd").ToString()%> onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </p>
         <div id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none; width:450px;">

@@ -17,6 +17,7 @@
     <script type="text/javascript" src="../../Scripts/jquery.ui.datepicker-ru.js"></script>
     <script type="text/javascript">
         $(function () {
+            $(function () { setTimeout(SetRequiredFields, 50) });
             <% if (!Model.Enabled)
                    { %>
                 $('input').attr('readonly', 'readonly');

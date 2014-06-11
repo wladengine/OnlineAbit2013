@@ -38,7 +38,7 @@
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i;
         var CurrSemesterId = '#semesterId'+i;
-        
+        var CurrGosLine = '#GosLine'+i;  
 
         $(CurrProfs).show();
         $(CurrObrazPrograms).hide();
@@ -79,10 +79,9 @@
         var CurrlObrazProgram = '#lObrazProgram'+i; 
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
-        var CurrGosLine = '#GosLine'+i;  
         var profId = $(CurrlProfession).val();
         var sfId = $('#StudyFormId'+i).val();
-
+        var CurrGosLine = '#GosLine'+i;  
         if (profId == null){
             return;
         } 
@@ -210,7 +209,8 @@
             obrazprogram:  $('#lObrazProgram'+i).val(), 
             specialization: $('#lSpecialization'+i).val(), 
             NeedHostel: $('#NeedHostel' + i).is(':checked'), 
-            CommitId: $('#CommitId').val() }, 
+            CommitId: $('#CommitId').val(),
+            semesterId: $('#semesterId' + i).val() }, 
             function(json_data) {
             if (json_data.IsOk) {
                 $('#FinishBtn' + i).show();
@@ -243,6 +243,7 @@
         currBlockData_Specialization = '#BlockData_Specialization' + i; 
         currBlockData_Faculty = '#BlockData_Faculty'+i;
         currBlockData_GosLine = '#BlockData_GosLine'+i;
+        currBlockData_SemesterId = '#BlockData_SemesterId'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
@@ -440,7 +441,7 @@
                 <td id="BlockData_StudyBasisId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyBasisName%></td>
             </tr>
             <tr>
-                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_semesterId")%></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "Semester")%></td>
                 <td id="BlockData_SemesterId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SemestrName %>td>
             </tr>
              <tr>
@@ -550,7 +551,7 @@
                     <td id="BlockData_StudyBasisId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_semesterId")%></td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "Semester")%></td>
                     <td id="BlockData_SemesterId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                  <tr>

@@ -2517,6 +2517,98 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
         }
 
+        [HttpPost]
+        public ActionResult NewApp_Recover(Mag_ApplicationModel model)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+
+            string sCommitId = Request.Form["CommitId"];
+            Guid CommitId;
+            if (!Guid.TryParse(sCommitId, out CommitId))
+                return Json(Resources.ServerMessages.IncorrectGUID);
+
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
+                       new SortedList<string, object>() { { "@Id", PersonId } });
+                if (iAG_SchoolTypeId != 4)
+                {
+                    // окончил не вуз
+                    model.Enabled = false;
+                    model.HasError = true;
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать заявление на восстановление (не соответствует уровень образования)";
+                    else
+                        model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
+                    return View("NewApplication_Mag", model);
+                }
+                else
+                {
+                    int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
+                    if (VuzAddType.HasValue)
+                    {
+                        if ((int)VuzAddType != 3)
+                        {
+                            model.Enabled = false;
+                            model.HasError = true;
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление на восстановление (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
+                            return View("NewApplication_Mag", model);
+                        }
+                    }
+                    else
+                    {
+                        model.Enabled = false;
+                        model.HasError = true;
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление на восстановление (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
+                        return View("NewApplication_Mag", model);
+                    }
+                }
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 17).Count() > 0)
+                {
+                    model.SemestrList = Util.GetSemestrList();
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
+                    model.MaxBlocks = maxBlockMag;
+                    model.HasError = true;
+                    if (!bIsEng)
+                        model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    else
+                        model.ErrorMessage = "To submit new application you should cancel your active application.";
+                    return View("NewApplication_Mag", model);
+                }
+                if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
+                {
+                    model.StudyFormList = Util.GetStudyFormList();
+                    model.StudyBasisList = Util.GetStudyBasisList();
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
+                    model.MaxBlocks = maxBlockMag;
+                    model.HasError = true;
+                    model.Enabled = true;
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать пустое заявление";
+                    else
+                        model.ErrorMessage = "You can not submit empty application.";
+                    return View("NewApplication_Mag", model);
+                }
+                Util.CommitApplication(CommitId, PersonId, context);
+            }
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
+        }
         public ActionResult PriorityChanger(string CommitId)
         {
             Guid PersonId;

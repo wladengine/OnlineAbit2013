@@ -344,7 +344,9 @@ namespace OnlineAbit2013.Controllers
                                 Entry.StudyLevelId,
                                 CommitIntNumber = Commit.IntNumber,
                                 x.Priority,
-                                x.IsGosLine
+                                x.IsGosLine,
+                                Entry.ComissionId,
+                                ComissionAddress = Entry.Address
                             }).OrderBy(x => x.Priority).ToList();
 
                 var abitProfileList = (from x in context.Application
@@ -701,7 +703,11 @@ namespace OnlineAbit2013.Controllers
                 else
                     acrFlds.SetField("NoStag", "1");
 
-                
+                int comInd = 1;
+                foreach (var comission in abitList.Select(x => x.ComissionAddress).Distinct().ToList())
+                {
+                    acrFlds.SetField("Comission" + comInd++, comission);
+                }
 
                 //int rwInd = 1;
                 //if (!isMag)

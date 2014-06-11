@@ -176,7 +176,9 @@
       [Entry].[StudyLevelGroupId] AS [StudyLevelGroupId], 
       [Entry].[StudyLevelGroupNameEng] AS [StudyLevelGroupNameEng], 
       [Entry].[StudyLevelGroupNameRus] AS [StudyLevelGroupNameRus], 
-      [Entry].[StudyLevelNameEng] AS [StudyLevelNameEng]
+      [Entry].[StudyLevelNameEng] AS [StudyLevelNameEng], 
+      [Entry].[ComissionId] AS [ComissionId], 
+      [Entry].[Address] AS [Address]
       FROM [dbo].[Entry] AS [Entry]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extApplicationDetails" EntityType="OnlinePriem2012Model.Store.extApplicationDetails" store:Type="Views" store:Schema="dbo" store:Name="extApplicationDetails">
@@ -821,7 +823,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -831,7 +833,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -1258,8 +1260,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1344,8 +1346,8 @@
           <Property Name="HasInnerPriorities" Type="bit" />
           <Property Name="IsImported" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1413,9 +1415,11 @@
           <Property Name="StudyLevelGroupNameEng" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelGroupNameRus" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelNameEng" Type="nvarchar" MaxLength="50" />
+          <Property Name="ComissionId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="350" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extApplicationDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -4242,6 +4246,8 @@
           <Property Type="String" Name="StudyLevelGroupNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyLevelGroupNameRus" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyLevelNameEng" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ComissionId" />
+          <Property Type="String" Name="Address" MaxLength="350" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -5231,6 +5237,8 @@
           <EntitySetMapping Name="Entry">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Entry">
               <MappingFragment StoreEntitySet="Entry">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ComissionId" ColumnName="ComissionId" />
                 <ScalarProperty Name="StudyLevelNameEng" ColumnName="StudyLevelNameEng" />
                 <ScalarProperty Name="StudyLevelGroupNameRus" ColumnName="StudyLevelGroupNameRus" />
                 <ScalarProperty Name="StudyLevelGroupNameEng" ColumnName="StudyLevelGroupNameEng" />

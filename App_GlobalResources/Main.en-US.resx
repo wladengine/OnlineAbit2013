@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppLevel" xml:space="preserve">
-    <value>Level</value>
+    <value>Your applications</value>
   </data>
   <data name="AppView" xml:space="preserve">
-    <value>Your applications</value>
+    <value>View application</value>
   </data>
   <data name="CampusLink" xml:space="preserve">
     <value>SPbSU Campus</value>

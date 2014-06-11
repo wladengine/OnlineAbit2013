@@ -217,10 +217,10 @@
     <value>Entry is closed</value>
   </data>
   <data name="ApplicationLevel" xml:space="preserve">
-    <value>Level</value>
+    <value>Your applications</value>
   </data>
   <data name="ApplicationView" xml:space="preserve">
-    <value>Your applications</value>
+    <value>View applications</value>
   </data>
   <data name="BlockData_Faculty" xml:space="preserve">
     <value>Faculty</value>
@@ -263,5 +263,29 @@
   </data>
   <data name="btnSubmit" xml:space="preserve">
     <value>Submit</value>
+  </data>
+  <data name="AGExams" xml:space="preserve">
+    <value>Exam</value>
+  </data>
+  <data name="AGHeaderProgram" xml:space="preserve">
+    <value>Select program</value>
+  </data>
+  <data name="AGProgram" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="AGSpecialization" xml:space="preserve">
+    <value>Specialization</value>
+  </data>
+  <data name="ApplicationList" xml:space="preserve">
+    <value>Submitted applications</value>
+  </data>
+  <data name="Educ_Mes1" xml:space="preserve">
+    <value>You have finished:</value>
+  </data>
+  <data name="Educ_Mes2" xml:space="preserve">
+    <value>You can choose:</value>
+  </data>
+  <data name="NoApplications" xml:space="preserve">
+    <value>No applications submitted</value>
   </data>
 </root>

@@ -30,9 +30,21 @@
 	    * html .ui-autocomplete {
 		    height: 200px;
 	    }
-    </style>
+    </style> 
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
+            $(function () { setTimeout(GetCities, 50) });
+            function GetCities() {
+                if ($('#EducationInfo_CountryEducId').val() == '193') {
+                    $.post('../../AbiturientNew/GetCityNames', { regionId: $('#EducationInfo_RegionEducId').val() }, function (data) {
+                        if (data.IsOk) {
+                            $('#EducationInfo_SchoolCity').autocomplete({
+                                source: data.List
+                            });
+                        }
+                    }, 'json');
+                }
+            }
             function CheckForm() {
                 var ret = true;
                 if (!CheckSchoolName()) { ret = false; }

@@ -135,7 +135,7 @@
      <%}
        else
        {%>
-        <p>Вы закончили: <%= Model.SchoolType %><br />Вам доступны следующие возможности</p>
+        <p><%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %><br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%></p>
        <% if (Model.VuzAddType == 1) // поступление
           { %>
             <!-- 1 курс -->

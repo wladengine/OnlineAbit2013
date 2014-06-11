@@ -1359,8 +1359,9 @@ namespace OnlineAbit2013.Controllers
             return lst;
         }
 
-        public static List<SelectListItem> GetCountryList(bool isEng=false)
+        public static List<SelectListItem> GetCountryList()
         {
+            bool isEng = GetCurrentThreadLanguageIsEng();
             string query = string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", isEng ? "NameEng" : "Name" );
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             List<SelectListItem> lst =
@@ -1677,20 +1678,7 @@ WHERE PersonId=@PersonId ";
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();
         }
-        public static List<SelectListItem> GetStudyFormList(bool IsEng)
-        {
-            string query = "SELECT Id, Name, NameEng FROM StudyForm ORDER BY 1";
-            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
-            return
-                (from DataRow rw in tbl.Rows
-                 select new
-                 {
-                     Value = rw.Field<int>("Id"),
-                     Text = IsEng ? (String.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng")) : rw.Field<string>("Name")
-                 }).AsEnumerable()
-                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                    .ToList();
-        } 
+
         public static List<SelectListItem> GetQualificationList(bool IsEng)
         {
             string query = "SELECT Id, Name, NameEng FROM Qualification ORDER BY 1";
@@ -1705,6 +1693,7 @@ WHERE PersonId=@PersonId ";
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList();
         }
+
         public static List<SelectListItem> GetStudyFormList()
         {
             bool isEng = GetCurrentThreadLanguageIsEng();
@@ -1742,6 +1731,44 @@ WHERE PersonId=@PersonId ";
                  }).AsEnumerable()
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
                     .ToList(); 
+        }
+
+        public static List<SelectListItem> GetLanguageList()
+        {
+            bool isEng = GetCurrentThreadLanguageIsEng();
+
+            string query = "SELECT Id, Name, NameEng FROM Language ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("Id"),
+                     Text = isEng ?
+                     (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                     : rw.Field<string>("Name")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
+        }
+
+        public static List<SelectListItem> GetPersonFileTypeList()
+        {
+            bool isEng = GetCurrentThreadLanguageIsEng();
+
+            string query = "SELECT Id, Name, NameEng FROM PersonFileType ORDER BY 1";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+            return
+                (from DataRow rw in tbl.Rows
+                 select new
+                 {
+                     Value = rw.Field<int>("Id"),
+                     Text = isEng ?
+                     (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                     : rw.Field<string>("Name")
+                 }).AsEnumerable()
+                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
+                    .ToList();
         }
 
         public static void CommitApplication(Guid CommitId, Guid PersonId, OnlinePriemEntities context)

@@ -22,9 +22,9 @@
 <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
     <a href="../AbiturientNew/PriorityChanger?CommitId=<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a>
     -> 
-    <span>Приоритеты образовательных программ</span>
+    <span><%= GetGlobalResourceObject("PriorityChangerForeign", "ObrazPr_Message1").ToString()%></span>
     <p class="message info">
-        Расставьте приоритеты образовательных программ внутри конкурса и нажмите Сохранить.
+        <%= GetGlobalResourceObject("PriorityChangerForeign", "ObrazPr_Message2").ToString()%>
     </p>
     <form action="../AbiturientNew/PriorityChangeApplication" method="post">
         <%= Html.HiddenFor(x => x.ApplicationId) %>
@@ -47,10 +47,10 @@
             </li>
         <% } %>
         </ul>
-        <button id="btnSave" type="submit" class="button button-green">Сохранить</button><br />
+        <button id="btnSave" type="submit" class="button button-green"><%= GetGlobalResourceObject("PriorityChangerForeign", "BtnSave").ToString()%></button><br />
     </form>
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Subheader" runat="server">
-    <h2>Приоритеты образовательных программ в конкурсе</h2>
+    <h2><%= GetGlobalResourceObject("PriorityChangerForeign", "ObrazPr_Message1").ToString()%></h2>
 </asp:Content>

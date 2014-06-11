@@ -147,6 +147,9 @@
   <data name="AbiturientType9" xml:space="preserve">
     <value>Entering on the programs of vocational training </value>
   </data>
+  <data name="AppSelectHeader" xml:space="preserve">
+    <value>Select programs for entry</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Choose the action that you want to do in the Personal Account</value>
   </data>

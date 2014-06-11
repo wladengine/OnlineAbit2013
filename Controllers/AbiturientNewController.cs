@@ -19,7 +19,7 @@ namespace OnlineAbit2013.Controllers
 {
     public class AbiturientNewController : Controller
     {
-        int maxBlockMag = 15;
+        int maxBlockMag = 50;
         int maxBlock1kurs = 7;
         int maxBlockSPO = 6;
         int maxBlockAspirant = 6;
@@ -95,12 +95,9 @@ namespace OnlineAbit2013.Controllers
             int stage = 0;
             if (!int.TryParse(step, out stage))
                 stage = 1;
-
-            bool eng = false;
-            if (Util.GetCurrentThreadLanguage() == "en")
-                eng = true; 
-
+            
             bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 string query;
@@ -133,8 +130,8 @@ namespace OnlineAbit2013.Controllers
                     model.PersonInfo.BirthPlace = Server.HtmlDecode(Person.BirthPlace);
                     model.PersonInfo.BirthDate = Person.BirthDate.HasValue ? Person.BirthDate.Value.ToString("dd.MM.yyyy") : "";
 
-                    model.PersonInfo.NationalityList = Util.GetCountryList(isEng);
-                    model.ContactsInfo.CountryList   = Util.GetCountryList(isEng);
+                    model.PersonInfo.NationalityList = Util.GetCountryList();
+                    model.ContactsInfo.CountryList   = Util.GetCountryList();
                      
                     model.PersonInfo.SexList = new List<SelectListItem>()
                     {
@@ -196,7 +193,7 @@ namespace OnlineAbit2013.Controllers
                     }
                     model.PersonInfo.SNILS = Person.SNILS ?? "";
                     model.Files = Util.GetFileList(PersonId, "1");
-                    model.FileTypes = Util.FileTypesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                    model.FileTypes = Util.GetPersonFileTypeList();
 
                     return View("PersonalOffice_Page2", model);
                 }
@@ -228,7 +225,7 @@ namespace OnlineAbit2013.Controllers
                     model.ContactsInfo.KorpusReal = Server.HtmlDecode(PersonContacts.KorpusReal);
                     model.ContactsInfo.FlatReal = Server.HtmlDecode(PersonContacts.FlatReal);
 
-                    model.ContactsInfo.CountryList = Util.GetCountryList(isEng);
+                    model.ContactsInfo.CountryList = Util.GetCountryList();
 
                     query = "SELECT Id, Name FROM Region WHERE RegionNumber IS NOT NULL";
                     model.ContactsInfo.RegionList =
@@ -253,9 +250,9 @@ namespace OnlineAbit2013.Controllers
 
                     model.EducationInfo.QualificationList = Util.GetQualificationList(isEng);
                     model.EducationInfo.SchoolTypeList = Util.SchoolTypesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.EducationInfo.StudyFormList = Util.GetStudyFormList(isEng);
-                    model.EducationInfo.LanguageList = Util.LanguagesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
-                    model.EducationInfo.CountryList = Util.GetCountryList(isEng);
+                    model.EducationInfo.StudyFormList = Util.GetStudyFormList();
+                    model.EducationInfo.LanguageList = Util.GetLanguageList();
+                    model.EducationInfo.CountryList = Util.GetCountryList();
 
                     query = "SELECT Id, Name, NameEng FROM SchoolTypeAll";
                     DataTable _tblT = Util.AbitDB.GetDataTable(query, null);
@@ -435,14 +432,16 @@ namespace OnlineAbit2013.Controllers
                                         : rw.Field<string>("Name"))
                          }).ToList();
 
-                    query = "SELECT Id, Name FROM SportQualification";
+                    query = "SELECT Id, Name, NameEng FROM SportQualification";
                     _tbl = Util.AbitDB.GetDataTable(query, null);
                     model.PrivelegeInfo.SportQualificationList =
                         (from DataRow rw in _tbl.Rows
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
+                             Text = (isEng ?
+                                        (string.IsNullOrEmpty(rw.Field<string>("NameEng")) ? rw.Field<string>("Name") : rw.Field<string>("NameEng"))
+                                        : rw.Field<string>("Name"))
                          }).ToList();
 
                     PersonSportQualification PersonSportQualification = Person.PersonSportQualification;
@@ -474,7 +473,9 @@ namespace OnlineAbit2013.Controllers
                         HostelEduc = AddInfo.HostelEduc,
                         ContactPerson = Server.HtmlDecode(AddInfo.Parents),
                         ReturnDocumentTypeId = Server.HtmlDecode((AddInfo.ReturnDocumentTypeId ?? 1).ToString()),
-                        ReturnDocumentTypeList = context.ReturnDocumentType.Select(x => new { x.Id, x.Name }).ToList().Select(x => new SelectListItem() { Value=x.Id.ToString(), Text = x.Name }).ToList()
+                        ReturnDocumentTypeList = isEng ? 
+                            context.ReturnDocumentType.Select(x => new { x.Id, x.NameEng }).ToList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.NameEng }).ToList() : 
+                            context.ReturnDocumentType.Select(x => new { x.Id, x.Name }).ToList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList() 
                     };
                     return View("PersonalOffice_Page6", model);
                 }
@@ -944,10 +945,15 @@ namespace OnlineAbit2013.Controllers
                     });
                 }
 
+                string temp_str;
+                if (bIsEng)
+                    temp_str = "To submit an application select the link <a href=\"" + Util.ServerAddress + "/AbiturientNew/NewApplication\">\"New application\"</a>";
+                else
+                    temp_str = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/AbiturientNew/NewApplication\">\"Подать новое заявление\"</a>";
                 model.Messages = Util.GetNewPersonalMessages(PersonID);
                 if (model.Applications.Count == 0)
                 {
-                    model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Для подачи заявления нажмите кнопку <a href=\"" + Util.ServerAddress + "/AbiturientNew/NewApplication\">\"Подать новое заявление\"</a>" });
+                    model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = temp_str });
                 }
 
                 //model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = "Уважаемые абитуриенты! Не забудьте проверить свой выбор \"Нуждаюсь в общежитии на время обучения\" на <a href=\"https://cabinet.spbu.ru/AbiturientNew?step=6\">последней странице анкеты</a>" });
@@ -1047,7 +1053,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
-
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1070,7 +1076,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     // окончил школу 
                     model.Enabled = false;
                     model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
+                    else
+                        model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                 }
                 else
                 {
@@ -1084,14 +1093,20 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         {
                             model.Enabled = false; 
                             model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                         }
                     }
                     else
                     {
                         model.Enabled = false;
                         model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                     }
 
                 }
@@ -1114,7 +1129,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
              Guid PersonId;
              if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                  return RedirectToAction("LogOn", "Account");
-
+             bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
              using (OnlinePriemEntities context = new OnlinePriemEntities())
              {
                  var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1142,7 +1157,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                      {
                          model.Enabled = false;
                          model.HasError = true;
-                         model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                         if (!bIsEng)
+                             model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                         else
+                             model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                      }
                      else
                      {
@@ -1153,7 +1171,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          {
                              model.Enabled = false;
                              model.HasError = true;
-                             model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                             if (!bIsEng)
+                                 model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                             else
+                                 model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                          }
                          else
                          {
@@ -1170,14 +1191,20 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          {
                              model.Enabled = false;
                              model.HasError = true;
-                             model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                             if (!bIsEng)
+                                 model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                             else
+                                 model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                          }
                      }
                      else
                      {
                          model.Enabled = false;
                          model.HasError = true;
-                         model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                         if (!bIsEng)
+                             model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                         else
+                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                      }
                  }
                  model.MaxBlocks = maxBlock1kurs; 
@@ -1198,7 +1225,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
-
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1226,7 +1253,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     {
                         model.Enabled = false;
                         model.HasError = true;
-                        model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                        if (!bIsEng)
+                            model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                        else
+                            model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                     }
                     else
                     {
@@ -1237,7 +1267,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         {
                             model.HasError = true;
                             model.Enabled = false;
-                            model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                            else
+                                model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                         }
                     }
                 }
@@ -1250,14 +1283,20 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         {
                             model.Enabled = false;
                             model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         }
                     }
                     else
                     {
                         model.Enabled = false;
                         model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                     }
                 }
                 model.MaxBlocks = maxBlockSPO;
@@ -1299,7 +1338,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
-
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1322,7 +1361,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     // окончил не вуз
                     model.Enabled = false;
                     model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    else
+                        model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                 }
                 else
                 {
@@ -1339,28 +1381,40 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 {
                                     model.Enabled = false;
                                     model.HasError = true;
-                                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                                    if (!bIsEng)
+                                        model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                                    else
+                                        model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                                 }
                             }
                             else
                             {
                                 model.Enabled = false;
                                 model.HasError = true;
-                                model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                                if (!bIsEng)
+                                    model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                                else
+                                    model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                             }
                         }
                         else
                         {
                             model.Enabled = false;
                             model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                            else
+                                model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                         }
                     }
                     else
                     {
                         model.Enabled = false;
                         model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                        else
+                            model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                     }
                 }
 
@@ -1952,68 +2006,94 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
             if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-                return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+            {
+                if (!bIsEng)
+                    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
+                else
+                    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Entry is closed" } });
+            }
 
             string sCommitId = Request.Form["CommitId"];
             Guid CommitId;
             if (!Guid.TryParse(sCommitId, out CommitId))
-                return Json(Resources.ServerMessages.IncorrectGUID);
+                return Json(Resources.ServerMessages.IncorrectGUID); 
 
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
+                int type = 0;
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
                    new SortedList<string, object>() { { "@Id", PersonId } });
                 if (iAG_SchoolTypeId != 1)
-                {
-                    return RedirectToAction("NewApplication_AG",
-                        new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
-                }
+                    type = 1;                
                 else
                 {
                     DataTable tbl = Util.AbitDB.GetDataTable(@"SELECT SchoolExitClass.IntValue AS SchoolExitClassValue, PersonEducationDocument.SchoolExitClassId FROM PersonEducationDocument 
 INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.SchoolExitClassId WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                     if (tbl.Rows.Count == 0)
-                    {
-                        return RedirectToAction("NewApplication_AG",
-                        new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
-                    }
+                        type = 1;  
                     else
                     {
                         int iAG_EntryClassId = (int)tbl.Rows[0].Field<int>("SchoolExitClassId");
                         int iAG_EntryClassValue = (int)tbl.Rows[0].Field<int>("SchoolExitClassValue");
 
                         if (iAG_EntryClassValue > 9)//В АГ могут поступать только 7-8-9 классники
-                        {
-                            return RedirectToAction("NewApplication_AG",
-                            new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
-                        }
+                            type = 1; 
                     }
                 }
                 if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true).Count() > 0)
-                    return RedirectToAction("NewApplication_AG", 
-                        new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
+                    type = 2;
                 if (context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Count() == 0)
-                    return RedirectToAction("NewApplication_AG",
-                        new RouteValueDictionary() { { "errors", "Невозможно подать пустое заявление." } });
-                 
+                    type = 3;
 
-                var Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
-                foreach (var AppId in Ids)
+                if (type == 1)
                 {
-                    var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
-                    App.IsCommited = true;
+                    if (!bIsEng)
+                        return RedirectToAction("NewApplication_AG",
+                            new RouteValueDictionary() { { "errors", "Невозможно подать заявление в Академическую Гимназию (не соответствует уровень образования)" } });
+                    else
+                        return RedirectToAction("NewApplication_AG",
+                       new RouteValueDictionary() { { "errors", "Change your previous education degree in Questionnaire Data." } });
+                } 
+                else if (type == 2)
+                {
+                    if (!bIsEng)
+                        return RedirectToAction("NewApplication_AG",
+                            new RouteValueDictionary() { { "errors", "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные." } });
+                    else
+                        return RedirectToAction("NewApplication_AG",
+                            new RouteValueDictionary() { { "errors", "To submit new application you should cancel your active application." } });
                 }
-                context.SaveChanges();
+                else if (type == 3)
+                {
+                    if (!bIsEng)
+                        return RedirectToAction("NewApplication_AG",
+                           new RouteValueDictionary() { { "errors", "Невозможно подать пустое заявление." } });
+                    else
+                        return RedirectToAction("NewApplication_AG",
+                           new RouteValueDictionary() { { "errors", "You can not submit empty application." } });
+                }
+                else
+                {
+                    var Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        App.IsCommited = true;
+                    }
+                    context.SaveChanges();
 
-                //всё, что вне коммита - удаляем
-                Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == false).Select(x => x.Id).ToList();
-                foreach (var AppId in Ids)
-                {
-                    var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
-                    context.AG_Application.DeleteObject(App);
+                    //всё, что вне коммита - удаляем
+                    Ids = context.AG_Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == false).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.AG_Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        context.AG_Application.DeleteObject(App);
+                    }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
             }
 
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
@@ -2033,6 +2113,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
 
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
@@ -2042,7 +2124,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     // окончил не вуз
                     model.Enabled = false;
                     model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (не соответствует уровень образования)";
+                    else
+                        model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                     return View("NewApplication_Mag", model);
                 }
                 else
@@ -2054,14 +2139,20 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         { 
                             model.Enabled = false;
                             model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                             return View("NewApplication_Mag", model); 
                         }
                     }
                     else
                     {   model.Enabled = false;
                         model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в магистратуру (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_Mag", model);
                     } 
                 }
@@ -2073,7 +2164,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     model.MaxBlocks = maxBlockMag;
                     model.HasError = true;
-                    model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    else
+                        model.ErrorMessage = "To submit new application you should cancel your active application.";  
                     return View("NewApplication_Mag", model);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count()==0)
@@ -2084,7 +2178,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.MaxBlocks = maxBlockMag;
                     model.HasError = true;
                     model.Enabled = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать пустое заявление";
+                    else
+                        model.ErrorMessage = "You can not submit empty application.";   
                     return View("NewApplication_Mag", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -2106,6 +2203,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
 
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
@@ -2114,8 +2213,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 {
                     // окончил не вуз
                     model.Enabled = false;
-                    model.HasError = true;
-                    model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    model.HasError = true; 
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                    else
+                        model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                     return View("NewApplication_Aspirant", model);
                 }
                 else
@@ -2126,8 +2228,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if ((int)iQualificationId == 1)
                         {
                             model.Enabled = false;
-                            model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                            model.HasError = true; 
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в аспирантуру (не соответствует уровень образования)";
+                            else
+                                model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                             return View("NewApplication_Aspirant", model);
                         } 
                     }
@@ -2137,16 +2242,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if ((int)VuzAddType != 1)
                         {
                             model.Enabled = false;
-                            model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                            model.HasError = true; 
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                             return View("NewApplication_Aspirant", model);
                         }
                     }
                     else
                     {
                         model.Enabled = false;
-                        model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                        model.HasError = true; 
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в аспирантуру (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_Aspirant", model);
                     } 
                 }
@@ -2158,7 +2269,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     model.MaxBlocks = maxBlockAspirant;
                     model.HasError = true;
-                    model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    else
+                        model.ErrorMessage = "To submit new application you should cancel your active application.";  
                     return View("NewApplication_Aspirant", model);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
@@ -2169,7 +2283,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.MaxBlocks = maxBlockAspirant;
                     model.HasError = true;
                     model.Enabled = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать пустое заявление";
+                    else
+                        model.ErrorMessage = "You can not submit empty application."; 
                     return View("NewApplication_Aspirant", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -2191,6 +2308,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
 
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
@@ -2201,8 +2320,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (tbl.Rows.Count == 0)
                     {
                         model.Enabled = false;
-                        model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                        model.HasError = true; 
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                        else
+                            model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                         return View("NewApplication_1kurs", model);
                     }
                     else
@@ -2212,8 +2334,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if (iAG_EntryClassValue < 11)
                         {
                             model.Enabled = false;
-                            model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                            model.HasError = true; 
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление на первый курс (не соответствует уровень образования)";
+                            else
+                                model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                             return View("NewApplication_1kurs", model);
                         }
                     }
@@ -2226,16 +2351,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if ((int)VuzAddType != 1)
                         {
                             model.Enabled = false;
-                            model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                            model.HasError = true; 
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                             return View("NewApplication_1kurs", model);
                         }
                     }
                     else
                     {
                         model.Enabled = false;
-                        model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                        model.HasError = true; 
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление на первый курс (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_1kurs", model);
                     }
                 }
@@ -2247,7 +2378,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     model.MaxBlocks = maxBlock1kurs;
                     model.HasError = true;
-                    model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    else
+                        model.ErrorMessage = "To submit new application you should cancel your active application.";  
                     return View("NewApplication_1kurs", model);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
@@ -2258,7 +2392,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.MaxBlocks = maxBlock1kurs;
                     model.HasError = true;
                     model.Enabled = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать пустое заявление";
+                    else
+                        model.ErrorMessage = "You can not submit empty application."; 
                     return View("NewApplication_1kurs", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -2280,6 +2417,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
 
+            bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 int iSchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
@@ -2292,8 +2431,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     if (tbl.Rows.Count == 0)
                     {
                         model.Enabled = false;
-                        model.HasError = true;
-                        model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                        model.HasError = true; 
+                        if (!bIsEng)
+                            model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                        else
+                            model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                         return View("NewApplication_SPO", model);
                     }
                     else
@@ -2305,7 +2447,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         {
                             model.HasError = true;
                             model.Enabled = false;
-                            model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                            if (!bIsEng)
+                                model.ErrorMessage = "Подача заявления в СПО доступна только для людей, уже закончивших 9 классов школы";
+                            else
+                                model.ErrorMessage = "Change your previous education degree in Questionnaire Data";
                             return View("NewApplication_SPO", model);
                         }
                     }
@@ -2318,16 +2463,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if ((int)VuzAddType != 1)
                         {
                             model.Enabled = false;
-                            model.HasError = true;
-                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                            model.HasError = true; 
+                            if (!bIsEng)
+                                model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                            else
+                                model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                             return View("NewApplication_SPO", model);
                         }
                     }
                     else
                     {
                         model.Enabled = false;
-                        model.HasError = true;
-                        model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        model.HasError = true; 
+                        if (!bIsEng)
+                            model.ErrorMessage = "Невозможно подать заявление в СПО (смените тип поступления в Анкете)";
+                        else
+                            model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_SPO", model);
                     }
                 }
@@ -2339,7 +2490,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     model.MaxBlocks = maxBlockSPO;
                     model.HasError = true;
-                    model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Уже существует активное заявление. Для создания нового заявления необходимо удалить уже созданные.";
+                    else
+                        model.ErrorMessage = "To submit new application you should cancel your active application.";  
                     return View("NewApplication_SPO", model);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
@@ -2350,7 +2504,10 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     model.MaxBlocks = maxBlockSPO;
                     model.HasError = true;
                     model.Enabled = true;
-                    model.ErrorMessage = "Невозможно подать пустое заявление";
+                    if (!bIsEng)
+                        model.ErrorMessage = "Невозможно подать пустое заявление";
+                    else
+                        model.ErrorMessage = "You can not submit empty application."; 
                     return View("NewApplication_SPO", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
@@ -2929,7 +3086,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 Util.SetThreadCultureByCookies(Request.Cookies);
                 AppendFilesModel model = new AppendFilesModel();
                 model.Files = Util.GetFileList(PersonId);
-                model.FileTypes = Util.FileTypesAll.Select(x => new SelectListItem() { Value = x.Key.ToString(), Text = x.Value }).ToList();
+                model.FileTypes = Util.GetPersonFileTypeList();
                 return View(model);
             }
         }
@@ -4751,6 +4908,8 @@ Order by cnt desc";
                 if ((specialization != null) && (specialization != "") && (specialization != "null"))
                     gSpecialization = Guid.Parse(specialization);
 
+                bool bisEng = Util.GetCurrentThreadLanguageIsEng();
+
                 //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
 
                 var EntryList =
@@ -4777,14 +4936,13 @@ Order by cnt desc";
                           Ent.DateOfClose_GosLine,
                           Ent.FacultyId,
                           Ent.FacultyName,
-                          StudyFormName = Ent.StudyFormName,
-                          StudyBasisName = Ent.StudyBasisName,
-                          Profession = Ent.LicenseProgramName,
-                          ObrazProgram = Ent.ObrazProgramName,
-                          Specialization = Ent.ProfileName
+                          StudyFormName = bisEng ? (String.IsNullOrEmpty(Ent.StudyFormNameEng) ? Ent.StudyFormName : Ent.StudyFormNameEng) : Ent.StudyFormName,
+                          StudyBasisName = /*bisEng ? (String.IsNullOrEmpty(Ent.StudyBasisNameEng) ? Ent.StudyBasisName : Ent.StudyBasisNameEng) :*/ Ent.StudyBasisName,
+                          Profession = bisEng ? (String.IsNullOrEmpty(Ent.LicenseProgramNameEng) ? Ent.LicenseProgramName : Ent.LicenseProgramNameEng) : Ent.LicenseProgramName,
+                          ObrazProgram = bisEng ? (String.IsNullOrEmpty(Ent.ObrazProgramNameEng) ? Ent.ObrazProgramName : Ent.ObrazProgramNameEng) : Ent.ObrazProgramName,
+                          Specialization = bisEng ? (String.IsNullOrEmpty(Ent.ProfileNameEng) ? Ent.ProfileName : Ent.ProfileNameEng) : Ent.ProfileName,
                       }).ToList();
-
-
+                 
                 if (EntryList.Count > 1)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_2MoreEntry + " (" + EntryList.Count + ")" });
                 if (EntryList.Count == 0)

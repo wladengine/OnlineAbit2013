@@ -259,4 +259,13 @@
   <data name="AppInnerProirityProfile" xml:space="preserve">
     <value>For this contest, you should specify the priority of profiles</value>
   </data>
+  <data name="DeleteApp_Warning1" xml:space="preserve">
+    <value>Attention!</value>
+  </data>
+  <data name="DeleteApp_Warning2" xml:space="preserve">
+    <value>You are going to cancel this application. This action can not be undone.</value>
+  </data>
+  <data name="DeleteApp_Warning3" xml:space="preserve">
+    <value>Do you want to cancel it?</value>
+  </data>
 </root>

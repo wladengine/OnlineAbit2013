@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BtnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="Info" xml:space="preserve">
     <value>Applications are sorted in descending order. Applications at the top of the list have the highest priority. If you want to change an applications priority, drag it to the desired position.</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="ObrazProgram" xml:space="preserve">
     <value>Educational Program</value>
+  </data>
+  <data name="ObrazPr_Message1" xml:space="preserve">
+    <value>Priorities of educational program.</value>
+  </data>
+  <data name="ObrazPr_Message2" xml:space="preserve">
+    <value>Change priorities as you want and press the "Save" button.</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>

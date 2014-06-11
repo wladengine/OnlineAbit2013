@@ -34,7 +34,7 @@
                     modal: true,
                     buttons: 
                     {
-                        "Да": function () 
+                        "Да (yes)": function () 
                         {
                             $.post('/Application/DisableFull', { id: '<%= Model.Id.ToString("N") %>' }, function (res) 
                             {
@@ -59,7 +59,7 @@
                                 }
                             }, 'json');
                         },
-                        "Нет": function () 
+                        "Нет (no)": function () 
                         {
                             $(this).dialog("close");
                         }
@@ -145,9 +145,9 @@
 </table>
 <div id="dialog-form">
     <p class="errMessage"></p>
-    <h5>Внимание!</h5>
-    <p>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</p>
-    <h4>Вы хотите удалить заявление?</h4>
+    <h5><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></h5>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning2")%>.</p>
+    <h4><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning3")%></h4>
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />

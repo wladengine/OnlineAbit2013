@@ -282,4 +282,10 @@
   <data name="btnSubmit" xml:space="preserve">
     <value>Подтвердить</value>
   </data>
+  <data name="Educ_Mes1" xml:space="preserve">
+    <value>Вы закончили:</value>
+  </data>
+  <data name="Educ_Mes2" xml:space="preserve">
+    <value>Вам доступны следующие возможности</value>
+  </data>
 </root>

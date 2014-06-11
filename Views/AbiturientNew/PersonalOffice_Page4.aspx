@@ -34,6 +34,8 @@
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
             $(function () { setTimeout(GetCities, 50) });
+            
+
             function GetCities() {
                 if ($('#EducationInfo_CountryEducId').val() == '193') {
                     $.post('../../AbiturientNew/GetCityNames', { regionId: $('#EducationInfo_RegionEducId').val() }, function (data) {
@@ -149,7 +151,7 @@
                 $('#EducationInfo_SchoolExitYear').blur(function () { setTimeout(CheckSchoolExitYear); });
                 $('#EducationInfo_SchoolName').keyup(function () { setTimeout(CheckSchoolName); });
                 $('#EducationInfo_SchoolName').blur(function () { setTimeout(CheckSchoolName); });
-
+                $('#EducationInfo_RegionEducId').change(function () { setTimeout(GetCities); });
                 $('#EducationInfo_SchoolTypeId').change(function () { setTimeout(UpdateAfterSchooltype) });
             });
 

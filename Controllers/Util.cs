@@ -91,10 +91,8 @@ namespace OnlineAbit2013.Controllers
         //статический конструктор
         static Util()
         {
-            InitDB();
-            bool isEng = Util.GetCurrentThreadLanguageIsEng(); 
+            InitDB(); 
             string query = "SELECT Id, Name  FROM {0} WHERE 1=@x ORDER BY Id";
-            string queryENG = "SELECT Id, Name, NameEng  FROM {0} WHERE 1=@x ORDER BY Id";
             SortedList<string, object> dic = new SortedList<string, object>() { { "@x", 1 } };
             DataTable tbl = _abitDB.GetDataTable(string.Format(query, "EgeExam"), dic);
 
@@ -109,10 +107,10 @@ namespace OnlineAbit2013.Controllers
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            tbl = _abitDB.GetDataTable(string.Format(queryENG, "StudyForm"), dic);
+            tbl = _abitDB.GetDataTable(string.Format(query, "StudyForm"), dic);
             StudyFormAll =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name =  isEng ? rw.Field<string>("NameEng"): rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
             tbl = _abitDB.GetDataTable("SELECT Id, NameEng FROM StudyForm", null);
             ForeignStudyFormAll =
@@ -143,22 +141,22 @@ namespace OnlineAbit2013.Controllers
             FileTypesAll =
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
-
-            tbl = _abitDB.GetDataTable(string.Format(query, "Region"), dic);
+           
+            tbl = _abitDB.GetDataTable("SELECT Id, Name  FROM Region WHERE RegionNumber IS NOT NULL", dic);
             RegionsAll =
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            tbl = _abitDB.GetDataTable(string.Format(queryENG, "Qualification"), dic);
+            tbl = _abitDB.GetDataTable(string.Format(query, "Qualification"), dic);
             QualifaicationAll =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name = isEng?  rw.Field<string>("NameEng") : rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
-            query = "SELECT Id, Name, NameEng FROM Qualification WHERE IsForAspirant=1";
+            query = "SELECT Id, Name FROM Qualification WHERE IsForAspirant=1";
             tbl = _abitDB.GetDataTable(query, null);
             QualifaicationForAspirant =
                 (from DataRow rw in tbl.Rows
-                 select new { Id = rw.Field<int>("Id"), Name = isEng ? rw.Field<string>("NameEng") : rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
+                 select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
 
             sPriemYear = GetValueByKey("PriemYear");
             if (string.IsNullOrEmpty(sPriemYear))
@@ -1574,6 +1572,7 @@ WHERE PersonId=@PersonId ";
         public static List<Mag_ApplicationSipleEntity> GetApplicationListInCommit(Guid CommitId, Guid PersonId)
         {
             List<Mag_ApplicationSipleEntity> lstRet = new List<Mag_ApplicationSipleEntity>();
+            bool bisEng = GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var AppList =
@@ -1586,18 +1585,23 @@ WHERE PersonId=@PersonId ";
                          App.Id,
                          Entry.StudyBasisId,
                          Entry.StudyBasisName,
+                         Entry.StudyBasisNameEng,
                          Entry.StudyFormId,
                          Entry.StudyFormName,
+                         Entry.StudyFormNameEng,
                          Entry.IsReduced,
                          Entry.IsParallel,
                          Entry.IsSecond,
                          Entry.FacultyName,
                          Entry.LicenseProgramId,
                          Entry.LicenseProgramName,
+                         Entry.LicenseProgramNameEng,
                          Entry.ObrazProgramId,
                          Entry.ObrazProgramName,
                          Entry.ProfileId,
+                         Entry.ObrazProgramNameEng,
                          Entry.ProfileName,
+                         Entry.ProfileNameEng,
                          App.HostelEduc,
                          App.IsGosLine,
                          Entry.StudyLevelGroupId
@@ -1608,19 +1612,19 @@ WHERE PersonId=@PersonId ";
                     {
                         Id = App.Id,
                         StudyFormId = (App.StudyFormId),
-                        StudyFormName = App.StudyFormName,
+                        StudyFormName = bisEng ? (String.IsNullOrEmpty(App.StudyFormNameEng) ? App.StudyFormName : App.StudyFormNameEng) : App.StudyFormName,
                         StudyBasisId = App.StudyBasisId,
-                        StudyBasisName = App.StudyBasisName,
+                        StudyBasisName = bisEng ? (String.IsNullOrEmpty(App.StudyBasisNameEng) ? App.StudyBasisName : App.StudyBasisNameEng) : App.StudyBasisName, 
                         IsReduced = App.IsReduced,
                         IsParallel = App.IsParallel,
                         IsSecond = App.IsSecond,
                         FacultyName = App.FacultyName,
                         ProfessionId = App.LicenseProgramId,
-                        ProfessionName = App.LicenseProgramName,
+                        ProfessionName = bisEng ? (String.IsNullOrEmpty(App.LicenseProgramNameEng) ? App.LicenseProgramName : App.LicenseProgramNameEng) : App.LicenseProgramName, 
                         ObrazProgramId = App.ObrazProgramId,
-                        ObrazProgramName = App.ObrazProgramName,
+                        ObrazProgramName = bisEng ? (String.IsNullOrEmpty(App.ObrazProgramNameEng) ? App.ObrazProgramName : App.ObrazProgramNameEng) : App.ObrazProgramName, 
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
-                        SpecializationName = App.ProfileName,
+                        SpecializationName = bisEng ? (String.IsNullOrEmpty(App.ProfileNameEng) ? App.ProfileName : App.ProfileNameEng) : App.ProfileName, 
                         Hostel = App.HostelEduc,
                         IsGosLine = App.IsGosLine,
                         StudyLevelGroupId = App.StudyLevelGroupId

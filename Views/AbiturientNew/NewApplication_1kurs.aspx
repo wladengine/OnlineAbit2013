@@ -468,7 +468,7 @@
                    {%>
                     <tr>
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
+                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                     </tr>
             <%       }
                }%>
@@ -563,7 +563,7 @@
                 </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                    <td id="Td1" style="font-size:1.3em;">да</td>
+                    <td id="Td1" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                 </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
@@ -572,12 +572,12 @@
         </div>
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SForm<%= i.ToString()%>">
-            <span>Форма обучения</span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
-            <span>Основа обучения</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>

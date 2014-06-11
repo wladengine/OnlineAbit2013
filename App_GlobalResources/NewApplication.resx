@@ -283,9 +283,12 @@
     <value>Подтвердить</value>
   </data>
   <data name="Educ_Mes1" xml:space="preserve">
-    <value>Вы закончили:</value>
+    <value>Вы закончили: </value>
   </data>
   <data name="Educ_Mes2" xml:space="preserve">
     <value>Вам доступны следующие возможности</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>да</value>
   </data>
 </root>

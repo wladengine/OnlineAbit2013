@@ -473,7 +473,7 @@
                    {%>
                     <tr>
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
+                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                     </tr>
             <%       }
                }%>
@@ -570,7 +570,7 @@
                 </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                    <td id="Td1" style="font-size:1.3em;">да</td>
+                    <td id="Td1" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                 </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>

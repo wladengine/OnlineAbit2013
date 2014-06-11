@@ -252,7 +252,7 @@
     <value>Мотивационное письмо</value>
   </data>
   <data name="MotiveLetterDetails" xml:space="preserve">
-    <value>Подробно (на английском)</value>
+    <value>Подробно (на русском)</value>
   </data>
   <data name="PrintFormWarning1" xml:space="preserve">
     <value>Вам следует</value>
@@ -271,5 +271,8 @@
   </data>
   <data name="DeleteApp_Warning3" xml:space="preserve">
     <value>Вы хотите удалить заявление?</value>
+  </data>
+  <data name="MotiveLetter_Link" xml:space="preserve">
+    <value>&lt;a href ='http://abiturient.spbu.ru/data/foreigns/rus/kriterii_04_04_14.pdf'&gt;</value>
   </data>
 </root>

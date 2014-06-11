@@ -191,7 +191,7 @@
        { %>
     <tr>
         <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine").ToString()%></td>
-        <td align="left">да</td>
+        <td align="left"><%= GetGlobalResourceObject("NewApplication", "Yes").ToString()%></td>
     </tr>
     <% } %>
     <tr>

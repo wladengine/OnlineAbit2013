@@ -250,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Вы закончили:.
+        ///   Ищет локализованную строку, такую же, как Вы закончили: .
         /// </summary>
         internal static string Educ_Mes1 {
             get {
@@ -570,6 +570,15 @@ namespace Resources {
         internal static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как да.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

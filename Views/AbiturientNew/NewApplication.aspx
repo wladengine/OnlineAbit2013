@@ -102,7 +102,8 @@
     <input name="val_h" id="val_h" type="hidden" value="1" />
     <% if (Model.EntryType == 1)
        { %>
-        <p class="message info">Вы закончили: <%= Model.SchoolType %> <%= Model.SchoolType.ToLower() == "школа" ? Model.ExitClassId + " классов" : "" %><br />Вам доступны следующие возможности</p>
+        <p class="message info"><%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %> <%= (Model.SchoolType.ToLower() == "школа")? Model.ExitClassId + " классов" : ""%><%= (Model.SchoolType.ToLower() == "school")? Model.ExitClassId + "th form" : ""%>
+        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%></p>
        <% if (Model.ExitClassId < 9) //7-8
           { %>
             <!--ag-->
@@ -135,7 +136,8 @@
      <%}
        else
        {%>
-        <p class="message info">Вы закончили: <%= Model.SchoolType %><br />Вам доступны следующие возможности</p>
+        <p class="message info"><%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %>
+        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%></p>
        <% if (Model.VuzAddType == 1) // поступление
           { %>
             <!-- 1 курс -->

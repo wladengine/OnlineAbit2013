@@ -1716,7 +1716,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
-
+            bool bisEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1733,7 +1733,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (iScTypeId.HasValue)
                 {
                     string ScTypeName = Util.AbitDB.GetStringValue("SELECT Name FROM SchoolTypeAll WHERE Id=@Id", new SortedList<string, object>() { { "@Id", iScTypeId ?? 1 } });
-                    model.SchoolType = ScTypeName;
+                    string ScTypeNameEng = Util.AbitDB.GetStringValue("SELECT NameEng FROM SchoolTypeAll WHERE Id=@Id", new SortedList<string, object>() { { "@Id", iScTypeId ?? 1 } });
+                     
+                    model.SchoolType = bisEng? (String.IsNullOrEmpty(ScTypeNameEng)?ScTypeName:ScTypeNameEng): ScTypeName;
                     if (iScTypeId.Value != 4)
                     {
                         model.EntryType = 1;//1 курс бак-спец, АГ, СПО
@@ -2526,7 +2528,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
             Guid VersionId = Guid.NewGuid();
-
+            bool bisEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -2540,12 +2542,12 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                      select new SimpleApplication()
                      {
                          Id = App.Id,
-                         Priority = App.Priority, 
-                         StudyForm = Entry.StudyFormName,
-                         StudyBasis = Entry.StudyBasisName,
-                         Profession = Entry.LicenseProgramCode + " " + Entry.LicenseProgramName,
-                         ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
-                         Specialization = Entry.ProfileName,
+                         Priority = App.Priority,
+                         StudyForm = (bisEng ? ((String.IsNullOrEmpty(Entry.StudyFormNameEng)) ? Entry.StudyFormName : Entry.StudyFormNameEng) : Entry.StudyFormName),
+                         StudyBasis = (/*bisEng ? ((String.IsNullOrEmpty(Entry.StudyBasisNameEng)) ? Entry.StudyBasisName : Entry.StudyBasisNameEng) :*/ Entry.StudyBasisName),
+                         Profession = Entry.LicenseProgramCode + " " + (bisEng ? ((String.IsNullOrEmpty(Entry.LicenseProgramNameEng))?Entry.LicenseProgramName:Entry.LicenseProgramNameEng) : Entry.LicenseProgramName),
+                         ObrazProgram = Entry.ObrazProgramCrypt + " " + (bisEng ? ((String.IsNullOrEmpty(Entry.ObrazProgramNameEng)) ? Entry.ObrazProgramName : Entry.ObrazProgramNameEng) : Entry.ObrazProgramName),
+                         Specialization = (bisEng ? ((String.IsNullOrEmpty(Entry.ProfileNameEng)) ? Entry.ProfileName : Entry.ProfileNameEng) : Entry.ProfileName),
                          HasManualExams = false,
                          HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0,
                          ObrazProgramInEntryId = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() == 1 ? context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Select(x => x.Id).FirstOrDefault() : Guid.Empty,

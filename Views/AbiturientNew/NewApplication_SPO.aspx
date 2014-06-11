@@ -513,12 +513,12 @@
     </div>
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SForm<%= i.ToString()%>">
-            <span>Форма обучения</span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
-            <span>Основа обучения</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>

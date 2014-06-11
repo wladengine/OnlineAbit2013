@@ -280,12 +280,15 @@
     <value>Submitted applications</value>
   </data>
   <data name="Educ_Mes1" xml:space="preserve">
-    <value>You have finished:</value>
+    <value>You have finished: </value>
   </data>
   <data name="Educ_Mes2" xml:space="preserve">
     <value>You can choose:</value>
   </data>
   <data name="NoApplications" xml:space="preserve">
     <value>No applications submitted</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>yes</value>
   </data>
 </root>

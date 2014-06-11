@@ -36,8 +36,7 @@
         var CurrObrazProgramsErrors='#ObrazProgramsErrors'+i;
         var CurrlObrazProgram = '#lObrazProgram'+i; 
         var CurrSpecs = '#Specs'+i;
-        var CurrFinishBtn = '#FinishBtn'+i; 
-        var CurrGosLine = '#GosLine'+i; 
+        var CurrFinishBtn = '#FinishBtn'+i;
         var CurrSemesterId = '#semesterId'+i;
         
 
@@ -131,6 +130,7 @@
         var CurrFinishBtn = '#FinishBtn'+i; 
         var CurrGosLine = '#GosLine'+i;  
         var CurrGosLineHidden = '#isGosLineHidden'+i;  
+
         $(CurrProfs).show();
         $(CurrObrazPrograms).show();
         $(CurrSpecs).hide();
@@ -617,7 +617,7 @@
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
-            <span>Факультет</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderFaculty")%></span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >

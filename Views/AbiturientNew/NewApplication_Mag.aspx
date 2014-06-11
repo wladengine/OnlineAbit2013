@@ -150,7 +150,7 @@
         $(CurrGosLine).hide();
         $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
-            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val(), isgosline: $('#IsGosLine'+i).val() }, function (json_data) {
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val()}, function (json_data) {
             var options = '';
             if (sbId==1) { 
                 if (json_data.GosLine==0) {  

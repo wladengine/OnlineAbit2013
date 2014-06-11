@@ -494,8 +494,11 @@
     <Content Include="Views\AbiturientNew\NewApplicationRectorScholarshipSuccess.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_1kurs.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_AG.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_Aspirant.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Mag.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_Recover.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_SPO.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_Transfer.aspx" />
     <Content Include="Views\AbiturientNew\NotOpened.aspx" />
     <Content Include="Views\AbiturientNew\page404.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice.aspx" />

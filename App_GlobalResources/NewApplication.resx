@@ -291,4 +291,7 @@
   <data name="Yes" xml:space="preserve">
     <value>да</value>
   </data>
+  <data name="Semester" xml:space="preserve">
+    <value>Семестр</value>
+  </data>
 </root>

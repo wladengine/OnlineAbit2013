@@ -100,6 +100,13 @@
                     <td><%=s.ManualExam%></td>
                 </tr>
                 <% } %>
+                <% if (s.IsGosLine)
+                   { %>
+                <tr>
+                    <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine").ToString()%></td>
+                    <td><%= GetGlobalResourceObject("NewApplication", "Yes").ToString()%></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyForm").ToString()%></td>
                     <td><%=s.StudyForm%></td>

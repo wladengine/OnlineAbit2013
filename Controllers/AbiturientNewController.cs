@@ -2551,7 +2551,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          HasManualExams = false,
                          HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0,
                          ObrazProgramInEntryId = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() == 1 ? context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Select(x => x.Id).FirstOrDefault() : Guid.Empty,
-                         EntryId = App.EntryId
+                         EntryId = App.EntryId,
+                         IsGosLine = App.IsGosLine
                      }).ToList().Union(
                      (from AG_App in context.AG_Application
                       where AG_App.PersonId == PersonId && AG_App.CommitId == gCommitId && AG_App.IsCommited == true && AG_App.Enabled == true
@@ -2566,7 +2567,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                           ManualExam = AG_App.ManualExamId.HasValue ? AG_App.AG_ManualExam.Name : "",
                           StudyForm = Resources.Common.StudyFormFullTime,
                           StudyBasis = Resources.Common.StudyBasisBudget,
-                          HasSeparateObrazPrograms = false
+                          HasSeparateObrazPrograms = false,
+                          IsGosLine = false
                       }).ToList()).OrderBy(x => x.Priority).ToList();
 
                 MotivateMailModel mdl = new MotivateMailModel()
@@ -3705,6 +3707,9 @@ SELECT [User].Email
             int iProfessionId = 1;
             if (!int.TryParse(prof, out iProfessionId))
                 iProfessionId = 1;
+            int iSemesterId;
+            if (!int.TryParse(semesterId, out iSemesterId))
+                iSemesterId = 1;
 
             bool bIsSecond = isSecond == "1" ? true : false;
             bool bIsReduced = isReduced == "1" ? true : false;
@@ -3713,7 +3718,7 @@ SELECT [User].Email
             bool isEng = Util.GetCurrentThreadLanguageIsEng();
 
             string query = "SELECT DISTINCT ObrazProgramId, ObrazProgramName, ObrazProgramNameEng FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId " +
-                "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId " +
+                "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND SemesterId = @SemestrId" +
                 "AND StudyLevelGroupId=@StudyLevelGroupId AND IsSecond=@IsSecond AND IsParallel=@IsParallel AND IsReduced=@IsReduced AND DateOfClose>GETDATE() ";
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
@@ -3723,6 +3728,7 @@ SELECT [User].Email
             dic.Add("@IsSecond", bIsSecond);
             dic.Add("@IsParallel", bIsParallel);
             dic.Add("@IsReduced", bIsReduced);
+            dic.Add("@SemesterId", iSemesterId);
 
             DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
             var OPs = from DataRow rw in tbl.Rows
@@ -3738,7 +3744,7 @@ SELECT [User].Email
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string isSecond = "0", string isParallel = "0", string isReduced = "0")
+        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string isSecond = "0", string isParallel = "0", string isReduced = "0", string semesterId = "1")
         {
             Guid PersonId;
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
@@ -3758,6 +3764,11 @@ SELECT [User].Email
             int iObrazProgramId = 1;
             if (!int.TryParse(obrazprogram, out iObrazProgramId))
                 iObrazProgramId = 1;
+            int iSemesterId;
+            if (!int.TryParse(semesterId, out iSemesterId))
+                iSemesterId = 1;
+
+            bool isEng = Util.GetCurrentThreadLanguageIsEng();
 
             bool bIsSecond = isSecond == "1" ? true : false;
             bool bIsReduced = isReduced == "1" ? true : false;
@@ -3766,7 +3777,7 @@ SELECT [User].Email
             string query = "SELECT DISTINCT ProfileId, ProfileName FROM qEntry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = qEntry.StudyLevelId WHERE StudyFormId=@StudyFormId " +
                 "AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId " +
                 "AND qEntry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL) " +
-                "AND IsSecond=@IsSecond AND IsParallel=@IsParallel AND IsReduced=@IsReduced  AND DateOfClose>GETDATE() ";
+                "AND IsSecond=@IsSecond AND IsParallel=@IsParallel AND IsReduced=@IsReduced  AND DateOfClose>GETDATE() AND SemesterId = @SemesterId";
 
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
@@ -3778,11 +3789,17 @@ SELECT [User].Email
             dic.Add("@IsSecond", bIsSecond);
             dic.Add("@IsParallel", bIsParallel);
             dic.Add("@IsReduced", bIsReduced);
+            dic.Add("@SemesterId", iSemesterId);
 
             DataTable tblSpecs = Util.AbitDB.GetDataTable(query, dic);
             var Specs =
                 from DataRow rw in tblSpecs.Rows
-                select new { SpecId = rw.Field<Guid?>("ProfileId"), SpecName = rw.Field<string>("ProfileName") };
+                select new { 
+                    SpecId = rw.Field<Guid?>("ProfileId"), 
+                    SpecName = isEng ?
+                            (string.IsNullOrEmpty(rw.Field<string>("ProfileNameEng")) ? rw.Field<string>("ProfileName") : rw.Field<string>("ProfileNameEng"))
+                            : rw.Field<string>("ProfileName")
+                };
 
             var ret = new
             {
@@ -4863,7 +4880,7 @@ Order by cnt desc";
         }
 
         [HttpPost]
-        public JsonResult AddApplication_Mag(string priority, string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string IsGosLine, string CommitId)
+        public JsonResult AddApplication_Mag(string priority, string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string IsGosLine, string CommitId, string semesterId="1")
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -4900,7 +4917,10 @@ Order by cnt desc";
                 int iReduced = Util.ParseSafe(isReduced);
                 int iSecond = Util.ParseSafe(isSecond);
                 int iGosLine = Util.ParseSafe(IsGosLine);
-                 
+                int iSemesterId;
+                if (!int.TryParse(semesterId, out iSemesterId))
+                    iSemesterId = 1;
+ 
                 bool bIsParallel = iParallel == 1;
                 bool bIsReduced = iReduced == 1;
                 bool bIsSecond = iSecond == 1;
@@ -4926,8 +4946,8 @@ Order by cnt desc";
                             Ent.IsParallel == bIsParallel &&
                             Ent.IsReduced == bIsReduced &&
                             Ent.IsSecond == bIsSecond &&
-                           (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
-                           && Ent.SemesterId == 1
+                           (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization) &&
+                            Ent.SemesterId == iSemesterId
                       select new
                       {
                           EntryId = Ent.Id,
@@ -5044,7 +5064,7 @@ Order by cnt desc";
                 });
                 context.SaveChanges();
 
-                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N"), Faculty = faculty, isgosline = IsGosLine });
+                return Json(new { IsOk = true, StudyFormName = StudyFormName, StudyBasisName = StudyBasisName, Profession = Profession, Specialization = Specialization, ObrazProgram = ObrazProgram, Id = appId.ToString("N"), Faculty = faculty, isgosline = IsGosLine, semesterId = iSemesterId });
             }
         }
 
@@ -5090,7 +5110,7 @@ Order by cnt desc";
         }
 
         [HttpPost]
-        public JsonResult CheckApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string CommitId)
+        public JsonResult CheckApplication_Mag(string studyform, string studybasis, string entry, string isSecond, string isReduced, string isParallel, string profession, string obrazprogram, string specialization, string NeedHostel, string CommitId, string semesterId="1")
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
@@ -5122,7 +5142,10 @@ Order by cnt desc";
                 int iObrazProgram = Util.ParseSafe(obrazprogram);
                 int iParallel = Util.ParseSafe(isParallel);
                 int iReduced = Util.ParseSafe(isReduced);
-                int iSecond = Util.ParseSafe(isSecond);  
+                int iSecond = Util.ParseSafe(isSecond);
+                int iSemesterId;
+                if (!int.TryParse(semesterId, out iSemesterId))
+                    iSemesterId = 1;
 
                 bool bIsParallel = iParallel == 1;
                 bool bIsReduced = iReduced == 1;
@@ -5145,8 +5168,8 @@ Order by cnt desc";
                              Ent.IsParallel == bIsParallel &&
                              Ent.IsReduced == bIsReduced &&
                              Ent.IsSecond == bIsSecond &&
-                            (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization)
-                            && Ent.SemesterId == 1
+                            (gSpecialization == Guid.Empty ? true : Ent.ProfileId == gSpecialization) &&
+                             Ent.SemesterId == iSemesterId
                        select new
                        {
                            EntryId = Ent.Id,

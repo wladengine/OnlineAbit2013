@@ -847,7 +847,8 @@ namespace OnlineAbit2013.Models
         public int StudyFormId { get; set; }
         public string StudyFormName { get; set; }
         public int StudyBasisId { get; set; }
-        public string StudyBasisName { get; set; }
+        public string StudyBasisName { get; set; } 
+        public string SemestrName { get; set; }
         public bool IsReduced { get; set; }
         public bool IsParallel { get; set; }
         public bool IsSecond { get; set; }

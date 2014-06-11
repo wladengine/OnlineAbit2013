@@ -547,6 +547,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Семестр.
+        /// </summary>
+        internal static string Semester {
+            get {
+                return ResourceManager.GetString("Semester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Выберите основу обучения.
         /// </summary>
         internal static string StudyBasis {

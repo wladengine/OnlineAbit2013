@@ -38,7 +38,7 @@
         var CurrSpecs = '#Specs'+i;
         var CurrFinishBtn = '#FinishBtn'+i; 
         var CurrGosLine = '#GosLine'+i; 
-        var CurrSemestrId = '#semesterId'+i;
+        var CurrSemesterId = '#semesterId'+i;
         
 
         $(CurrProfs).show();
@@ -48,8 +48,8 @@
         $(CurrGosLine).hide();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
             entry: $('#StudyLevelGroupId'+i).val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), 
-            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('semesterId'+i).val() }, function (json_data) 
-        {
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#semesterId'+i).val() }, function (json_data) 
+            {
             var options = '';
             if (json_data.NoFree) {
                 var text = $('#NewApp_NoFreeEntries').text();
@@ -95,7 +95,7 @@
    
         $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
             entry: $('#StudyLevelGroupId'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
-            semesterId : $('#SemesterId'+i).val() }, function (json_data) {
+            semesterId : $('#semesterId'+i).val() }, function (json_data) {
             var options = '';
             if (json_data.NoFree) {
                 var text = $('#ErrorHasApplication').text();
@@ -138,7 +138,7 @@
         $(CurrGosLine).hide();
         $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#StudyLevelGroupId'+i).val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
-            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#semesterId'+i).val() }, function (json_data) {
             var options = '';
             if (sbId==1) { 
                 if (json_data.GosLine==0) {  
@@ -257,7 +257,8 @@
         specialization: $('#lSpecialization'+i).val(), 
         NeedHostel: $('#NeedHostel' + i).is(':checked'), 
         IsGosLine: $('#isGosLineHidden'+i).val(),
-        CommitId: $('#CommitId').val() 
+        CommitId: $('#CommitId').val(),
+        semesterId:  $('#semesterId' + i).val(),
           }, 
           function(json_data) {
             if (json_data.IsOk) { 
@@ -267,6 +268,7 @@
                 $(currBlockData_ObrazProgram).text(json_data.ObrazProgram);
                 $(currBlockData_Specialization).text(json_data.Specialization); 
                 $(currBlockData_Faculty).text(json_data.Faculty);
+                $(currBlockData_SemesterId).text(json_data.semesterId);
                 $(currBlock).hide();
                 if (json_data.isgosline==1){
                     $(currBlockData_GosLine).show();
@@ -437,6 +439,10 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                 <td id="BlockData_StudyBasisId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyBasisName%></td>
             </tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_semesterId")%></td>
+                <td id="BlockData_SemesterId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SemestrName %>td>
+            </tr>
              <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Faculty")%></td>
                 <td id="BlockData_Faculty<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].FacultyName%></td>
@@ -483,11 +489,17 @@
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
+        <p id="Semester<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "Semester")%></span><br />
+            <%= Html.DropDownList("semesterId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
+                { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
         <%  if (1 == 2)  {%>
         <input type="hidden" name="IsReducedHidden" id="Hidden1" value="0"/>
         <input type="hidden" name="IsParallelHidden" id="Hidden2" value="0"/>
         <input type="hidden" name="IsSecondHidden" id="Hidden3" value="0"/>
         <%}  %>
+
         <p id="Profs<%= i.ToString()%>" style="border-collapse:collapse;width:659px;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderProfession")%></span><br />
             <select id="lProfession<%= i.ToString()%>" size="12" name="lProfession" style="width:659px;" onchange="GetObrazPrograms(<%= i.ToString()%>)"></select>
@@ -537,6 +549,10 @@
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                     <td id="BlockData_StudyBasisId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
+                <tr>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_semesterId")%></td>
+                    <td id="BlockData_SemesterId<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                </tr>
                  <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Faculty")%></td>
                     <td id="BlockData_Faculty<%= i.ToString() %>" style="font-size:1.3em;"></td>
@@ -578,8 +594,8 @@
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
-        <p id="P1">
-            <span>Семестр</span><br />
+        <p id="Semester<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "Semester")%></span><br />
             <%= Html.DropDownList("semesterId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>

@@ -873,7 +873,7 @@ namespace OnlineAbit2013.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
-        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string CommitId, string isParallel = "0", string isReduced = "0", string semesterId = "1")
+        public ActionResult GetSpecializations(string prof, string obrazprogram, string studyform, string studybasis, string entry, string CommitId, string isParallel = "0", string isReduced = "0", string semesterId = "1", string isgosline = "0")
         {
             Guid PersonId;
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
@@ -907,10 +907,11 @@ namespace OnlineAbit2013.Controllers
 
             bool bIsReduced = isReduced == "1" ? true : false;
             bool bIsParallel = isParallel == "1" ? true : false;
+            bool bIsGosLine = isgosline == "1" ? true : false;
 
             string query = "SELECT DISTINCT ProfileId, ProfileName FROM Entry WHERE StudyFormId=@StudyFormId " +
                 "AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId " +
-                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND IsCommited='True' AND EntryId IS NOT NULL and CommitId=@CommitId and IsDeleted=0) " +
+                "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND IsCommited='True' AND EntryId IS NOT NULL and CommitId=@CommitId and IsDeleted=0 and IsGosLine<>@IsGosLine) " +
                 "AND IsParallel=@IsParallel AND IsReduced=@IsReduced "+ 
                 "AND CampaignYear=@Year AND SemesterId=@SemesterId ";
 
@@ -921,6 +922,7 @@ namespace OnlineAbit2013.Controllers
             dic.Add("@LicenseProgramId", iProfessionId);
             dic.Add("@ObrazProgramId", iObrazProgramId);
             dic.Add("@StudyLevelGroupId", iEntryId);
+            dic.Add("@IsGosLine", bIsGosLine);
             if (iStudyLevelId != 0)
             {
                 query += " AND StudyLevelId=@StudyLevelId";

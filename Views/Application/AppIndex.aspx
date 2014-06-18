@@ -266,7 +266,8 @@
     <hr />
     <div id="MotivationInfoHelp" class="message info">
         <%= GetGlobalResourceObject("ApplicationInfo", "MotivationalMailInformation")%>
-         <%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetter_Link")%><%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetterDetails")%></a>
+        <%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetter_Link")%><%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetterDetails")%></a><br />
+        <%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetter_Link2")%><%= GetGlobalResourceObject("ApplicationInfo", "MotiveLetterDetails2")%></a>
     </div>
     <form action="../../Application/MotivatePost" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id" value="<%= Model.Id.ToString("N") %>" />

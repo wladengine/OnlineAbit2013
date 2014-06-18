@@ -777,7 +777,7 @@ namespace OnlineAbit2013.Controllers
 
             string query = "SELECT DISTINCT LicenseProgramId, LicenseProgramCode, LicenseProgramName FROM Entry " +
                 "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND StudyLevelGroupId=@StudyLevelGroupId AND IsParallel=@IsParallel " +
-                "AND IsReduced=@IsReduced AND [CampaignYear]=@Year AND SemesterId=@SemesterId";
+                "AND IsReduced=@IsReduced AND [CampaignYear]=@Year AND SemesterId=@SemesterId and DateOfClose > GETDATE()";
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);
@@ -922,7 +922,6 @@ namespace OnlineAbit2013.Controllers
             dic.Add("@LicenseProgramId", iProfessionId);
             dic.Add("@ObrazProgramId", iObrazProgramId);
             dic.Add("@StudyLevelGroupId", iEntryId);
-           // dic.Add("@IsGosLine", bIsGosLine);
             if (iStudyLevelId != 0)
             {
                 query += " AND StudyLevelId=@StudyLevelId";

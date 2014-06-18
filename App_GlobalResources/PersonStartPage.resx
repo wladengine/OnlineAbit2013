@@ -130,16 +130,16 @@
     <value>Поступление в магистратуру</value>
   </data>
   <data name="AbiturientType3" xml:space="preserve">
-    <value>Перевод из российского университета в СПбГУ</value>
+    <value>Изменение основы обучения</value>
   </data>
   <data name="AbiturientType4" xml:space="preserve">
-    <value>Перевод из иностранного университета в СПбГУ</value>
+    <value>Перевод в СПбГУ</value>
   </data>
   <data name="AbiturientType5" xml:space="preserve">
     <value>Восстановление в СПбГУ</value>
   </data>
   <data name="AbiturientType6" xml:space="preserve">
-    <value>Перевод с платной формы обучения на бюджетную</value>
+    <value>Изменение формы обучения</value>
   </data>
   <data name="AbiturientType7" xml:space="preserve">
     <value>Смена образовательной программы</value>

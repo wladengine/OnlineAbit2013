@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../../Scripts/jquery-1.5.1-vsdoc.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery.validate-vsdoc.js"></script>
 <% } %>
+    <script type="text/javascript" src="../../Scripts/jquery.ui.datepicker-ru.js"></script>
     <style>
 	    .ui-autocomplete {
 		    max-height: 200px;
@@ -35,7 +36,15 @@
         <script type="text/javascript">
             $(function () { setTimeout(GetCities, 50) });
             
-
+            function GetLicenseProgramList() {
+                $.post('AbiturientNew/GetLicenseProgramList', { slId: $('#CurrentEducation_StudyLevelId').val() }, function (json_data) {
+                    var options = '';
+                    for (var i = 0; i < json_data.length; i++) {
+                        options += '<option value="' + json_data[i].Id + '">' + json_data[i].Name + '</option>';
+                    }
+                    $('#CurrentEducation_LicenseProgramId').html(options);
+                }, 'json');
+            } 
             function GetCities() {
                 if ($('#EducationInfo_CountryEducId').val() == '193') {
                     $.post('../../AbiturientNew/GetCityNames', { regionId: $('#EducationInfo_RegionEducId').val() }, function (data) {
@@ -65,6 +74,25 @@
                     $('#EducationInfo_SchoolName').removeClass('input-validation-error');
                     $('#EducationInfo_SchoolName_Message').hide();
                 }
+                if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                    $('#_AccreditationInfo').hide();
+                    $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                }
+                else {
+                    $('#_AccreditationInfo').show();
+                    $('#EducationInfo_SchoolCity').val('');
+                }
+                var SchoolTypeId = $('#EducationInfo_SchoolTypeId').val();
+                if (SchoolTypeId == '4') {
+                    if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
+                        if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                            $('#_TransferSPBUAddInfo').show();
+                        }
+                        else {
+                            $('#_TransferSPBUAddInfo').hide();
+                        }
+                    }
+                }
                 return ret;
             }
             function CheckSchoolExitYear() {
@@ -88,6 +116,31 @@
                     else {
                         $('#EducationInfo_SchoolExitYear').removeClass('input-validation-error');
                         $('#EducationInfo_SchoolExitYear_MessageFormat').hide();
+                    }
+                }
+                return ret;
+            } 
+            function CheckDisorderInfoYear() {
+                var ret = true;
+                if ($('#DisorderInfo_YearOfDisorder').val() == '') {
+                    ret = false;
+                    $('#DisorderInfo_YearOfDisorder').addClass('input-validation-error');
+                    $('#DisorderInfo_Year_Message').show();
+                    $('#DisorderInfo_Year_MessageFormat').hide();
+                }
+                else {
+                    $('#DisorderInfo_YearOfDisorder').removeClass('input-validation-error');
+                    $('#DisorderInfo_Year_Message').hide(); 
+                    var regex = /^\d{4}$/i;
+                    var val = $('#DisorderInfo_YearOfDisorder').val();
+                    if (!regex.test(val)) {
+                        $('#DisorderInfo_YearOfDisorder').addClass('input-validation-error');
+                        $('#DisorderInfo_Year_MessageFormat').show();
+                        ret = false;
+                    }
+                    else {
+                        $('#EducationInfo_SchoolExitYear').removeClass('input-validation-error');
+                        $('#DisorderInfo_Year_MessageFormat').hide();
                     }
                 }
                 return ret;
@@ -129,14 +182,62 @@
                 if (SchoolTypeId == '1') {
                     $('#_vuzAddType').hide();
                     $('#_schoolExitClass').show();
+                    $('#_TransferData').hide();
+                    $('#_DisorderInfo').hide();
+                    $('#_mainpriem1').show();
+                    $('#_mainpriem2').show();
                 }
                 else if (SchoolTypeId == '4') {
                     $('#_vuzAddType').show();
                     $('#_schoolExitClass').hide();
+                    UpdateVuzAddType();
                 }
                 else {
                     $('#_vuzAddType').hide();
                     $('#_schoolExitClass').hide();
+                    $('#_TransferData').hide();
+                    $('#_DisorderInfo').hide();
+                    $('#_mainpriem1').show();
+                    $('#_mainpriem2').show();
+                }
+            }
+            function UpdateVuzAddType() { 
+                if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
+                    $('#_TransferData').show();
+                    if ($('#EducationInfo_CountryEducId').val() == '193') {
+                        $('#_TransferHasScholarship').show();
+                    }
+                    else {
+                        $('#_TransferHasScholarship').hide();
+                    }
+                    if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                        $('#_AccreditationInfo').hide();
+                        $('#_TransferSPBUAddInfo').show();
+                    }
+                    else {
+                        $('#_AccreditationInfo').show();
+                        $('#_TransferSPBUAddInfo').hide();
+                    }
+                    $('#_DisorderInfo').hide();
+                    $('#_mainpriem1').hide();
+                    $('#_mainpriem2').hide();
+                }
+                else {
+                    $('#_TransferData').hide();
+                    if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
+                        $('#EducationInfo_CountryEducId').val("193");
+                        $('#EducationInfo_RegionEducId').val("1"); 
+                        $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                        $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                        $('#_DisorderInfo').show();
+                        $('#_mainpriem1').hide();
+                        $('#_mainpriem2').hide();
+                    }
+                    else {
+                        $('#_DisorderInfo').hide();
+                        $('#_mainpriem1').show();
+                        $('#_mainpriem2').show();
+                    }
                 }
             }
 
@@ -144,16 +245,20 @@
                 fStartOne();
                 fStartTwo();
                 UpdateAfterSchooltype();
-
                 $('#EducationInfo_AttestatRegion').keyup(function () { setTimeout(CheckAttestatRegion); });
                 $('#EducationInfo_AttestatRegion').blur(function () { setTimeout(CheckAttestatRegion); });
                 $('#EducationInfo_SchoolExitYear').keyup(function () { setTimeout(CheckSchoolExitYear); });
                 $('#EducationInfo_SchoolExitYear').blur(function () { setTimeout(CheckSchoolExitYear); });
                 $('#EducationInfo_SchoolName').keyup(function () { setTimeout(CheckSchoolName); });
+                $('#EducationInfo_SchoolName').change(function () { setTimeout(CheckSchoolName); });
                 $('#EducationInfo_SchoolName').blur(function () { setTimeout(CheckSchoolName); });
                 $('#EducationInfo_RegionEducId').change(function () { setTimeout(GetCities); });
                 $('#EducationInfo_SchoolTypeId').change(function () { setTimeout(UpdateAfterSchooltype) });
+                $('#EducationInfo_VuzAdditionalTypeId').change(function () { setTimeout(UpdateVuzAddType) });
+                $('#DisorderInfo_YearOfDisorder').change(function () { setTimeout(CheckDisorderInfoYear) });
+                $('#CurrentEducation_StudyLevelId').change(function () { setTimeout(GetLicenseProgramList) });
             });
+            
 
             function fStartOne() {
                 LoadAutoCompleteValues();
@@ -183,7 +288,12 @@
                     }
                     else {
                         $('#_regionEduc').hide();
+                        if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                            $('#EducationInfo_SchoolName').val('');
+                            $('#EducationInfo_SchoolCity').val('');
+                        }
                     }
+                    UpdateAfterSchooltype();
                 }
                 function updateForeignCountryEduc() {
                     if ($('#EducationInfo_CountryEducId').val() != '193') {
@@ -307,6 +417,18 @@
                 $('select').attr('disabled', 'disabled');
                 <% } %>
 
+                <% if (Model.Enabled)
+                 { %>
+                    $("#CurrentEducation_AccreditationDate").datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        showOn: "focus",
+                        yearRange: '1920:2014',
+                        defaultDate: '-1y',
+                    });
+                    $.datepicker.regional["ru"];
+                <% } %> 
+                
                 function loadFormValues() {
                     var existingCerts = '';
                     var exams_html = '';
@@ -434,7 +556,7 @@
                         alert("Ошибка при удалении оценки:\n" + res.ErrorMsg);
                     }
                 }, 'json');
-            }
+            } 
 	</script>
         <div class="grid">
             <div class="wrapper">
@@ -473,8 +595,8 @@
                                 <%= Html.DropDownListFor(x => x.EducationInfo.SchoolExitClassId, Model.EducationInfo.SchoolExitClassList) %>
                             </div>
                         </div>
-
-                        <div class="clearfix">
+                        
+                        <div class="clearfix" id="_CountryEduc">
                             <label for="EducationInfo_CountryEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
                             <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, CountryEducId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label> 
@@ -496,63 +618,66 @@
                             <br /><p></p>
                             <span id="EducationInfo_SchoolName_Message" class="Red" style="display:none">  <%= GetGlobalResourceObject("PersonalOffice_Step4", "EducationInfo_SchoolName_Message").ToString()%> </span>
                         </div>
-                        <div id="_SchoolNumber" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.SchoolNumber, GetGlobalResourceObject("PersonalOffice_Step4", "SchoolNumber").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.SchoolNumber) %>
-                        </div>
+                        
                         <div class="clearfix">
                             <%= Html.LabelFor(x => x.EducationInfo.SchoolCity, GetGlobalResourceObject("PersonalOffice_Step4", "ResidentialPlace").ToString())%>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolCity) %>
                         </div>
                         <div class="clearfix">
                             <label for="EducationInfo_SchoolExitYear" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolExitYear %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolExitYear %>"></asp:Literal><asp:Literal ID="Literal2" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolExitYear)%>
                             <br /><p></p>
                             <span id="EducationInfo_SchoolExitYear_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SchoolExitYear_Message").ToString()%></span>
                             <span id="EducationInfo_SchoolExitYear_MessageFormat" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EducationInfo_SchoolExitYear_MessageFormat").ToString()%></span>
                         </div>
-                        <div id="AvgMark" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.AvgMark, GetGlobalResourceObject("PersonalOffice_Step4", "AvgMark").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.AvgMark) %>
-                        </div>
-                        <div id="_IsExcellent" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.IsExcellent, GetGlobalResourceObject("PersonalOffice_Step4", "RedDiploma").ToString())%>
-                            <%= Html.CheckBoxFor(x => x.EducationInfo.IsExcellent)%>
-                        </div>
-                        
-                        <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.LanguageId, GetGlobalResourceObject("PersonalOffice_Step4", "LanguageId").ToString())%>
-                            <%= Html.DropDownListFor(x => x.EducationInfo.LanguageId, Model.EducationInfo.LanguageList) %>
-                        </div>
-                        <div id="EnglishMark" class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.EnglishMark, GetGlobalResourceObject("PersonalOffice_Step4", "EnglishMark").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.EnglishMark) %>
-                        </div>
-                        <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.StartEnglish, GetGlobalResourceObject("PersonalOffice_Step4", "EnglishNull").ToString())%>
-                            <%= Html.CheckBoxFor(x => x.EducationInfo.StartEnglish)%>
-                        </div>
-                        
-                        <h4><%=GetGlobalResourceObject("PersonalOffice_Step4", "EducationDocumentHeader").ToString()%></h4>
-                        <hr />
-                        <div id="_AttRegion" class="clearfix" style="display:none">
-                            <%= Html.LabelFor(x => x.EducationInfo.AttestatRegion, GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.AttestatRegion) %>
-                            <span id="EducationInfo_AttestatRegion_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion_Message").ToString()%> </span>
-                        </div>
-                        <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.DiplomSeries, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomSeries").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.DiplomSeries) %>
-                            <br /><p></p>
-                            <span id="EducationInfo_DiplomSeries_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("PersonalOffice_Step4", "DiplomSeries_Message").ToString()%></span>
-                        </div>
-                        <div class="clearfix">
-                            <%= Html.LabelFor(x => x.EducationInfo.DiplomNumber, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomNumber").ToString())%>
-                            <%= Html.TextBoxFor(x => x.EducationInfo.DiplomNumber)%>
-                            <br /><p></p>
-                            <span id="EducationInfo_DiplomNumber_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("PersonalOffice_Step4", "DiplomNumber_Message").ToString()%></span>
+                        <div id="_mainpriem1">
+                            <div id="_SchoolNumber" class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.SchoolNumber, GetGlobalResourceObject("PersonalOffice_Step4", "SchoolNumber").ToString())%>
+                                <%= Html.TextBoxFor(x => x.EducationInfo.SchoolNumber) %>
+                            </div>
+                            <div id="AvgMark" class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.AvgMark, GetGlobalResourceObject("PersonalOffice_Step4", "AvgMark").ToString())%>
+                                <%= Html.TextBoxFor(x => x.EducationInfo.AvgMark) %>
+                            </div>
+                            <div id="_IsExcellent" class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.IsExcellent, GetGlobalResourceObject("PersonalOffice_Step4", "RedDiploma").ToString())%>
+                                <%= Html.CheckBoxFor(x => x.EducationInfo.IsExcellent)%>
+                            </div>
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.LanguageId, GetGlobalResourceObject("PersonalOffice_Step4", "LanguageId").ToString())%>
+                                <%= Html.DropDownListFor(x => x.EducationInfo.LanguageId, Model.EducationInfo.LanguageList) %>
+                            </div>
+                            <div id="EnglishMark" class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.EnglishMark, GetGlobalResourceObject("PersonalOffice_Step4", "EnglishMark").ToString())%>
+                                <%= Html.TextBoxFor(x => x.EducationInfo.EnglishMark) %>
+                            </div>
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.EducationInfo.StartEnglish, GetGlobalResourceObject("PersonalOffice_Step4", "EnglishNull").ToString())%>
+                                <%= Html.CheckBoxFor(x => x.EducationInfo.StartEnglish)%>
+                            </div>
+                            <div id = "_EducationDocument" >
+                                <h4><%=GetGlobalResourceObject("PersonalOffice_Step4", "EducationDocumentHeader").ToString()%></h4>
+                                <hr />
+                                <div id="_AttRegion" class="clearfix" style="display:none">
+                                    <%= Html.LabelFor(x => x.EducationInfo.AttestatRegion, GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.AttestatRegion) %>
+                                    <span id="EducationInfo_AttestatRegion_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion_Message").ToString()%> </span>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.DiplomSeries, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomSeries").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.DiplomSeries) %>
+                                    <br /><p></p>
+                                    <span id="EducationInfo_DiplomSeries_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("PersonalOffice_Step4", "DiplomSeries_Message").ToString()%></span>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.DiplomNumber, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomNumber").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.DiplomNumber)%>
+                                    <br /><p></p>
+                                    <span id="EducationInfo_DiplomNumber_Message" class="Red" style="display:none"><%=GetGlobalResourceObject("PersonalOffice_Step4", "DiplomNumber_Message").ToString()%></span>
+                                </div>
+                            </div>
                         </div>
                         <div id="_ForeignCountryEduc" class="clearfix" style="display:none">
                             <div class="clearfix">
@@ -572,104 +697,165 @@
                                 <%= Html.TextBoxFor(x => x.EducationInfo.TRKICertificateNumber) %>
                             </div>
                         </div>
-                        <div id="HEData">
-                            <h4><% =GetGlobalResourceObject("PersonalOffice_Step4", "HEDataHeader").ToString()%></h4>
-                            <hr />
-                            <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.ProgramName, GetGlobalResourceObject("PersonalOffice_Step4", "PersonSpecialization").ToString())%>
-                                <%= Html.TextBoxFor(x => x.EducationInfo.ProgramName)%>
+                        <div id="_mainpriem2">
+                            <div id="HEData">
+                                <h4><% =GetGlobalResourceObject("PersonalOffice_Step4", "HEDataHeader").ToString()%></h4>
+                                <hr />
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.ProgramName, GetGlobalResourceObject("PersonalOffice_Step4", "PersonSpecialization").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.ProgramName)%>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.PersonStudyForm, GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudyForm").ToString())%>
+                                    <%= Html.DropDownListFor(x => x.EducationInfo.PersonStudyForm, Model.EducationInfo.StudyFormList) %>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.PersonQualification, GetGlobalResourceObject("PersonalOffice_Step4", "PersonQualification").ToString())%>
+                                    <%= Html.DropDownListFor(x => x.EducationInfo.PersonQualification, Model.EducationInfo.QualificationList) %>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.DiplomTheme, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomTheme").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.DiplomTheme) %>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.EducationInfo.HEEntryYear, GetGlobalResourceObject("PersonalOffice_Step4", "HEEntryYear").ToString())%>
+                                    <%= Html.TextBoxFor(x => x.EducationInfo.HEEntryYear) %>
+                                </div> 
                             </div>
-                            <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.PersonStudyForm, GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudyForm").ToString())%>
-                                <%= Html.DropDownListFor(x => x.EducationInfo.PersonStudyForm, Model.EducationInfo.StudyFormList) %>
-                            </div>
-                            <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.PersonQualification, GetGlobalResourceObject("PersonalOffice_Step4", "PersonQualification").ToString())%>
-                                <%= Html.DropDownListFor(x => x.EducationInfo.PersonQualification, Model.EducationInfo.QualificationList) %>
-                            </div>
-                            <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.DiplomTheme, GetGlobalResourceObject("PersonalOffice_Step4", "DiplomTheme").ToString())%>
-                                <%= Html.TextBoxFor(x => x.EducationInfo.DiplomTheme) %>
-                            </div>
-                            <div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.HEEntryYear, GetGlobalResourceObject("PersonalOffice_Step4", "HEEntryYear").ToString())%>
-                                <%= Html.TextBoxFor(x => x.EducationInfo.HEEntryYear) %>
-                            </div>
-                            <%--<div class="clearfix">
-                                <%= Html.LabelFor(x => x.EducationInfo.HEExitYear, "Год окончания обучения") %>
-                                <%= Html.TextBoxFor(x => x.EducationInfo.HEExitYear) %>
-                            </div>--%>
-                        </div>
-                        <div id="EGEData" class="clearfix">
-                            <h6><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEmarks").ToString()%></h6>
-                            <% if (Model.EducationInfo.EgeMarks.Count == 0)
-                               { 
-                            %>
-                                <h6 id="noMarks"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEnomarks").ToString()%></h6>
-                            <%
-                               }
-                               else
-                               {
-                            %>
-                            <table id="tblEGEData" class="paginate" style="width:400px">
-                                <thead>
-                                <tr>
-                                    <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsert").ToString()%></th>
-                                    <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsubject").ToString()%></th>
-                                    <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEball").ToString()%></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                            <%
-                                   foreach (var mark in Model.EducationInfo.EgeMarks)
-                                   {
-                            %>
-                                <tr id="<%= mark.Id.ToString() %>">
-                                    <td><span><%= mark.CertificateNum%></span></td>
-                                    <td><span><%= mark.ExamName%></span></td>
-                                    <td><span><%= mark.Value%></span></td>
-                                    <td><%= Html.Raw("<span class=\"link\" onclick=\"DeleteMrk('" + mark.Id.ToString() + "')\"><img src=\"../../Content/themes/base/images/delete-icon.png\" alt=\"Удалить оценку\" /></span>")%></td>
-                                </tr>
-                            <%
+                            <div id="EGEData" class="clearfix">
+                                <h6><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEmarks").ToString()%></h6>
+                                <% if (Model.EducationInfo.EgeMarks.Count == 0)
+                                   { 
+                                %>
+                                    <h6 id="noMarks"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEnomarks").ToString()%></h6>
+                                <%
                                    }
-                            %>
-                                </tbody>
-                            </table>
-                            <% } %>
-                            <br />
-                            <button type="button" id="create-ege" class="button button-blue"><%=GetGlobalResourceObject("PersonalOffice_Step4", "AddMark").ToString()%></button>
-                            <div id="dialog-form">
-                                <p id="validation_info">Все поля обязательны для заполнения</p>
-	                            <hr />
-                                <fieldset>
-                                    <div id="_CertNum" class="clearfix">
-                                        <label for="EgeCert"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsert").ToString()%></label><br />
-		                                <input type="text" id="EgeCert" /><br />
-                                    </div>
-                                    <div class="clearfix">
-                                        <label for="Is2014"><%=GetGlobalResourceObject("PersonalOffice_Step4", "CurrentYear").ToString()%></label><br />
-		                                <input type="checkbox" id="Is2014" checked="checked" onchange="updateIs2014()" /><br />
-                                    </div>
-                                    <div class="clearfix">
-                                        <label for="EgeExam"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsubject").ToString()%></label><br />
-		                                <select id="EgeExam" ></select><br />
-                                    </div>
-                                    <div id="_EgeMark" class="clearfix">
-                                        <label for="EgeMark"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEball").ToString()%></label><br />
-		                                <input type="text" id="EgeMark" value="" /><br />
-                                    </div>
-                                    <div id="_IsSecondWave" class="clearfix">
-                                        <label for="IsSecondWave"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SecondWave").ToString()%></label><br />
-		                                <input type="checkbox" id="IsSecondWave" checked="checked" onchange="updateIsSecondWave()" /><br />
-                                    </div>
-                                    <br />
-                                    <div id="_IsInUniversity" class="clearfix">
-                                        <label for="IsInUniversity"><%=GetGlobalResourceObject("PersonalOffice_Step4", "PassInSPbSU").ToString()%></label><br />
-		                                <input type="checkbox" id="IsInUniversity" checked="checked" onchange="updateIsInUniversity()" /><br />
-                                    </div>
-	                            </fieldset>
+                                   else
+                                   {
+                                %>
+                                <table id="tblEGEData" class="paginate" style="width:400px">
+                                    <thead>
+                                    <tr>
+                                        <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsert").ToString()%></th>
+                                        <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsubject").ToString()%></th>
+                                        <th><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEball").ToString()%></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                <%
+                                       foreach (var mark in Model.EducationInfo.EgeMarks)
+                                       {
+                                %>
+                                    <tr id="<%= mark.Id.ToString() %>">
+                                        <td><span><%= mark.CertificateNum%></span></td>
+                                        <td><span><%= mark.ExamName%></span></td>
+                                        <td><span><%= mark.Value%></span></td>
+                                        <td><%= Html.Raw("<span class=\"link\" onclick=\"DeleteMrk('" + mark.Id.ToString() + "')\"><img src=\"../../Content/themes/base/images/delete-icon.png\" alt=\"Удалить оценку\" /></span>")%></td>
+                                    </tr>
+                                <%
+                                       }
+                                %>
+                                    </tbody>
+                                </table>
+                                <% } %>
+                                <br />
+                                <button type="button" id="create-ege" class="button button-blue"><%=GetGlobalResourceObject("PersonalOffice_Step4", "AddMark").ToString()%></button>
+                                <div id="dialog-form">
+                                    <p id="validation_info">Все поля обязательны для заполнения</p>
+	                                <hr />
+                                    <fieldset>
+                                        <div id="_CertNum" class="clearfix">
+                                            <label for="EgeCert"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsert").ToString()%></label><br />
+		                                    <input type="text" id="EgeCert" /><br />
+                                        </div>
+                                        <div class="clearfix">
+                                            <label for="Is2014"><%=GetGlobalResourceObject("PersonalOffice_Step4", "CurrentYear").ToString()%></label><br />
+		                                    <input type="checkbox" id="Is2014" checked="checked" onchange="updateIs2014()" /><br />
+                                        </div>
+                                        <div class="clearfix">
+                                            <label for="EgeExam"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsubject").ToString()%></label><br />
+		                                    <select id="EgeExam" ></select><br />
+                                        </div>
+                                        <div id="_EgeMark" class="clearfix">
+                                            <label for="EgeMark"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEball").ToString()%></label><br />
+		                                    <input type="text" id="EgeMark" value="" /><br />
+                                        </div>
+                                        <div id="_IsSecondWave" class="clearfix">
+                                            <label for="IsSecondWave"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SecondWave").ToString()%></label><br />
+		                                    <input type="checkbox" id="IsSecondWave" checked="checked" onchange="updateIsSecondWave()" /><br />
+                                        </div>
+                                        <br />
+                                        <div id="_IsInUniversity" class="clearfix">
+                                            <label for="IsInUniversity"><%=GetGlobalResourceObject("PersonalOffice_Step4", "PassInSPbSU").ToString()%></label><br />
+		                                    <input type="checkbox" id="IsInUniversity" checked="checked" onchange="updateIsInUniversity()" /><br />
+                                        </div>
+	                                </fieldset>
+                                </div>
                             </div>
+                        </div>
+                        <div id="_TransferData" class="clearfix" style="display:none">
+                            <div id = "_AccreditationInfo">
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.HasAccreditation, "Имеет гос. аккредитацию")%>
+                                    <%= Html.CheckBoxFor(x => x.CurrentEducation.HasAccreditation)%>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationNumber, "Номер аккредитации")%>
+                                    <%= Html.TextBoxFor(x => x.CurrentEducation.AccreditationNumber)%>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationDate, "Дата аккредитации") %>
+                                    <%= Html.TextBoxFor(x => x.CurrentEducation.AccreditationDate)%> 
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.CurrentEducation.StudyLevelId, "Уровень обучения")%>
+                                <%= Html.DropDownListFor(x => x.CurrentEducation.StudyLevelId, Model.CurrentEducation.StudyLevelList)%>
+                            </div>  
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.CurrentEducation.SemesterId, "Семестр")%>
+                                <%= Html.DropDownListFor(x => x.CurrentEducation.SemesterId, Model.CurrentEducation.SemesterList)%>
+                            </div>
+                            <div id="_TransferSPBUAddInfo" class="clearfix" >
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.LicenseProgramId, "Текущее направление (специальность)") %>
+                                    <%= Html.DropDownListFor(x => x.CurrentEducation.LicenseProgramId, Model.CurrentEducation.LicenceProgramList, new SortedList<string, object>() { { "style", "width:400px" }, { "size", "10" } })%>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.ProfileName, "Текущий профиль (специализация)")%>
+                                    <%= Html.TextBoxFor(x => x.CurrentEducation.ProfileName)%>
+                                </div>
+                            </div>
+                            <div id="_TransferHasScholarship">
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.HasScholarship, "Получаю академическую стипендию") %>
+                                    <%= Html.CheckBoxFor(x => x.CurrentEducation.HasScholarship)%>
+                                </div>
+                            </div>
+                        </div>
+                        <div id = "_DisorderInfo" style="display:none;">
+                            <h3>Данные об отчислении из СПбГУ</h3>
+                            <hr /> 
+                            <fieldset><br />
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.DisorderInfo.YearOfDisorder, "Год") %>
+                                <%= Html.TextBoxFor(x => x.DisorderInfo.YearOfDisorder)%>
+                                <br /><p></p>
+                                <span id="DisorderInfo_Year_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SchoolExitYear_Message").ToString()%></span>
+                                <span id="DisorderInfo_Year_MessageFormat" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EducationInfo_SchoolExitYear_MessageFormat").ToString()%></span>
+                            </div>
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.DisorderInfo.EducationProgramName, "Название образовательной программы")%>
+                                <%= Html.TextBoxFor(x => x.DisorderInfo.EducationProgramName)%>
+                                <br /> 
+                            </div>
+                            <div class="clearfix">
+                                <%= Html.LabelFor(x => x.DisorderInfo.IsForIGA, "Восстанавливаюсь для ИГА")%>
+                                <%= Html.CheckBoxFor(x => x.DisorderInfo.IsForIGA)%>
+                                <br /> 
+                            </div>
+                            </fieldset>
                         </div>
                         </fieldset>
                         <hr />

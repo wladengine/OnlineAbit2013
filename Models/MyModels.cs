@@ -60,6 +60,10 @@ namespace OnlineAbit2013.Models
         public VisaInfo VisaInfo { get; set; }
         public ContactsPerson ContactsInfo { get; set; }
         public EducationPerson EducationInfo { get; set; }
+        // для восстановления:
+        public DisorderedSPBUEducation DisorderInfo { get; set; }
+        // для перевода:
+        public CurrentEducation CurrentEducation { get; set; }
         public AdditionalInfoPerson AddInfo { get; set; }
         public WorkPerson WorkInfo { get; set; }
         // список файлов, типов, и тип файла
@@ -396,6 +400,9 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> SemesterList { get; set; }
         public string StudyLevelId { get; set; }
         public List<SelectListItem> StudyLevelList { get; set; }
+        public string LicenseProgramId { get; set; }
+        public string ProfileName { get; set; }
+        public List<SelectListItem> LicenceProgramList { get; set; }
     }
     /// <summary>
     /// Сведения о том, когда отчислили
@@ -557,7 +564,10 @@ namespace OnlineAbit2013.Models
         public string ManualExam { get; set; }
         public bool Enabled { get; set; }
         public bool IsGosLine { get; set; }
-        public bool NeedHostel { get; set; }
+        //public bool NeedHostel { get; set; }
+        public string SemesterName { get; set; }
+        public string SecondTypeName { get; set; }
+        public string StudyLevelGroupName { get; set; }
         public bool HasSeparateObrazPrograms { get; set; }
         public Guid? ObrazProgramInEntryId { get; set; }
     }

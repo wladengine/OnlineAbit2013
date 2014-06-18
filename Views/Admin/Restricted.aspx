@@ -12,7 +12,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="NavigationList" runat="server">
     <ul class="clearfix">
-        <li><a href="../../Abiturient/Main">Вам сюда</a></li>
+        <li><a href="../../AbiturientNew/Main">Вам сюда</a></li>
         <li><a href="../../Account/LogOn">Или даже сюда</a></li>
     </ul>
 </asp:Content>

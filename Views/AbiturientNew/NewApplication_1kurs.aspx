@@ -100,7 +100,7 @@
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
    
-        $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
+        $.post('/AbiturientNew/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
             entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
             semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
@@ -143,7 +143,7 @@
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
-        $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
+        $.post('/AbiturientNew/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
             isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
             var options = '';
@@ -466,9 +466,9 @@
                {
                    if ((bool)Model.Applications[i - 1].IsGosLine)
                    {%>
-                    <tr>
+                    <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
+                        <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                     </tr>
             <%       }
                }%>
@@ -563,7 +563,7 @@
                 </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                    <td id="Td1" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
+                    <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                 </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>

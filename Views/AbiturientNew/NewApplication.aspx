@@ -155,12 +155,12 @@
        <% }
           else if (Model.VuzAddType == 2) // перевод
           { %>
-            <!-- Перевод РФ-спбгу -->
-            <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br />
-            <!-- Перевод иностр-спбгу -->
+            <!-- Перевод -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit4()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType4") %>" /><br /><br />
-            <!-- Перевод с платной на бюджет -->
+            <!-- Перевод ФОРМА -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit6()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType6") %>" /><br /><br />
+            <!-- Перевод ОСНОВА -->
+            <input type="button" class="button button-blue" name="Val" onclick="Submit3()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType3") %>" /><br /><br /> 
             <!-- смена образ программы -->
             <input type="button" class="button button-blue" name="Val" onclick="Submit7()" style="width:45em;" value="<%= GetGlobalResourceObject("PersonStartPage", "AbiturientType7") %>" /><br /><br />
        <%}

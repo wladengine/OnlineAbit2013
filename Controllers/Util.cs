@@ -1578,6 +1578,7 @@ WHERE PersonId=@PersonId ";
                 var AppList =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
+                     join Semester in context.Semester on Entry.SemesterId equals Semester.Id
                      where App.PersonId == PersonId && App.CommitId == CommitId
                      orderby App.Priority
                      select new
@@ -1601,10 +1602,12 @@ WHERE PersonId=@PersonId ";
                          Entry.ProfileId,
                          Entry.ObrazProgramNameEng,
                          Entry.ProfileName,
-                         Entry.ProfileNameEng,
+                         Entry.ProfileNameEng, 
+                         SemestrName = Semester.Name,
                          App.HostelEduc,
                          App.IsGosLine,
-                         Entry.StudyLevelGroupId
+                         Entry.StudyLevelGroupId,
+                         StudyLevelGrName = bisEng? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus
                      }).ToList();
                 foreach (var App in AppList)
                 {
@@ -1626,8 +1629,10 @@ WHERE PersonId=@PersonId ";
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
                         SpecializationName = bisEng ? (String.IsNullOrEmpty(App.ProfileNameEng) ? App.ProfileName : App.ProfileNameEng) : App.ProfileName, 
                         Hostel = App.HostelEduc,
+                        SemestrName = App.SemestrName,
                         IsGosLine = App.IsGosLine,
-                        StudyLevelGroupId = App.StudyLevelGroupId
+                        StudyLevelGroupId = App.StudyLevelGroupId,
+                        StudyLevelGroupName = App.StudyLevelGrName
                     };
                     string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 
                                         Inner join SP_StudyLevel on SP_StudyLevel.Id=StudyLevelId
@@ -1642,7 +1647,6 @@ WHERE PersonId=@PersonId ";
                              Name = rw.Field<string>("Name")
                          }).ToList();
                     Ent.ProfessionList = ProfessionList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
-
                     lstRet.Add(Ent);
 
                     //ВАЖНО!!! При изменении заявления нужно, чтобы все конкурсы были "не удалёнными"

@@ -28,7 +28,7 @@
         $('#FinishBtn<%= Model.Applications.Count + 1 %>').hide(); 
     });
 
-    function GetProfessions(i) {
+      function GetProfessions(i) {
         var CurrProfs = '#Profs'+i;
         var CurrlProfession = '#lProfession'+i;
         var CurrlSpecialization = '#lSpecialization'+i;
@@ -36,8 +36,9 @@
         var CurrObrazProgramsErrors='#ObrazProgramsErrors'+i;
         var CurrlObrazProgram = '#lObrazProgram'+i; 
         var CurrSpecs = '#Specs'+i;
-        var CurrFinishBtn = '#FinishBtn'+i; 
-        var CurrGosLine = '#GosLine'+i; 
+        var CurrFinishBtn = '#FinishBtn'+i;
+        var CurrSemesterId = '#semesterId'+i;
+        var CurrGosLine = '#GosLine'+i;  
 
         $(CurrProfs).show();
         $(CurrObrazPrograms).hide();
@@ -45,8 +46,9 @@
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
         $.post('/AbiturientNew/GetProfs', { studyform: $('#StudyFormId'+i).val(), studybasis: $('#StudyBasisId'+i).val(),
-            entry: $('#EntryType').val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val() }, function (json_data) 
-        {
+            entry: $('#StudyLevelGroupId'+i).val(), isSecond: $('#IsSecondHidden'+i).val(), isParallel: $('#IsParallelHidden'+i).val(), 
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#semesterId'+i).val() }, function (json_data) 
+            {
             var options = '';
             if (json_data.NoFree) {
                 var text = $('#NewApp_NoFreeEntries').text();
@@ -90,9 +92,9 @@
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
    
-        $.post('/Recover/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
-            entry: $('#EntryType').val(), isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
-            semesterId : $('#SemesterId'+i).val() }, function (json_data) {
+        $.post('/Transfer/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
+            entry: $('#StudyLevelGroupId'+i).val(),  isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
+            semesterId : $('#semesterId'+i).val() }, function (json_data) {
             var options = '';
             if (json_data.NoFree) {
                 var text = $('#ErrorHasApplication').text();
@@ -133,9 +135,9 @@
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
-        $.post('/Recover/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
-            studybasis: $('#StudyBasisId'+i).val(), entry: $('#EntryType').val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
-            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#SemesterId'+i).val() }, function (json_data) {
+        $.post('/Transfer/GetSpecializations', { prof: profId, obrazprogram: opId, studyform: $('#StudyFormId'+i).val(), 
+            studybasis: $('#StudyBasisId'+i).val(), entry: $('#StudyLevelGroupId'+i).val(), CommitId: $('#CommitId').val(), isParallel: $('#IsParallelHidden'+i).val(), 
+            isReduced : $('#IsReducedHidden'+i).val(), semesterId : $('#semesterId'+i).val() }, function (json_data) {
             var options = '';
             if (sbId==1) { 
                 if (json_data.GosLine==0) {  
@@ -181,7 +183,7 @@
     }
 
     function MkBtn(i) { 
-        $('#FinishBtn' + i).hide();
+         $('#FinishBtn' + i).hide();
         currFinishButton = '#FinishBtn' + i;
         currSpecs = '#Specs' + i;  
         currObrazProgramErrors = '#ObrazProgramsErrors' + i;
@@ -199,7 +201,7 @@
         $.post('/AbiturientNew/CheckApplication_Mag', {
             studyform: $('#StudyFormId'+i).val(), 
             studybasis: $('#StudyBasisId'+i).val(), 
-            entry: $('#EntryType').val(),
+            entry: $('#StudyLevelGroupId'+i).val(),
             isSecond:  $('#IsSecondHidden'+i).val(), 
             isReduced: $('#IsReducedHidden'+i).val(), 
             isParallel: $('#IsParallelHidden'+i).val(), 
@@ -207,10 +209,11 @@
             obrazprogram:  $('#lObrazProgram'+i).val(), 
             specialization: $('#lSpecialization'+i).val(), 
             NeedHostel: $('#NeedHostel' + i).is(':checked'), 
-            CommitId: $('#CommitId').val() }, 
+            CommitId: $('#CommitId').val(),
+            semesterId: $('#semesterId' + i).val() }, 
             function(json_data) {
             if (json_data.IsOk) {
-                $('#FinishBtn' + i).show();
+                $(currFinishButton).show();
             }
             else {
                 $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
@@ -240,12 +243,14 @@
         currBlockData_Specialization = '#BlockData_Specialization' + i; 
         currBlockData_Faculty = '#BlockData_Faculty'+i;
         currBlockData_GosLine = '#BlockData_GosLine'+i;
+        currBlockData_SemesterId = '#BlockData_SemesterId'+i;
+        currBlockData_StudyLevelGroupId = '#BlockData_StudyLevelGroupId'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
         studyform: $('#StudyFormId'+i).val(), 
         studybasis: $('#StudyBasisId'+i).val(), 
-        entry: $('#EntryType').val(),
+        entry: $('#StudyLevelGroupId'+i).val(),
         isSecond:  $('#IsSecondHidden'+i).val(), 
         isReduced: $('#IsReducedHidden'+i).val(), 
         isParallel: $('#IsParallelHidden'+i).val(), 
@@ -254,16 +259,20 @@
         specialization: $('#lSpecialization'+i).val(), 
         NeedHostel: $('#NeedHostel' + i).is(':checked'), 
         IsGosLine: $('#isGosLineHidden'+i).val(),
-        CommitId: $('#CommitId').val() 
+        CommitId: $('#CommitId').val(),
+        semesterId:  $('#semesterId' + i).val(),
+        secondtype: "2"
           }, 
           function(json_data) {
             if (json_data.IsOk) { 
+                $(currBlockData_StudyLevelGroupId).text(json_data.StudyLevelGroupName);
                 $(currBlockData_StudyFormId).text(json_data.StudyFormName);
                 $(currBlockData_StudyBasisId).text(json_data.StudyBasisName);
                 $(currBlockData_Profession).text(json_data.Profession);
                 $(currBlockData_ObrazProgram).text(json_data.ObrazProgram);
                 $(currBlockData_Specialization).text(json_data.Specialization); 
                 $(currBlockData_Faculty).text(json_data.Faculty);
+                 $(currBlockData_SemesterId).text(json_data.semesterId);
                 $(currBlock).hide();
                 if (json_data.isgosline==1){
                     $(currBlockData_GosLine).show();
@@ -402,7 +411,7 @@
         }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewApp_Mag", "AbiturientNew", FormMethod.Post))
+<% using (Html.BeginForm("NewApp_Transfer", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <% if (Model.HasError) 
@@ -415,11 +424,7 @@
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
     <% } %>
-    
-        <input type="hidden" id = "EntryType" name = "EntryType" value="2" />
-        <select id="Entry" name="Entry" onchange="ChangeEType()" disabled="disabled">
-            <option value="2"><%= GetGlobalResourceObject("NewApplication", "Select_Magistery")%></option>
-        </select>
+ 
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
            <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px;">
@@ -429,6 +434,10 @@
                 <td style="font-size:1.3em;"><%= i.ToString() %></td>
             </tr>
             <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></td>
+                <td id="BlockData_StudyLevelGroupId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyLevelGroupName %></td>
+            </tr> 
+            <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
                 <td id="BlockData_StudyFormId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyFormName  %></td>
             </tr>
@@ -436,7 +445,11 @@
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                 <td id="BlockData_StudyBasisId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyBasisName%></td>
             </tr>
-             <tr>
+            <tr>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "Semester")%></td>
+                <td id="BlockData_SemesterId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SemestrName %></td>
+            </tr>
+            <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Faculty")%></td>
                 <td id="BlockData_Faculty<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].FacultyName%></td>
             </tr>
@@ -455,9 +468,9 @@
             <% if (Model.Applications[i - 1].IsGosLine.HasValue)
                {
                    if ((bool)Model.Applications[i - 1].IsGosLine) {%>
-                    <tr>
+                    <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;">да</td>
+                        <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                     </tr>
             <%       } 
                }%>
@@ -467,6 +480,11 @@
         </div>
     </div>
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
+        <p id="SLevelGroup<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></span><br /> 
+            <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
+                 { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
         <p id="SForm<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
@@ -475,6 +493,11 @@
         <p id="SBasis<%= i.ToString()%>">
             <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
+                { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
+        <p id="Semester<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "Semester")%></span><br />
+            <%= Html.DropDownList("semesterId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <input type="hidden" name="IsReducedHidden" id="Hidden1" value="0"/>
@@ -511,8 +534,7 @@
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" /> 
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
-            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>"  /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />
-            <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
+             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </div><br />
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>
         </div>
@@ -528,12 +550,20 @@
                     <td style="font-size:1.3em;"><%= i.ToString() %></td>
                 </tr>
                 <tr>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></td>
+                    <td id="BlockData_StudyLevelGroupId<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                </tr>
+                <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
                     <td id="BlockData_StudyFormId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></td>
                     <td id="BlockData_StudyBasisId<%= i.ToString() %>" style="font-size:1.3em;"></td>
+                </tr>
+                <tr>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "Semester")%></td>
+                    <td id="BlockData_SemesterId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                  <tr>
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Faculty")%></td>
@@ -553,7 +583,7 @@
                 </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                    <td id="Td1" style="font-size:1.3em;">да</td>
+                    <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                 </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
@@ -561,14 +591,24 @@
             </div>
         </div>
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
+       <p id="SLevelGroup<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></span><br /> 
+            <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
+                 { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
         <p id="SForm<%= i.ToString()%>">
-            <span>Форма обучения</span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
             <%= Html.DropDownList("StudyFormId" + i.ToString(), Model.StudyFormList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <p id="SBasis<%= i.ToString()%>">
-            <span>Основа обучения</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyBasis")%></span><br />
             <%= Html.DropDownList("StudyBasisId" + i.ToString(), Model.StudyBasisList, new SortedList<string, object>() { { "size", "1" }, 
+                { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
+        </p>
+        <p id="Semester<%= i.ToString()%>">
+            <span><%= GetGlobalResourceObject("NewApplication", "Semester")%></span><br />
+            <%= Html.DropDownList("semesterId" + i.ToString(), Model.SemestrList, new SortedList<string, object>() { { "size", "1" }, 
                 { "style", "min-width:450px;" },   { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
         <input type="hidden" name="IsReducedHidden" id="IsReducedHidden<%= i.ToString()%>" value="0"/>
@@ -597,7 +637,7 @@
             <br /><br /><span id="SpecsErrors<%= i.ToString()%>" class="Red"></span>
         </p>
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
-            <span>Факультет</span><br />
+            <span><%= GetGlobalResourceObject("NewApplication", "HeaderFaculty")%></span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
@@ -605,7 +645,6 @@
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" />
         </div>
         <div id="FinishBtn<%= i.ToString()%>" style="border-collapse:collapse;">
-            <input type="checkbox" name="NeedHostel" title="Нуждаюсь в общежитии на время обучения" id="NeedHostel<%= i.ToString()%>" /><span style="font-size:13px"><%= GetGlobalResourceObject("NewApplication", "chbNeedHostel")%></span><br /><br />
             <input id="Submit<%= i.ToString()%>" type="button" value="Добавить" onclick="SaveData(<%= i.ToString()%>)" class="button button-blue"/>
         </div><br />
         <span id="ObrazProgramsErrors<%= i.ToString()%>" class="message error" style="display:none;"></span>

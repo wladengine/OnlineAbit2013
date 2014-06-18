@@ -248,7 +248,7 @@
     <value>Main page</value>
   </data>
   <data name="MotiveLetterDetails" xml:space="preserve">
-    <value>detailed view (in English)</value>
+    <value>detailed view for international applicants (in English)</value>
   </data>
   <data name="PrintFormWarning1" xml:space="preserve">
     <value>You should</value>
@@ -267,6 +267,9 @@
   </data>
   <data name="DeleteApp_Warning3" xml:space="preserve">
     <value>Do you want to cancel it?</value>
+  </data>
+  <data name="MotiveLetterDetails2" xml:space="preserve">
+    <value>Information about educational programs (in russian)</value>
   </data>
   <data name="MotiveLetter_Link" xml:space="preserve">
     <value>&lt;a href ='http://abiturient.spbu.ru/images/2014/foreigns/kriterii_en.htm'&gt;</value>

@@ -82,6 +82,10 @@
         <li class="message success">
             <table style="font-size:0.75em;" class="nopadding" cellspacing="0" cellpadding="0">
                 <tr>
+                    <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel").ToString()%></td>
+                    <td><%=s.StudyLevelGroupName%></td>
+                </tr>
+                <tr>
                     <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
                     <td><%=s.Profession%></td>
                 </tr>
@@ -93,6 +97,11 @@
                     <td style="width:12em"><%= GetGlobalResourceObject("PriorityChangerForeign", "Profile").ToString()%></td>
                     <td><%=s.Specialization%></td>
                 </tr>
+                <% if (!String.IsNullOrEmpty(s.SemesterName)){%><tr>
+                    <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "Semester").ToString()%></td>
+                    <td><%=s.SemesterName%></td>
+                </tr>
+                <%} %>
                 <% if (s.HasManualExams)
                    { %>
                 <tr>
@@ -103,7 +112,7 @@
                 <% if (s.IsGosLine)
                    { %>
                 <tr>
-                    <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "EnterGosLine").ToString()%></td>
+                    <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine").ToString()%></td>
                     <td><%= GetGlobalResourceObject("NewApplication", "Yes").ToString()%></td>
                 </tr>
                 <% } %>

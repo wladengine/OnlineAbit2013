@@ -252,7 +252,7 @@
     <value>Мотивационное письмо</value>
   </data>
   <data name="MotiveLetterDetails" xml:space="preserve">
-    <value>Подробно (на русском)</value>
+    <value>Подробно для иностранных граждан (на русском )</value>
   </data>
   <data name="PrintFormWarning1" xml:space="preserve">
     <value>Вам следует</value>
@@ -273,6 +273,12 @@
     <value>Вы хотите удалить заявление?</value>
   </data>
   <data name="MotiveLetter_Link" xml:space="preserve">
-    <value>&lt;a href ='http://abiturient.spbu.ru/data/foreigns/rus/kriterii_04_04_14.pdf'&gt;</value>
+    <value>&lt;a href ='http://abiturient.spbu.ru/index.php/russkij/informatsiya-dlya-inostrannykh-grazhdan/protsedura-podachi-dokumentov/kriterii-otsenivaniya-dokumentov'&gt;</value>
+  </data>
+  <data name="MotiveLetterDetails2" xml:space="preserve">
+    <value>Перечень программ и вступительные испытания (на русском )</value>
+  </data>
+  <data name="MotiveLetter_Link2" xml:space="preserve">
+    <value>&lt;a href ='http://abiturient.spbu.ru/index.php/priem/magistratura/perechen-programm-i-vstupitelnye-ispytaniya-2'&gt;</value>
   </data>
 </root>

@@ -127,16 +127,16 @@
     <value>Master Programs</value>
   </data>
   <data name="AbiturientType3" xml:space="preserve">
-    <value>Transition from Russian University at SPbSU</value>
+    <value>Transition from a paid basis of education on the budgetary</value>
   </data>
   <data name="AbiturientType4" xml:space="preserve">
-    <value>The transition from a foreign university in SPbSU</value>
+    <value>The transition in SPbSU</value>
   </data>
   <data name="AbiturientType5" xml:space="preserve">
     <value>Recovering at SPbSU</value>
   </data>
   <data name="AbiturientType6" xml:space="preserve">
-    <value>Transition from a paid form of education on the budgetary</value>
+    <value>Changing form of study</value>
   </data>
   <data name="AbiturientType7" xml:space="preserve">
     <value>Change the educational program</value>

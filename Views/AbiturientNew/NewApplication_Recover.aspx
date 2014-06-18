@@ -213,7 +213,7 @@
             semesterId: $('#semesterId' + i).val() }, 
             function(json_data) {
             if (json_data.IsOk) {
-                $('#FinishBtn' + i).show();
+                $(currFinishButton).show();
             }
             else {
                 $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
@@ -244,6 +244,7 @@
         currBlockData_Faculty = '#BlockData_Faculty'+i;
         currBlockData_GosLine = '#BlockData_GosLine'+i;
         currBlockData_SemesterId = '#BlockData_SemesterId'+i;
+        currBlockData_StudyLevelGroupId = '#BlockData_StudyLevelGroupId'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
@@ -260,9 +261,11 @@
         IsGosLine: $('#isGosLineHidden'+i).val(),
         CommitId: $('#CommitId').val(),
         semesterId:  $('#semesterId' + i).val(),
+        secondtype: "3"
           }, 
           function(json_data) {
             if (json_data.IsOk) { 
+                $(currBlockData_StudyLevelGroupId).text(json_data.StudyLevelGroupName);
                 $(currBlockData_StudyFormId).text(json_data.StudyFormName);
                 $(currBlockData_StudyBasisId).text(json_data.StudyBasisName);
                 $(currBlockData_Profession).text(json_data.Profession);
@@ -408,7 +411,7 @@
         }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewApp_Mag", "AbiturientNew", FormMethod.Post))
+<% using (Html.BeginForm("NewApp_Recover", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <% if (Model.HasError) 
@@ -429,8 +432,8 @@
                 <td style="font-size:1.3em;"><%= i.ToString() %></td>
             </tr>
             <tr>
-                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
-                <td id="Td2" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyLevelGroupName %></td>
+                <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></td>
+                <td id="BlockData_StudyLevelGroupId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].StudyLevelGroupName %></td>
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
@@ -442,7 +445,7 @@
             </tr>
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "Semester")%></td>
-                <td id="BlockData_SemesterId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SemestrName %>td>
+                <td id="BlockData_SemesterId<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SemestrName %></td>
             </tr>
              <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_Faculty")%></td>
@@ -463,9 +466,9 @@
             <% if (Model.Applications[i - 1].IsGosLine.HasValue)
                {
                    if ((bool)Model.Applications[i - 1].IsGosLine) {%>
-                    <tr>
+                    <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                         <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                        <td id="BlockData_GosLine<%= i.ToString()%>" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
+                        <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                     </tr>
             <%       } 
                }%>
@@ -476,7 +479,7 @@
     </div>
     <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SLevelGroup<%= i.ToString()%>">
-            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></span><br /> 
             <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>
@@ -539,7 +542,7 @@
                     <td style="font-size:1.3em;"><%= i.ToString() %></td>
                 </tr>
                 <tr>
-                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></td>
+                    <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></td>
                     <td id="BlockData_StudyLevelGroupId<%= i.ToString() %>" style="font-size:1.3em;"></td>
                 </tr>
                 <tr>
@@ -572,7 +575,7 @@
                 </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
-                    <td id="Td1" style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
+                    <td style="font-size:1.3em;"><%= GetGlobalResourceObject("NewApplication", "Yes")%></td>
                 </tr> 
             </table>
             <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
@@ -581,7 +584,7 @@
         </div>
        <div id="Block<%= i.ToString()%>" class="message info panel" style="width:659px; display:none;">
         <p id="SLevelGroup<%= i.ToString()%>">
-            <span><%= GetGlobalResourceObject("NewApplication", "BlockData_StudyForm")%></span><br /> 
+            <span><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel")%></span><br /> 
             <%= Html.DropDownList("StudyLevelGroupId" + i.ToString(), Model.StudyLevelGroupList, new SortedList<string, object>() { { "size", "1" },
                  { "style", "min-width:450px;" }, { "onchange", "GetProfessions(" + i.ToString() + ")" } })%>
         </p>

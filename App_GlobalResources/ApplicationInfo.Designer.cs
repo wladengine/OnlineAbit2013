@@ -392,7 +392,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Подробно (на русском).
+        ///   Ищет локализованную строку, такую же, как Подробно для иностранных граждан (на русском ).
         /// </summary>
         internal static string MotiveLetterDetails {
             get {
@@ -401,11 +401,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как &lt;a href =&apos;http://abiturient.spbu.ru/data/foreigns/rus/kriterii_04_04_14.pdf&apos;&gt;.
+        ///   Ищет локализованную строку, такую же, как Перечень программ и вступительные испытания (на русском ).
+        /// </summary>
+        internal static string MotiveLetterDetails2 {
+            get {
+                return ResourceManager.GetString("MotiveLetterDetails2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как &lt;a href =&apos;http://abiturient.spbu.ru/index.php/russkij/informatsiya-dlya-inostrannykh-grazhdan/protsedura-podachi-dokumentov/kriterii-otsenivaniya-dokumentov&apos;&gt;.
         /// </summary>
         internal static string MotiveLetter_Link {
             get {
                 return ResourceManager.GetString("MotiveLetter_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как &lt;a href =&apos;http://abiturient.spbu.ru/index.php/priem/magistratura/perechen-programm-i-vstupitelnye-ispytaniya-2&apos;&gt;.
+        /// </summary>
+        internal static string MotiveLetter_Link2 {
+            get {
+                return ResourceManager.GetString("MotiveLetter_Link2", resourceCulture);
             }
         }
         

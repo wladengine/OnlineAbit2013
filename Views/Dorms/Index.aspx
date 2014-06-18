@@ -273,7 +273,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="NavigationList" runat="server">
     <ul class="clearfix">
-        <li><a href="../../Abiturient/Main">Личный кабинет</a></li>
+        <li><a href="../../AbiturientNew/Main">Личный кабинет</a></li>
         <li class="active"><a href="../../Account/Register"><%= GetGlobalResourceObject("Common", "MainNavDorms").ToString()%></a></li>
         <li><a href="../../Account/LogOff">Выйти</a></li>
     </ul>

@@ -161,6 +161,10 @@
     </tr>
     <% } %>
     <tr>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel").ToString()%></td>
+        <td align="left"><%= Html.Encode(Application.StudyLevelGroupName) %></td>
+    </tr>
+    <tr>
         <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "LicenseProgram").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.Profession) %></td>
     </tr>
@@ -187,6 +191,12 @@
         <td width="30%" align="right"><%= GetGlobalResourceObject("PriorityChangerForeign", "StudyBasis").ToString()%></td>
         <td align="left"><%= Html.Encode(Application.StudyBasis) %></td>
     </tr>
+    <% if (!String.IsNullOrEmpty(Application.SemesterName))
+       {%><tr>
+        <td width="30%" align="right"><%= GetGlobalResourceObject("NewApplication", "Semester").ToString()%></td>
+        <td><%=Application.SemesterName%></td>
+    </tr>
+    <%} %>
     <% if (Application.IsGosLine)
        { %>
     <tr>

@@ -29,6 +29,7 @@ namespace OnlineAbit2013.Controllers
                 var tblAppsMain = 
                     (from App in context.Application
                     join Entry in context.Entry on App.EntryId equals Entry.Id
+                    join Semester in context.Semester on Entry.SemesterId equals Semester.Id
                     where App.CommitId == CommitId && App.IsCommited == true && App.Enabled == true
                     select new SimpleApplication()
                     {
@@ -42,7 +43,16 @@ namespace OnlineAbit2013.Controllers
                         Priority = App.Priority,
                         IsGosLine = App.IsGosLine,
                         HasManualExams = false,
-                        Enabled = App.Enabled
+                        Enabled = App.Enabled,
+                        SemesterName = (Entry.SemesterId != 1) ? Semester.Name : "",
+                        StudyLevelGroupName = (isEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +
+                                    (App.SecondTypeId.HasValue ?
+                                        ((App.SecondTypeId == 3) ? (isEng ? " (recovery)" : " (восстановление)") :
+                                        ((App.SecondTypeId == 2) ? (isEng ? " (transfer)" : " (перевод)") :
+                                        ((App.SecondTypeId == 4) ? (isEng ? " (changing form of education)" : " (смена формы обучения)") :
+                                        ((App.SecondTypeId == 5) ? (isEng ? " (changing basis of education)" : " (смена основы обучения)") :
+                                        ((App.SecondTypeId == 6) ? (isEng ? " (changing educational program)" : " (смена образовательной программы)") :
+                                        ""))))) : "")
                     }).ToList().Union(
                     context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()
                     {
@@ -56,7 +66,8 @@ namespace OnlineAbit2013.Controllers
                         Priority = x.Priority,
                         HasManualExams = x.ManualExamId.HasValue,
                         ManualExam = x.ManualExamId.HasValue ? x.AG_ManualExam.Name : "",
-                        Enabled = x.Enabled
+                        Enabled = x.Enabled,
+                        StudyLevelGroupName = Resources.Common.AG,
                     }).ToList()).ToList();
 
                 //if (tblAppsMain.Count() == 0)
@@ -468,11 +479,15 @@ namespace OnlineAbit2013.Controllers
                     var lst = context.Application.Where(x => x.CommitId == appId && x.PersonId == personId).Select(x => x.EntryType).ToList();
                     if (lst.Count == 0)
                         return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");
+                    
+                    int? Secondlst = context.Application.Where(x => x.CommitId == appId && x.PersonId == personId).Select(x => x.SecondTypeId).FirstOrDefault();
+                    /*if (Secondlst.Count == 0)
+                        return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");*/
 
                     //дальше должно быть разделение - для 1 курса, магистров, аспирантов, переводящихся и восстанавливающихся
                     //пока что затычка из АГ
                     int EntryType = lst.First();
-
+                     
                     switch (EntryType)
                     {
                         //бакалавриат
@@ -493,6 +508,13 @@ namespace OnlineAbit2013.Controllers
                         //case 11: { bindata = PDFUtils.GetApplicationPDF_Aspirant(appId, Server.MapPath("~/Templates/")); break; }
                         default: { bindata = PDFUtils.GetApplicationPDF(appId, Server.MapPath("~/Templates/"), false, personId); break; }
                     }
+                    if (Secondlst.HasValue)
+                    {
+                        if (Secondlst == 2)
+                        {
+                            bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/"));
+                        }
+                    } 
                 }
             }
             

@@ -1376,7 +1376,10 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonEducationDocument.Series,
                                   x.PersonCurrentEducation.StudyLevelId,
                                   SemesterName = Semester.Name,
-                                  Semester.EducYear
+                                  Semester.EducYear,
+                                  x.PersonEducationDocument.CountryEducId,
+                                  x.PersonEducationDocument.EqualDocumentNumber,
+                                  x.PersonEducationDocument.IsEqual
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();
@@ -1501,6 +1504,15 @@ namespace OnlineAbit2013.Controllers
                 for (int i = 1; i < 4; i++)
                     acrFlds.SetField("Parents", strSplit[i - 1]);
 
+                if ((person.IsEqual ?? false) && person.CountryEducId.HasValue && person.CountryEducId.Value != 193)
+                {
+                    acrFlds.SetField("IsEqual", "1");
+                    acrFlds.SetField("EqualSertificateNumber", person.EqualDocumentNumber);
+                }
+                else
+                {
+                    acrFlds.SetField("NoEqual", "1");
+                }
                 //acrFlds.SetField("Copy", "1");
 
                 pdfStm.FormFlattening = true;

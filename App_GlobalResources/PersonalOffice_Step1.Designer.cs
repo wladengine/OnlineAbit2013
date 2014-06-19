@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Имею гражданство РФ.
+        /// </summary>
+        internal static string HasRussianNationality {
+            get {
+                return ResourceManager.GetString("HasRussianNationality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Личные данные.
         /// </summary>
         internal static string HeaderPersonalInfo {

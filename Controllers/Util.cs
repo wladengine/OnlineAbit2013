@@ -1648,6 +1648,9 @@ WHERE PersonId=@PersonId ";
                          }).ToList();
                     Ent.ProfessionList = ProfessionList.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
                     lstRet.Add(Ent);
+                    query = @"Select Reason from PersonChangeStudyFormReason
+                                where PersonId=@PersonId and ApplicationId =@AppId and CommitId=@CommitId";
+                    Ent.ChangeStudyFormReason = Util.AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@AppId", App.Id }, { "@CommitId", CommitId } });
 
                     //ВАЖНО!!! При изменении заявления нужно, чтобы все конкурсы были "не удалёнными"
                     var Applic = context.Application.Where(x => x.Id == Ent.Id).FirstOrDefault();

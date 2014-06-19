@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Страна обучения.
+        /// </summary>
+        internal static string CountryCurEducId {
+            get {
+                return ResourceManager.GetString("CountryCurEducId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Страна, в которой получено предыдущее образование.
         /// </summary>
         internal static string CountryEducId {
@@ -394,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Название текущего образовательного учреждения.
+        /// </summary>
+        internal static string SchoolCurName {
+            get {
+                return ResourceManager.GetString("SchoolCurName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Оконченный класс.
         /// </summary>
         internal static string SchoolExitClass {
@@ -471,6 +489,15 @@ namespace Resources {
         internal static string VuzAdditionalTypeId {
             get {
                 return ResourceManager.GetString("VuzAdditionalTypeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Год предполагаемого окончания обучения.
+        /// </summary>
+        internal static string VuzExitYear {
+            get {
+                return ResourceManager.GetString("VuzExitYear", resourceCulture);
             }
         }
     }

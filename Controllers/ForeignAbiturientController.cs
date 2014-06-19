@@ -773,7 +773,7 @@ namespace OnlineAbit2013.Controllers
 
             if (iEntry == 2)
             {
-                byte[] pdfData = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/"));
+                byte[] pdfData = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/"), false, PersonId);
                 DateTime dateTime = DateTime.Now;
 
                 query = "INSERT INTO ApplicationFile (Id, ApplicationId, FileName, FileExtention, FileData, FileSize, IsReadOnly, LoadDate, Comment, MimeType) " +

@@ -479,7 +479,7 @@ namespace OnlineAbit2013.Controllers
                     var lst = context.Application.Where(x => x.CommitId == appId && x.PersonId == personId).Select(x => x.EntryType).ToList();
                     if (lst.Count == 0)
                         return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");
-                    
+                    int? CountryEducId = context.PersonEducationDocument.Where(x => x.PersonId == personId).Select(x => x.CountryEducId).FirstOrDefault();
                     int? Secondlst = context.Application.Where(x => x.CommitId == appId && x.PersonId == personId).Select(x => x.SecondTypeId).FirstOrDefault();
                     /*if (Secondlst.Count == 0)
                         return new FileContentResult(System.Text.Encoding.ASCII.GetBytes("Access error"), "text/plain");*/
@@ -510,10 +510,27 @@ namespace OnlineAbit2013.Controllers
                     }
                     if (Secondlst.HasValue)
                     {
-                        if (Secondlst == 2)
+                        // восстановление
+                        if (Secondlst == 3) { bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/"), false, personId); }
+                            // перевод
+                        else if (Secondlst == 2)
                         {
-                            bindata = PDFUtils.GetApplicationPDFRecover(appId, Server.MapPath("~/Templates/"));
-                        }
+                            if (CountryEducId.HasValue)
+                            {
+                                if (CountryEducId == 193)
+                                    bindata = PDFUtils.GetApplicationPDFTransfer(appId, Server.MapPath("~/Templates/"), false, personId);  
+                                else
+                                    bindata = PDFUtils.GetApplicationPDFTransferForeign(appId, Server.MapPath("~/Templates/"), false, personId);  
+                            }
+                            else
+                                bindata = PDFUtils.GetApplicationPDFTransfer(appId, Server.MapPath("~/Templates/"), false, personId);  
+                        } 
+                             // смена формы
+                        else if (Secondlst == 4) { bindata = PDFUtils.GetApplicationPDFChangeStudyBasis(appId, Server.MapPath("~/Templates/"), false, personId); }
+                            // смена основы
+                        else if (Secondlst == 5) { bindata = PDFUtils.GetApplicationPDFChangeStudyBasis(appId, Server.MapPath("~/Templates/"), false, personId); }
+                            // смена образовательной программы
+                        else if (Secondlst == 6) { bindata = PDFUtils.GetApplicationPDFChangeObrazProgram(appId, Server.MapPath("~/Templates/"), false, personId); }
                     } 
                 }
             }

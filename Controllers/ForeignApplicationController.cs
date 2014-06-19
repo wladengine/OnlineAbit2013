@@ -481,7 +481,7 @@ namespace OnlineAbit2013.Controllers
             //    return new FileContentResult(bindata, "application/octet-stream") { FileDownloadName = "Application.pdf" };
             //}
 
-            byte[] bindata = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/"));
+            byte[] bindata = PDFUtils.GetApplicationPDFForeign(appId, Server.MapPath("~/Templates/"), false, personId);
             return new FileContentResult(bindata, "application/pdf") { FileDownloadName = "Application.pdf" };
         }
 

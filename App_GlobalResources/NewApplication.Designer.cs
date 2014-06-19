@@ -367,7 +367,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Второе высшее.
+        ///   Ищет локализованную строку, такую же, как Сокращенные программы.
         /// </summary>
         internal static string IsReduced {
             get {

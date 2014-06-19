@@ -170,6 +170,7 @@ namespace OnlineAbit2013.Models
         public string BirthDate { get; set; }
 
         public string Nationality { get; set; }
+        public bool HasRussianNationality {get; set;}
         public string SNILS { get; set; }
 
         public List<SelectListItem> NationalityList { get; set; }
@@ -389,6 +390,7 @@ namespace OnlineAbit2013.Models
     /// </summary>
     public class CurrentEducation
     {
+        public string CountryId { get; set; }
         public string EducationTypeId { get; set; }
         public List<SelectListItem> EducationTypeList { get; set; }
         public string EducationName { get; set; }
@@ -877,6 +879,7 @@ namespace OnlineAbit2013.Models
         public int StudyLevelGroupId { get; set; }
         public string StudyLevelGroupName { get; set; }
         public bool? IsGosLine { get; set; }
+        public string ChangeStudyFormReason { get; set; }
     }
 
     public class SPO_ApplicationModel

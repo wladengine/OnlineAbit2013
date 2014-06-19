@@ -904,7 +904,7 @@ namespace OnlineAbit2013.Controllers
             string query = "SELECT DISTINCT ObrazProgramId, ObrazProgramName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId " +
                 "WHERE StudyFormId=@StudyFormId AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId " +
                 "AND StudyLevelGroupId=@StudyLevelGroupId AND IsParallel=@IsParallel AND IsReduced=@IsReduced " +
-                "AND DateOfClose>GETDATE() AND CampaignYear=@Year AND SemesterId=@SemesterId";
+                " AND CampaignYear=@Year AND SemesterId=@SemesterId";
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@StudyFormId", iStudyFormId);
             dic.Add("@StudyBasisId", iStudyBasisId);
@@ -953,7 +953,7 @@ namespace OnlineAbit2013.Controllers
             string query = "SELECT DISTINCT ProfileId, ProfileName FROM Entry INNER JOIN SP_StudyLevel ON SP_StudyLevel.Id = Entry.StudyLevelId WHERE StudyFormId=@StudyFormId " +
                 "AND StudyBasisId=@StudyBasisId AND LicenseProgramId=@LicenseProgramId AND ObrazProgramId=@ObrazProgramId AND StudyLevelGroupId=@StudyLevelGroupId " +
                 "AND Entry.Id NOT IN (SELECT EntryId FROM [Application] WHERE PersonId=@PersonId AND Enabled='True' AND EntryId IS NOT NULL) " +
-                "AND IsParallel=@IsParallel AND IsReduced=@IsReduced AND DateOfClose>GETDATE() AND CampaignYear=@Year AND SemesterId=@SemesterId";
+                "AND IsParallel=@IsParallel AND IsReduced=@IsReduced AND CampaignYear=@Year AND SemesterId=@SemesterId";
 
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);

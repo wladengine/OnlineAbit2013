@@ -17,6 +17,7 @@
     <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery.ui.datepicker-ru.js"></script>
     <script type="text/javascript">
+        $(function () { setTimeout(ChangeNationality, 50) });
         $(function () {
             <% if (!Model.Enabled)
                { %>
@@ -35,7 +36,8 @@
             });
             $.datepicker.regional["ru"];
             <% } %>
-
+            
+            $('#PersonInfo_Nationality').change(function () { setTimeout(ChangeNationality) });
             $('#PersonInfo_Surname').keyup(function () { setTimeout(CheckSurname) });
             $('#PersonInfo_Name').keyup(function () { setTimeout(CheckName) });
             $('#PersonInfo_SecondName').keyup(function () { setTimeout(CheckSecondName) });
@@ -47,6 +49,14 @@
             $('#PersonInfo_BirthDate').blur(function () { setTimeout(CheckBirthDate) });
             $('#PersonInfo_BirthPlace').blur(function () { setTimeout(CheckBirthPlace) });
         });
+        function ChangeNationality(){
+            if ($('#PersonInfo_Nationality').val() != '193') {
+                        $('#_HasRussianNationality').show();
+                    }
+                    else {
+                        $('#_HasRussianNationality').hide();
+                    }
+        }
 
         function CheckForm() {
             var res = true;
@@ -290,12 +300,18 @@
                         </label>
                         <%= Html.DropDownListFor(x => x.PersonInfo.Nationality, Model.PersonInfo.NationalityList)%>
                     </div>
-                     <div class="clearfix">
+                    <div id="_HasRussianNationality" style="display:none;">
+                         <label for="PersonInfo_HasRussianNationality" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                        <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, HasRussianNationality %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                        </label>
+                        <%= Html.CheckBoxFor(x => x.PersonInfo.HasRussianNationality)%>
+                    </div>
+                    <div class="clearfix">
                         <label for="ContactsInfo_CountryId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
                         <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step1, Country %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                         </label>
                         <%= Html.DropDownListFor(x => x.ContactsInfo.CountryId, Model.ContactsInfo.CountryList)%>
-                    </div>
+                   </div>
                 </fieldset>
                 <hr />
                 <div class="clearfix">

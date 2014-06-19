@@ -255,4 +255,13 @@
   <data name="SecondWave" xml:space="preserve">
     <value>Сдаю во "второй волне"</value>
   </data>
+  <data name="VuzExitYear" xml:space="preserve">
+    <value>Год предполагаемого окончания обучения</value>
+  </data>
+  <data name="SchoolCurName" xml:space="preserve">
+    <value>Название текущего образовательного учреждения</value>
+  </data>
+  <data name="CountryCurEducId" xml:space="preserve">
+    <value>Страна обучения</value>
+  </data>
 </root>

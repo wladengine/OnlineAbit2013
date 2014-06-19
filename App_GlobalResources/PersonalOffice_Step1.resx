@@ -135,6 +135,9 @@
   <data name="FormHeader" xml:space="preserve">
     <value>Анкета</value>
   </data>
+  <data name="HasRussianNationality" xml:space="preserve">
+    <value>Имею гражданство РФ</value>
+  </data>
   <data name="HeaderPersonalInfo" xml:space="preserve">
     <value>Личные данные</value>
   </data>

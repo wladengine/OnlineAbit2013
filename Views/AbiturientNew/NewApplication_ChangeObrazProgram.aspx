@@ -261,7 +261,7 @@
         IsGosLine: $('#isGosLineHidden'+i).val(),
         CommitId: $('#CommitId').val(),
         semesterId:  $('#semesterId' + i).val(),
-        secondtype: "4"
+        secondtype: "6"
           }, 
           function(json_data) {
             if (json_data.IsOk) { 

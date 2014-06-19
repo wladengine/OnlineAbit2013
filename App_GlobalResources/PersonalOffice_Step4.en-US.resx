@@ -252,4 +252,13 @@
   <data name="RedDiploma" xml:space="preserve">
     <value>Dimploma with distinction</value>
   </data>
+  <data name="VuzExitYear" xml:space="preserve">
+    <value>Expected year graduation</value>
+  </data>
+  <data name="SchoolCurName" xml:space="preserve">
+    <value>Name of current Educational Institution</value>
+  </data>
+  <data name="CountryCurEducId" xml:space="preserve">
+    <value>Country of your current education</value>
+  </data>
 </root>

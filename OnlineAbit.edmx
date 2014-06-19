@@ -823,7 +823,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -833,7 +833,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -892,6 +892,7 @@
           <Property Name="IsDisabled" Type="bit" />
           <Property Name="IsCreatedByComission" Type="bit" Nullable="false" />
           <Property Name="SNILS" Type="nvarchar" MaxLength="50" />
+          <Property Name="HasRussianNationality" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAddInfo">
           <Key>
@@ -913,6 +914,8 @@
           </Key>
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="PersonContacts">
           <Key>
@@ -954,6 +957,7 @@
           <Property Name="AccreditationDate" Type="date" />
           <Property Name="LicenseProgramId" Type="int" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="150" />
+          <Property Name="RegionId" Type="int" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -1260,8 +1264,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1346,8 +1350,8 @@
           <Property Name="HasInnerPriorities" Type="bit" />
           <Property Name="IsImported" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1418,8 +1422,8 @@
           <Property Name="ComissionId" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="350" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extApplicationDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -1541,7 +1545,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationDetails_ObrazProgramInEntry">
-          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1" />
+          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationDetails" Type="OnlinePriem2012Model.Store.ApplicationDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ObrazProgramInEntry">
@@ -1577,7 +1583,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationVersionDetails_ObrazProgramInEntry">
-          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1" />
+          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationVersionDetails" Type="OnlinePriem2012Model.Store.ApplicationVersionDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ObrazProgramInEntry">
@@ -2127,7 +2135,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry">
-          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1" />
+          <End Role="ObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ObrazProgramInEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ProfileInObrazProgramInEntry" Type="OnlinePriem2012Model.Store.ProfileInObrazProgramInEntry" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ObrazProgramInEntry">
@@ -2520,6 +2530,7 @@
           <Property Type="String" Name="ProfileName" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Person" FromRole="PersonCurrentEducation" ToRole="Person" />
           <NavigationProperty Name="Semester" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Semester" FromRole="PersonCurrentEducation" ToRole="Semester" />
+          <Property Type="Int32" Name="RegionId" />
         </EntityType>
         <EntityType Name="PersonScienceWork">
           <Key>
@@ -2713,6 +2724,8 @@
           <Property Type="Guid" Name="PersonId" Nullable="false" />
           <Property Type="String" Name="Reason" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_PersonChangeStudyFormReason_Person" FromRole="PersonChangeStudyFormReason" ToRole="Person" />
+          <Property Type="Guid" Name="ApplicationId" />
+          <Property Type="Guid" Name="CommitId" />
         </EntityType>
         <EntityType Name="PersonContacts">
           <Key>
@@ -2880,6 +2893,7 @@
           <NavigationProperty Name="Olympiads" Relationship="OnlinePriem2012Model.FK_Olympiads_Person" FromRole="Person" ToRole="Olympiads" />
           <Property Type="Boolean" Name="IsCreatedByComission" Nullable="false" />
           <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HasRussianNationality" Nullable="false" />
         </EntityType>
         <Association Name="FK_Application_Person">
           <End Type="OnlinePriem2012Model.Person" Role="Person" Multiplicity="1" />
@@ -4303,6 +4317,7 @@
           <EntitySetMapping Name="PersonCurrentEducation">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonCurrentEducation">
               <MappingFragment StoreEntitySet="PersonCurrentEducation">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
                 <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
@@ -4496,6 +4511,8 @@
           <EntitySetMapping Name="PersonChangeStudyFormReason">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonChangeStudyFormReason">
               <MappingFragment StoreEntitySet="PersonChangeStudyFormReason">
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
                 <ScalarProperty Name="Reason" ColumnName="Reason" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
               </MappingFragment>
@@ -4596,6 +4613,7 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="HasRussianNationality" ColumnName="HasRussianNationality" />
                 <ScalarProperty Name="SNILS" ColumnName="SNILS" />
                 <ScalarProperty Name="IsCreatedByComission" ColumnName="IsCreatedByComission" />
                 <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />

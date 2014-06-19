@@ -221,22 +221,38 @@
                     $('#_DisorderInfo').hide();
                     $('#_mainpriem1').hide();
                     $('#_mainpriem2').hide();
+                    $('#LabelEducationInfo_VuzExitYear').show();
+                    $('#LabelEducationInfo_SchoolExitYear').hide();
+                    $('#LabelEducationInfo_SchoolCurName').show();
+                    $('#LabelEducationInfo_SchoolName').hide();
+                    $('#LabelEducationInfo_CountryCurEducId').show();
+                    $('#LabelEducationInfo_CountryEducId').hide();
                 }
                 else {
                     $('#_TransferData').hide();
                     if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
-                        $('#EducationInfo_CountryEducId').val("193");
-                        $('#EducationInfo_RegionEducId').val("1"); 
                         $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
                         $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                        $('#LabelEducationInfo_VuzExitYear').show();
+                        $('#LabelEducationInfo_SchoolExitYear').hide(); 
+                        $('#LabelEducationInfo_SchoolCurName').show();
+                        $('#LabelEducationInfo_SchoolName').hide();
                         $('#_DisorderInfo').show();
                         $('#_mainpriem1').hide();
                         $('#_mainpriem2').hide();
+                        $('#LabelEducationInfo_CountryCurEducId').show();
+                        $('#LabelEducationInfo_CountryEducId').hide();
                     }
                     else {
+                        $('#LabelEducationInfo_SchoolCurName').hide();
+                        $('#LabelEducationInfo_SchoolName').show();
+                        $('#LabelEducationInfo_VuzExitYear').hide();
+                        $('#LabelEducationInfo_SchoolExitYear').show();
                         $('#_DisorderInfo').hide();
                         $('#_mainpriem1').show();
                         $('#_mainpriem2').show();
+                        $('#LabelEducationInfo_CountryCurEducId').hide();
+                        $('#LabelEducationInfo_CountryEducId').show();
                     }
                 }
             }
@@ -597,8 +613,11 @@
                         </div>
                         
                         <div class="clearfix" id="_CountryEduc">
-                            <label for="EducationInfo_CountryEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, CountryEducId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <label id="LabelEducationInfo_CountryCurEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonalOffice_Step4, CountryCurEducId %>"></asp:Literal><asp:Literal ID="Literal2" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label> 
+                            <label id="LabelEducationInfo_CountryEducId" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, CountryEducId %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label> 
                             <%= Html.DropDownListFor(x => x.EducationInfo.CountryEducId, Model.EducationInfo.CountryList) %>
                         </div>
@@ -611,8 +630,11 @@
                             </div>
                         </div>
                         <div class="clearfix">
-                            <label for="EducationInfo_SchoolName" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolName %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <label id="LabelEducationInfo_SchoolCurName" style="display:none;" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolCurName %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label>  
+                            <label id="LabelEducationInfo_SchoolName" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolName %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label>  
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolName)%>
                             <br /><p></p>
@@ -624,8 +646,11 @@
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolCity) %>
                         </div>
                         <div class="clearfix">
-                            <label for="EducationInfo_SchoolExitYear" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
-                            <asp:Literal ID="Literal1" runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolExitYear %>"></asp:Literal><asp:Literal ID="Literal2" runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            <label id="LabelEducationInfo_VuzExitYear" style="display: none;" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, VuzExitYear %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
+                            </label>
+                            <label id="LabelEducationInfo_SchoolExitYear" title='<asp:Literal runat="server" Text="<%$ Resources:PersonInfo, RequiredField%>"></asp:Literal>'> 
+                                <asp:Literal runat="server" Text="<%$Resources:PersonalOffice_Step4, SchoolExitYear %>"></asp:Literal><asp:Literal runat="server" Text="<%$Resources:PersonInfo, Star %>"></asp:Literal>
                             </label>
                             <%= Html.TextBoxFor(x => x.EducationInfo.SchoolExitYear)%>
                             <br /><p></p>

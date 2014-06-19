@@ -245,6 +245,7 @@
         currBlockData_GosLine = '#BlockData_GosLine'+i;
         currBlockData_SemesterId = '#BlockData_SemesterId'+i;
         currBlockData_StudyLevelGroupId = '#BlockData_StudyLevelGroupId'+i;
+        currBlockData_Reason = '#BlockData_Reason'+i;
 
         $.post('/AbiturientNew/AddApplication_Mag', { 
         priority: i,
@@ -261,7 +262,8 @@
         IsGosLine: $('#isGosLineHidden'+i).val(),
         CommitId: $('#CommitId').val(),
         semesterId:  $('#semesterId' + i).val(),
-        secondtype: "5"
+        secondtype: "5",
+        reason: $('#Reason'+i).val()
           }, 
           function(json_data) {
             if (json_data.IsOk) { 
@@ -272,7 +274,8 @@
                 $(currBlockData_ObrazProgram).text(json_data.ObrazProgram);
                 $(currBlockData_Specialization).text(json_data.Specialization); 
                 $(currBlockData_Faculty).text(json_data.Faculty);
-                 $(currBlockData_SemesterId).text(json_data.semesterId);
+                $(currBlockData_SemesterId).text(json_data.semesterId);
+                $(currBlockData_Reason).text(json_data.Reason);
                 $(currBlock).hide();
                 if (json_data.isgosline==1){
                     $(currBlockData_GosLine).show();
@@ -383,8 +386,9 @@
         nextObrazProgramErrors = '#ObrazProgramsErrors' + i; 
         nextProfessions = '#Professions' + i;
         nextNeedHostel = '#NeedHostel' + i;
-        nextBlockData = '#BlockData' + i;
-        
+        nextBlockData = '#BlockData' + i; 
+        nextReason = '#Reason'+i;
+        nextBlockReason = $('#BlockData_Reason'+i).val(); 
         nextBlockData_StudyFormId = '#BlockData_StudyFormId' + i;
         nextBlockData_StudyBasisId = '#BlockData_StudyBasisId' + i;
         nextBlockData_Profession = '#BlockData_Profession' + i;
@@ -402,6 +406,7 @@
                 $(nextBlockData_ObrazProgram).text('');
                 $(nextBlockData_Specialization).text('');
                 $(nextBlockData).hide();
+                
                 $(nextBlock).show();
                 GetProfessions(i);  
             }
@@ -424,6 +429,8 @@
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
     <% } %>
+              
+        <div>Смена основы обучения с договорной на бюджетную. <br />С дополнительной информацией можно ознакомиться по <a href="http://www.edu.spbu.ru/index.php/uchebnaya-deyatelnost/studentu-slushatelyu/informatsiya-tsentralnoj-komissii-po-perevodam-i-vosstanovleniyam-tskpiv#plata">ссылке</a></a></div>
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>
            <div id="BlockData<%= i.ToString()%>" class="message info panel" style="width:659px;">
@@ -463,6 +470,10 @@
             <tr>
                 <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_MagSpecialization")%></td>
                 <td id="BlockData_Specialization<%= i.ToString()%>" style="font-size:1.3em;"><%= Model.Applications[i - 1].SpecializationName%></td>
+            </tr>
+            <tr>
+                <td style="width:12em;">Причина смены основы обучения</td>
+                <td id="BlockData_Reason<%= i.ToString()%>" style="font-size:1.3em;"><%=Model.Applications[i-1].ChangeStudyFormReason%></td>
             </tr>
             <% if (Model.Applications[i - 1].IsGosLine.HasValue)
                {
@@ -520,6 +531,10 @@
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderFaculty")%></span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
         </p>
+        <p>
+            <span>Причина смены основы обучения</span><br /><p></p>
+            <textarea id="Reason<%= i.ToString()%>" rows = "5" cols="85"><%=Model.Applications[i-1].ChangeStudyFormReason%></textarea>
+        </p>
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
              <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />
              <input type="hidden" name="isGosLineHidden" title="Поступать по гослинии" id="isGosLineHidden<%= i.ToString()%>" /> 
@@ -572,6 +587,10 @@
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_MagSpecialization")%></td>
                     <td id="BlockData_Specialization<%= i.ToString() %>" style="font-size:1.3em;" ></td>
                 </tr>
+                <tr>
+                    <td style="width:12em;">Причина смены основы обучения</td>
+                    <td id="BlockData_Reason<%= i.ToString() %>" style="font-size:1.3em;"  ></td>
+                </tr>
                 <tr id = "BlockData_GosLine<%= i.ToString()%>" style="display: none;">
                     <td style="width:12em;"><%= GetGlobalResourceObject("NewApplication", "BlockData_GosLine")%></td>
                     <td style="font-size:1.3em;">да</td>
@@ -622,6 +641,10 @@
         <p id="Facs<%= i.ToString()%>" style="display:none; border-collapse:collapse;">
             <span><%= GetGlobalResourceObject("NewApplication", "HeaderFaculty")%></span><br />
             <select id="lFaculty<%= i.ToString()%>" size="2" name="lFaculty" onchange="GetProfessions(<%= i.ToString()%>)"></select>
+        </p> 
+        <p border-collapse:collapse;">
+            <span>Причина смены основы обучения</span><br />
+            <textarea cols="85" rows ="5" id= "Reason<%= i.ToString()%>"></textarea>
         </p> 
         <div id = "GosLine<%= i.ToString()%>" style="display:none;" >
              <input type="checkbox" name="isGosLine" title="Поступать по гослинии" id="IsGosLine<%= i.ToString()%>" onchange="ChangeGosLine(<%= i.ToString()%>)"/><span style="font-size:13px">Поступать по гослинии</span><br /><br />

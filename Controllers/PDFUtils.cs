@@ -553,7 +553,7 @@ namespace OnlineAbit2013.Controllers
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("PassportAuthor" + i, splitStr[i - 1]);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") + 
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") + 
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House, 
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus, 
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1228,7 +1228,7 @@ namespace OnlineAbit2013.Controllers
                 acrFlds.SetField("PassportDate", person.PassportDate.Value.ToShortDateString());
                 acrFlds.SetField("PassportAuthor", person.PassportAuthor);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                       string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                       person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                       person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1444,7 +1444,7 @@ namespace OnlineAbit2013.Controllers
                 acrFlds.SetField("PassportDate", person.PassportDate.Value.ToShortDateString());
                 acrFlds.SetField("PassportAuthor", person.PassportAuthor);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                       string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                       person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                       person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1497,17 +1497,16 @@ namespace OnlineAbit2013.Controllers
                     acrFlds.SetField("HasScholarship", "1");
                 else
                     acrFlds.SetField("NoScholarship", "1");*/
-                /*
                 acrFlds.SetField("Extra", person.AddInfo ?? "");
-                */
+                
                 strSplit = GetSplittedStrings(person.Parents, 30, 70, 3);
                 for (int i = 1; i < 4; i++)
                     acrFlds.SetField("Parents", strSplit[i - 1]);
 
                 if ((person.IsEqual ?? false) && person.CountryEducId.HasValue && person.CountryEducId.Value != 193)
                 {
-                    acrFlds.SetField("IsEqual", "1");
-                    acrFlds.SetField("EqualSertificateNumber", person.EqualDocumentNumber);
+                    acrFlds.SetField("HasEqual", "1");
+                    acrFlds.SetField("EqualNumber", person.EqualDocumentNumber);
                 }
                 else
                 {
@@ -1678,7 +1677,7 @@ namespace OnlineAbit2013.Controllers
                 acrFlds.SetField("PassportDate", person.PassportDate.Value.ToShortDateString());
                 acrFlds.SetField("PassportAuthor", person.PassportAuthor);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1694,7 +1693,10 @@ namespace OnlineAbit2013.Controllers
                     acrFlds.SetField("Phone" + i.ToString(), strSplit[i - 1]);
 
                 acrFlds.SetField("DisorderYear", person.YearOfDisorder);
-                acrFlds.SetField("DisorderProgram1", person.EducationProgramName ?? "");
+
+                strSplit = GetSplittedStrings(person.EducationProgramName ?? "", 80, 80, 2);
+                for (int i = 1; i <= 2; i++)
+                    acrFlds.SetField("DisorderProgram" + i.ToString(), strSplit[i - 1]);
 
                 pdfStm.FormFlattening = true;
                 pdfStm.Close();
@@ -1840,27 +1842,21 @@ namespace OnlineAbit2013.Controllers
                 if (!String.IsNullOrEmpty(person.Reason ))
                     Reason = person.Reason;
 
-                string[] ss = GetSplittedStrings(Reason, 60, 60, 3);
+                string[] ss = GetSplittedStrings(Reason, 95, 95, 3);
                 for (int i = 1; i <= 3; i++)
                 {
                     acrFlds.SetField("Reason" + i, ss[i - 1]);
                 }
-                if (person.BirthDate.HasValue)
-                {
-                    acrFlds.SetField("BirthDateYear", person.BirthDate.Value.Year.ToString("D2"));
-                    acrFlds.SetField("BirthDateMonth", person.BirthDate.Value.Month.ToString("D2"));
-                    acrFlds.SetField("BirthDateDay", person.BirthDate.Value.Day.ToString());
-                }
+                
                 acrFlds.SetField("BirthPlace", person.BirthPlace);
                 acrFlds.SetField("BirthDate", person.BirthDate.Value.ToShortDateString());
-                acrFlds.SetField("BirthPlace", person.BirthPlace);
                 acrFlds.SetField("Nationality", person.Nationality);
                 acrFlds.SetField("PassportSeries", person.PassportSeries);
                 acrFlds.SetField("PassportNumber", person.PassportNumber);
                 acrFlds.SetField("PassportDate", person.PassportDate.Value.ToShortDateString());
                 acrFlds.SetField("PassportAuthor", person.PassportAuthor);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1934,7 +1930,10 @@ namespace OnlineAbit2013.Controllers
                 DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
                 string email = tbl.Rows[0].Field<string>("Email");
                 var person = (from x in context.Person
-                              join PersonChangeStudyFormReason in context.PersonChangeStudyFormReason on PersonId equals PersonChangeStudyFormReason.PersonId
+                              join Sem in context.Semester on x.PersonCurrentEducation.SemesterId equals Sem.Id into Sem2
+                              from Sem in Sem2.DefaultIfEmpty()
+
+
                               where x.Id == PersonId
                               select new
                               {
@@ -1966,7 +1965,8 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonAddInfo.HostelEduc,
                                   x.PersonContacts.Country.IsRussia,
                                   x.PersonCurrentEducation.LicenseProgramId,
-                                  x.PersonCurrentEducation.SemesterId
+                                  x.PersonCurrentEducation.SemesterId,
+                                  Sem.EducYear
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();
@@ -1998,6 +1998,7 @@ namespace OnlineAbit2013.Controllers
 
                 acrFlds.SetField("FIO", ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim());
                 acrFlds.SetField("Profession", abitList.ProfessionCode + " " + abitList.Profession);
+                acrFlds.SetField("ObrazProgram", abitList.ObrazProgram);
                 //if (abit.EntryType != 2)
                 acrFlds.SetField("Specialization", abitList.Specialization);
                 acrFlds.SetField("Faculty", abitList.Faculty);
@@ -2026,7 +2027,7 @@ namespace OnlineAbit2013.Controllers
 
                 acrFlds.SetField("Nationality", person.Nationality);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -2037,14 +2038,14 @@ namespace OnlineAbit2013.Controllers
 
                 string phones = (person.Phone ?? "") + ", e-mail: " + email + ", " + (person.Mobiles ?? "");
 
-                strSplit = GetSplittedStrings(phones, 30, 70, 2);
+                strSplit = GetSplittedStrings(phones, 70, 70, 2);
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("Phone" + i.ToString(), strSplit[i - 1]);
 
                 acrFlds.SetField("CurrentProfession", person.LicenseProgramId.HasValue ?
                     context.Entry.Where(x => x.LicenseProgramId == person.LicenseProgramId)
                     .Select(x => x.LicenseProgramName).FirstOrDefault() : "");
-                acrFlds.SetField("CurrentCourse", person.SemesterId.HasValue ? abitList.EducYear.ToString() : "-");
+                acrFlds.SetField("CurrentCourse", person.SemesterId.HasValue ? (person.EducYear.HasValue ? person.EducYear.ToString() : "-") : "-");
                 //acrFlds.SetField("Original", "0");
                 //acrFlds.SetField("Copy", "0");
                 //acrFlds.SetField("Language", PersonEducationDocument.Language.Name ?? "");
@@ -2333,7 +2334,7 @@ namespace OnlineAbit2013.Controllers
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("PassportAuthor" + i, splitStr[i - 1]);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country+  ", "), (person.City + ", ") ?? "") +
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -2628,7 +2629,7 @@ namespace OnlineAbit2013.Controllers
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("PassportAuthor" + i, splitStr[i - 1]);
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : ""), (person.City + ", ") ?? "") +
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);

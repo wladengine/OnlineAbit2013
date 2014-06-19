@@ -495,6 +495,9 @@
     <Content Include="Views\AbiturientNew\NewApplication_1kurs.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_AG.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Aspirant.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_ChangeObrazProgram.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_ChangeStudyBasis.aspx" />
+    <Content Include="Views\AbiturientNew\NewApplication_ChangeStudyForm.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Mag.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Recover.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_SPO.aspx" />

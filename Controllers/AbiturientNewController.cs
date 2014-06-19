@@ -603,6 +603,12 @@ namespace OnlineAbit2013.Controllers
                     Person.Sex = model.PersonInfo.Sex == "M" ? true : false;
                     Person.RegistrationStage = iRegStage < 2 ? 2 : iRegStage;
                     PersonContacts.CountryId = iCountryId;
+
+                    if (iCountryId != 193)
+                    {
+                        PersonContacts.RegionId = context.Country.Where(x => x.Id == iCountryId).Select(x => x.RegionId).DefaultIfEmpty(1).First();
+                    }
+
                     Person.HasRussianNationality = (NationalityId==193)? true :model.PersonInfo.HasRussianNationality;
 
                     if (bIns)
@@ -1773,7 +1779,12 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 model.StudyFormList = Util.GetStudyFormList();
                 model.StudyBasisList = Util.GetStudyBasisList();
                 model.SemestrList = Util.GetSemestrList();
-
+                model.SemestrId = (int?)Util.AbitDB.GetValue("SELECT S.NextSemesterId FROM PersonCurrentEducation P INNER JOIN Semester S ON S.Id = P.SemesterId WHERE PersonId=@PersonId", new SortedList<string, object>() { { "@PersonId", PersonId } }) ?? 3;
+                for (int i = 0; i < model.SemestrList.Count ; i++)
+                {
+                    if (model.SemestrList[i].Value == model.SemestrId.ToString())
+                        model.SemestrList[i].Selected = true;
+                }
                 return View("NewApplication_ChangeObrazProgram", model);
             }
         }

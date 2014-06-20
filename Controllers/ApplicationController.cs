@@ -116,7 +116,16 @@ namespace OnlineAbit2013.Controllers
                     IsPrinted = bIsPrinted
                     //StudyLevelId = tblAppsMain.First().StudyLevel,
                 };
-
+                var AppVers = context.ApplicationCommitVersion.Where(x => x.CommitId == CommitId).Select(x => x.VersionDate).FirstOrDefault();
+                if (AppVers == null)
+                {
+                    model.HasVersion = false;
+                }
+                else
+                {
+                    model.HasVersion = true;
+                    model.VersionDate = AppVers.ToString();
+                }
                 return View(model);
             }
         }

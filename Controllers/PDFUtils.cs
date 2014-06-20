@@ -418,7 +418,8 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonEducationDocument.TRKICertificateNumber,
                                   x.PersonAddInfo.ReturnDocumentTypeId,
                                   x.PersonAddInfo.HostelEduc,
-                                  x.PersonContacts.Country.IsRussia
+                                  x.PersonContacts.Country.IsRussia,
+                                  x.HasRussianNationality
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();

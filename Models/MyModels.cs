@@ -704,6 +704,8 @@ namespace OnlineAbit2013.Models
     public class ExtApplicationCommitModel : BaseModel
     {
         public Guid Id { get; set; }
+        public string VersionDate { get; set; }
+        public bool HasVersion { get; set; }
 
         public List<SimpleApplication> Applications { get; set; }
         public List<AppendedFile> Files { get; set; }

@@ -1280,6 +1280,22 @@ namespace OnlineAbit2013
             }
         }
         private ObjectSet<extApplicationDetails> _extApplicationDetails;
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        public ObjectSet<extDefaultEntryDetails> extDefaultEntryDetails
+        {
+            get
+            {
+                if ((_extDefaultEntryDetails == null))
+                {
+                    _extDefaultEntryDetails = base.CreateObjectSet<extDefaultEntryDetails>("extDefaultEntryDetails");
+                }
+                return _extDefaultEntryDetails;
+            }
+        }
+        private ObjectSet<extDefaultEntryDetails> _extDefaultEntryDetails;
 
         #endregion
 
@@ -1859,6 +1875,14 @@ namespace OnlineAbit2013
         public void AddToextApplicationDetails(extApplicationDetails extApplicationDetails)
         {
             base.AddObject("extApplicationDetails", extApplicationDetails);
+        }
+    
+        /// <summary>
+        /// Устаревший метод для добавления новых объектов в набор EntitySet extDefaultEntryDetails. Взамен можно использовать метод .Add связанного свойства ObjectSet&lt;T&gt;.
+        /// </summary>
+        public void AddToextDefaultEntryDetails(extDefaultEntryDetails extDefaultEntryDetails)
+        {
+            base.AddObject("extDefaultEntryDetails", extDefaultEntryDetails);
         }
 
         #endregion
@@ -3192,6 +3216,78 @@ namespace OnlineAbit2013
         private Nullable<global::System.Boolean> _HasInnerPriorities;
         partial void OnHasInnerPrioritiesChanging(Nullable<global::System.Boolean> value);
         partial void OnHasInnerPrioritiesChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CompetitionId
+        {
+            get
+            {
+                return _CompetitionId;
+            }
+            set
+            {
+                OnCompetitionIdChanging(value);
+                ReportPropertyChanging("CompetitionId");
+                _CompetitionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompetitionId");
+                OnCompetitionIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CompetitionId;
+        partial void OnCompetitionIdChanging(Nullable<global::System.Int32> value);
+        partial void OnCompetitionIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ApproverName
+        {
+            get
+            {
+                return _ApproverName;
+            }
+            set
+            {
+                OnApproverNameChanging(value);
+                ReportPropertyChanging("ApproverName");
+                _ApproverName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ApproverName");
+                OnApproverNameChanged();
+            }
+        }
+        private global::System.String _ApproverName;
+        partial void OnApproverNameChanging(global::System.String value);
+        partial void OnApproverNameChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DocInsertDate
+        {
+            get
+            {
+                return _DocInsertDate;
+            }
+            set
+            {
+                OnDocInsertDateChanging(value);
+                ReportPropertyChanging("DocInsertDate");
+                _DocInsertDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocInsertDate");
+                OnDocInsertDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DocInsertDate;
+        partial void OnDocInsertDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnDocInsertDateChanged();
 
         #endregion
 
@@ -5644,6 +5740,78 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsDeleted;
         partial void OnIsDeletedChanging(global::System.Boolean value);
         partial void OnIsDeletedChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CompetitionId
+        {
+            get
+            {
+                return _CompetitionId;
+            }
+            set
+            {
+                OnCompetitionIdChanging(value);
+                ReportPropertyChanging("CompetitionId");
+                _CompetitionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompetitionId");
+                OnCompetitionIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CompetitionId;
+        partial void OnCompetitionIdChanging(Nullable<global::System.Int32> value);
+        partial void OnCompetitionIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ApproverName
+        {
+            get
+            {
+                return _ApproverName;
+            }
+            set
+            {
+                OnApproverNameChanging(value);
+                ReportPropertyChanging("ApproverName");
+                _ApproverName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ApproverName");
+                OnApproverNameChanged();
+            }
+        }
+        private global::System.String _ApproverName;
+        partial void OnApproverNameChanging(global::System.String value);
+        partial void OnApproverNameChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DocInsertDate
+        {
+            get
+            {
+                return _DocInsertDate;
+            }
+            set
+            {
+                OnDocInsertDateChanging(value);
+                ReportPropertyChanging("DocInsertDate");
+                _DocInsertDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocInsertDate");
+                OnDocInsertDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DocInsertDate;
+        partial void OnDocInsertDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnDocInsertDateChanged();
 
         #endregion
 
@@ -11247,6 +11415,169 @@ namespace OnlineAbit2013
         private global::System.String _ObrazProgramCrypt;
         partial void OnObrazProgramCryptChanging(global::System.String value);
         partial void OnObrazProgramCryptChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// Нет доступной документации по метаданным.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OnlinePriem2012Model", Name="extDefaultEntryDetails")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class extDefaultEntryDetails : EntityObject
+    {
+        #region Фабричный метод
+    
+        /// <summary>
+        /// Создание нового объекта extDefaultEntryDetails.
+        /// </summary>
+        /// <param name="entryId">Исходное значение свойства EntryId.</param>
+        /// <param name="obrazProgramInEntryId">Исходное значение свойства ObrazProgramInEntryId.</param>
+        /// <param name="defaultPriorityValue">Исходное значение свойства DefaultPriorityValue.</param>
+        public static extDefaultEntryDetails CreateextDefaultEntryDetails(global::System.Guid entryId, global::System.Guid obrazProgramInEntryId, global::System.Int32 defaultPriorityValue)
+        {
+            extDefaultEntryDetails extDefaultEntryDetails = new extDefaultEntryDetails();
+            extDefaultEntryDetails.EntryId = entryId;
+            extDefaultEntryDetails.ObrazProgramInEntryId = obrazProgramInEntryId;
+            extDefaultEntryDetails.DefaultPriorityValue = defaultPriorityValue;
+            return extDefaultEntryDetails;
+        }
+
+        #endregion
+
+        #region Свойства-примитивы
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid EntryId
+        {
+            get
+            {
+                return _EntryId;
+            }
+            set
+            {
+                if (_EntryId != value)
+                {
+                    OnEntryIdChanging(value);
+                    ReportPropertyChanging("EntryId");
+                    _EntryId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("EntryId");
+                    OnEntryIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _EntryId;
+        partial void OnEntryIdChanging(global::System.Guid value);
+        partial void OnEntryIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ObrazProgramInEntryId
+        {
+            get
+            {
+                return _ObrazProgramInEntryId;
+            }
+            set
+            {
+                if (_ObrazProgramInEntryId != value)
+                {
+                    OnObrazProgramInEntryIdChanging(value);
+                    ReportPropertyChanging("ObrazProgramInEntryId");
+                    _ObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ObrazProgramInEntryId");
+                    OnObrazProgramInEntryIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _ObrazProgramInEntryId;
+        partial void OnObrazProgramInEntryIdChanging(global::System.Guid value);
+        partial void OnObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 DefaultPriorityValue
+        {
+            get
+            {
+                return _DefaultPriorityValue;
+            }
+            set
+            {
+                if (_DefaultPriorityValue != value)
+                {
+                    OnDefaultPriorityValueChanging(value);
+                    ReportPropertyChanging("DefaultPriorityValue");
+                    _DefaultPriorityValue = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("DefaultPriorityValue");
+                    OnDefaultPriorityValueChanged();
+                }
+            }
+        }
+        private global::System.Int32 _DefaultPriorityValue;
+        partial void OnDefaultPriorityValueChanging(global::System.Int32 value);
+        partial void OnDefaultPriorityValueChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ProfileInObrazProgramInEntryId
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryId;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryIdChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryId");
+                _ProfileInObrazProgramInEntryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryId");
+                OnProfileInObrazProgramInEntryIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ProfileInObrazProgramInEntryId;
+        partial void OnProfileInObrazProgramInEntryIdChanging(Nullable<global::System.Guid> value);
+        partial void OnProfileInObrazProgramInEntryIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ProfileInObrazProgramInEntryDefaultPriorityValue
+        {
+            get
+            {
+                return _ProfileInObrazProgramInEntryDefaultPriorityValue;
+            }
+            set
+            {
+                OnProfileInObrazProgramInEntryDefaultPriorityValueChanging(value);
+                ReportPropertyChanging("ProfileInObrazProgramInEntryDefaultPriorityValue");
+                _ProfileInObrazProgramInEntryDefaultPriorityValue = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileInObrazProgramInEntryDefaultPriorityValue");
+                OnProfileInObrazProgramInEntryDefaultPriorityValueChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ProfileInObrazProgramInEntryDefaultPriorityValue;
+        partial void OnProfileInObrazProgramInEntryDefaultPriorityValueChanging(Nullable<global::System.Int32> value);
+        partial void OnProfileInObrazProgramInEntryDefaultPriorityValueChanged();
 
         #endregion
 

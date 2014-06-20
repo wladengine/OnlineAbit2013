@@ -35,11 +35,11 @@
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
             $(function () { setTimeout(GetCities, 50) });
-            $(function () { setTimeout(GetProfessions) });
+            $(function () { setTimeout(GetProfessions, 50) });
 
-            <% if (!String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) {%>
-            $(function () { setTimeout(GetObrazPrograms) });
-            <%} %>
+            <% if (!String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) { %>
+            $(function () { setTimeout(GetObrazPrograms, 50) });
+            <% } %>
 
             function Myfun() {
                 var profId = $('#CurrentEducation_LicenseProgramId').val();
@@ -156,21 +156,10 @@
                 }
                 var SchoolTypeId = $('#EducationInfo_SchoolTypeId').val();
                 if (SchoolTypeId == '4') {
-                    if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
+                    if (($('#EducationInfo_VuzAdditionalTypeId').val() == 2)||($('#EducationInfo_VuzAdditionalTypeId').val() == 3)){
                         $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
-                        $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
-                            $('#_TransferSPBUAddInfo').show();
-                            $('#_AccreditationInfo').hide();
-                        }
-                        else { 
-                            $('#_TransferSPBUAddInfo').hide();
-                            $('#_AccreditationInfo').show();
-                        }
-                        if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
-                            $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
-                            $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
-                        }
-
+                        $('#EducationInfo_SchoolCity').val("Санкт-Петербург"); 
+                      }
                 }
                 return ret;
             }
@@ -289,9 +278,7 @@
             function UpdateVuzAddType() {
                 if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
                     $('#_TransferData').show();
-                    $('#_TransferHasScholarship').show();
-                    $('#_CountryEduc').hide();
-                    $('#_RegionEduc').hide();
+                    $('#_TransferHasScholarship').show(); 
                     $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
                     $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
                     $('#_AccreditationInfo').hide();
@@ -313,13 +300,12 @@
                         if ($('#EducationInfo_CountryEducId').val() == '193') { $('#_TransferHasScholarship').show(); }
                         else { $('#_TransferHasScholarship').hide(); }
                         if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
-                            $('#_AccreditationInfo').hide();
-                            $('#_TransferSPBUAddInfo').show();
+                            $('#_AccreditationInfo').hide(); 
                         }
                         else {
                             $('#_AccreditationInfo').show();
-                            $('#_TransferSPBUAddInfo').hide();
-                        }
+                        } 
+                        $('#_TransferSPBUAddInfo').hide();
                         $('#_DisorderInfo').hide();
                         $('#_mainpriem1').hide();
                         $('#_mainpriem2').hide();
@@ -341,6 +327,7 @@
                             $('#LabelEducationInfo_SchoolName').hide();
                             $('#_DisorderInfo').show();
                             $('#_mainpriem1').hide();
+                            $('#_TransferSPBUAddInfo').hide();
                             $('#_mainpriem2').hide();
                             $('#LabelEducationInfo_CountryCurEducId').show();
                             $('#LabelEducationInfo_CountryEducId').hide();
@@ -373,11 +360,13 @@
                     }
                 }
                 $('#_CountryEduc').show();
-                if ($('#EducationInfo_CountryEducId').val() == "193")
-                    $('#_RegionEduc').show();
+                $('#_regionEduc').show();
+                if ($('#EducationInfo_CountryEducId').val() != "193"){
+                    $('#_regionEduc').hide();
+                }
                 if (($('#EducationInfo_VuzAdditionalTypeId').val() == 2)||($('#EducationInfo_VuzAdditionalTypeId').val() == 3)){
                     $('#_CountryEduc').hide();
-                    $('#_RegionEduc').hide();
+                    $('#_regionEduc').hide();
                 }
             }
 

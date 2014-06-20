@@ -1672,7 +1672,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                     if (VuzAddType.HasValue)
                     {
-                        if ((int)VuzAddType == 2)
+                        if ((int)VuzAddType == 4)
                             model.MaxBlocks = 1;
                         else
                             model.Enabled = false;

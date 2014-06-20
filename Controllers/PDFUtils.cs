@@ -804,7 +804,7 @@ namespace OnlineAbit2013.Controllers
 
             acrFlds.SetField("LicenseProgram", LicenseProgramName);
             int rwind = 1;
-            foreach (var p in lst.Select(x => new { x.ObrazProgramName, x.ObrazProgramInEntryPriority }).Distinct().OrderBy(x => x.ObrazProgramName))
+            foreach (var p in lst.Select(x => new { x.ObrazProgramName, x.ObrazProgramInEntryPriority }).Distinct().OrderBy(x => x.ObrazProgramInEntryPriority))
             {
                 acrFlds.SetField("ObrazProgram" + rwind++, p.ObrazProgramName);
             }

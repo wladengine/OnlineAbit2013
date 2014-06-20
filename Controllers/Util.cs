@@ -1796,7 +1796,44 @@ WHERE PersonId=@PersonId ";
             foreach (var AppId in Ids)
             {
                 var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                if (App == null)
+                    continue;
+
                 App.IsCommited = true;
+                var AppDetails_exists = context.extApplicationDetails.Where(x => x.ApplicationId == AppId).Select(x => new
+                    {
+                        EntryId = App.EntryId,
+                        ObrazProgramInEntryId = x.ObrazProgramInEntryId,
+                        ProfileInObrazProgramInEntryId = x.ProfileInObrazProgramInEntryId
+                    }).ToList();
+                var AppDetails_clearFullList = context.extDefaultEntryDetails.Where(x => x.EntryId == App.EntryId).Select(x => new
+                {
+                    EntryId = App.EntryId,
+                    ObrazProgramInEntryId = x.ObrazProgramInEntryId,
+                    ProfileInObrazProgramInEntryId = x.ProfileInObrazProgramInEntryId,
+                    x.DefaultPriorityValue,
+                    x.ProfileInObrazProgramInEntryDefaultPriorityValue
+                }).ToList();
+                foreach (var Details in AppDetails_clearFullList)
+                {
+                    var lstI = AppDetails_exists.Where(x => x.ObrazProgramInEntryId == Details.ObrazProgramInEntryId);
+                    if (Details.ProfileInObrazProgramInEntryId.HasValue)
+                        lstI = lstI.Where(x => x.ProfileInObrazProgramInEntryId == Details.ProfileInObrazProgramInEntryId);
+                    else
+                        lstI = lstI.Where(x => x.ProfileInObrazProgramInEntryId == null);
+                    if (lstI.Count() == 0)
+                    {
+                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                        {
+                            Id = Guid.NewGuid(),
+                            ApplicationId = AppId,
+                            ObrazProgramInEntryId = Details.ObrazProgramInEntryId,
+                            ObrazProgramInEntryPriority = Details.DefaultPriorityValue,
+                            ProfileInObrazProgramInEntryId = Details.ProfileInObrazProgramInEntryId,
+                            ProfileInObrazProgramInEntryPriority = Details.ProfileInObrazProgramInEntryDefaultPriorityValue
+                        });
+                    }
+                }
             }
             context.SaveChanges();
 

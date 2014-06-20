@@ -469,8 +469,32 @@ namespace OnlineAbit2013.Controllers
                     {
                         lstApps[u].InnerPrioritiesNum = incrmtr; //то пишем об этом
                         //и сразу же создаём приложение с описанием - потом приложим
-                        lstAppendixes.Add(GetApplicationPDF_ProfileAppendix(abitProfileList.Where(x => x.ApplicationId == lstApps[u].ApplicationId).ToList(), lstApps[u].LicenseProgramName, FIO, dirPath, incrmtr));
-                        incrmtr++;
+
+                        if (isMag) //для магов всё просто
+                        {
+                            lstAppendixes.Add(GetApplicationPDF_ProfileAppendix_Mag(abitProfileList.Where(x => x.ApplicationId == lstApps[u].ApplicationId).ToList(), lstApps[u].LicenseProgramName, FIO, dirPath, incrmtr));
+                            incrmtr++;
+                        }
+                        else //для перваков всё запутаннее
+                        {   //сначала надо проверить, нет ли внутреннего разбиения по программам
+                            //если есть, то для каждой программы сделать своё приложение, а затем уже для тех программ, где есть внутри профили доложить приложений с профилями
+                            var profs = abitProfileList.Where(x => x.ApplicationId == lstApps[u].ApplicationId).ToList();
+                            var OP = profs.Select(x => x.ObrazProgramName).Distinct().ToList();
+                            if (OP.Count > 1)
+                            {
+                                lstAppendixes.Add(GetApplicationPDF_OPAppendix_1kurs(profs, lstApps[u].LicenseProgramName, FIO, dirPath, incrmtr));
+                                incrmtr++;
+                            }
+                            foreach (var OP_name in OP)
+                            {
+                                var lstProfs = abitProfileList.Where(x => x.ApplicationId == lstApps[u].ApplicationId && x.ObrazProgramName == OP_name).ToList();
+                                if (lstProfs.Count > 1)
+                                {
+                                    lstAppendixes.Add(GetApplicationPDF_ProfileAppendix_1kurs(lstProfs, lstApps[u].LicenseProgramName, FIO, dirPath, incrmtr));
+                                    incrmtr++;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -709,24 +733,12 @@ namespace OnlineAbit2013.Controllers
                     acrFlds.SetField("Comission" + comInd++, comission);
                 }
 
-                //int rwInd = 1;
-                //if (!isMag)
-                //{
-                //    foreach (var abit in abitList.OrderBy(x => x.Priority))
-                //    {
-                //        acrFlds.SetField("Profession" + rwInd, abit.ProfessionCode + " " + abit.Profession);
-                //        acrFlds.SetField("Specialization" + rwInd, abit.Specialization);
-                //        acrFlds.SetField("ObrazProgram" + rwInd, abit.ObrazProgram);
-                //        acrFlds.SetField("Priority" + rwInd, abit.Priority.ToString());
+                //ApplicationCommit.IsPrinted
+                var Commt = context.ApplicationCommit.Where(x => x.Id == appId).FirstOrDefault();
+                if (Commt != null)
+                    Commt.IsPrinted = true;
 
-                //        acrFlds.SetField("StudyForm" + abit.StudyFormId + rwInd, "1");
-                //        acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rwInd, "1");
-
-                //        if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
-                //            acrFlds.SetField("IsPriority" + rwInd, "1");
-                //        rwInd++;
-                //    }
-                //}
+                context.SaveChanges();
 
                 pdfStm.FormFlattening = true;
                 pdfStm.Close();
@@ -738,7 +750,70 @@ namespace OnlineAbit2013.Controllers
             }
         }
 
-        public static byte[] GetApplicationPDF_ProfileAppendix(List<ShortAppcationDetails> lst, string LicenseProgramName, string FIO, string dirPath, int Num)
+        public static byte[] GetApplicationPDF_ProfileAppendix_Mag(List<ShortAppcationDetails> lst, string LicenseProgramName, string FIO, string dirPath, int Num)
+        {
+            MemoryStream ms = new MemoryStream();
+            string dotName = "PriorityProfiles_Mag2014.pdf";
+
+            byte[] templateBytes;
+            using (FileStream fs = new FileStream(dirPath + dotName, FileMode.Open, FileAccess.Read))
+            {
+                templateBytes = new byte[fs.Length];
+                fs.Read(templateBytes, 0, templateBytes.Length);
+            }
+
+            PdfReader pdfRd = new PdfReader(templateBytes);
+            PdfStamper pdfStm = new PdfStamper(pdfRd, ms);
+            //pdfStm.SetEncryption(PdfWriter.STRENGTH128BITS, "", "", PdfWriter.ALLOW_SCREENREADERS | PdfWriter.ALLOW_PRINTING | PdfWriter.AllowPrinting);
+            AcroFields acrFlds = pdfStm.AcroFields;
+            acrFlds.SetField("Num", Num.ToString());
+            acrFlds.SetField("FIO", FIO);
+
+            acrFlds.SetField("ObrazProgramHead", lst.First().ObrazProgramName);
+            acrFlds.SetField("LicenseProgram", LicenseProgramName);
+            acrFlds.SetField("ObrazProgram", lst.First().ObrazProgramName);
+            int rwind = 1;
+            foreach (var p in lst.OrderBy(x => x.ProfileInObrazProgramInEntryPriority))
+                acrFlds.SetField("Profile" + rwind++, p.ProfileName);
+
+            pdfStm.FormFlattening = true;
+            pdfStm.Close();
+            pdfRd.Close();
+
+            return ms.ToArray();
+        }
+        public static byte[] GetApplicationPDF_OPAppendix_1kurs(List<ShortAppcationDetails> lst, string LicenseProgramName, string FIO, string dirPath, int Num)
+        {
+            MemoryStream ms = new MemoryStream();
+            string dotName = "PriorityOP2014.pdf";
+
+            byte[] templateBytes;
+            using (FileStream fs = new FileStream(dirPath + dotName, FileMode.Open, FileAccess.Read))
+            {
+                templateBytes = new byte[fs.Length];
+                fs.Read(templateBytes, 0, templateBytes.Length);
+            }
+
+            PdfReader pdfRd = new PdfReader(templateBytes);
+            PdfStamper pdfStm = new PdfStamper(pdfRd, ms);
+            //pdfStm.SetEncryption(PdfWriter.STRENGTH128BITS, "", "", PdfWriter.ALLOW_SCREENREADERS | PdfWriter.ALLOW_PRINTING | PdfWriter.AllowPrinting);
+            AcroFields acrFlds = pdfStm.AcroFields;
+            acrFlds.SetField("Num", Num.ToString());
+            acrFlds.SetField("FIO", FIO);
+
+            acrFlds.SetField("LicenseProgram", LicenseProgramName);
+            int rwind = 1;
+            foreach (var p in lst.Select(x => new { x.ObrazProgramName, x.ObrazProgramInEntryPriority }).Distinct().OrderBy(x => x.ObrazProgramName))
+            {
+                acrFlds.SetField("ObrazProgram" + rwind++, p.ObrazProgramName);
+            }
+            pdfStm.FormFlattening = true;
+            pdfStm.Close();
+            pdfRd.Close();
+
+            return ms.ToArray();
+        }
+        public static byte[] GetApplicationPDF_ProfileAppendix_1kurs(List<ShortAppcationDetails> lst, string LicenseProgramName, string FIO, string dirPath, int Num)
         {
             MemoryStream ms = new MemoryStream();
             string dotName = "PriorityProfiles2014.pdf";
@@ -769,7 +844,7 @@ namespace OnlineAbit2013.Controllers
             pdfRd.Close();
 
             return ms.ToArray();
-        }
+        }        
 
         public static byte[] GetApplicationPDF_FirstPage(List<ShortAppcation> lst, List<ShortAppcation> lstFullSource, string dirPath, string dotName, string FIO, string Version, string code, bool isMag)
         {

@@ -196,6 +196,15 @@
       [extApplicationDetails].[ObrazProgramCrypt] AS [ObrazProgramCrypt]
       FROM [dbo].[extApplicationDetails] AS [extApplicationDetails]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="extDefaultEntryDetails" EntityType="OnlinePriem2012Model.Store.extDefaultEntryDetails" store:Type="Views" store:Schema="dbo" store:Name="extDefaultEntryDetails">
+            <DefiningQuery>SELECT 
+      [extDefaultEntryDetails].[EntryId] AS [EntryId], 
+      [extDefaultEntryDetails].[ObrazProgramInEntryId] AS [ObrazProgramInEntryId], 
+      [extDefaultEntryDetails].[DefaultPriorityValue] AS [DefaultPriorityValue], 
+      [extDefaultEntryDetails].[ProfileInObrazProgramInEntryId] AS [ProfileInObrazProgramInEntryId], 
+      [extDefaultEntryDetails].[ProfileInObrazProgramInEntryDefaultPriorityValue] AS [ProfileInObrazProgramInEntryDefaultPriorityValue]
+      FROM [dbo].[extDefaultEntryDetails] AS [extDefaultEntryDetails]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AG_Application_AG_Entry" Association="OnlinePriem2012Model.Store.FK_AG_Application_AG_Entry">
             <End Role="AG_Entry" EntitySet="AG_Entry" />
             <End Role="AG_Application" EntitySet="AG_Application" />
@@ -823,7 +832,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -833,7 +842,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -1163,6 +1172,7 @@
           <Property Name="EducYear" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="IsIGA" Type="bit" Nullable="false" />
+          <Property Name="NextSemesterId" Type="int" />
         </EntityType>
         <EntityType Name="SP_Faculty">
           <Key>
@@ -1264,8 +1274,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1350,8 +1360,8 @@
           <Property Name="HasInnerPriorities" Type="bit" />
           <Property Name="IsImported" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1422,8 +1432,8 @@
           <Property Name="ComissionId" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="350" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extApplicationDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -1445,6 +1455,21 @@
           <Property Name="CurrVersion" Type="int" />
           <Property Name="CurrDate" Type="datetime" />
           <Property Name="ObrazProgramCrypt" Type="nvarchar" Nullable="false" MaxLength="53" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extDefaultEntryDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="extDefaultEntryDetails">
+          <Key>
+            <PropertyRef Name="EntryId" />
+            <PropertyRef Name="ObrazProgramInEntryId" />
+            <PropertyRef Name="DefaultPriorityValue" />
+          </Key>
+          <Property Name="EntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DefaultPriorityValue" Type="int" Nullable="false" />
+          <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
+          <Property Name="ProfileInObrazProgramInEntryDefaultPriorityValue" Type="int" />
         </EntityType>
         <Association Name="FK_AG_Application_AG_Entry">
           <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="1" />
@@ -2485,6 +2510,7 @@
           </AssociationSet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Entry" />
           <EntitySet Name="extApplicationDetails" EntityType="OnlinePriem2012Model.extApplicationDetails" />
+          <EntitySet Name="extDefaultEntryDetails" EntityType="OnlinePriem2012Model.extDefaultEntryDetails" />
           </EntityContainer>
         <EntityType Name="PassportType">
           <Key>
@@ -2634,6 +2660,7 @@
           <NavigationProperty Name="PersonCurrentEducation" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Semester" FromRole="Semester" ToRole="PersonCurrentEducation" />
           <Property Type="Boolean" Name="IsIGA" Nullable="false" />
           <NavigationProperty Name="C_Entry" Relationship="OnlinePriem2012Model.FK_Entry_Semester" FromRole="Semester" ToRole="C_Entry" />
+          <Property Type="Int32" Name="NextSemesterId" />
         </EntityType>
         <EntityType Name="SP_StudyLevel">
           <Key>
@@ -4283,6 +4310,18 @@
           <Property Type="DateTime" Name="CurrDate" Precision="3" />
           <Property Type="String" Name="ObrazProgramCrypt" Nullable="false" MaxLength="53" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="extDefaultEntryDetails">
+          <Key>
+            <PropertyRef Name="EntryId" />
+            <PropertyRef Name="DefaultPriorityValue" />
+            <PropertyRef Name="ObrazProgramInEntryId" />
+          </Key>
+          <Property Type="Guid" Name="EntryId" Nullable="false" />
+          <Property Type="Int32" Name="DefaultPriorityValue" Nullable="false" />
+          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
+          <Property Type="Int32" Name="ProfileInObrazProgramInEntryDefaultPriorityValue" />
+          <Property Type="Guid" Name="ObrazProgramInEntryId" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4423,6 +4462,7 @@
           <EntitySetMapping Name="Semester">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Semester">
               <MappingFragment StoreEntitySet="Semester">
+                <ScalarProperty Name="NextSemesterId" ColumnName="NextSemesterId" />
                 <ScalarProperty Name="IsIGA" ColumnName="IsIGA" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EducYear" ColumnName="EducYear" />
@@ -5321,6 +5361,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="extDefaultEntryDetails">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.extDefaultEntryDetails">
+              <MappingFragment StoreEntitySet="extDefaultEntryDetails">
+                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryDefaultPriorityValue" ColumnName="ProfileInObrazProgramInEntryDefaultPriorityValue" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
+                <ScalarProperty Name="DefaultPriorityValue" ColumnName="DefaultPriorityValue" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -5636,6 +5687,7 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.Entry" Width="2.75" PointX="17.375" PointY="0.75" Height="9.4800423177083317" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.extApplicationDetails" Width="1.5" PointX="3.5096489281904177" PointY="12.708090475158809" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.extDefaultEntryDetails" Width="1.5" PointX="1.3694821229993748" PointY="25.872288805373149" />
         </Diagram>
     </Diagrams>
   </Designer>

@@ -44,50 +44,6 @@
             $('#fileAttachment').change(ValidateInput);
             $('#MotivateAttachment').change(ValidateInput_Motivate);
             $('#EssayAttachment').change(ValidateInput_Essay);
-            $("#rejectBtn")
-                .button().click(function () {
-                    $("#dialog-form").dialog("open");
-                });
-                $("#dialog:ui-dialog").dialog("destroy");
-                $('#fileAttachment').change(ValidateInput);
-                $("#dialog-form").dialog(
-                {
-                    autoOpen: false,
-                    height: 400,
-                    width: 350,
-                    modal: true,
-                    buttons: 
-                    {
-                        "Да": function () 
-                        {
-                            $.post('/Application/Disable', { id: '<%= Model.Id.ToString("N") %>' }, function (res) 
-                            {
-                                if (res.IsOk) 
-                                {
-                                    if (!res.Enabled) 
-                                    {
-                                        $('#appStatus').removeClass("Green").addClass("Red").text("Отозвано");
-                                        $('#rejectApp').html('').hide();
-                                        $("#dialog-form").dialog("close");
-                                    }
-                                }
-                                else 
-                                {
-                                    //message to the user
-                                    $('#errMessage').text(res.ErrorMessage).addClass("ui-state-highlight");
-                                    setTimeout(function () 
-                                    {
-                                        $('#errMessage').removeClass("ui-state-highlight", 1500);
-                                    }, 500);
-                                }
-                            }, 'json');
-                        },
-                        "Нет": function () 
-                        {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
         }); 
     function ValidateInput() {
         var size = 0;
@@ -254,8 +210,8 @@
 <% if (Model.EntryTypeId != 2 && (Model.AbiturientType == OnlineAbit2013.Models.AbitType.AG || Model.AbiturientType == OnlineAbit2013.Models.AbitType.FirstCourseBakSpec))
    { %>
    <div class="message info">
-    <b><%= GetGlobalResourceObject("NewApplication", "PrintFormWarning1")%><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.CommitId.ToString("N")) %>"><%= GetGlobalResourceObject("NewApplication", "PrintFormWarning2")%></b> 
-   </div>
+    <b><%= GetGlobalResourceObject("NewApplication", "PrintFormWarning1")%> <%= GetGlobalResourceObject("NewApplication", "PrintFormWarning2")%></b> 
+   </div><br />
    <div id="map" style="width:600px;height:300px"></div>
 <% } %>
 <% else if (Model.EntryTypeId == 2)

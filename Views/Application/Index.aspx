@@ -65,6 +65,22 @@
                         }
                     }
                 });
+            $("#dialog-form-print-app").dialog(
+                {
+                    autoOpen: false,
+                    height: 400,
+                    width: 350,
+                    modal: true,
+                    buttons:
+                    {
+                        "Да (yes)": function () {
+                            window.open('<%= string.Format("https://cabinet.spbu.ru/Application/GetPrint/{0}", Model.Id.ToString("N")) %>', '');
+                        },
+                        "Нет (no)": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
         }); 
     function ValidateInput() {
         var size = 0;
@@ -121,6 +137,7 @@
                 <img  src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
             </a>
         </td>
+        <% if (!Model.IsPrinted) { %>
         <td>
             <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
@@ -131,12 +148,15 @@
                 <img src="../../Content/themes/base/images/File_edit064.png" alt="Редактировать заявление" />
             </a>
         </td>
+        <% } %>
     </tr>
     <tr>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "Download")%></td>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationDelete")%></td>
+        <% if (!Model.IsPrinted) { %>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationPriorityChange")%></td>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationChange")%></td>
+        <% } %>
     </tr>
 
     <tr>
@@ -148,6 +168,14 @@
     <h5><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></h5>
     <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning2")%>.</p>
     <h4><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning3")%></h4>
+</div>
+
+<div id="dialog-form-print-app">
+    <p class="errMessage"></p>
+    <p>Вы собираетесь закончить формирование заявления и распечатать его.</p>
+    <h5>Обращаем Ваше внимание!</h5>
+    <p>После окончательного формирования Заявления внести изменения в список программ и изменить их приоритетность можно будет только путем  удаления данного заявления и формирования нового. Внести изменения в приоритетность профилей можно будет только путем личного обращения в Комиссию по приему документов.</p>
+    <h4>Вы желаете закончить формирование заявления и распечатать его?</h4>
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />

@@ -16445,6 +16445,102 @@ namespace OnlineAbit2013
         private Nullable<global::System.Int32> _RegionId;
         partial void OnRegionIdChanging(Nullable<global::System.Int32> value);
         partial void OnRegionIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> StudyFormId
+        {
+            get
+            {
+                return _StudyFormId;
+            }
+            set
+            {
+                OnStudyFormIdChanging(value);
+                ReportPropertyChanging("StudyFormId");
+                _StudyFormId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StudyFormId");
+                OnStudyFormIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _StudyFormId;
+        partial void OnStudyFormIdChanging(Nullable<global::System.Int32> value);
+        partial void OnStudyFormIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> StudyBasisId
+        {
+            get
+            {
+                return _StudyBasisId;
+            }
+            set
+            {
+                OnStudyBasisIdChanging(value);
+                ReportPropertyChanging("StudyBasisId");
+                _StudyBasisId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StudyBasisId");
+                OnStudyBasisIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _StudyBasisId;
+        partial void OnStudyBasisIdChanging(Nullable<global::System.Int32> value);
+        partial void OnStudyBasisIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ObrazProgramId
+        {
+            get
+            {
+                return _ObrazProgramId;
+            }
+            set
+            {
+                OnObrazProgramIdChanging(value);
+                ReportPropertyChanging("ObrazProgramId");
+                _ObrazProgramId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ObrazProgramId");
+                OnObrazProgramIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ObrazProgramId;
+        partial void OnObrazProgramIdChanging(Nullable<global::System.Int32> value);
+        partial void OnObrazProgramIdChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ProfileId
+        {
+            get
+            {
+                return _ProfileId;
+            }
+            set
+            {
+                OnProfileIdChanging(value);
+                ReportPropertyChanging("ProfileId");
+                _ProfileId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileId");
+                OnProfileIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ProfileId;
+        partial void OnProfileIdChanging(Nullable<global::System.Guid> value);
+        partial void OnProfileIdChanged();
 
         #endregion
 
@@ -20777,6 +20873,30 @@ namespace OnlineAbit2013
         private global::System.Boolean _IsIGA;
         partial void OnIsIGAChanging(global::System.Boolean value);
         partial void OnIsIGAChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> NextSemesterId
+        {
+            get
+            {
+                return _NextSemesterId;
+            }
+            set
+            {
+                OnNextSemesterIdChanging(value);
+                ReportPropertyChanging("NextSemesterId");
+                _NextSemesterId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("NextSemesterId");
+                OnNextSemesterIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _NextSemesterId;
+        partial void OnNextSemesterIdChanging(Nullable<global::System.Int32> value);
+        partial void OnNextSemesterIdChanged();
 
         #endregion
 

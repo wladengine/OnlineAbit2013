@@ -294,6 +294,7 @@ namespace OnlineAbit2013.Models
         public string EnglishMark { get; set; }
 
         public List<SelectListItem> StudyFormList { get; set; }
+        public List<SelectListItem> StudyBasisList { get; set; }
         public List<SelectListItem> QualificationList { get; set; }
         public List<SelectListItem> CountryList { get; set; }
         public List<SelectListItem> LanguageList { get; set; }
@@ -402,9 +403,15 @@ namespace OnlineAbit2013.Models
         public List<SelectListItem> SemesterList { get; set; }
         public string StudyLevelId { get; set; }
         public List<SelectListItem> StudyLevelList { get; set; }
-        public string LicenseProgramId { get; set; }
+        
         public string ProfileName { get; set; }
         public List<SelectListItem> LicenceProgramList { get; set; }
+        public int StudyFormId { get; set; }
+        public int StudyBasisId { get; set; }
+        public string LicenseProgramId { get; set; }
+        public string ObrazProgramId { get; set; }
+        public string HiddenLicenseProgramId { get; set; }
+        public string HiddenObrazProgramId { get; set; }
     }
     /// <summary>
     /// Сведения о том, когда отчислили

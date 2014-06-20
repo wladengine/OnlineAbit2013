@@ -35,16 +35,87 @@
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
             $(function () { setTimeout(GetCities, 50) });
-            
-            function GetLicenseProgramList() {
-                $.post('AbiturientNew/GetLicenseProgramList', { slId: $('#CurrentEducation_StudyLevelId').val() }, function (json_data) {
+            $(function () { setTimeout(GetProfessions) });
+
+            <% if (!String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) {%>
+            $(function () { setTimeout(GetObrazPrograms) });
+            <%} %>
+
+            function Myfun() {
+                var profId = $('#CurrentEducation_LicenseProgramId').val();
+                $('#CurrentEducation_HiddenLicenseProgramId').val(profId);
+                var obrzId = $('#CurrentEducation_ObrazProgramId').val();
+                $('#CurrentEducation_HiddenObrazProgramId').val(obrzId);
+            }
+             
+            function GetProfessions() {
+                if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
+                    var CurLevelId = $('#CurrentEducation_StudyLevelId').val();
+                    if (CurLevelId == 15) CurLevelId = 4;
+                    else if (CurLevelId == 16) CurLevelId = 1;
+                    else if (CurLevelId == 17) CurLevelId = 2;
+                    else if (CurLevelId == 18) CurLevelId = 1;
+                    var CurrlObrazProgram = '#CurrentEducation_ObrazProgramId';
+                    var CurrlProfession = '#CurrentEducation_LicenseProgramId';
+                    var sfId = $('#CurrentEducation_StudyFormId').val();
+                     
+                    var curSemester = $('#CurrentEducation_SemesterId').val();
+                     
+                    $.post('/AbiturientNew/GetProfs', { studyform: sfId, studybasis: $('#CurrentEducation_StudyBasisId').val(),
+                        entry: CurLevelId,
+                        semesterId: curSemester
+                    }, function (json_data) {
+                        var options = '';
+                        if (json_data.NoFree) {
+                            $('#CurrentEducation_LicenseProgramId').html('');
+                            $('#CurrentEducation_ObrazProgramId').html('');
+                        }
+                        else {
+                            for (var i = 0; i < json_data.length; i++) {
+                                options += '<option value="' + json_data[i].Id +'"';
+                                if (json_data[i].Id == $('#CurrentEducation_HiddenLicenseProgramId').val())
+                                    options += ' selected="true" ';
+                                options += ' >' + json_data[i].Name + '</option>';
+                            }
+                            $('#CurrentEducation_LicenseProgramId').html(options);
+                            $('#CurrentEducation_ObrazProgramId').html('');
+                        }
+                    }, 'json');
+                }
+            }
+            function GetObrazPrograms() {
+                var CurrlObrazProgram = '#CurrentEducation_ObrazProgramId'; 
+                var profId = $('#CurrentEducation_LicenseProgramId').val();
+                var sfId = $('#CurrentEducation_StudyFormId').val();
+                if (profId == null){
+                    profId = $('#CurrentEducation_HiddenLicenseProgramId').val();
+                }
+                $('#_ObrazProg').show();
+                var CurLevelId = $('#CurrentEducation_StudyLevelId').val();
+                if (CurLevelId == 15) CurLevelId = 4;
+                else if (CurLevelId == 16) CurLevelId = 1;
+                else if (CurLevelId == 17) CurLevelId = 2;
+                else if (CurLevelId == 18) CurLevelId = 1;
+                var curSemester = $('#CurrentEducation_SemesterId').val();
+                $.post('/Transfer/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#CurrentEducation_StudyBasisId').val(),
+                    entry: CurLevelId, semesterId: curSemester
+                }, function (json_data) {
                     var options = '';
-                    for (var i = 0; i < json_data.length; i++) {
-                        options += '<option value="' + json_data[i].Id + '">' + json_data[i].Name + '</option>';
+                    if (json_data.NoFree) {
+                        $('#CurrentEducation_ObrazProgramId').html('');
                     }
-                    $('#CurrentEducation_LicenseProgramId').html(options);
+                    else {
+                        for (var i = 0; i < json_data.List.length; i++) {
+                            options += '<option value="' + json_data.List[i].Id +'"';
+                            if (json_data.List[i].Id == $('#CurrentEducation_HiddenObrazProgramId').val())
+                                options += ' selected="true" ';
+                            options += ' >' + json_data.List[i].Name + '</option>';
+                        }
+                        $('#CurrentEducation_ObrazProgramId').html(options).removeAttr('disabled').show();
+                    }
                 }, 'json');
-            } 
+            }
+
             function GetCities() {
                 if ($('#EducationInfo_CountryEducId').val() == '193') {
                     $.post('../../AbiturientNew/GetCityNames', { regionId: $('#EducationInfo_RegionEducId').val() }, function (data) {
@@ -63,6 +134,7 @@
                 if (!CheckAttestatRegion()) { ret = false; }
                 return ret;
             }
+
             function CheckSchoolName() {
                 var ret = true;
                 if ($('#EducationInfo_SchoolName').val() == '') {
@@ -85,13 +157,20 @@
                 var SchoolTypeId = $('#EducationInfo_SchoolTypeId').val();
                 if (SchoolTypeId == '4') {
                     if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
-                        if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                        $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                        $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
                             $('#_TransferSPBUAddInfo').show();
+                            $('#_AccreditationInfo').hide();
                         }
-                        else {
+                        else { 
                             $('#_TransferSPBUAddInfo').hide();
+                            $('#_AccreditationInfo').show();
                         }
-                    }
+                        if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
+                            $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                            $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                        }
+
                 }
                 return ret;
             }
@@ -178,6 +257,12 @@
             }
 
             function UpdateAfterSchooltype() {
+                $('#LabelEducationInfo_VuzExitYear').hide();
+                $('#LabelEducationInfo_SchoolExitYear').show();
+                $('#LabelEducationInfo_SchoolCurName').hide();
+                $('#LabelEducationInfo_SchoolName').show();
+                $('#LabelEducationInfo_CountryCurEducId').hide();
+                $('#LabelEducationInfo_CountryEducId').show();
                 var SchoolTypeId = $('#EducationInfo_SchoolTypeId').val();
                 if (SchoolTypeId == '1') {
                     $('#_vuzAddType').hide();
@@ -201,23 +286,17 @@
                     $('#_mainpriem2').show();
                 }
             }
-            function UpdateVuzAddType() { 
+            function UpdateVuzAddType() {
                 if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
                     $('#_TransferData').show();
-                    if ($('#EducationInfo_CountryEducId').val() == '193') {
-                        $('#_TransferHasScholarship').show();
-                    }
-                    else {
-                        $('#_TransferHasScholarship').hide();
-                    }
-                    if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
-                        $('#_AccreditationInfo').hide();
-                        $('#_TransferSPBUAddInfo').show();
-                    }
-                    else {
-                        $('#_AccreditationInfo').show();
-                        $('#_TransferSPBUAddInfo').hide();
-                    }
+                    $('#_TransferHasScholarship').show();
+                    $('#_CountryEduc').hide();
+                    $('#_RegionEduc').hide();
+                    $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                    $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                    $('#_AccreditationInfo').hide();
+                    $('#_ForeignCountryEduc').hide();
+                    $('#_TransferSPBUAddInfo').show();
                     $('#_DisorderInfo').hide();
                     $('#_mainpriem1').hide();
                     $('#_mainpriem2').hide();
@@ -228,32 +307,77 @@
                     $('#LabelEducationInfo_CountryCurEducId').show();
                     $('#LabelEducationInfo_CountryEducId').hide();
                 }
-                else {
-                    $('#_TransferData').hide();
-                    if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
-                        $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
-                        $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
-                        $('#LabelEducationInfo_VuzExitYear').show();
-                        $('#LabelEducationInfo_SchoolExitYear').hide(); 
-                        $('#LabelEducationInfo_SchoolCurName').show();
-                        $('#LabelEducationInfo_SchoolName').hide();
-                        $('#_DisorderInfo').show();
+                else { 
+                    if ($('#EducationInfo_VuzAdditionalTypeId').val() == 4) {
+                        $('#_TransferData').show();
+                        if ($('#EducationInfo_CountryEducId').val() == '193') { $('#_TransferHasScholarship').show(); }
+                        else { $('#_TransferHasScholarship').hide(); }
+                        if ($('#EducationInfo_SchoolName').val() == "Санкт-Петербургский государственный  университет (СПбГУ)") {
+                            $('#_AccreditationInfo').hide();
+                            $('#_TransferSPBUAddInfo').show();
+                        }
+                        else {
+                            $('#_AccreditationInfo').show();
+                            $('#_TransferSPBUAddInfo').hide();
+                        }
+                        $('#_DisorderInfo').hide();
                         $('#_mainpriem1').hide();
                         $('#_mainpriem2').hide();
+                        $('#LabelEducationInfo_VuzExitYear').show();
+                        $('#LabelEducationInfo_SchoolExitYear').hide();
+                        $('#LabelEducationInfo_SchoolCurName').show();
+                        $('#LabelEducationInfo_SchoolName').hide();
                         $('#LabelEducationInfo_CountryCurEducId').show();
                         $('#LabelEducationInfo_CountryEducId').hide();
                     }
                     else {
-                        $('#LabelEducationInfo_SchoolCurName').hide();
-                        $('#LabelEducationInfo_SchoolName').show();
-                        $('#LabelEducationInfo_VuzExitYear').hide();
-                        $('#LabelEducationInfo_SchoolExitYear').show();
-                        $('#_DisorderInfo').hide();
-                        $('#_mainpriem1').show();
-                        $('#_mainpriem2').show();
-                        $('#LabelEducationInfo_CountryCurEducId').hide();
-                        $('#LabelEducationInfo_CountryEducId').show();
+                        $('#_TransferData').hide();
+                        if ($('#EducationInfo_VuzAdditionalTypeId').val() == 4) {
+                            $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                            $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                            $('#LabelEducationInfo_VuzExitYear').show();
+                            $('#LabelEducationInfo_SchoolExitYear').hide();
+                            $('#LabelEducationInfo_SchoolCurName').show();
+                            $('#LabelEducationInfo_SchoolName').hide();
+                            $('#_DisorderInfo').show();
+                            $('#_mainpriem1').hide();
+                            $('#_mainpriem2').hide();
+                            $('#LabelEducationInfo_CountryCurEducId').show();
+                            $('#LabelEducationInfo_CountryEducId').hide();
+                        }
+                        else
+                            if ($('#EducationInfo_VuzAdditionalTypeId').val() == 3) {
+                                $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
+                                $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
+                                $('#LabelEducationInfo_VuzExitYear').show();
+                                $('#LabelEducationInfo_SchoolExitYear').hide();
+                                $('#LabelEducationInfo_SchoolCurName').show();
+                                $('#LabelEducationInfo_SchoolName').hide();
+                                $('#_DisorderInfo').show();
+                                $('#_mainpriem1').hide();
+                                $('#_mainpriem2').hide();
+                                $('#LabelEducationInfo_CountryCurEducId').show();
+                                $('#LabelEducationInfo_CountryEducId').hide();
+                            }
+                            else { 
+                                $('#LabelEducationInfo_SchoolCurName').hide();
+                                $('#LabelEducationInfo_SchoolName').show();
+                                $('#LabelEducationInfo_VuzExitYear').hide();
+                                $('#LabelEducationInfo_SchoolExitYear').show();
+                                $('#_DisorderInfo').hide();
+                                $('#_mainpriem1').show();
+                                $('#_mainpriem2').show();
+                                $('#LabelEducationInfo_CountryCurEducId').hide();
+                                $('#LabelEducationInfo_CountryEducId').show();
+                            }
                     }
+                }
+                $('#_CountryEduc').show();
+                if ($('#EducationInfo_CountryEducId').val() == "193")
+                    $('#_RegionEduc').show();
+                if (($('#EducationInfo_VuzAdditionalTypeId').val() == 2)||($('#EducationInfo_VuzAdditionalTypeId').val() == 3)){
+                    $('#_CountryEduc').hide();
+                    $('#_RegionEduc').hide();
                 }
             }
 
@@ -272,7 +396,12 @@
                 $('#EducationInfo_SchoolTypeId').change(function () { setTimeout(UpdateAfterSchooltype) });
                 $('#EducationInfo_VuzAdditionalTypeId').change(function () { setTimeout(UpdateVuzAddType) });
                 $('#DisorderInfo_YearOfDisorder').change(function () { setTimeout(CheckDisorderInfoYear) });
-                $('#CurrentEducation_StudyLevelId').change(function () { setTimeout(GetLicenseProgramList) });
+                $('#CurrentEducation_StudyLevelId').change(function () { setTimeout(GetProfessions) });
+                $('#CurrentEducation_StudyFormId').change(function () { setTimeout(GetProfessions) });
+                $('#CurrentEducation_StudyBasisId').change(function () { setTimeout(GetProfessions) });
+                $('#CurrentEducation_SemesterId').change(function () { setTimeout(GetProfessions) });
+                $('#CurrentEducation_LicenseProgramId').change(function () { setTimeout(Myfun) });
+                $('#CurrentEducation_ObrazProgramId').change(function () { setTimeout(Myfun) });
             });
             
 
@@ -836,16 +965,31 @@
                             </div>
                             <div class="clearfix">
                                 <%= Html.LabelFor(x => x.CurrentEducation.StudyLevelId, "Уровень обучения")%>
-                                <%= Html.DropDownListFor(x => x.CurrentEducation.StudyLevelId, Model.CurrentEducation.StudyLevelList)%>
+                                <%= Html.DropDownListFor(x => x.CurrentEducation.StudyLevelId, Model.CurrentEducation.StudyLevelList, new SortedList<string, object>() { })%>
                             </div>  
                             <div class="clearfix">
                                 <%= Html.LabelFor(x => x.CurrentEducation.SemesterId, "Семестр")%>
-                                <%= Html.DropDownListFor(x => x.CurrentEducation.SemesterId, Model.CurrentEducation.SemesterList)%>
+                                <%= Html.DropDownListFor(x => x.CurrentEducation.SemesterId, Model.CurrentEducation.SemesterList, new SortedList<string, object>() {  })%>
                             </div>
                             <div id="_TransferSPBUAddInfo" class="clearfix" >
                                 <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyFormId, "Форма обучения")%>
+                                    <%= Html.DropDownListFor(x => x.CurrentEducation.StudyFormId, Model.EducationInfo.StudyFormList, new SortedList<string, object>() {  })%>
+                                </div>
+                                <div class="clearfix">
+                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyBasisId, "Основа обучения") %>
+                                    <%= Html.DropDownListFor(x => x.CurrentEducation.StudyBasisId, Model.EducationInfo.StudyBasisList, new SortedList<string, object>() { })%>
+                                </div>
+                                <div class="clearfix">
                                     <%= Html.LabelFor(x => x.CurrentEducation.LicenseProgramId, "Текущее направление (специальность)") %>
-                                    <%= Html.DropDownListFor(x => x.CurrentEducation.LicenseProgramId, Model.CurrentEducation.LicenceProgramList, new SortedList<string, object>() { { "style", "width:400px" }, { "size", "10" } })%>
+                                    <%= Html.HiddenFor(x=> x.CurrentEducation.HiddenLicenseProgramId) %>
+                                    <select id="CurrentEducation_LicenseProgramId" size="12" name="lProfession" style="width:459px;" onchange="GetObrazPrograms()"></select> 
+                                </div>
+
+                                <div class="clearfix" id="_ObrazProg" <% if (String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) { %>style="display:none;"<% } %>>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.ObrazProgramId, "Текущая образовательная программа")%>
+                                    <%= Html.HiddenFor(x => x.CurrentEducation.HiddenObrazProgramId)%>
+                                    <select id="CurrentEducation_ObrazProgramId"  <%if (!Model.Enabled){ %> disabled="true"<%} %> size="5" name="CurObrazProgram" style="width:459px;"></select>
                                 </div>
                                 <div class="clearfix">
                                     <%= Html.LabelFor(x => x.CurrentEducation.ProfileName, "Текущий профиль (специализация)")%>

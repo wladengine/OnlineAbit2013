@@ -958,6 +958,10 @@
           <Property Name="LicenseProgramId" Type="int" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="150" />
           <Property Name="RegionId" Type="int" />
+          <Property Name="StudyFormId" Type="int" />
+          <Property Name="StudyBasisId" Type="int" />
+          <Property Name="ObrazProgramId" Type="int" />
+          <Property Name="ProfileId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -1163,6 +1167,7 @@
           <Property Name="EducYear" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="IsIGA" Type="bit" Nullable="false" />
+          <Property Name="NextSemesterId" Type="int" />
         </EntityType>
         <EntityType Name="SP_Faculty">
           <Key>
@@ -2531,6 +2536,10 @@
           <NavigationProperty Name="Person" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Person" FromRole="PersonCurrentEducation" ToRole="Person" />
           <NavigationProperty Name="Semester" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Semester" FromRole="PersonCurrentEducation" ToRole="Semester" />
           <Property Type="Int32" Name="RegionId" />
+          <Property Type="Int32" Name="StudyFormId" />
+          <Property Type="Int32" Name="StudyBasisId" />
+          <Property Type="Int32" Name="ObrazProgramId" />
+          <Property Type="Guid" Name="ProfileId" />
         </EntityType>
         <EntityType Name="PersonScienceWork">
           <Key>
@@ -2634,6 +2643,7 @@
           <NavigationProperty Name="PersonCurrentEducation" Relationship="OnlinePriem2012Model.FK_PersonCurrentEducation_Semester" FromRole="Semester" ToRole="PersonCurrentEducation" />
           <Property Type="Boolean" Name="IsIGA" Nullable="false" />
           <NavigationProperty Name="C_Entry" Relationship="OnlinePriem2012Model.FK_Entry_Semester" FromRole="Semester" ToRole="C_Entry" />
+          <Property Type="Int32" Name="NextSemesterId" />
         </EntityType>
         <EntityType Name="SP_StudyLevel">
           <Key>
@@ -4317,6 +4327,10 @@
           <EntitySetMapping Name="PersonCurrentEducation">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.PersonCurrentEducation">
               <MappingFragment StoreEntitySet="PersonCurrentEducation">
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
+                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
+                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
                 <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
                 <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
@@ -4423,6 +4437,7 @@
           <EntitySetMapping Name="Semester">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Semester">
               <MappingFragment StoreEntitySet="Semester">
+                <ScalarProperty Name="NextSemesterId" ColumnName="NextSemesterId" />
                 <ScalarProperty Name="IsIGA" ColumnName="IsIGA" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EducYear" ColumnName="EducYear" />

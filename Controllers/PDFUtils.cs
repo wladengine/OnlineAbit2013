@@ -1757,7 +1757,7 @@ namespace OnlineAbit2013.Controllers
                 DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
                 string email = tbl.Rows[0].Field<string>("Email");
                 var person = (from x in context.Person
-                              join PersonChangeStudyFormReason in context.PersonChangeStudyFormReason on PersonId equals PersonChangeStudyFormReason.PersonId
+                              //join PersonChangeStudyFormReason in context.PersonChangeStudyFormReason on PersonId equals PersonChangeStudyFormReason.PersonId
                               where x.Id == PersonId
                               select new
                               {

@@ -6072,7 +6072,7 @@ Order by cnt desc";
                 //проверка на 3 направления
                 if (EntryTypeId == 1)
                 {
-                    var cnt = context.Abiturient.Where(x => x.CommitId == gCommId && x.LicenseProgramId != iProfession).Select(x => x.LicenseProgramId).Count();
+                    var cnt = context.Abiturient.Where(x => x.CommitId == gCommId && x.LicenseProgramId != iProfession).Select(x => x.LicenseProgramId).Distinct().Count();
                     if (cnt > 2)
                         return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_3MorePrograms });
                 }

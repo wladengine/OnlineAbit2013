@@ -90,6 +90,9 @@ namespace OnlineAbit2013.Controllers
 
             klRegion = _regions.Where(x => x.Code == sRegionKladrCode).FirstOrDefault();
 
+            if (klRegion == null)
+                return sRegionKladrCode;
+
             Kladr klCity = DAOFactory.getInstance().getDAOKladr().getGorodNasPunktByName(klRegion, sCityName).FirstOrDefault();
             if (klCity == null)
                 return klRegion.Code;

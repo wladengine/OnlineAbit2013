@@ -3903,6 +3903,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 {
                                     context.ApplicationDetails.AddObject(new ApplicationDetails()
                                     {
+                                        Id = Guid.NewGuid(),
                                         ApplicationId = model.ApplicationId,
                                         ObrazProgramInEntryId = ObrazProgramInEntryId,
                                         ObrazProgramInEntryPriority = prior,
@@ -3928,6 +3929,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                     {
                                         context.ApplicationDetails.AddObject(new ApplicationDetails()
                                         {
+                                            Id = Guid.NewGuid(),
                                             ApplicationId = model.ApplicationId,
                                             ObrazProgramInEntryId = ObrazProgramInEntryId,
                                             ObrazProgramInEntryPriority = prior,
@@ -3960,6 +3962,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             {
                                 context.ApplicationDetails.AddObject(new ApplicationDetails()
                                 {
+                                    Id = model.ApplicationVersionId,
                                     ApplicationId = model.ApplicationId,
                                     ObrazProgramInEntryId = ObrazProgramInEntryId,
                                     ObrazProgramInEntryPriority = prior,
@@ -6066,26 +6069,13 @@ Order by cnt desc";
                 if (timeOfStop.HasValue && timeOfStop < DateTime.Now)
                     return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_ClosedEntry });
 
-                //проверка на группы ??????????????
-                //var EntryGroupList =
-                //    (from Entr in context.Entry
-                //     join EntrInEntryGroup in context.EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                //     join Abit in context.Application on Entr.Id equals Abit.EntryId
-                //     where Abit.PersonId == PersonId && Abit.Enabled == true && Abit.CommitId == gCommId
-                //     select EntrInEntryGroup.EntryGroupId);
-
-                //bool isNoEntries = EntryGroupList.Count() == 0;
-                //var AllNeededEntries =
-                //    (from Entr in context.Entry
-                //     join EntrInEntryGroup in context.EntryInEntryGroup on Entr.Id equals EntrInEntryGroup.EntryId
-                //     where EntryGroupList.Contains(EntrInEntryGroup.EntryGroupId) || isNoEntries
-                //     select Entr.Id).ToList();
-
-                //var FreeEntries = AllNeededEntries.Except(
-                //    context.Application.Where(x => x.PersonId == PersonId && x.CommitId == gCommId).Select(x => x.EntryId).ToList()).ToList();
-
-                //if (FreeEntries.Count == 0)
-                //    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_NoFreeEntries });
+                //проверка на 3 направления
+                if (EntryTypeId == 1)
+                {
+                    var cnt = context.Abiturient.Where(x => x.CommitId == gCommId && x.LicenseProgramId != iProfession).Select(x => x.LicenseProgramId).Count();
+                    if (cnt > 2)
+                        return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_3MorePrograms });
+                }
 
                 int count = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.Priority == iPriority).Select(x => x.Id).Count();
                 if (count == 0)

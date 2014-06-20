@@ -106,11 +106,14 @@ namespace OnlineAbit2013.Controllers
 
                 var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
 
+                bool bIsPrinted = context.ApplicationCommit.Where(x => x.Id == CommitId).Select(x => x.IsPrinted).DefaultIfEmpty(false).First();
+
                 ExtApplicationCommitModel model = new ExtApplicationCommitModel()
                 {
                     Id = CommitId,
                     Applications = tblAppsMain,
                     Files = AllFiles,
+                    IsPrinted = bIsPrinted
                     //StudyLevelId = tblAppsMain.First().StudyLevel,
                 };
 
@@ -133,6 +136,8 @@ namespace OnlineAbit2013.Controllers
                 var ApplicationEntity = 
                     (from App in context.Application 
                      join Entry in context.Entry on App.EntryId equals Entry.Id
+                     join Commission in context.Comission on Entry.ComissionId equals Commission.Id into Commission2
+                     from Commission in Commission2.DefaultIfEmpty()
                      where App.Id == ApplicationId && App.IsCommited == true
                      select new 
                 {
@@ -146,8 +151,8 @@ namespace OnlineAbit2013.Controllers
                     StudyLevelId = Entry.StudyLevelId,
                     Priority = App.Priority,
                     Enabled = App.Enabled,
-                    ComissionAddress = App.C_Entry.Comission.Address,
-                    ComissionYaCoord = App.C_Entry.Comission.YaMapCoord,
+                    ComissionAddress = Commission.Address,
+                    ComissionYaCoord = Commission.YaMapCoord,
                     DateOfDisable = App.DateOfDisable,
                     IsApproved = App.IsApprovedByComission,
                     EntryTypeId = App.EntryType,

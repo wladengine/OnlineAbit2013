@@ -713,6 +713,7 @@ namespace OnlineAbit2013.Models
 
         public string StudyLevelId { get; set; }
         public int AbiturientTypeId { get; set; }
+        public bool IsPrinted { get; set; }
 
         //перспективные
         public bool IsApproved { get; set; }

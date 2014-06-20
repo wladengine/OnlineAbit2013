@@ -294,4 +294,7 @@
   <data name="Semester" xml:space="preserve">
     <value>Семестр</value>
   </data>
+  <data name="NewApp_3MorePrograms" xml:space="preserve">
+    <value>Заявление уже подано на 3 направления</value>
+  </data>
 </root>

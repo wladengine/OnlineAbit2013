@@ -313,7 +313,7 @@ namespace OnlineAbit2013.Controllers
                     model.EducationInfo.LanguageId = (PersonEducationDocument.LanguageId ?? 1).ToString();
                     model.EducationInfo.CountryEducId = (PersonEducationDocument.CountryEducId ?? 193).ToString();
 
-                    string qEgeMarks = "SELECT EgeMark.Id, EgeCertificate.Number, EgeExam.Name, EgeMark.Value FROM Person " +
+                    string qEgeMarks = "SELECT EgeMark.Id, EgeCertificate.Number, EgeExam.Name, EgeMark.Value, EgeMark.IsSecondWave, EgeMark.IsInUniversity FROM Person " +
                         " INNER JOIN EgeCertificate ON EgeCertificate.PersonId = Person.Id INNER JOIN EgeMark ON EgeMark.EgeCertificateId=EgeCertificate.Id " +
                         " INNER JOIN EgeExam ON EgeExam.Id=EgeMark.EgeExamId WHERE Person.Id=@Id";
                     DataTable tblEge = Util.AbitDB.GetDataTable(qEgeMarks, new SortedList<string, object>() { { "@Id", PersonId } });
@@ -326,7 +326,7 @@ namespace OnlineAbit2013.Controllers
                              Id = rw.Field<Guid>("Id"),
                              CertificateNum = rw.Field<string>("Number"),
                              ExamName = rw.Field<string>("Name"),
-                             Value = rw.Field<int?>("Value").ToString()
+                             Value = rw.Field<bool>("IsSecondWave") ? ("Сдаю во второй волне") : (rw.Field<bool>("IsInUniversity") ? "Сдаю в СПбГУ" : rw.Field<int?>("Value").ToString())
                          }).ToList();
                     ////////////////////////////////////////////////
                     model.CurrentEducation = new CurrentEducation();
@@ -1856,13 +1856,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     }
                     else
                         model.Enabled = false;
-                }
-                /*
-                model.StudyLevelGroupList = Util.GetStudyLevelGroupList();
-                model.StudyFormList = Util.GetStudyFormList();
-                model.StudyBasisList = Util.GetStudyBasisList();
-                model.SemestrList = Util.GetSemestrList();
-                return View("NewApplication_ChangeStudyBasis", model); */
+                } 
                 c = (int?)Util.AbitDB.GetValue("SELECT LicenseProgramId FROM PersonCurrentEducation WHERE PersonId=@PersonId ", new SortedList<string, object>() { { "@PersonId", PersonId } });
                 if (!c.HasValue)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });
@@ -2291,31 +2285,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 else
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });
-
-                /*string query = "SELECT DISTINCT StudyFormId, StudyFormName FROM Entry ORDER BY 1";
-                DataTable tbl = Util.AbitDB.GetDataTable(query, null);
-                model.StudyForms =
-                    (from DataRow rw in tbl.Rows
-                     select new
-                     {
-                         Value = rw.Field<int>("StudyFormId"),
-                         Text = rw.Field<string>("StudyFormName")
-                     }).AsEnumerable()
-                    .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                    .ToList();*/
-                model.StudyForms = Util.GetStudyFormList();
-
-                /*query = "SELECT DISTINCT StudyBasisId, StudyBasisName FROM Entry ORDER BY 1";
-                tbl = Util.AbitDB.GetDataTable(query, null);
-                model.StudyBasises =
-                    (from DataRow rw in tbl.Rows
-                     select new
-                     {
-                         Value = rw.Field<int>("StudyBasisId"),
-                         Text = rw.Field<string>("StudyBasisName")
-                     }).AsEnumerable()
-                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                     .ToList();*/
+                model.StudyForms = Util.GetStudyFormList(); 
                 model.StudyBasises = Util.GetStudyBasisList();
                 bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
 
@@ -2352,7 +2322,44 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         StudyLevel = "АГ"
                     });
                 }
+                if (model.VuzAddType == 2)
+                {
+                    int? qw = (int?)Util.AbitDB.GetValue("SELECT LicenseProgramId FROM PersonCurrentEducation WHERE PersonId=@PersonId ", new SortedList<string, object>() { { "@PersonId", PersonId } });
+                    if (qw.HasValue)
+                    {
+                        model.LicenseProgramName = Util.AbitDB.GetStringValue("select top 1 LicenseProgramName from Entry where LicenseProgramId=@Id", new SortedList<string, object>() { { "@Id", qw } });
+                    }
+                    qw = (int?)Util.AbitDB.GetValue("SELECT ObrazProgramId FROM PersonCurrentEducation WHERE PersonId=@PersonId ", new SortedList<string, object>() { { "@PersonId", PersonId } });
+                    if (qw.HasValue)
+                    {
+                        model.ObrazProgramName = Util.AbitDB.GetStringValue("select top 1 ObrazProgramName from Entry  where ObrazProgramId=@Id", new SortedList<string, object>() { { "@Id", qw } });
+                    }
+                    
+                    var EntryList =
+                        (from Ent in context.Entry
+                         join SPStudyLevel in context.SP_StudyLevel on Ent.StudyLevelId equals SPStudyLevel.Id
+                         join PersonCurrentEduc in context.PersonCurrentEducation on PersonId equals PersonCurrentEduc.PersonId
+                         join Semester in context.Semester on Ent.SemesterId equals Semester.Id
+                         where PersonCurrentEduc.LicenseProgramId == Ent.LicenseProgramId &&
+                                Ent.ObrazProgramId == PersonCurrentEduc.ObrazProgramId &&
+                                Ent.StudyFormId == PersonCurrentEduc.StudyFormId &&
+                                Ent.StudyBasisId == PersonCurrentEduc.StudyBasisId &&
+                                Ent.CampaignYear == Util.iPriemYear &&
+                                Ent.StudyLevelId == PersonCurrentEduc.StudyLevelId &&
+                                Ent.IsParallel == false &&
+                                Ent.IsReduced == false &&
+                                Ent.IsSecond == false &&
+                                Ent.SemesterId == PersonCurrentEduc.SemesterId
+                         select new
+                         {
+                             EntryId = Ent.Id 
+                         }).FirstOrDefault();
 
+                    if (EntryList == null)
+                    {
+                        model.Message = "Данные некорректны (не найден учебный план). Вернитесь в анкету и проверьте правильность данных";
+                    } 
+                }
                 return View("NewApplication", model);
             }
         }
@@ -3530,9 +3537,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid gCommitId;
             if (!Guid.TryParse(CommitId, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
-
-            bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
-            if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
 
             Guid VersionId = Guid.NewGuid();
             bool bisEng = Util.GetCurrentThreadLanguageIsEng();
@@ -4904,28 +4908,53 @@ SELECT [User].Email
             if (!int.TryParse(examValue, out iExamValue))
                 iExamValue = 0;
 
-            bool bIs2014 = false;
-            if (bool.TryParse(Is2014, out bIs2014))
-                bIs2014 = false;
+            bool bIs2014 = (Is2014 == "true");
+            /*if (bool.TryParse(Is2014, out bIs2014))
+                bIs2014 = false;*/
 
-            bool bIsInUniversity = false;
-            if (bool.TryParse(IsInUniversity, out bIsInUniversity))
-                bIsInUniversity = false;
+            bool bIsInUniversity = (IsInUniversity == "true");  
+           /* if (bool.TryParse(IsInUniversity, out bIsInUniversity))
+                bIsInUniversity = false;*/
 
-            bool bIsSecondWave = false;
-            if (bool.TryParse(IsSecondWave, out bIsSecondWave))
-                bIsSecondWave = false;
+            bool bIsSecondWave = (IsSecondWave == "true");
+            /*if (bool.TryParse(IsSecondWave, out bIsSecondWave))
+                bIsSecondWave = false;*/
              
             SortedList<string, object> dic = new SortedList<string, object>();
             Guid EgeCertificateId = Guid.Empty;
             
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                var certs = context.EgeCertificate.Where(x => x.Number == certNumber || (x.Is2014 == true && x.PersonId == PersonId))
-                    .Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
-
+                
+                if (!String.IsNullOrEmpty(certNumber))
+                {
+                    var certs = context.EgeCertificate.Where(x => x.Number == certNumber).Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
+                    if (certs.Count() > 1)
+                        return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
+                    if (certs.Count() == 1)
+                    {
+                        if (certs[0].PersonId != PersonId)
+                            return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
+                        else
+                            EgeCertificateId = certs[0].Id;
+                    }
+                }
+                else
+                {
+                    var certs = context.EgeCertificate.Where(x => x.Is2014 == true && x.PersonId == PersonId).Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
+                    if (certs.Count() > 1)
+                        return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
+                    if (certs.Count() == 1)
+                    {
+                        if (certs[0].PersonId != PersonId)
+                            return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
+                        else
+                            EgeCertificateId = certs[0].Id;
+                    }
+                }
+                 
                 //номер должен быть уникальным
-                if (certs.Count() > 1)
+               /*if (certs.Count() > 1)
                     return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
                 if (certs.Count() == 1)
                 {
@@ -4933,7 +4962,7 @@ SELECT [User].Email
                         return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
                     else
                         EgeCertificateId = certs[0].Id;
-                }
+                }*/
 
                 //query = "SELECT EgeMark.Value FROM EgeMark INNER JOIN EgeCertificate ON EgeCertificate.Id=EgeMark.EgeCertificateId " +
                 //    " WHERE EgeCertificate.PersonId=@PersonId AND EgeMark.EgeExamId=@ExamId";
@@ -4976,7 +5005,7 @@ SELECT [User].Email
                         IsInUniversity = bIsInUniversity,
                         IsSecondWave = bIsSecondWave
                     });
-
+                    context.SaveChanges();
                     string exName = Util.EgeExamsAll.ContainsKey(iExamId) ? Util.EgeExamsAll[iExamId] : "";
                     string exValue = "";
                     if (bIsSecondWave)
@@ -4994,7 +5023,7 @@ SELECT [User].Email
                             Id = MarkId.ToString(),
                             CertificateNumber = certNumber,
                             ExamName = exName,
-                            ExamMark = iExamValue.ToString()
+                            ExamMark = exValue//iExamValue.ToString()
                         },
                         ErrorMessage = ""
                     };
@@ -5944,6 +5973,9 @@ Order by cnt desc";
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
+
+                /*if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });*/
 
                 bool needHostel = string.Equals(NeedHostel, "false") ? false : true;
 

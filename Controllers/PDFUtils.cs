@@ -638,7 +638,9 @@ namespace OnlineAbit2013.Controllers
                     acrFlds.SetField("HasPrivileges", "1");
 
                 acrFlds.SetField("ReturnDocumentType" + person.ReturnDocumentTypeId, "1");
-                if ((person.SchoolTypeId == 1) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") < 0))
+                // имею ли образование этого уровня:
+                // если закончил школу, спо, нпо и прочее (кроме ВУЗа) + (если выбран ВУЗ + Квалификация 
+                if ((person.SchoolTypeId != 4) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") < 0))
                     acrFlds.SetField("NoEduc", "1");
                 else
                 {

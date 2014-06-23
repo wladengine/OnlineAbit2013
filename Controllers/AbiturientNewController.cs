@@ -313,7 +313,7 @@ namespace OnlineAbit2013.Controllers
                     model.EducationInfo.LanguageId = (PersonEducationDocument.LanguageId ?? 1).ToString();
                     model.EducationInfo.CountryEducId = (PersonEducationDocument.CountryEducId ?? 193).ToString();
 
-                    string qEgeMarks = "SELECT EgeMark.Id, EgeCertificate.Number, EgeExam.Name, EgeMark.Value FROM Person " +
+                    string qEgeMarks = "SELECT EgeMark.Id, EgeCertificate.Number, EgeExam.Name, EgeMark.Value, EgeMark.IsSecondWave, EgeMark.IsInUniversity FROM Person " +
                         " INNER JOIN EgeCertificate ON EgeCertificate.PersonId = Person.Id INNER JOIN EgeMark ON EgeMark.EgeCertificateId=EgeCertificate.Id " +
                         " INNER JOIN EgeExam ON EgeExam.Id=EgeMark.EgeExamId WHERE Person.Id=@Id";
                     DataTable tblEge = Util.AbitDB.GetDataTable(qEgeMarks, new SortedList<string, object>() { { "@Id", PersonId } });
@@ -326,7 +326,7 @@ namespace OnlineAbit2013.Controllers
                              Id = rw.Field<Guid>("Id"),
                              CertificateNum = rw.Field<string>("Number"),
                              ExamName = rw.Field<string>("Name"),
-                             Value = rw.Field<int?>("Value").ToString()
+                             Value = rw.Field<bool>("IsSecondWave") ? ("Сдаю во второй волне") : (rw.Field<bool>("IsInUniversity") ? "Сдаю в СПбГУ" : rw.Field<int?>("Value").ToString())
                          }).ToList();
                     ////////////////////////////////////////////////
                     model.CurrentEducation = new CurrentEducation();
@@ -4901,28 +4901,53 @@ SELECT [User].Email
             if (!int.TryParse(examValue, out iExamValue))
                 iExamValue = 0;
 
-            bool bIs2014 = false;
-            if (bool.TryParse(Is2014, out bIs2014))
-                bIs2014 = false;
+            bool bIs2014 = (Is2014 == "true");
+            /*if (bool.TryParse(Is2014, out bIs2014))
+                bIs2014 = false;*/
 
-            bool bIsInUniversity = false;
-            if (bool.TryParse(IsInUniversity, out bIsInUniversity))
-                bIsInUniversity = false;
+            bool bIsInUniversity = (IsInUniversity == "true");  
+           /* if (bool.TryParse(IsInUniversity, out bIsInUniversity))
+                bIsInUniversity = false;*/
 
-            bool bIsSecondWave = false;
-            if (bool.TryParse(IsSecondWave, out bIsSecondWave))
-                bIsSecondWave = false;
+            bool bIsSecondWave = (IsSecondWave == "true");
+            /*if (bool.TryParse(IsSecondWave, out bIsSecondWave))
+                bIsSecondWave = false;*/
              
             SortedList<string, object> dic = new SortedList<string, object>();
             Guid EgeCertificateId = Guid.Empty;
             
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
-                var certs = context.EgeCertificate.Where(x => x.Number == certNumber || (x.Is2014 == true && x.PersonId == PersonId))
-                    .Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
-
+                
+                if (!String.IsNullOrEmpty(certNumber))
+                {
+                    var certs = context.EgeCertificate.Where(x => x.Number == certNumber).Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
+                    if (certs.Count() > 1)
+                        return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
+                    if (certs.Count() == 1)
+                    {
+                        if (certs[0].PersonId != PersonId)
+                            return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
+                        else
+                            EgeCertificateId = certs[0].Id;
+                    }
+                }
+                else
+                {
+                    var certs = context.EgeCertificate.Where(x => x.Is2014 == true && x.PersonId == PersonId).Select(x => new { x.Id, x.PersonId, x.Is2014, x.Number }).ToList();
+                    if (certs.Count() > 1)
+                        return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
+                    if (certs.Count() == 1)
+                    {
+                        if (certs[0].PersonId != PersonId)
+                            return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
+                        else
+                            EgeCertificateId = certs[0].Id;
+                    }
+                }
+                 
                 //номер должен быть уникальным
-                if (certs.Count() > 1)
+               /*if (certs.Count() > 1)
                     return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });//Это косяк, двух не может быть!!!
                 if (certs.Count() == 1)
                 {
@@ -4930,7 +4955,7 @@ SELECT [User].Email
                         return Json(new { IsOk = false, ErrorMessage = "Данный сертификат в базе данных принадлежит другому лицу" });
                     else
                         EgeCertificateId = certs[0].Id;
-                }
+                }*/
 
                 //query = "SELECT EgeMark.Value FROM EgeMark INNER JOIN EgeCertificate ON EgeCertificate.Id=EgeMark.EgeCertificateId " +
                 //    " WHERE EgeCertificate.PersonId=@PersonId AND EgeMark.EgeExamId=@ExamId";
@@ -4973,7 +4998,7 @@ SELECT [User].Email
                         IsInUniversity = bIsInUniversity,
                         IsSecondWave = bIsSecondWave
                     });
-
+                    context.SaveChanges();
                     string exName = Util.EgeExamsAll.ContainsKey(iExamId) ? Util.EgeExamsAll[iExamId] : "";
                     string exValue = "";
                     if (bIsSecondWave)
@@ -4991,7 +5016,7 @@ SELECT [User].Email
                             Id = MarkId.ToString(),
                             CertificateNumber = certNumber,
                             ExamName = exName,
-                            ExamMark = iExamValue.ToString()
+                            ExamMark = exValue//iExamValue.ToString()
                         },
                         ErrorMessage = ""
                     };
@@ -5942,8 +5967,8 @@ Order by cnt desc";
                 if (PersonInfo == null)//а что это могло бы значить???
                     return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
-                if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });
+                /*if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
+                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });*/
 
                 bool needHostel = string.Equals(NeedHostel, "false") ? false : true;
 

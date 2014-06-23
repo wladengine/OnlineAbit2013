@@ -1509,7 +1509,10 @@ WHERE PersonId=@PersonId ";
         { 
             string query = "SELECT [NationalityId] FROM [Person] WHERE Id=@PersonId";
             int? res_nat = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
- 
+
+            query = "SELECT HasRussianNationality FROM [Person] WHERE Id=@PersonId";
+            bool HasRussianNationality = (bool?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } }) ?? false;
+           
             query = "SELECT [CountryId] FROM [PersonContacts] WHERE PersonId=@PersonId";
             int? res_coun = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
@@ -1533,6 +1536,10 @@ WHERE PersonId=@PersonId ";
                 {
                     if (res_coun.HasValue)
                     {
+                        if (HasRussianNationality)
+                        {
+                            return 2;
+                        }
                         if (res_coun == 193)
                         { return 2;  } // !193 - 193
                         else
@@ -1554,19 +1561,17 @@ WHERE PersonId=@PersonId ";
             int result=GetRess(PersonId);
             if (result == 1) // Рф - Рф (всегда общий прием)
                 return 0; // только общий прием
-             else if (result == 4) // неРф-неРф  (всегда по гослинии)
-                return 1; // только по гослинии
             else if (result == 3) // рф -нерф (дог = общий прием, бюдж = выбор)
                 return -1; // есть выбор
             else
-            {   // для договора - только гослиния, для бюджета в зависимости (Снг/не Снг)
+            {  // для договора - только гослиния, для бюджета в зависимости (Снг/не Снг)
                 string query = "SELECT IsSNG from Country Inner Join Person on NationalityId=Country.Id WHERE Person.Id=@PersonId";
                 bool? res_nat = (bool?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
                 if (res_nat == true)
                     return -1; // есть выбор 
                 else
                     return 1; // только по гослинии
-            }  
+            }
         }
 
         public static List<Mag_ApplicationSipleEntity> GetApplicationListInCommit(Guid CommitId, Guid PersonId)

@@ -187,7 +187,7 @@
     <value>I have the TORFL Certificate (ТРКИ)</value>
   </data>
   <data name="Header_CurrentEducation" xml:space="preserve">
-    <value>Сведения о текущем месте обучения</value>
+    <value>Current Educational institution</value>
   </data>
   <data name="HEDataHeader" xml:space="preserve">
     <value>Higher Education Data</value>
@@ -260,5 +260,44 @@
   </data>
   <data name="CountryCurEducId" xml:space="preserve">
     <value>Country of your current education</value>
+  </data>
+  <data name="AccreditationDate" xml:space="preserve">
+    <value>Date of accreditation</value>
+  </data>
+  <data name="AccreditationNumber" xml:space="preserve">
+    <value>Number of accreditation</value>
+  </data>
+  <data name="CurrentLicenceProgram" xml:space="preserve">
+    <value>Current study area</value>
+  </data>
+  <data name="CurrentObrazProgram" xml:space="preserve">
+    <value>Current educational program</value>
+  </data>
+  <data name="CurrentProfile" xml:space="preserve">
+    <value>Current profile</value>
+  </data>
+  <data name="DisorderInfo" xml:space="preserve">
+    <value>Information about expulsion</value>
+  </data>
+  <data name="HasAccreditation" xml:space="preserve">
+    <value>Has accreditation</value>
+  </data>
+  <data name="HasScholarship" xml:space="preserve">
+    <value>Has academic scholarship</value>
+  </data>
+  <data name="ObrazProgramName" xml:space="preserve">
+    <value>Education program</value>
+  </data>
+  <data name="PersonStudyBasis" xml:space="preserve">
+    <value>Basis of Education</value>
+  </data>
+  <data name="PersonStudyLevel" xml:space="preserve">
+    <value>Degree</value>
+  </data>
+  <data name="PersonStudySemester" xml:space="preserve">
+    <value>Semester</value>
+  </data>
+  <data name="RecoverForIGA" xml:space="preserve">
+    <value>Recover for final academic assessment</value>
   </data>
 </root>

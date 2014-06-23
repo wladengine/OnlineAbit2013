@@ -182,11 +182,11 @@
 <p class="message info">
     <% if (Model.HasVersion)
        {%>
-       Последние изменения были внесены: <% = Model.VersionDate %>
+       <%= GetGlobalResourceObject("ApplicationInfo", "AppLastChanges")%>  <% = Model.VersionDate %>
     <% }
        else
        { %>
-       Нет информации о версии заявления. Настоятельно рекомендуем зайти в раздел <b>"Приоритеты"</b> и сохранить выбранную последовательность приоритетов путем нажатия кнопки <b>"Сохранить"</b>.
+       <%= GetGlobalResourceObject("ApplicationInfo", "AppNoLastChanges")%> 
     <%} %>
 </p>
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))

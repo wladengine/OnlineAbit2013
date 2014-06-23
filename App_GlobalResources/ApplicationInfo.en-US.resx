@@ -274,4 +274,10 @@
   <data name="MotiveLetter_Link" xml:space="preserve">
     <value>&lt;a href ='http://abiturient.spbu.ru/images/2014/foreigns/kriterii_en.htm'&gt;</value>
   </data>
+  <data name="AppLastChanges" xml:space="preserve">
+    <value>Last changes were made at: </value>
+  </data>
+  <data name="AppNoLastChanges" xml:space="preserve">
+    <value>There is no information about the version of the application. We strongly recommend to go to the page &lt;b&gt;"Change prioritries"&lt;/b&gt; and save the priority sequence by pressing the button &lt;b&gt;"Save"&lt;/b&gt;.</value>
+  </data>
 </root>

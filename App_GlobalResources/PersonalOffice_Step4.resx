@@ -264,4 +264,46 @@
   <data name="CountryCurEducId" xml:space="preserve">
     <value>Страна обучения</value>
   </data>
+  <data name="AccreditationDate" xml:space="preserve">
+    <value>Дата аккредитации</value>
+  </data>
+  <data name="AccreditationNumber" xml:space="preserve">
+    <value>Номер аккредитации</value>
+  </data>
+  <data name="CurrentLicenceProgram" xml:space="preserve">
+    <value>Текущее направление (специальность)</value>
+  </data>
+  <data name="CurrentObrazProgram" xml:space="preserve">
+    <value>Текущая образовательная программа</value>
+  </data>
+  <data name="CurrentProfile" xml:space="preserve">
+    <value>Текущий профиль (специализация)</value>
+  </data>
+  <data name="DisorderInfo" xml:space="preserve">
+    <value>Данные об отчислении из СПбГУ</value>
+  </data>
+  <data name="HasAccreditation" xml:space="preserve">
+    <value>Имеет гос. аккредитацию</value>
+  </data>
+  <data name="HasScholarship" xml:space="preserve">
+    <value>Получаю академическую стипендию</value>
+  </data>
+  <data name="ObrazProgramName" xml:space="preserve">
+    <value>Название образовательной программы</value>
+  </data>
+  <data name="PersonStudyBasis" xml:space="preserve">
+    <value>Основа обучения</value>
+  </data>
+  <data name="PersonStudyLevel" xml:space="preserve">
+    <value>Уровень обучения</value>
+  </data>
+  <data name="PersonStudySemester" xml:space="preserve">
+    <value>Семестр</value>
+  </data>
+  <data name="RecoverForIGA" xml:space="preserve">
+    <value>Восстанавливаюсь для ИГА</value>
+  </data>
+  <data name="DisorderYear" xml:space="preserve">
+    <value>Год отчисления</value>
+  </data>
 </root>

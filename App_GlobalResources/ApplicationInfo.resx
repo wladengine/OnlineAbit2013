@@ -281,4 +281,10 @@
   <data name="MotiveLetter_Link2" xml:space="preserve">
     <value>&lt;a href ='http://abiturient.spbu.ru/index.php/priem/magistratura/perechen-programm-i-vstupitelnye-ispytaniya-2'&gt;</value>
   </data>
+  <data name="AppLastChanges" xml:space="preserve">
+    <value>Последние изменения были внесены:</value>
+  </data>
+  <data name="AppNoLastChanges" xml:space="preserve">
+    <value>Нет информации о версии заявления. Настоятельно рекомендуем зайти в раздел &lt;b&gt;"Приоритеты"&lt;/b&gt; и сохранить выбранную последовательность приоритетов путем нажатия кнопки &lt;b&gt;"Сохранить"&lt;/b&gt;.</value>
+  </data>
 </root>

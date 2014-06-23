@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Последние изменения были внесены:.
+        /// </summary>
+        internal static string AppLastChanges {
+            get {
+                return ResourceManager.GetString("AppLastChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Вы отозвали это заявление.
         /// </summary>
         internal static string ApplicationCanceled {
@@ -129,6 +138,15 @@ namespace Resources {
         internal static string ApplicationPriorityChange {
             get {
                 return ResourceManager.GetString("ApplicationPriorityChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Нет информации о версии заявления. Настоятельно рекомендуем зайти в раздел &lt;b&gt;&quot;Приоритеты&quot;&lt;/b&gt; и сохранить выбранную последовательность приоритетов путем нажатия кнопки &lt;b&gt;&quot;Сохранить&quot;&lt;/b&gt;..
+        /// </summary>
+        internal static string AppNoLastChanges {
+            get {
+                return ResourceManager.GetString("AppNoLastChanges", resourceCulture);
             }
         }
         

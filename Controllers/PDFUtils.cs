@@ -22,7 +22,6 @@ namespace OnlineAbit2013.Controllers
         public int? ProfileInObrazProgramInEntryPriority { get; set; }
         public string ProfileName { get; set; }
     }
-
     public class ShortAppcation
     {
         public Guid ApplicationId { get; set; }
@@ -40,143 +39,6 @@ namespace OnlineAbit2013.Controllers
 
     public static class PDFUtils
     {
-        /// <summary>
-        /// PDF Мотивационное письмо
-        /// </summary>
-        /// <param name="mailId"></param>
-        /// <param name="fontspath"></param>
-        /// <returns></returns>
-        //public static byte[] GetMotivateMail(string mailId, string fontspath)
-        //{
-        //    using (OnlinePriemEntities context = new OnlinePriemEntities())
-        //    {
-        //        Guid MailId;
-        //        if (!Guid.TryParse(mailId, out MailId))
-        //            return Encoding.Unicode.GetBytes("");
-
-        //        MemoryStream ms = new MemoryStream();
-
-        //        //string query = "SELECT Surname, Name, SecondName, Phone, Mobiles, [User].Email, MotivationMail.MailText, Entry.ObrazProgramName FROM Person " +
-        //        //    "INNER JOIN [Application] ON [Application].PersonId=Person.Id " +
-        //        //    "INNER JOIN Entry ON [Application].EntryId=Entry.Id " +
-        //        //    "INNER JOIN MotivationMail ON MotivationMail.ApplicationId=[Application].Id " +
-        //        //    "INNER JOIN [User] ON [User].Id=Person.Id WHERE MotivationMail.Id=@MailId";
-        //        //DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@MailId", MailId } });
-        //        string FIO, phone, program, text;
-        //        try
-        //        {
-        //            var data = (from person in context.Person
-        //                        join app in context.Application
-        //                        on person.Id equals app.PersonId
-        //                        join motivMail in context.MotivationMail
-        //                        on app.Id equals motivMail.ApplicationId
-        //                        join user in context.User
-        //                        on person.Id equals user.Id
-
-        //                        select new
-        //                        {
-        //                            person.Surname,
-        //                            person.Name,
-        //                            person.SecondName,
-        //                            person.PersonContacts.Phone,
-        //                            person.PersonContacts.Mobiles,
-        //                            user.Email,
-        //                            motivMail.MailText,
-        //                            app.Entry.ObrazProgramName
-        //                        }).FirstOrDefault();
-
-        //            FIO = data.Surname + " " + data.Name + " " + data.SecondName;
-        //            phone = data.Email + "\n" + data.Phone + "\n" + data.Mobiles;
-        //            program = data.ObrazProgramName;
-        //            text = data.MailText;
-        //        }
-        //        catch
-        //        {
-        //            return new byte[1] { 0x00 };
-        //        }
-
-        //        FIO = FIO.Trim();
-
-        //        using (Document doc = new Document())
-        //        {
-        //            BaseFont baseFont = BaseFont.CreateFont(fontspath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-        //            iTextSharp.text.Font font12 = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
-        //            iTextSharp.text.Font font16 = new iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.NORMAL);
-        //            iTextSharp.text.Font font16U = new iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.UNDERLINE);
-        //            iTextSharp.text.Font font16B = new iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.BOLD);
-
-        //            PdfWriter writer = PdfWriter.GetInstance(doc, ms);
-
-        //            doc.Open();
-
-
-        //            PdfPTable table = new PdfPTable(3);
-        //            table.WidthPercentage = 100;
-        //            table.SetWidths(new float[] { 40f, 25f, 35f });
-
-        //            //table.SetWidthPercentage(new float[] { 10f, 40f, 15f, 15f, 20f }, doc.PageSize);
-
-        //            PdfPCell cell = new PdfPCell(new Phrase("Санкт-Петербургский Государственный Университет", font16));
-        //            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            cell = new PdfPCell(new Phrase(""));
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            Phrase ph = new Phrase();
-        //            ph.Add(new Chunk("(ФИО) ", font12));
-        //            ph.Add(new Chunk(FIO, font16U));
-        //            cell = new PdfPCell(ph);
-        //            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            cell = new PdfPCell(new Phrase("Приемная комиссия", font16));
-        //            cell.HorizontalAlignment = Element.ALIGN_BOTTOM & Element.ALIGN_LEFT;
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            cell = new PdfPCell(new Phrase(""));
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            ph = new Phrase();
-        //            ph.Add(new Chunk("e-mail, тел. ", font12));
-        //            ph.Add(new Chunk(phone, font16U));
-        //            cell = new PdfPCell(ph);
-        //            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-        //            cell.Border = 0;
-        //            table.AddCell(cell);
-
-        //            doc.Add(table);
-
-        //            Paragraph p = new Paragraph("Мотивационное письмо \n к заявлению на участие в конкурсе \n по магистерской программе:\n" + program, font16B);
-        //            p.Alignment = Element.ALIGN_CENTER;
-        //            doc.Add(p);
-        //            string[] paragraphs = text.Split('\n');
-        //            foreach (string par in paragraphs)
-        //            {
-        //                p = new Paragraph(par, font12);
-        //                p.FirstLineIndent = 30;
-        //                p.Alignment = Element.ALIGN_JUSTIFIED;
-        //                doc.Add(p);
-        //            }
-
-        //            p = new Paragraph("\nДата: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"), font16);
-        //            doc.Add(p);
-
-        //            p = new Paragraph("\nПодпись: ", font16);
-        //            doc.Add(p);
-
-        //            doc.Close();
-        //        }
-
-        //        return ms.ToArray();
-        //    }
-        //}
-
         /// <summary>
         /// PDF Список файлов
         /// </summary>
@@ -514,23 +376,6 @@ namespace OnlineAbit2013.Controllers
                 lstFiles.Add(GetApplicationPDF_FirstPage(lstAppsFirst, lstApps, dirPath, isMag ? "ApplicationMag_page1.pdf" : "Application_page1.pdf", FIO, sVersion, code, isMag));
                 acrFlds.SetField("Version", sVersion);
                 
-                ////первые 3 вставляем как есть
-                //for (int rowInd = 1; rowInd < 4 || rowInd <= abitList.Count; rowInd++)
-                //{
-                //    var abit = abitList[rowInd - 1];
-                //    acrFlds.SetField("Profession" + rowInd, abit.ProfessionCode + " " + abit.Profession);
-                //    acrFlds.SetField("Specialization" + rowInd, abit.Specialization);
-                //    acrFlds.SetField("ObrazProgram" + rowInd, abit.ObrazProgram);
-                //    acrFlds.SetField("Priority" + rowInd, abit.Priority.ToString());
-
-                //    acrFlds.SetField("StudyForm" + abit.StudyFormId + rowInd, "1");
-                //    acrFlds.SetField("StudyBasis" + abit.StudyBasisId + rowInd, "1");
-
-                //    if (abitList.Where(x => x.Profession == abit.Profession && x.ObrazProgram == abit.ObrazProgram && x.Specialization == abit.Specialization && x.StudyFormId == abit.StudyFormId).Count() > 1)
-                //        acrFlds.SetField("IsPriority" + rowInd, "1");
-                //    rowInd++;
-                //}
-
                 //остальные - по 4 на новую страницу
                 int appcount = 3;
                 while (appcount < lstApps.Count)
@@ -577,6 +422,10 @@ namespace OnlineAbit2013.Controllers
                 string[] splitStr = GetSplittedStrings(person.PassportAuthor + " " + person.PassportDate.Value.ToString("dd.MM.yyyy"), 60, 70, 2);
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("PassportAuthor" + i, splitStr[i - 1]);
+                if (person.HasRussianNationality)
+                    acrFlds.SetField("HasRussianNationalityYes", "1");
+                else
+                    acrFlds.SetField("HasRussianNationalityNo", "1");
 
                 string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") + 
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House, 
@@ -2360,7 +2209,8 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonSportQualification.SportQualificationLevel,
                                   x.PersonSportQualification.OtherSportQualification,
                                   x.PersonAddInfo.HostelEduc,
-                                  x.PersonContacts.Country.IsRussia
+                                  x.PersonContacts.Country.IsRussia,
+                                  x.HasRussianNationality
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();
@@ -2414,6 +2264,11 @@ namespace OnlineAbit2013.Controllers
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
+
+                if (person.HasRussianNationality)
+                    acrFlds.SetField("HasRussianNationalityYes", "1");
+                else
+                    acrFlds.SetField("HasRussianNationalityNo", "1");
 
                 splitStr = GetSplittedStrings(Address, 50, 70, 3);
                 for (int i = 1; i <= 3; i++)
@@ -2656,6 +2511,7 @@ namespace OnlineAbit2013.Controllers
                                   SportQualificationName = x.PersonSportQualification.SportQualification1.Name,
                                   x.PersonAddInfo.HostelEduc,
                                   x.PersonContacts.Country.IsRussia,
+                                  x.HasRussianNationality
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();
@@ -2709,6 +2565,11 @@ namespace OnlineAbit2013.Controllers
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
+
+                if (person.HasRussianNationality)
+                    acrFlds.SetField("HasRussianNationalityYes", "1");
+                else
+                    acrFlds.SetField("HasRussianNationalityNo", "1");
 
                 splitStr = GetSplittedStrings(Address, 50, 70, 3);
                 for (int i = 1; i <= 3; i++)
@@ -3017,7 +2878,6 @@ namespace OnlineAbit2013.Controllers
 
             return retStr;
         }
-
         public static byte[] MergePdfFiles(List<byte[]> lstFilesBinary)
         {
             MemoryStream ms = new MemoryStream();

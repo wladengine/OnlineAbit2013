@@ -3531,6 +3531,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(CommitId, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
+            if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
+
             Guid VersionId = Guid.NewGuid();
             bool bisEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
@@ -5941,9 +5944,6 @@ Order by cnt desc";
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
                 if (PersonInfo == null)//а что это могло бы значить???
                     return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
-
-                if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-                    return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.AG_PriemClosed });
 
                 bool needHostel = string.Equals(NeedHostel, "false") ? false : true;
 

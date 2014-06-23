@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Дата аккредитации.
+        /// </summary>
+        internal static string AccreditationDate {
+            get {
+                return ResourceManager.GetString("AccreditationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Номер аккредитации.
+        /// </summary>
+        internal static string AccreditationNumber {
+            get {
+                return ResourceManager.GetString("AccreditationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Добавить оценку.
         /// </summary>
         internal static string AddMark {
@@ -115,6 +133,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Текущее направление (специальность).
+        /// </summary>
+        internal static string CurrentLicenceProgram {
+            get {
+                return ResourceManager.GetString("CurrentLicenceProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Текущая образовательная программа.
+        /// </summary>
+        internal static string CurrentObrazProgram {
+            get {
+                return ResourceManager.GetString("CurrentObrazProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Текущий профиль (специализация).
+        /// </summary>
+        internal static string CurrentProfile {
+            get {
+                return ResourceManager.GetString("CurrentProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как 2014 год.
         /// </summary>
         internal static string CurrentYear {
@@ -165,6 +210,24 @@ namespace Resources {
         internal static string DiplomTheme {
             get {
                 return ResourceManager.GetString("DiplomTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Данные об отчислении из СПбГУ.
+        /// </summary>
+        internal static string DisorderInfo {
+            get {
+                return ResourceManager.GetString("DisorderInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Год отчисления.
+        /// </summary>
+        internal static string DisorderYear {
+            get {
+                return ResourceManager.GetString("DisorderYear", resourceCulture);
             }
         }
         
@@ -277,6 +340,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Имеет гос. аккредитацию.
+        /// </summary>
+        internal static string HasAccreditation {
+            get {
+                return ResourceManager.GetString("HasAccreditation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Получаю академическую стипендию.
+        /// </summary>
+        internal static string HasScholarship {
+            get {
+                return ResourceManager.GetString("HasScholarship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Имею сертификат ТРКИ.
         /// </summary>
         internal static string HasTRKI {
@@ -331,6 +412,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Название образовательной программы.
+        /// </summary>
+        internal static string ObrazProgramName {
+            get {
+                return ResourceManager.GetString("ObrazProgramName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Сдаю в СПбГУ.
         /// </summary>
         internal static string PassInSPbSU {
@@ -358,11 +448,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Основа обучения.
+        /// </summary>
+        internal static string PersonStudyBasis {
+            get {
+                return ResourceManager.GetString("PersonStudyBasis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Форма обучения.
         /// </summary>
         internal static string PersonStudyForm {
             get {
                 return ResourceManager.GetString("PersonStudyForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Уровень обучения.
+        /// </summary>
+        internal static string PersonStudyLevel {
+            get {
+                return ResourceManager.GetString("PersonStudyLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Семестр.
+        /// </summary>
+        internal static string PersonStudySemester {
+            get {
+                return ResourceManager.GetString("PersonStudySemester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Восстанавливаюсь для ИГА.
+        /// </summary>
+        internal static string RecoverForIGA {
+            get {
+                return ResourceManager.GetString("RecoverForIGA", resourceCulture);
             }
         }
         

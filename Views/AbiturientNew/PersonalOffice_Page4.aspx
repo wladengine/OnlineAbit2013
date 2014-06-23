@@ -34,11 +34,12 @@
     </style> 
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
+            $(function () { setTimeout(GetProfessions ) });
             $(function () { setTimeout(GetCities, 50) });
-            $(function () { setTimeout(GetProfessions, 50) });
+            
 
             <% if (!String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) { %>
-            $(function () { setTimeout(GetObrazPrograms, 50) });
+            $(function () { setTimeout(GetObrazPrograms ) });
             <% } %>
 
             function Myfun() {
@@ -111,7 +112,7 @@
                                 options += ' selected="true" ';
                             options += ' >' + json_data.List[i].Name + '</option>';
                         }
-                        $('#CurrentEducation_ObrazProgramId').html(options).removeAttr('disabled').show();
+                        $('#CurrentEducation_ObrazProgramId').html(options).show();
                     }
                 }, 'json');
             }
@@ -519,23 +520,33 @@
                 }
             }
             function updateIsSecondWave() {
-                if ($("#IsSecondWave").is(':checked')) {
+                if ( ($("#IsInUniversity").is(':checked')) || ($("#IsSecondWave").is(':checked'))) {
                     $('#EgeCert').attr('disabled', 'disabled');
                     $('#_EgeMark').hide();
                 }
-                else {
-                    $('#EgeCert').removeAttr('disabled');
-                    $('#_EgeMark').hide();
+                else { 
+                     if ($("#Is2014").is(':checked')) {
+                        $('#EgeCert').attr('disabled', 'disabled');
+                    }
+                    else {
+                        $('#EgeCert').removeAttr('disabled');
+                    }
+                    $('#_EgeMark').show();  
                 }
             }
             function updateIsInUniversity() {
-                if ($("#IsInUniversity").is(':checked')) {
+                if ( ($("#IsInUniversity").is(':checked')) || ($("#IsSecondWave").is(':checked'))) {
                     $('#EgeCert').attr('disabled', 'disabled');
                     $('#_EgeMark').hide();
                 }
-                else {
-                    $('#EgeCert').removeAttr('disabled');
-                    $('#_EgeMark').hide();
+                else { 
+                     if ($("#Is2014").is(':checked')) {
+                        $('#EgeCert').attr('disabled', 'disabled');
+                    }
+                    else {
+                        $('#EgeCert').removeAttr('disabled');
+                    }
+                    $('#_EgeMark').show();  
                 }
             }
 
@@ -595,7 +606,7 @@
                     }, 500);
                 }
                 function checkLength() {
-                    if ((certificateNumber.val().length > 15 || certificateNumber.val().length < 15) && $("#Is2014").is(':checked')) {
+                    if ((certificateNumber.val().length > 15 || certificateNumber.val().length < 15) && (!$("#Is2014").is(':checked'))) {
                         certificateNumber.addClass("ui-state-error");
                         updateTips("Номер сертификата должен быть 15-значным в формате РР-ХХХХХХХХ-ГГ");
                         return false;
@@ -605,7 +616,7 @@
                 }
                 function checkVal() {
                     var val = examMark.val();
-                    if ((val < 1 || val > 100) && !$("#IsSecondWave").is(':checked') && !$("#IsInUniversity").is(':checked')) {
+                    if ((val < 1 || val > 100) && (!$("#IsSecondWave").is(':checked')) && (!$("#IsInUniversity").is(':checked'))) {
                         updateTips("Экзаменационный балл должен быть от 1 до 100");
                         return false;
                     }
@@ -910,7 +921,7 @@
                                     <fieldset>
                                         <div id="_CertNum" class="clearfix">
                                             <label for="EgeCert"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsert").ToString()%></label><br />
-		                                    <input type="text" id="EgeCert" /><br />
+		                                    <input type="text" id="EgeCert" disabled="disabled"/><br />
                                         </div>
                                         <div class="clearfix">
                                             <label for="Is2014"><%=GetGlobalResourceObject("PersonalOffice_Step4", "CurrentYear").ToString()%></label><br />
@@ -920,18 +931,18 @@
                                             <label for="EgeExam"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEsubject").ToString()%></label><br />
 		                                    <select id="EgeExam" ></select><br />
                                         </div>
-                                        <div id="_EgeMark" class="clearfix">
+                                        <div id="_EgeMark" class="clearfix" >
                                             <label for="EgeMark"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EGEball").ToString()%></label><br />
 		                                    <input type="text" id="EgeMark" value="" /><br />
                                         </div>
-                                        <div id="_IsSecondWave" class="clearfix">
+                                        <div id="_IsSecondWave" class="clearfix" >
                                             <label for="IsSecondWave"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SecondWave").ToString()%></label><br />
-		                                    <input type="checkbox" id="IsSecondWave" checked="checked" onchange="updateIsSecondWave()" /><br />
+		                                    <input type="checkbox" id="IsSecondWave" onchange="updateIsSecondWave()" /><br />
                                         </div>
                                         <br />
                                         <div id="_IsInUniversity" class="clearfix">
                                             <label for="IsInUniversity"><%=GetGlobalResourceObject("PersonalOffice_Step4", "PassInSPbSU").ToString()%></label><br />
-		                                    <input type="checkbox" id="IsInUniversity" checked="checked" onchange="updateIsInUniversity()" /><br />
+		                                    <input type="checkbox" id="IsInUniversity" onchange="updateIsInUniversity()" /><br />
                                         </div>
 	                                </fieldset>
                                 </div>
@@ -940,76 +951,76 @@
                         <div id="_TransferData" class="clearfix" style="display:none">
                             <div id = "_AccreditationInfo">
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.HasAccreditation, "Имеет гос. аккредитацию")%>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.HasAccreditation, GetGlobalResourceObject("PersonalOffice_Step4", "HasAccreditation").ToString())%>
                                     <%= Html.CheckBoxFor(x => x.CurrentEducation.HasAccreditation)%>
                                 </div>
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationNumber, "Номер аккредитации")%>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationNumber,  GetGlobalResourceObject("PersonalOffice_Step4", "AccreditationNumber").ToString())%>
                                     <%= Html.TextBoxFor(x => x.CurrentEducation.AccreditationNumber)%>
                                 </div>
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationDate, "Дата аккредитации") %>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.AccreditationDate,  GetGlobalResourceObject("PersonalOffice_Step4", "AccreditationDate").ToString()) %>
                                     <%= Html.TextBoxFor(x => x.CurrentEducation.AccreditationDate)%> 
                                 </div>
                             </div>
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.CurrentEducation.StudyLevelId, "Уровень обучения")%>
+                                <%= Html.LabelFor(x => x.CurrentEducation.StudyLevelId,  GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudyLevel").ToString())%>
                                 <%= Html.DropDownListFor(x => x.CurrentEducation.StudyLevelId, Model.CurrentEducation.StudyLevelList, new SortedList<string, object>() { })%>
                             </div>  
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.CurrentEducation.SemesterId, "Семестр")%>
+                                <%= Html.LabelFor(x => x.CurrentEducation.SemesterId,  GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudySemester").ToString())%>
                                 <%= Html.DropDownListFor(x => x.CurrentEducation.SemesterId, Model.CurrentEducation.SemesterList, new SortedList<string, object>() {  })%>
                             </div>
                             <div id="_TransferSPBUAddInfo" class="clearfix" >
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyFormId, "Форма обучения")%>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyFormId,GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudyForm").ToString())%>
                                     <%= Html.DropDownListFor(x => x.CurrentEducation.StudyFormId, Model.EducationInfo.StudyFormList, new SortedList<string, object>() {  })%>
                                 </div>
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyBasisId, "Основа обучения") %>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.StudyBasisId,GetGlobalResourceObject("PersonalOffice_Step4", "PersonStudyBasis").ToString() ) %>
                                     <%= Html.DropDownListFor(x => x.CurrentEducation.StudyBasisId, Model.EducationInfo.StudyBasisList, new SortedList<string, object>() { })%>
                                 </div>
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.LicenseProgramId, "Текущее направление (специальность)") %>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.LicenseProgramId, GetGlobalResourceObject("PersonalOffice_Step4", "CurrentLicenceProgram").ToString()) %>
                                     <%= Html.HiddenFor(x=> x.CurrentEducation.HiddenLicenseProgramId) %>
                                     <select id="CurrentEducation_LicenseProgramId" size="12" name="lProfession" style="width:459px;" onchange="GetObrazPrograms()"></select> 
                                 </div>
 
                                 <div class="clearfix" id="_ObrazProg" <% if (String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) { %>style="display:none;"<% } %>>
-                                    <%= Html.LabelFor(x => x.CurrentEducation.ObrazProgramId, "Текущая образовательная программа")%>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.ObrazProgramId, GetGlobalResourceObject("PersonalOffice_Step4", "CurrentObrazProgram").ToString())%>
                                     <%= Html.HiddenFor(x => x.CurrentEducation.HiddenObrazProgramId)%>
-                                    <select id="CurrentEducation_ObrazProgramId"  <%if (!Model.Enabled){ %> disabled="true"<%} %> size="5" name="CurObrazProgram" style="width:459px;"></select>
+                                    <select id="CurrentEducation_ObrazProgramId"  <%if (!Model.Enabled){ %> disabled="disabled" <% } %> size="5" name="CurObrazProgram" style="width:459px;"></select>
                                 </div>
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.ProfileName, "Текущий профиль (специализация)")%>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.ProfileName,GetGlobalResourceObject("PersonalOffice_Step4", "CurrentProfile").ToString())%>
                                     <%= Html.TextBoxFor(x => x.CurrentEducation.ProfileName)%>
                                 </div>
                             </div>
                             <div id="_TransferHasScholarship">
                                 <div class="clearfix">
-                                    <%= Html.LabelFor(x => x.CurrentEducation.HasScholarship, "Получаю академическую стипендию") %>
+                                    <%= Html.LabelFor(x => x.CurrentEducation.HasScholarship, GetGlobalResourceObject("PersonalOffice_Step4", "HasScholarship").ToString()) %>
                                     <%= Html.CheckBoxFor(x => x.CurrentEducation.HasScholarship)%>
                                 </div>
                             </div>
                         </div>
                         <div id = "_DisorderInfo" style="display:none;">
-                            <h3>Данные об отчислении из СПбГУ</h3>
+                            <h3><%=GetGlobalResourceObject("PersonalOffice_Step4", "DisorderInfo").ToString()%></h3>
                             <hr /> 
                             <fieldset><br />
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.DisorderInfo.YearOfDisorder, "Год") %>
+                                <%= Html.LabelFor(x => x.DisorderInfo.YearOfDisorder, GetGlobalResourceObject("PersonalOffice_Step4", "DisorderYear").ToString() )%>
                                 <%= Html.TextBoxFor(x => x.DisorderInfo.YearOfDisorder)%>
                                 <br /><p></p>
                                 <span id="DisorderInfo_Year_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "SchoolExitYear_Message").ToString()%></span>
                                 <span id="DisorderInfo_Year_MessageFormat" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "EducationInfo_SchoolExitYear_MessageFormat").ToString()%></span>
                             </div>
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.DisorderInfo.EducationProgramName, "Название образовательной программы")%>
+                                <%= Html.LabelFor(x => x.DisorderInfo.EducationProgramName, GetGlobalResourceObject("PersonalOffice_Step4", "ObrazProgramName").ToString())%>
                                 <%= Html.TextBoxFor(x => x.DisorderInfo.EducationProgramName)%>
                                 <br /> 
                             </div>
                             <div class="clearfix">
-                                <%= Html.LabelFor(x => x.DisorderInfo.IsForIGA, "Восстанавливаюсь для ИГА")%>
+                                <%= Html.LabelFor(x => x.DisorderInfo.IsForIGA, GetGlobalResourceObject("PersonalOffice_Step4", "RecoverForIGA").ToString())%>
                                 <%= Html.CheckBoxFor(x => x.DisorderInfo.IsForIGA)%>
                                 <br /> 
                             </div>

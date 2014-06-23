@@ -1538,7 +1538,7 @@ WHERE PersonId=@PersonId ";
                     {
                         if (HasRussianNationality)
                         {
-                            return 2;
+                            return 3;
                         }
                         if (res_coun == 193)
                         { return 2;  } // !193 - 193

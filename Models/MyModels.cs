@@ -627,6 +627,9 @@ namespace OnlineAbit2013.Models
 
         public string SemesterId { get; set; }
         public List<SelectListItem> SemesterList { get; set; }
+        public string LicenseProgramName { get; set; }
+        public string ObrazProgramName { get; set; }
+        public string Message { get; set; }
     }
 
     //-------------------------------------------

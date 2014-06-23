@@ -102,8 +102,11 @@
     <input name="val_h" id="val_h" type="hidden" value="1" />
     <% if (Model.EntryType == 1)
        { %>
-        <p class="message info"><%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %> <%= (Model.SchoolType.ToLower() == "школа")? Model.ExitClassId + " классов" : ""%><%= (Model.SchoolType.ToLower() == "school")? Model.ExitClassId + "th form" : ""%>
-        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%></p>
+        <div class="message info">
+        
+        <%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %> <%= (Model.SchoolType.ToLower() == "школа")? Model.ExitClassId + " классов" : ""%><%= (Model.SchoolType.ToLower() == "school")? Model.ExitClassId + "th form" : ""%>
+        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%>
+        </div>
        <% if (Model.ExitClassId < 9) //7-8
           { %>
             <!--ag-->
@@ -136,8 +139,16 @@
      <%}
        else
        {%>
-        <p class="message info"><%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %>
-        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%></p>
+        <div class="message info">
+        <% if (Model.VuzAddType == 2){
+            if (!String.IsNullOrEmpty(Model.Message)) {%><b><%=Model.Message%></b><br /><%}%>
+            <%= GetGlobalResourceObject("PersonalOffice_Step4", "CurrentLicenceProgram")%>: <%= Model.LicenseProgramName %><br />
+            <%= GetGlobalResourceObject("PersonalOffice_Step4", "CurrentObrazProgram")%>: <%= Model.ObrazProgramName %> <br />
+            <hr />
+        <%} %>
+        <%= GetGlobalResourceObject("NewApplication", "Educ_Mes1")%><%= Model.SchoolType %>
+        <br /><%= GetGlobalResourceObject("NewApplication", "Educ_Mes2")%>
+        </div>
        <% if (Model.VuzAddType == 1) // поступление
           { %>
             <!-- 1 курс -->

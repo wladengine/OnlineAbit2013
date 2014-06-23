@@ -34,11 +34,12 @@
     </style> 
         <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
         <script type="text/javascript">
+            $(function () { setTimeout(GetProfessions ) });
             $(function () { setTimeout(GetCities, 50) });
-            $(function () { setTimeout(GetProfessions, 50) });
+            
 
             <% if (!String.IsNullOrEmpty(Model.CurrentEducation.HiddenObrazProgramId)) { %>
-            $(function () { setTimeout(GetObrazPrograms, 50) });
+            $(function () { setTimeout(GetObrazPrograms ) });
             <% } %>
 
             function Myfun() {

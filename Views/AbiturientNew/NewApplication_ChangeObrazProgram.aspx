@@ -82,7 +82,7 @@
         var CurrGosLine = '#GosLine'+i;  
         var profId = $(CurrlProfession).val();
         var sfId = $('#StudyFormId'+i).val();
-
+        flag = false;
         if (profId == null){
             return;
         } 
@@ -105,10 +105,17 @@
             else {
                 $(CurrObrazProgramsErrors).text('').hide();
                 for (var i = 0; i < json_data.List.length; i++) {
-                    options += '<option value="' + json_data.List[i].Id + '">' + json_data.List[i].Name + '</option>';
+                    options += '<option value="' + json_data.List[i].Id + '"';
+                    if (json_data.List.length == 1)
+                    {
+                        options += ' selected '; flag = true; 
+                    } 
+                    options += '>' + json_data.List[i].Name + '</option>';
                 }
                 $(CurrlObrazProgram).html(options).removeAttr('disabled').show();
                 $(CurrlSpecialization).html('');
+                if (flag)
+                {GetSpecializations(i);}
             }
         }, 'json');
     }
@@ -292,6 +299,7 @@
                 $(currObrazProgramErrors).text(json_data.ErrorMessage).show();
             }
         }, 'json');
+        $('#Submit').removeAttr("disabled");
     }
     
     function ChangeGosLine(i) {
@@ -634,7 +642,7 @@
         </div>
     <%} %>
     <br />
-    <input id="Submit" type="submit" value="Подтвердить" class="button button-green"/>
+    <input id="Submit" type="submit" disabled value="Подтвердить" class="button button-green"/>
 <% 
    }
 %>

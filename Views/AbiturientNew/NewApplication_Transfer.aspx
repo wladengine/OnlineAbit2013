@@ -91,7 +91,7 @@
         $(CurrSpecs).hide();
         $(CurrFinishBtn).hide();
         $(CurrGosLine).hide();
-   
+        var I = i;
         $.post('/Transfer/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#StudyBasisId'+i).val(), 
             entry: $('#StudyLevelGroupId'+i).val(),  isParallel: $('#IsParallelHidden'+i).val(), isReduced : $('#IsReducedHidden'+i).val(), 
             semesterId : $('#semesterId'+i).val() }, function (json_data) {
@@ -115,7 +115,7 @@
                 $(CurrlObrazProgram).html(options).removeAttr('disabled').show();
                 $(CurrlSpecialization).html('');
                 if (flag)
-                {GetSpecializations(i);}
+                {GetSpecializations(I);}
             }
         }, 'json');
     }

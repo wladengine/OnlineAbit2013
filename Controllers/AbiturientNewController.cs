@@ -3173,6 +3173,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     // окончил не вуз
                     model.Enabled = false;
                     model.HasError = true;
+                    model.Applications = new List<Mag_ApplicationSipleEntity>();
                     if (!bIsEng)
                         model.ErrorMessage = "Невозможно подать заявление на перевод (не соответствует уровень образования)";
                     else
@@ -3184,10 +3185,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     int? VuzAddType = (int?)Util.AbitDB.GetValue("SELECT VuzAdditionalTypeId FROM PersonEducationDocument WHERE PersonId=@Id", new SortedList<string, object>() { { "@Id", PersonId } });
                     if (VuzAddType.HasValue)
                     {
-                        if ((int)VuzAddType != 2)
+                        if ((int)VuzAddType != 4)
                         {
                             model.Enabled = false;
                             model.HasError = true;
+                            model.Applications = new List<Mag_ApplicationSipleEntity>();
                             if (!bIsEng)
                                 model.ErrorMessage = "Невозможно подать заявление на перевод (смените тип поступления в Анкете)";
                             else
@@ -3199,6 +3201,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     {
                         model.Enabled = false;
                         model.HasError = true;
+                        model.Applications = new List<Mag_ApplicationSipleEntity>();
                         if (!bIsEng)
                             model.ErrorMessage = "Невозможно подать заявление на перевод (смените тип поступления в Анкете)";
                         else

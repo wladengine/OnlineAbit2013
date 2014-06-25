@@ -957,7 +957,7 @@ namespace OnlineAbit2013.Controllers
                             ChangeStudyFormReason.Reason = model.ChangeStudyFormReason.Reason;
                             if (bIns)
                             {
-                                context.PersonCurrentEducation.AddObject(PersonCurrentEducation);
+                                context.PersonChangeStudyFormReason.AddObject(ChangeStudyFormReason);
                                 bIns = false;
                             }
                         } 

@@ -271,6 +271,7 @@
             function UpdateVuzAddType() {
                 if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
                     $('#_TransferData').show();
+                    $('#_Reason').show();
                     $('#_TransferHasScholarship').show(); 
                     $('#EducationInfo_SchoolCity').val("Санкт-Петербург");
                     $('#EducationInfo_SchoolName').val("Санкт-Петербургский государственный  университет (СПбГУ)");
@@ -288,6 +289,7 @@
                     $('#LabelEducationInfo_CountryEducId').hide();
                 }
                 else { 
+                    $('#_Reason').hide();
                     if ($('#EducationInfo_VuzAdditionalTypeId').val() == 4) {
                         $('#_TransferData').show();
                         if ($('#EducationInfo_CountryEducId').val() == '193') { $('#_TransferHasScholarship').show(); }
@@ -987,6 +989,10 @@
                                     <%= Html.LabelFor(x => x.CurrentEducation.ProfileName,GetGlobalResourceObject("PersonalOffice_Step4", "CurrentProfile").ToString())%>
                                     <%= Html.TextBoxFor(x => x.CurrentEducation.ProfileName)%>
                                 </div>
+                            </div>
+                            <div id="_Reason"> 
+                                <%= Html.LabelFor(x => x.ChangeStudyFormReason.Reason, GetGlobalResourceObject("PersonalOffice_Step4", "ChangeStudyFormReason").ToString())%>
+                                <%= Html.TextAreaFor(x => x.ChangeStudyFormReason.Reason, 5, 85, new SortedList<string, object>() { { "class", "noresize" } })%>
                             </div>
                             <div id="_TransferHasScholarship">
                                 <div class="clearfix">

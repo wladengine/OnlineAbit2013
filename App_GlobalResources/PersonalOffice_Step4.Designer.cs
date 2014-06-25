@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Для смены основы обучения, укажите причину:.
+        /// </summary>
+        internal static string ChangeStudyFormReason {
+            get {
+                return ResourceManager.GetString("ChangeStudyFormReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Страна обучения.
         /// </summary>
         internal static string CountryCurEducId {

@@ -377,7 +377,12 @@ namespace OnlineAbit2013.Controllers
                     model.CurrentEducation.EducationTypeId = CurrentEducation.EducTypeId.ToString();
                     model.CurrentEducation.EducationName = CurrentEducation.EducName;
                     model.CurrentEducation.HasScholarship = CurrentEducation.HasScholarship ?? false;
-                   
+                    /////
+                    model.ChangeStudyFormReason = new PersonChangeStudyFormReason();
+                    PersonChangeStudyFormReason ChangeStudyFormReason = Person.PersonChangeStudyFormReason;
+                    if (ChangeStudyFormReason == null)
+                        ChangeStudyFormReason = new PersonChangeStudyFormReason();
+                    model.ChangeStudyFormReason.Reason = ChangeStudyFormReason.Reason;
                     /////////////////////////////////////////////////
                     model.DisorderInfo = new DisorderedSPBUEducation();
                     if (Person.PersonDisorderInfo != null)
@@ -873,13 +878,17 @@ namespace OnlineAbit2013.Controllers
                         int.TryParse(model.EducationInfo.HEEntryYear, out iEntryYear);
                         PersonHighEducationInfo.EntryYear = iEntryYear != 0 ? (int?)iEntryYear : null;
                         PersonHighEducationInfo.ExitYear = SchoolExitYear != 0 ? (int?)SchoolExitYear : null;
-                    } 
+                    }
                     if (bIns)
+                    {
                         context.PersonHighEducationInfo.AddObject(PersonHighEducationInfo);
+                        bIns = false;
+                    }
 
                     //-----------------PersonCurrentEducation---------------------
                     if (iVuzAddTypeId != 1)
                     {
+                        bIns = false;
                         PersonCurrentEducation PersonCurrentEducation = Person.PersonCurrentEducation;
                         int iEducTypeId = 1;
                         if (!int.TryParse(model.CurrentEducation.EducationTypeId, out iEducTypeId))
@@ -926,12 +935,37 @@ namespace OnlineAbit2013.Controllers
 
                         PersonCurrentEducation.CountryId = ((iVuzAddTypeId == 2) || (iVuzAddTypeId == 3)) ? 193 : iCountryEducId;
                         PersonCurrentEducation.ProfileName = model.CurrentEducation.ProfileName;
+
+
                         if (bIns)
+                        {
                             context.PersonCurrentEducation.AddObject(PersonCurrentEducation);
+                            bIns = false;
+                        }
+                        
+                        if (iVuzAddTypeId == 2)
+                        {
+                            bIns = false;
+                            PersonChangeStudyFormReason ChangeStudyFormReason = Person.PersonChangeStudyFormReason;
+                            if (ChangeStudyFormReason == null)
+                            {
+                                ChangeStudyFormReason = new PersonChangeStudyFormReason();
+                                ChangeStudyFormReason.PersonId = PersonId;
+                                bIns = true;
+                            }
+
+                            ChangeStudyFormReason.Reason = model.ChangeStudyFormReason.Reason;
+                            if (bIns)
+                            {
+                                context.PersonCurrentEducation.AddObject(PersonCurrentEducation);
+                                bIns = false;
+                            }
+                        } 
                     }
                     //-----------------PersonDisorderInfo---------------------
                     if (iVuzAddTypeId == 3)
                     {
+                        bIns = false;
                         PersonDisorderInfo PersonDisorderEducation = Person.PersonDisorderInfo;
                         if (PersonDisorderEducation == null)
                         {

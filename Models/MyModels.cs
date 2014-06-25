@@ -71,6 +71,7 @@ namespace OnlineAbit2013.Models
         public List<AppendedFile> Files { get; set; } 
         public PersonPrivileges PrivelegeInfo { get; set; }
         public Constants ConstInfo { get; set; }
+        public PersonChangeStudyFormReason ChangeStudyFormReason { get; set; }
     }
 
     public class PersonalOfficeRecover

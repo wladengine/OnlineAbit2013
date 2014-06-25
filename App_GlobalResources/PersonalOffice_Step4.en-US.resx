@@ -300,4 +300,7 @@
   <data name="RecoverForIGA" xml:space="preserve">
     <value>Recover for final academic assessment</value>
   </data>
+  <data name="ChangeStudyFormReason" xml:space="preserve">
+    <value>The reason for changing basis of study</value>
+  </data>
 </root>

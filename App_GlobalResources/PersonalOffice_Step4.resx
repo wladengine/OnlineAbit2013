@@ -306,4 +306,7 @@
   <data name="DisorderYear" xml:space="preserve">
     <value>Год отчисления</value>
   </data>
+  <data name="ChangeStudyFormReason" xml:space="preserve">
+    <value>Для смены основы обучения, укажите причину:</value>
+  </data>
 </root>

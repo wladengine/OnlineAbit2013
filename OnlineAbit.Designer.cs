@@ -1934,7 +1934,8 @@ namespace OnlineAbit2013
         /// <param name="studyLevelGroupId">Исходное значение свойства StudyLevelGroupId.</param>
         /// <param name="isGosLine">Исходное значение свойства IsGosLine.</param>
         /// <param name="applicationCommitNumber">Исходное значение свойства ApplicationCommitNumber.</param>
-        public static Abiturient CreateAbiturient(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Int32 entryType, global::System.Boolean hostelEduc, global::System.DateTime dateOfStart, global::System.Guid entryId, global::System.Int32 licenseProgramId, global::System.String licenseProgramName, global::System.Int32 obrazProgramId, global::System.String obrazProgramCrypt, global::System.String obrazProgramName, global::System.Int32 studyBasisId, global::System.Int32 studyFormId, global::System.Int32 studyLevelId, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Int32 semesterId, global::System.Boolean isParallel, global::System.Guid commitId, global::System.Boolean isCommited, global::System.Int32 studyLevelGroupId, global::System.Boolean isGosLine, global::System.Int32 applicationCommitNumber)
+        /// <param name="isDeleted">Исходное значение свойства IsDeleted.</param>
+        public static Abiturient CreateAbiturient(global::System.Guid id, global::System.Guid personId, global::System.Int32 priority, global::System.Int32 barcode, global::System.Boolean enabled, global::System.Int32 entryType, global::System.Boolean hostelEduc, global::System.DateTime dateOfStart, global::System.Guid entryId, global::System.Int32 licenseProgramId, global::System.String licenseProgramName, global::System.Int32 obrazProgramId, global::System.String obrazProgramCrypt, global::System.String obrazProgramName, global::System.Int32 studyBasisId, global::System.Int32 studyFormId, global::System.Int32 studyLevelId, global::System.Boolean isApprovedByComission, global::System.Boolean isImported, global::System.Boolean isSecond, global::System.Boolean isReduced, global::System.Int32 semesterId, global::System.Boolean isParallel, global::System.Guid commitId, global::System.Boolean isCommited, global::System.Int32 studyLevelGroupId, global::System.Boolean isGosLine, global::System.Int32 applicationCommitNumber, global::System.Boolean isDeleted)
         {
             Abiturient abiturient = new Abiturient();
             abiturient.Id = id;
@@ -1965,6 +1966,7 @@ namespace OnlineAbit2013
             abiturient.StudyLevelGroupId = studyLevelGroupId;
             abiturient.IsGosLine = isGosLine;
             abiturient.ApplicationCommitNumber = applicationCommitNumber;
+            abiturient.IsDeleted = isDeleted;
             return abiturient;
         }
 
@@ -3288,6 +3290,33 @@ namespace OnlineAbit2013
         private Nullable<global::System.DateTime> _DocInsertDate;
         partial void OnDocInsertDateChanging(Nullable<global::System.DateTime> value);
         partial void OnDocInsertDateChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                if (_IsDeleted != value)
+                {
+                    OnIsDeletedChanging(value);
+                    ReportPropertyChanging("IsDeleted");
+                    _IsDeleted = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("IsDeleted");
+                    OnIsDeletedChanged();
+                }
+            }
+        }
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
 
         #endregion
 
@@ -3393,6 +3422,30 @@ namespace OnlineAbit2013
         private Nullable<global::System.Int32> _Multiplier;
         partial void OnMultiplierChanging(Nullable<global::System.Int32> value);
         partial void OnMultiplierChanged();
+    
+        /// <summary>
+        /// Нет доступной документации по метаданным.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> AppSecondTypeId
+        {
+            get
+            {
+                return _AppSecondTypeId;
+            }
+            set
+            {
+                OnAppSecondTypeIdChanging(value);
+                ReportPropertyChanging("AppSecondTypeId");
+                _AppSecondTypeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AppSecondTypeId");
+                OnAppSecondTypeIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _AppSecondTypeId;
+        partial void OnAppSecondTypeIdChanging(Nullable<global::System.Int32> value);
+        partial void OnAppSecondTypeIdChanged();
 
         #endregion
 

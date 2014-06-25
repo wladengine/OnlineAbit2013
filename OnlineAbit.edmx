@@ -131,7 +131,8 @@
       [Abiturient].[IsImported] AS [IsImported], 
       [Abiturient].[CompetitionId] AS [CompetitionId], 
       [Abiturient].[ApproverName] AS [ApproverName], 
-      [Abiturient].[DocInsertDate] AS [DocInsertDate]
+      [Abiturient].[DocInsertDate] AS [DocInsertDate], 
+      [Abiturient].[IsDeleted] AS [IsDeleted]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Store.Entry" store:Type="Views" store:Schema="dbo" store:Name="Entry">
@@ -503,6 +504,7 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="150" />
           <Property Name="Multiplier" Type="int" />
+          <Property Name="AppSecondTypeId" Type="int" />
         </EntityType>
         <EntityType Name="AG_Application">
           <Key>
@@ -1317,6 +1319,7 @@
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
             <PropertyRef Name="IsImported" />
+            <PropertyRef Name="IsDeleted" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -1372,6 +1375,7 @@
           <Property Name="CompetitionId" Type="int" />
           <Property Name="ApproverName" Type="nvarchar" MaxLength="150" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
       предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
@@ -2639,6 +2643,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Description" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Multiplier" />
+          <Property Type="Int32" Name="AppSecondTypeId" />
         </EntityType>
         <EntityType Name="Application">
           <Key>
@@ -2701,6 +2706,7 @@
             <PropertyRef Name="IsCommited" />
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
+            <PropertyRef Name="IsDeleted" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="PersonId" Nullable="false" />
@@ -2756,6 +2762,7 @@
           <Property Type="Int32" Name="CompetitionId" />
           <Property Type="String" Name="ApproverName" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="DocInsertDate" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -4455,6 +4462,7 @@
           <EntitySetMapping Name="AbiturientType">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.AbiturientType">
               <MappingFragment StoreEntitySet="AbiturientType">
+                <ScalarProperty Name="AppSecondTypeId" ColumnName="AppSecondTypeId" />
                 <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4514,6 +4522,7 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />

@@ -267,7 +267,7 @@
             var ret = true;
             if (!CheckOlSeries()) { ret = false; }
             if (!CheckOlNumber()) { ret = false; }
-            if (!CheckOlDate()) { ret = false; }
+            //if (!CheckOlDate()) { ret = false; }
             if (!ret)
                 return false;
             var param = new Object();

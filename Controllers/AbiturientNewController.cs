@@ -5708,8 +5708,12 @@ Order by cnt desc";
                 return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.IncorrectGUID });
 
             DateTime _date;
+            DateTime? dtDate;
             if (!DateTime.TryParse(Date, out _date))
-                _date = DateTime.Now;
+                dtDate = null;
+            else
+                dtDate = _date;
+
 
             Guid Id = Guid.NewGuid();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
@@ -5723,7 +5727,7 @@ Order by cnt desc";
                     OlympValueId = iOlympValueId,
                     DocumentSeries = Series,
                     DocumentNumber = Number,
-                    DocumentDate = _date,
+                    DocumentDate = dtDate,
                     PersonId = PersonId
                 });
                 context.SaveChanges();
@@ -5744,7 +5748,7 @@ Order by cnt desc";
                     Name = Ol.OlympName,
                     Subject = Ol.OlympSubject,
                     Value = Ol.OlympValue,
-                    Doc = Series + " " + Number + " от " + _date.ToShortDateString()
+                    Doc = Series + " " + Number + " от " + (dtDate.HasValue ? dtDate.Value.ToShortDateString() : "-")
                 });
             }
         }

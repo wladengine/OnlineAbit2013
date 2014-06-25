@@ -51,11 +51,7 @@
              
             function GetProfessions() {
                 if ($('#EducationInfo_VuzAdditionalTypeId').val() == 2) {
-                    var CurLevelId = $('#CurrentEducation_StudyLevelId').val();
-                    if (CurLevelId == 15) CurLevelId = 4;
-                    else if (CurLevelId == 16) CurLevelId = 1;
-                    else if (CurLevelId == 17) CurLevelId = 2;
-                    else if (CurLevelId == 18) CurLevelId = 1;
+                    var CurLevelId = $('#CurrentEducation_StudyLevelId').val(); 
                     var CurrlObrazProgram = '#CurrentEducation_ObrazProgramId';
                     var CurrlProfession = '#CurrentEducation_LicenseProgramId';
                     var sfId = $('#CurrentEducation_StudyFormId').val();
@@ -92,11 +88,7 @@
                     profId = $('#CurrentEducation_HiddenLicenseProgramId').val();
                 }
                 $('#_ObrazProg').show();
-                var CurLevelId = $('#CurrentEducation_StudyLevelId').val();
-                if (CurLevelId == 15) CurLevelId = 4;
-                else if (CurLevelId == 16) CurLevelId = 1;
-                else if (CurLevelId == 17) CurLevelId = 2;
-                else if (CurLevelId == 18) CurLevelId = 1;
+                var CurLevelId = $('#CurrentEducation_StudyLevelId').val(); 
                 var curSemester = $('#CurrentEducation_SemesterId').val();
                 $.post('/Transfer/GetObrazPrograms', { prof: profId, studyform: sfId, studybasis: $('#CurrentEducation_StudyBasisId').val(),
                     entry: CurLevelId, semesterId: curSemester

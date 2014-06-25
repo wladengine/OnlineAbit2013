@@ -964,6 +964,26 @@ namespace OnlineAbit2013.Controllers
                 iStudyLevelId = iEntryId;
                 iEntryId = 3;
             }
+            if (iEntryId == 16)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 1;
+            }
+            if (iEntryId == 18)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 1;
+            }
+            if (iEntryId == 17)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 2;
+            }
+            if (iEntryId == 15)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 4;
+            }
             int iSemesterId;
             if (!int.TryParse(semesterId, out iSemesterId))
                 iSemesterId = 1;

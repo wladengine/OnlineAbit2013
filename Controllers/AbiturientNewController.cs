@@ -4671,6 +4671,26 @@ SELECT [User].Email
                 iStudyLevelId = iEntryId;
                 iEntryId = 3;
             }
+            if (iEntryId == 16)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 1;
+            }
+            if (iEntryId == 18)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 1;
+            }
+            if (iEntryId == 17)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 2;
+            }
+            if (iEntryId == 15)
+            {
+                iStudyLevelId = iEntryId;
+                iEntryId = 4;
+            }
 
             if (!int.TryParse(semesterId, out iSemesterId))
                 iSemesterId = 1;

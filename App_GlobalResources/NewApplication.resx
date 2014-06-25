@@ -297,4 +297,7 @@
   <data name="NewApp_3MorePrograms" xml:space="preserve">
     <value>Заявление уже подано на 3 направления</value>
   </data>
+  <data name="AbitMessage" xml:space="preserve">
+    <value>Уважаемый абитуриент. В этом окне необходимо выбрать &lt;b&gt;все&lt;/b&gt; конкурсы, в которых Вы желаете участвовать.&lt;br&gt;После добавления одного конкурса, Вам будет доступно добавление следующего.</value>
+  </data>
 </root>

@@ -399,7 +399,9 @@
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
     <% } %>
-    
+     <p class = "error message">
+            <%= GetGlobalResourceObject("NewApplication", "AbitMessage")%>
+        </p>
         <input type="hidden" id = "EntryType" name = "EntryType" value="3" />
         <% for (int i = 1; i <= Model.Applications.Count; i++)
            { %>

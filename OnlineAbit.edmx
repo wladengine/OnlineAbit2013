@@ -131,7 +131,8 @@
       [Abiturient].[IsImported] AS [IsImported], 
       [Abiturient].[CompetitionId] AS [CompetitionId], 
       [Abiturient].[ApproverName] AS [ApproverName], 
-      [Abiturient].[DocInsertDate] AS [DocInsertDate]
+      [Abiturient].[DocInsertDate] AS [DocInsertDate], 
+      [Abiturient].[IsDeleted] AS [IsDeleted]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Store.Entry" store:Type="Views" store:Schema="dbo" store:Name="Entry">
@@ -838,7 +839,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -848,7 +849,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -1284,8 +1285,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1317,6 +1318,7 @@
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
             <PropertyRef Name="IsImported" />
+            <PropertyRef Name="IsDeleted" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -1372,9 +1374,10 @@
           <Property Name="CompetitionId" Type="int" />
           <Property Name="ApproverName" Type="nvarchar" MaxLength="150" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1445,8 +1448,8 @@
           <Property Name="ComissionId" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="350" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extApplicationDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -1469,8 +1472,8 @@
           <Property Name="CurrDate" Type="datetime" />
           <Property Name="ObrazProgramCrypt" Type="nvarchar" Nullable="false" MaxLength="53" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extDefaultEntryDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'OnlinePriem2012.dbo.extDefaultEntryDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="extDefaultEntryDetails">
           <Key>
@@ -2668,7 +2671,7 @@
           <NavigationProperty Name="ApplicationDetails" Relationship="OnlinePriem2012Model.FK_ApplicationDetails_Application" FromRole="Application" ToRole="ApplicationDetails" />
           <Property Type="Int32" Name="CompetitionId" />
           <Property Type="String" Name="ApproverName" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="DocInsertDate" />
+          <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
         </EntityType>
         <EntityType Name="Semester">
           <Key>
@@ -2701,6 +2704,7 @@
             <PropertyRef Name="IsCommited" />
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
+            <PropertyRef Name="IsDeleted" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="PersonId" Nullable="false" />
@@ -2755,7 +2759,8 @@
           <Property Type="Boolean" Name="HasInnerPriorities" />
           <Property Type="Int32" Name="CompetitionId" />
           <Property Type="String" Name="ApproverName" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="DocInsertDate" />
+          <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -4514,6 +4519,7 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
@@ -5718,7 +5724,7 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" />
-        <EntityTypeShape EntityType="OnlinePriem2012Model.Entry" Width="2.75" PointX="17.375" PointY="0.75" Height="9.4800423177083317" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.Entry" Width="2.375" PointX="17.375" PointY="0.75" Height="9.4800423177083317" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.extApplicationDetails" Width="1.5" PointX="3.5096489281904177" PointY="12.708090475158809" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.extDefaultEntryDetails" Width="1.5" PointX="5.375" PointY="16.75" Height="1.9802864583333246" />
         </Diagram>

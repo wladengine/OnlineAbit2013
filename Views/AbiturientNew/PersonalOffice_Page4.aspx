@@ -145,7 +145,6 @@
                 }
                 else {
                     $('#_AccreditationInfo').show();
-                    $('#EducationInfo_SchoolCity').val('');
                 }
                 var SchoolTypeId = $('#EducationInfo_SchoolTypeId').val();
                 if (SchoolTypeId == '4') {
@@ -212,16 +211,17 @@
                 if ($('#EducationInfo_SchoolTypeId').val() != 1) {
                     return true;
                 }
-
+                $('#EducationInfo_AttestatRegion_Message').hide();
                 $('#EducationInfo_AttestatRegion').removeClass('input-validation-error');
-                var val = $('#EducationInfo_AttestatRegion').val();
 
+                var val = $('#EducationInfo_AttestatRegion').val();
+                /*
                 if ($('#EducationInfo_SchoolTypeId').val() == 1 && $('#EducationInfo_CountryEducId').val() == 1 && (val == undefined || val == '')) {
                     $('#EducationInfo_AttestatRegion').addClass('input-validation-error');
                     $('#EducationInfo_AttestatRegion_Message').show();
                     return false;
                 }
-
+                */
                 if (val == undefined || val == '') {
                     return ret;
                 }
@@ -811,6 +811,7 @@
                                 <div id="_AttRegion" class="clearfix" style="display:none">
                                     <%= Html.LabelFor(x => x.EducationInfo.AttestatRegion, GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion").ToString())%>
                                     <%= Html.TextBoxFor(x => x.EducationInfo.AttestatRegion) %>
+                                    <br /> <p></p>
                                     <span id="EducationInfo_AttestatRegion_Message" class="Red" style="display:none; border-collapse:collapse;"><%=GetGlobalResourceObject("PersonalOffice_Step4", "AttestatRegion_Message").ToString()%> </span>
                                 </div>
                                 <div class="clearfix">

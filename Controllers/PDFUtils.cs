@@ -1715,7 +1715,8 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonContacts.Mobiles,
                                   x.PersonAddInfo.HostelEduc,
                                   x.PersonContacts.Country.IsRussia,
-                                  x.PersonChangeStudyFormReason.Reason
+                                  x.PersonChangeStudyFormReason.Reason,
+                                  x.PersonCurrentEducation.ProfileName
                               }).FirstOrDefault();
 
                 MemoryStream ms = new MemoryStream();
@@ -1747,7 +1748,7 @@ namespace OnlineAbit2013.Controllers
 
                 acrFlds.SetField("FIO", ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim());
                 acrFlds.SetField("Profession", abitList.ProfessionCode + " " + abitList.Profession);
-                acrFlds.SetField("Specialization", abitList.Specialization);
+                acrFlds.SetField("Specialization", person.ProfileName);
                 acrFlds.SetField("Faculty", abitList.Faculty);
                 acrFlds.SetField("ObrazProgram", abitList.ObrazProgram);
                 acrFlds.SetField("StudyForm" + abitList.StudyFormId, "1");

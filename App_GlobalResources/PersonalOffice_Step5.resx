@@ -196,10 +196,10 @@
     <value>Введите дату</value>
   </data>
   <data name="DocumentNumberMessage" xml:space="preserve">
-    <value>Введите номер</value>
+    <value>Введите номер (в случае отсутствия поставьте прочерк)</value>
   </data>
   <data name="DocumentSeriesMessage" xml:space="preserve">
-    <value>Введите серию</value>
+    <value>Введите серию (в случае отсутствия поставьте прочерк)</value>
   </data>
   <data name="NoWorks" xml:space="preserve">
     <value>нет</value>

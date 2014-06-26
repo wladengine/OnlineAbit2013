@@ -335,15 +335,8 @@ namespace OnlineAbit2013.Controllers
                         CurrentEducation = new PersonCurrentEducation();
                     model.CurrentEducation.EducationTypeList = model.EducationInfo.SchoolTypeList;
 
-                    query = "SELECT Id, Name FROM Semester";
-                    _tblT = Util.AbitDB.GetDataTable(query, null);
-                    model.CurrentEducation.SemesterList =
-                        (from DataRow rw in _tblT.Rows
-                         select new SelectListItem()
-                         {
-                             Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
-                         }).ToList();
+                    model.CurrentEducation.SemesterList = Util.GetSemestrList() ;
+
                     query = "SELECT Id, Name FROM SP_StudyLevel";
                     _tblT = Util.AbitDB.GetDataTable(query, null);
                     model.CurrentEducation.StudyLevelList =
@@ -351,16 +344,6 @@ namespace OnlineAbit2013.Controllers
                          select new SelectListItem()
                          {
                              Value = rw.Field<int>("Id").ToString(),
-                             Text = rw.Field<string>("Name")
-                         }).ToList();
-                    query = "SELECT DISTINCT LicenseProgramId, LicenseProgramCode + ' ' + LicenseProgramName AS Name FROM Entry WHERE StudyLevelId=@StudyLevelId ORDER BY 2";
-                    int slId = CurrentEducation.StudyLevelId ?? 16;
-                    _tblT = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@StudyLevelId", slId } });
-                    model.CurrentEducation.LicenceProgramList =
-                        (from DataRow rw in _tblT.Rows
-                         select new SelectListItem()
-                         {
-                             Value = rw.Field<int>("LicenseProgramId").ToString(),
                              Text = rw.Field<string>("Name")
                          }).ToList();
 
@@ -372,6 +355,7 @@ namespace OnlineAbit2013.Controllers
                     model.CurrentEducation.HiddenObrazProgramId = CurrentEducation.ObrazProgramId.ToString();
                     model.CurrentEducation.ProfileName = CurrentEducation.ProfileName;
 
+                    model.CurrentEducation.HasAccreditation = CurrentEducation.HasAccreditation ?? false;
                     model.CurrentEducation.AccreditationDate = CurrentEducation.AccreditationDate.HasValue ? CurrentEducation.AccreditationDate.Value.ToShortDateString() : "";
                     model.CurrentEducation.AccreditationNumber = CurrentEducation.AccreditationNumber;
                     model.CurrentEducation.EducationTypeId = CurrentEducation.EducTypeId.ToString();
@@ -1870,6 +1854,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 Guid gComm = Guid.NewGuid();
                 model.CommitId = gComm.ToString("N");
 
+                bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
+
                 model.Enabled = true;
                 int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
                    new SortedList<string, object>() { { "@Id", PersonId } });
@@ -1890,7 +1876,12 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     }
                     else
                         model.Enabled = false;
-                } 
+
+                    if (context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.SecondTypeId == 5).Count() > 0)
+                    {
+                        return RedirectToAction("Main", "AbiturientNew");
+                    }
+                }
                 c = (int?)Util.AbitDB.GetValue("SELECT LicenseProgramId FROM PersonCurrentEducation WHERE PersonId=@PersonId ", new SortedList<string, object>() { { "@PersonId", PersonId } });
                 if (!c.HasValue)
                     return RedirectToAction("Index", new RouteValueDictionary() { { "step", "4" } });

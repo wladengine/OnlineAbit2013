@@ -123,7 +123,7 @@
             if (Ok) {
                 $.post('AbiturientNew/AddWorkPlace', params, function (res) {
                     if (res.IsOk) {
-                        $('#PersonWorks').show();
+                        $('#BlockPersonWorks').show();
                         var info = '<tr id="' + res.Data.Id + '">';
                         info += '<td>' + res.Data.Place + '</td>';
                         info += '<td>' + res.Data.Stag + '</td>';
@@ -145,7 +145,7 @@
                 if (res.IsOk) {
                     $('#' + id).hide(250).html('');
                     if (res.Count == 0) {
-                        $('#PersonWorks').hide();
+                        $('#BlockPersonWorks').hide();
                     }
                 }
                 else {
@@ -406,40 +406,40 @@
                     <div>
                         <span id="validationMsgPersonWorksDuties" class="Red" style="display:none;"><%= GetGlobalResourceObject("PersonalOffice_Step5", "validationMsgPersonWorksDuties").ToString()%></span>
                     </div> 
-                <div class="clearfix">
-                    <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
-                </div>
+                    <div class="clearfix">
+                        <button id="btnAddProfs" onclick="AddWorkPlace()" class="button button-blue"><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnAdd").ToString()%></button>
+                    </div>
                 <br /><br />
                 <% if (Model.WorkInfo.pWorks.Count == 0)
-                   { %> 
-                <table id="PersonWorks" class="paginate" style="display: none; width:100%; text-align: center;"> <% }
+                   { %>  <div id = "BlockPersonWorks" style="width: 464px; overflow-x: scroll; display: none;"> <% }
                    else
-                   { %>
-                <table id="PersonWorks" class="paginate" style="width:100%; text-align: center;"> <%} %>
-                    <thead>
-                        <tr>
-                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></th>
-                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></th>
-                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobPosition").ToString()%></th>
-                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobFunctions").ToString()%></th>
-                            <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% foreach (var wrk in Model.WorkInfo.pWorks)
-                        {
-                    %>
-                        <tr>
-                        <%= Html.Raw(string.Format(@"<tr id=""{0}"">", wrk.Id.ToString())) %>
-                            <td><%= Html.Encode(wrk.Place) %></td>
-                            <td><%= Html.Encode(wrk.Stag) %></td>
-                            <td><%= Html.Encode(wrk.Level) %></td>
-                            <td><%= Html.Encode(wrk.Duties) %></td>
-                            <td><%= Html.Raw(string.Format(@"<span class=""link"" onclick=""DeleteWorkPlace('{0}')""><img src=""../../Content/themes/base/images/delete-icon.png"" alt=""Удалить"" /></span>", wrk.Id.ToString()))%></td>
-                        </tr>
-                    <% } %>
-                    </tbody>
-                </table> 
+                   { %> <div id = "BlockPersonWorks" style="width: 464px; overflow-x: scroll; "> <%} %>
+                        <table id="PersonWorks" class="paginate" style="width:100%; text-align: center; vertical-align:middle; " >
+                            <thead>
+                                <tr>
+                                    <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobLocation").ToString()%></th>
+                                    <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobExperience").ToString()%></th>
+                                    <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobPosition").ToString()%></th>
+                                    <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "JobFunctions").ToString()%></th>
+                                    <th><%= GetGlobalResourceObject("PersonalOffice_Step5", "btnDelete").ToString()%></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% foreach (var wrk in Model.WorkInfo.pWorks)
+                                {
+                            %>
+                                <tr>
+                                <%= Html.Raw(string.Format(@"<tr id=""{0}"">", wrk.Id.ToString())) %>
+                                    <td><%= Html.Encode(wrk.Place) %></td>
+                                    <td><%= Html.Encode(wrk.Stag) %></td>
+                                    <td><%= Html.Encode(wrk.Level) %></td>
+                                    <td><%= Html.Encode(wrk.Duties) %></td>
+                                    <td><%= Html.Raw(string.Format(@"<span class=""link"" onclick=""DeleteWorkPlace('{0}')""><img src=""../../Content/themes/base/images/delete-icon.png"" alt=""Удалить"" /></span>", wrk.Id.ToString()))%></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table> 
+                    </div>
                 </div>
                 <br /> 
                 

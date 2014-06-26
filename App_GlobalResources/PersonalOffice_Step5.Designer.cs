@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Введите номер.
+        ///   Ищет локализованную строку, такую же, как Введите номер (в случае отсутствия поставьте прочерк).
         /// </summary>
         internal static string DocumentNumberMessage {
             get {
@@ -133,7 +133,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Введите серию.
+        ///   Ищет локализованную строку, такую же, как Введите серию (в случае отсутствия поставьте прочерк).
         /// </summary>
         internal static string DocumentSeriesMessage {
             get {

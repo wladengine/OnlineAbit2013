@@ -198,10 +198,10 @@ the theme of your report), published scientific articles, work in scientific lab
     <value>Enter the date of the document</value>
   </data>
   <data name="DocumentNumberMessage" xml:space="preserve">
-    <value>Enter the number of the document</value>
+    <value>Enter the number of the document (or '-')</value>
   </data>
   <data name="DocumentSeriesMessage" xml:space="preserve">
-    <value>Enter the series of the document</value>
+    <value>Enter the series of the document (or '-')</value>
   </data>
   <data name="NoWorks" xml:space="preserve">
     <value>none</value>

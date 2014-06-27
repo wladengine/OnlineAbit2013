@@ -419,7 +419,7 @@
         }, 'json');
     }
 </script>
-<% using (Html.BeginForm("NewApp_ChangeStudyForm", "AbiturientNew", FormMethod.Post))
+<% using (Html.BeginForm("NewApp_ChangeObrazProgram", "AbiturientNew", FormMethod.Post))
    { 
 %> 
     <% if (Model.HasError) 

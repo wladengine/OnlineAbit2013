@@ -267,7 +267,12 @@ namespace OnlineAbit2013.Controllers
                     case 18: abt = AbitType.FirstCourseBakSpec; break;
                     default: abt = AbitType.FirstCourseBakSpec; break;
                 }
-
+                int? c = (int?)Util.AbitDB.GetValue("SELECT top 1 SecondTypeId FROM Application WHERE Id=@Id AND PersonId=@PersonId", new SortedList<string, object>() { { "@PersonId", personId }, { "@Id", ApplicationId } });
+                if (c != null)
+                {
+                    if (c !=1)
+                        abt = AbitType.FirstCourseBakSpec; 
+                }
                 ExtApplicationModel model = new ExtApplicationModel()
                 {
                     Id = ApplicationId,

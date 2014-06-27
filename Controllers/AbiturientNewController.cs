@@ -2028,6 +2028,12 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         model.StudyFormList = Util.GetStudyFormList();
                         model.StudyBasisList = Util.GetStudyBasisList();
                         model.SemestrList = Util.GetSemestrList();
+                        Guid CommitId = Guid.Parse(Id);
+                        var CommId = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == CommitId && x.SecondTypeId == c).Select(x => x.CommitId);
+                        if (CommId.Count() > 0)
+                        {
+                            model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
+                        }
                         return View("NewApplication_Recover", model);
                     }  
                 }

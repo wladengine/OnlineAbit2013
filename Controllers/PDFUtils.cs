@@ -259,6 +259,7 @@ namespace OnlineAbit2013.Controllers
                                   x.PersonContacts.Mobiles,
                                   x.PersonEducationDocument.SchoolExitYear,
                                   x.PersonEducationDocument.SchoolName,
+                                  x.PersonEducationDocument.SchoolNum,
                                   AddInfo = x.PersonAddInfo.AddInfo,
                                   Parents = x.PersonAddInfo.Parents,
                                   x.PersonEducationDocument.StartEnglish, 
@@ -447,7 +448,17 @@ namespace OnlineAbit2013.Controllers
                 acrFlds.SetField("Mobiles", person.Mobiles);
 
                 acrFlds.SetField("ExitYear", person.SchoolExitYear.ToString());
-                splitStr = GetSplittedStrings(person.SchoolName ?? "", 50, 70, 2);
+                string SchoolNameNum = person.SchoolName;
+                if (person.SchoolTypeId == 1)
+                {
+                    if (person.SchoolNum.StartsWith("№"))
+                        SchoolNameNum += " (" + person.SchoolNum + ")";
+                    else if (person.SchoolNum.StartsWith("#"))
+                        SchoolNameNum += " (" + person.SchoolNum + ")";
+                    else
+                        SchoolNameNum += " (№" + person.SchoolNum + ")";
+                }
+                splitStr = GetSplittedStrings(SchoolNameNum ?? "", 50, 70, 2);
                 for (int i = 1; i <= 2; i++)
                     acrFlds.SetField("School" + i, splitStr[i - 1]);
 

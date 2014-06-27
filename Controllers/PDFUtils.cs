@@ -451,12 +451,15 @@ namespace OnlineAbit2013.Controllers
                 string SchoolNameNum = person.SchoolName;
                 if (person.SchoolTypeId == 1)
                 {
-                    if (person.SchoolNum.StartsWith("№"))
-                        SchoolNameNum += " (" + person.SchoolNum + ")";
-                    else if (person.SchoolNum.StartsWith("#"))
-                        SchoolNameNum += " (" + person.SchoolNum + ")";
-                    else
-                        SchoolNameNum += " (№" + person.SchoolNum + ")";
+                    if (!String.IsNullOrEmpty(person.SchoolNum))
+                    {
+                        if (person.SchoolNum.StartsWith("№"))
+                            SchoolNameNum += " (" + person.SchoolNum + ")";
+                        else if (person.SchoolNum.StartsWith("#"))
+                            SchoolNameNum += " (" + person.SchoolNum + ")";
+                        else
+                            SchoolNameNum += " (№" + person.SchoolNum + ")";
+                    }
                 }
                 splitStr = GetSplittedStrings(SchoolNameNum ?? "", 50, 70, 2);
                 for (int i = 1; i <= 2; i++)

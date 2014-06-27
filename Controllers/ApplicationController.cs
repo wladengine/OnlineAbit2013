@@ -640,8 +640,7 @@ namespace OnlineAbit2013.Controllers
             {
                 var res = new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired };
                 return Json(res);
-            }
-
+            } 
             Guid CommitId;
             if (!Guid.TryParse(id, out CommitId))
             {
@@ -674,6 +673,10 @@ namespace OnlineAbit2013.Controllers
 
                 try
                 {
+                    if (!isAg)
+                    {
+                        byte[] bindata = PDFUtils.GetDisableApplicationPDF(CommitId, Server.MapPath("~/Templates/"), PersonId);
+                    }
                     string query = string.Format("DELETE FROM [{0}Application] WHERE CommitId=@Id", isAg ? "AG_" : "");
                     SortedList<string, object> dic = new SortedList<string, object>();
                     dic.Add("@Id", CommitId);

@@ -365,12 +365,30 @@
                 }
             }
 
+            function UpdateAfterYear(){
+                if ($('#EducationInfo_SchoolTypeId').val()==1)
+                {   
+                    if ($('#EducationInfo_SchoolExitYear').val() == '2014')
+                    {
+                        $('#EducationInfo_AttestatRegion').attr('disabled', 'disabled'); $('#EducationInfo_DiplomSeries').attr('disabled', 'disabled');
+                    }
+                    else
+                    {
+                        $('#EducationInfo_AttestatRegion').removeAttr('disabled'); $('#EducationInfo_DiplomSeries').removeAttr('disabled');
+                    }
+                }
+            }
+
+
             $(function () {
                 fStartOne();
                 fStartTwo();
                 UpdateAfterSchooltype();
                 $('#EducationInfo_AttestatRegion').keyup(function () { setTimeout(CheckAttestatRegion); });
                 $('#EducationInfo_AttestatRegion').blur(function () { setTimeout(CheckAttestatRegion); });
+                $('#EducationInfo_SchoolExitYear').change(function () { setTimeout(UpdateAfterYear); });
+                $('#EducationInfo_SchoolExitYear').keyup(function () { setTimeout(UpdateAfterYear); });
+                $('#EducationInfo_SchoolExitYear').blur(function () { setTimeout(UpdateAfterYear); });
                 $('#EducationInfo_SchoolExitYear').keyup(function () { setTimeout(CheckSchoolExitYear); });
                 $('#EducationInfo_SchoolExitYear').blur(function () { setTimeout(CheckSchoolExitYear); });
                 $('#EducationInfo_SchoolName').keyup(function () { setTimeout(CheckSchoolName); });

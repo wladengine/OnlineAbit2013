@@ -130,7 +130,7 @@
     <value>Поступление в магистратуру</value>
   </data>
   <data name="AbiturientType3" xml:space="preserve">
-    <value>Изменение основы обучения</value>
+    <value>Перевод с платной основы обучения на бюджетную</value>
   </data>
   <data name="AbiturientType4" xml:space="preserve">
     <value>Перевод в СПбГУ</value>

@@ -55,16 +55,41 @@
         }, 'json');
     }
     function GetList() {
-        $.post('/Abiturient/GetFileList', null, function (res) {
+        var HideSomeFiles = $('#HideSomeFiles').is(':checked');
+        $.post('/AbiturientNew/GetFileList', null, function (res) {
             if (res.IsOk) {
                 var tbody = '';
                 for (var i = 0; i < res.Data.length; i++) {
-                    tbody += '<tr id="' + res.Data[i].Id + '">';
-                    tbody += '<td align="center" valign="middle"><a href="' + res.Data[i].Path + '"><img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" /></a></td>';
-                    tbody += '<td>' + res.Data[i].FileName + '</td>';
-                    tbody += '<td>' + res.Data[i].FileSize + '</td>';
-                    tbody += '<td align="center" valign="middle"><span class="link" onclick="DeleteFile(\'' + res.Data[i].Id + '\')"><img src="../../Content/themes/base/images/delete-icon.png" alt="<%= GetGlobalResourceObject("AddSharedFiles", "Delete") %>" /></span></td>';
-                    tbody += '</tr>';
+                    if (!HideSomeFiles || !res.Data[i].IsReadOnly) {
+                        tbody += '<tr id="' + res.Data[i].Id + '">';
+                        tbody += '<td style="vertical-align:middle; text-align:center;"><a href="../../AbiturientNew/GetFile?id=' + res.Data[i].Id + '" target="_blank"><img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" /></a></td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">' + res.Data[i].FileName + '</td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">' + res.Data[i].FileType + '</td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">' + res.Data[i].Comment + '</td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">';
+                        if (res.Data[i].FileSize > (2 * 1024 * 1024)) {
+                            tbody += " " + parseFloat(res.Data[i].FileSize / (1024.0 * 1024.0)).toFixed(2) + " Mb";
+                        }
+                        else {
+                            if (res.Data[i].FileSize > 1024)
+                                tbody += " " + parseFloat(res.Data[i].FileSize / 1024.0).toFixed(2) + " Kb";
+                            else tbody += res.Data[i].FileSize + '</td>';
+                        }
+                        tbody += '<td style="vertical-align:middle; text-align:center;"><span style="font-weight:bold" ';
+                        if (res.Data[i].IsApproved == 0) {
+                            tbody += ' class="Green" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Approved")%>';
+                        }
+                        else {
+                            if (res.Data[i].IsApproved == 1) {
+                                tbody += ' class="Red" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Rejected")%>';
+                            }
+                            else
+                                tbody += ' class="Blue" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_NotSet")%>';
+                        }
+                        tbody += "</td>";
+                        tbody += '<td style="vertical-align:middle; text-align:center;"><span class="link" onclick="DeleteFile(\'' + res.Data[i].Id + '\')"><img src="../../Content/themes/base/images/delete-icon.png" alt="<%= GetGlobalResourceObject("AddSharedFiles", "Delete") %>" /></span></td>';
+                        tbody += '</tr>';
+                    }
                 }
                 $('#tblFiles tbody').html(tbody);
             }
@@ -79,7 +104,7 @@
 <p class="message info">
     <asp:Literal runat="server" Text="<%$ Resources:AddSharedFiles, HelpMessage_Foreign %>"></asp:Literal>
 </p>
-<form action="/AbiturientNew/AddSharedFile" method="post" class="form panel" enctype="multipart/form-data">
+<form name = "filesform" action="/AbiturientNew/AddSharedFile" method="post" class="form panel" enctype="multipart/form-data">
     <fieldset>
         <div class="clearfix">
             <label for="fileAttachment"><%= GetGlobalResourceObject("AddSharedFiles", "File") %></label>
@@ -106,6 +131,7 @@
 <h4><%= GetGlobalResourceObject("AddSharedFiles", "LoadedFiles")%></h4>
 <% if (Model.Files.Count > 0)
    { %>
+<input type="checkbox" id="HideSomeFiles" onClick="GetList();" >Не отображать отказы от конкурса и другие файлы, защищенный от удаления</input>
 <table id="tblFiles" class="paginate" style="width:100%;">
     <thead>
         <tr>
@@ -121,6 +147,7 @@
     <tbody>
 <% foreach (var file in Model.Files)
    { %>
+        
         <tr id="<%= file.Id.ToString() %>">
             <td style="vertical-align:middle; text-align:center;"><a href="<%= "../../AbiturientNew/GetFile?id=" + file.Id.ToString("N") %>" target="_blank"><img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" /></a></td>
             <td style="vertical-align:middle; text-align:center;"><%= Html.Encode(file.FileName) %></td>

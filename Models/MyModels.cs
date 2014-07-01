@@ -605,6 +605,7 @@ namespace OnlineAbit2013.Models
         public string LoadDate { get; set; }
         public ApprovalStatus IsApproved { get; set; }
         public string FileType { get; set; }
+        public bool IsReadOnly { get; set; }
     }
  
     //-------------------------------------------

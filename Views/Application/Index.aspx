@@ -20,47 +20,43 @@
         $(function () {
             $('#fileAttachment').change(ValidateInput);
             $("#rejectBtn")
-                //.button()
+            //.button()
                 .click(function () {
                     $("#dialog-form").dialog("open");
                 });
-                $("#dialog:ui-dialog").dialog("destroy");
-                $('#fileAttachment').change(ValidateInput);
-                $("#dialog-form").dialog(
+            $("#dialog:ui-dialog").dialog("destroy");
+            $('#fileAttachment').change(ValidateInput);
+            $("#dialog-form").dialog(
                 {
                     autoOpen: false,
                     height: 400,
                     width: 350,
                     modal: true,
-                    buttons: 
+                    buttons:
                     {
-                        "Да (yes)": function () 
-                        {
-                            $.post('/Application/DisableFull', { id: '<%= Model.Id.ToString("N") %>' }, function (res) 
-                            {
-                                if (res.IsOk) 
-                                {
-                                    if (!res.Enabled) 
-                                    {
+                        "Да (yes)": function () {
+                            $.post('/Application/DisableFull', { id: '<%= Model.Id.ToString("N") %>' }, function (res) {
+                                if (res.IsOk) {
+                                    if (!res.Enabled) {
                                         $('#appStatus').removeClass("Green").addClass("Red").text("Отозвано");
+                                        if (res.result) {
+                                            $('#AppInSharedFile').show();
+                                        }
                                         $('#rejectApp').html('').hide();
                                         $("#dialog-form").dialog("close");
                                         location.reload(true);
                                     }
                                 }
-                                else 
-                                {
+                                else {
                                     //message to the user
                                     $('#errMessage').text(res.ErrorMessage).addClass("ui-state-highlight");
-                                    setTimeout(function () 
-                                    {
+                                    setTimeout(function () {
                                         $('#errMessage').removeClass("ui-state-highlight", 1500);
                                     }, 500);
                                 }
                             }, 'json');
                         },
-                        "Нет (no)": function () 
-                        {
+                        "Нет (no)": function () {
                             $(this).dialog("close");
                         }
                     }
@@ -123,6 +119,7 @@
     padding: 1px 10px 1px 10px; 
    }
 </style>
+
     <% if (Model.Applications.Count == 0)
    { %>
     <div class="message error">
@@ -189,6 +186,7 @@
        <%= GetGlobalResourceObject("ApplicationInfo", "AppNoLastChanges")%> 
     <%} %>
 </p>
+
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
 <table class="paginate" style="width: 659px;">

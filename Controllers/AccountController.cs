@@ -643,7 +643,7 @@ namespace OnlineAbit2013.Controllers
                     DateTime? BirthDateFor = tbl.Rows[0].Field<DateTime?>("FOR_BIRTHDATE");
 
                     bool needToApprove = true;
-                    if (!string.IsNullOrEmpty(Surname) && !string.IsNullOrEmpty(SurnameFor) && !BirthDate.HasValue && !BirthDateFor.HasValue)
+                    if (string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(SurnameFor) && !BirthDate.HasValue && !BirthDateFor.HasValue)
                         needToApprove = false;
 
                     if (!needToApprove)
@@ -654,44 +654,14 @@ namespace OnlineAbit2013.Controllers
             }
         }
 
-        public ActionResult RestoreByData(string email, string surname, string birthdate)
+        public ActionResult RestoreByData(string email, string surname, string birthdate, string empty = "1782")
         {
-            DateTime BirthDate;
-            if (!DateTime.TryParse(birthdate, System.Globalization.CultureInfo.GetCultureInfo("en-US"), System.Globalization.DateTimeStyles.None, out BirthDate))
-                return Json(new { IsOk = false });
-            string query = "SELECT [User].Id FROM [User] INNER JOIN Person ON Person.Id=[User].Id WHERE [User].Email=@Email AND Surname=@Surname AND BirthDate=@BirthDate";
-            SortedList<string, object> dic = new SortedList<string, object>();
-            dic.AddItem("@Email", email);
-            dic.AddItem("@Surname", surname);
-            dic.AddItem("@BirthDate", BirthDate);
-            DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
-
-            if (tbl.Rows.Count == 0)
+            if (empty == "1782")
             {
-                query = "SELECT  [User].Id FROM [User] INNER JOIN ForeignPerson ON ForeignPerson.Id=[User].Id WHERE [User].Email=@Email AND Surname=@Surname AND BirthDate=@BirthDate";
-                tbl = Util.AbitDB.GetDataTable(query, dic);
-                if (tbl.Rows.Count == 0)
-                {
-                    return Json(new { IsOk = false });
-                }
-                else
-                {
-                    string newPass = System.IO.Path.GetRandomFileName();
-                    string remixPwd = Util.MD5Str(newPass);
-                    if (SendEmail(email, newPass))
-                    {
-                        query = "UPDATE [User] SET Password=@Password WHERE Email=@Email";
-                        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
-                        return Json(new { IsOk = true, Email = true });
-                    }
-                    else
-                    {
-                        return Json(new { IsOk = false, Email = false });
-                    }
-                }
-            }
-            else
-            {
+                string query = "SELECT [User].Id FROM [User] WHERE [User].Email=@Email";
+                SortedList<string, object> dic = new SortedList<string, object>();
+                dic.AddItem("@Email", email);
+                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
                 string newPass = System.IO.Path.GetRandomFileName();
                 string remixPwd = Util.MD5Str(newPass);
 
@@ -704,6 +674,59 @@ namespace OnlineAbit2013.Controllers
                 else
                 {
                     return Json(new { IsOk = false, Email = false });
+                }
+            }
+            else
+            {
+                DateTime BirthDate;
+                if (!DateTime.TryParse(birthdate, System.Globalization.CultureInfo.GetCultureInfo("en-US"), System.Globalization.DateTimeStyles.None, out BirthDate))
+                    return Json(new { IsOk = false });
+                string query = "SELECT [User].Id FROM [User] INNER JOIN Person ON Person.Id=[User].Id WHERE [User].Email=@Email AND Surname=@Surname AND BirthDate=@BirthDate";
+                SortedList<string, object> dic = new SortedList<string, object>();
+                dic.AddItem("@Email", email);
+                dic.AddItem("@Surname", surname);
+                dic.AddItem("@BirthDate", BirthDate);
+                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+
+                if (tbl.Rows.Count == 0)
+                {
+                    query = "SELECT  [User].Id FROM [User] INNER JOIN ForeignPerson ON ForeignPerson.Id=[User].Id WHERE [User].Email=@Email AND Surname=@Surname AND BirthDate=@BirthDate";
+                    tbl = Util.AbitDB.GetDataTable(query, dic);
+                    if (tbl.Rows.Count == 0)
+                    {
+                        return Json(new { IsOk = false });
+                    }
+                    else
+                    {
+                        string newPass = System.IO.Path.GetRandomFileName();
+                        string remixPwd = Util.MD5Str(newPass);
+                        if (SendEmail(email, newPass))
+                        {
+                            query = "UPDATE [User] SET Password=@Password WHERE Email=@Email";
+                            Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
+                            return Json(new { IsOk = true, Email = true });
+                        }
+                        else
+                        {
+                            return Json(new { IsOk = false, Email = false });
+                        }
+                    }
+                }
+                else
+                {
+                    string newPass = System.IO.Path.GetRandomFileName();
+                    string remixPwd = Util.MD5Str(newPass);
+
+                    if (SendEmail(email, newPass))
+                    {
+                        query = "UPDATE [User] SET Password=@Password WHERE Email=@Email";
+                        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@Password", remixPwd }, { "@Email", email } });
+                        return Json(new { IsOk = true, Email = true });
+                    }
+                    else
+                    {
+                        return Json(new { IsOk = false, Email = false });
+                    }
                 }
             }
         }

@@ -4155,6 +4155,16 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 return View(model);
             }
         }
+        [HttpPost]
+        public ActionResult GetFileList()
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return Json("Ошибка авторизации");
+            List<AppendedFile> lstFiles = Util.GetFileList(PersonId);
+
+            return Json(new { IsOk = lstFiles.Count() > 0 ? true : false, Data = lstFiles });
+        }
 
         [HttpPost]
         public ActionResult AddSharedFile()
@@ -4293,7 +4303,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             {
                 return Json("Ошибка при записи файла");
             }
-
             return RedirectToAction("AddFiles");
         }
 

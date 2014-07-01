@@ -35,13 +35,30 @@
                 $('#btnEmailRequest').show();
             }
             else if (res.IsOk) {
-                $('#NoEmailMsg').hide();
+                $('#NoEmailMsg').hide(); 
+                $('#AddInfo').hide();
+                $.post('/Account/RestoreByData',
+                { email: $('#email').val(), surname: "", birthdate: ""},
+                function (res) {
+                    if (res.IsOk) {
+                        $('#NoDataFound').hide();
+                        $('#EmailSent').show();
+                    }
+                    else if (!res.Email) {
+                        $('#EmailFail').show();
+                        $('#EmailSent').hide();
+                    }
+                    else {
+                        $('#NoDataFound').show();
+                        $('#EmailSent').hide();
+                    }
+                }, 'json');
             }
         }, 'json');
     }
     function DataRequest() {
         $.post('/Account/RestoreByData',
-        { email: $('#email').val(), surname: $('#Surname').val(), birthdate: $('#BirthDate').val() },
+        { email: $('#email').val(), surname: $('#Surname').val(), birthdate: $('#BirthDate').val(), empty: "no" },
         function (res) {
             if (res.IsOk) {
                 $('#NoDataFound').hide();

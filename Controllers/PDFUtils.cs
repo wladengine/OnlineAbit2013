@@ -2924,7 +2924,7 @@ namespace OnlineAbit2013.Controllers
             return ms.ToArray();
         }
 
-        public static byte[] GetDisableApplicationPDF(Guid appId, string dirPath, Guid PersonId)
+        public static bool GetDisableApplicationPDF(Guid appId, string dirPath, Guid PersonId)
         {
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
@@ -2945,13 +2945,14 @@ namespace OnlineAbit2013.Controllers
                                     Entry.StudyFormId,
                                     Entry.StudyFormName,
                                     Entry.StudyBasisId,
-                                    EntryType = (Entry.StudyLevelId == 17 ? 2 : 1),
+                                    EntryType = Entry.StudyLevelGroupId,
+                                    StudyLevelGroupName = Entry.StudyLevelGroupNameRus,
                                     Entry.StudyLevelId,
                                     CommitIntNumber = Commit.IntNumber,
                                     x.Priority,
                                     x.IsGosLine,
                                     Entry.ComissionId,
-                                    ComissionAddress = Entry.Address
+                                    ComissionAddress = Entry.Address, 
                                 }).OrderBy(x => x.Priority).ToList();
 
 
@@ -2987,7 +2988,7 @@ namespace OnlineAbit2013.Controllers
                 var Version = context.ApplicationCommitVersion.Where(x => x.CommitId == appId).Select(x => new { x.VersionDate, x.Id }).ToList().LastOrDefault();
                 string sVersion = "";
                 if (Version != null)
-                    sVersion = "Отказ от заявления версии №" + Version.Id + (Version.VersionDate.HasValue ? " от " + Version.VersionDate.Value.ToString("dd.MM.yyyy HH:mm") : "");
+                    sVersion = "Отказ от заявления №" + Version.Id + (Version.VersionDate.HasValue ? " от " + Version.VersionDate.Value.ToString("dd.MM.yyyy HH:mm") : "");
                 string FIO = ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim();
 
                 List<ShortAppcation> lstApps = abitList
@@ -3009,8 +3010,11 @@ namespace OnlineAbit2013.Controllers
                         lstAppsFirst.Add(lstApps[u]);
                 }
 
+                int multiplyer = abitList.First().EntryType;
+                string code = ((multiplyer * 100000) + abitList.First().CommitIntNumber).ToString();
+
                 //добавляем первый файл
-                lstFiles.Add(GetDisableApplicationPDF_FirstPage(lstAppsFirst, lstApps, dirPath, "DisableApplication2014_page1.pdf", FIO, sVersion ));
+                lstFiles.Add(GetDisableApplicationPDF_FirstPage(lstAppsFirst, lstApps, dirPath, "DisableApplication2014_page1.pdf", code, FIO, sVersion ));
                 acrFlds.SetField("Version", sVersion);
 
                 //остальные - по 5 на новую страницу
@@ -3030,14 +3034,17 @@ namespace OnlineAbit2013.Controllers
                         lstFiles.Add(GetDisableApplicationPDF_NextPage(lstAppsFirst, lstApps, dirPath, "DisableApplication2014_page3.pdf", FIO, sVersion));
                     else
                         lstFiles.Add(GetDisableApplicationPDF_NextPage(lstAppsFirst, lstApps, dirPath, "DisableApplication2014_page2.pdf", "", ""));
-                } 
+                }
 
                 context.SaveChanges();
 
                 pdfStm.FormFlattening = true;
                 pdfStm.Close();
                 pdfRd.Close();
-                
+
+                if (lstApps.Count <= 4)
+                    lstFiles.Add(ms.ToArray());
+
                 byte[] pdfData = MergePdfFiles(lstFiles.ToList());
                 DateTime dateTime = DateTime.Now;
 
@@ -3053,22 +3060,20 @@ namespace OnlineAbit2013.Controllers
                 prms.Clear();
                 prms.Add("@Id", Guid.NewGuid());
                 prms.Add("@PersonId", PersonId);
-                prms.Add("@FileName", person.Surname + " " + person.Name.FirstOrDefault() + sVersion + ".pdf");
+                prms.Add("@FileName", person.Surname + " " + person.Name.FirstOrDefault() + "_Отказ от заявления (" + code + ").pdf");
                 prms.Add("@FileExtention", ".pdf");
                 prms.Add("@FileData", pdfData);
                 prms.Add("@FileSize", pdfData.Length);
                 prms.Add("@IsReadOnly", true);
                 prms.Add("@LoadDate", dateTime);
-                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе ("+sVersion +")");
+                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе (" + sVersion + ", "+ code+") " + abitList.FirstOrDefault().StudyLevelGroupName);
                 prms.Add("@MimeType", "[Application]/pdf");
                 Util.AbitDB.ExecuteQuery(query, prms);
-             
-
-
-                return MergePdfFiles(lstFiles.ToList());
+                bool result = true;
+                return result;
             }
         }
-        public static byte[] GetDisableApplicationPDF_FirstPage(List<ShortAppcation> lst, List<ShortAppcation> lstFullSource, string dirPath, string dotName, string FIO, string Version )
+        public static byte[] GetDisableApplicationPDF_FirstPage(List<ShortAppcation> lst, List<ShortAppcation> lstFullSource, string dirPath, string dotName, string code, string FIO, string Version)
         {
             MemoryStream ms = new MemoryStream();
 
@@ -3083,13 +3088,12 @@ namespace OnlineAbit2013.Controllers
             PdfStamper pdfStm = new PdfStamper(pdfRd, ms);
             //pdfStm.SetEncryption(PdfWriter.STRENGTH128BITS, "", "", PdfWriter.ALLOW_SCREENREADERS | PdfWriter.ALLOW_PRINTING | PdfWriter.AllowPrinting);
 
-            //добавляем штрихкод
-            //Barcode128 barcode = new Barcode128();
-            //barcode.Code = code;
-            //PdfContentByte cb = pdfStm.GetOverContent(1);
-            //iTextSharp.text.Image img = barcode.CreateImageWithBarcode(cb, null, null);
-            //img.SetAbsolutePosition(440, 740);
-            //cb.AddImage(img);
+            Barcode128 barcode = new Barcode128();
+            barcode.Code = code;
+            PdfContentByte cb = pdfStm.GetOverContent(1);
+            iTextSharp.text.Image img = barcode.CreateImageWithBarcode(cb, null, null);
+            img.SetAbsolutePosition(440, 740);
+            cb.AddImage(img);
 
             AcroFields acrFlds = pdfStm.AcroFields;
             acrFlds.SetField("Version", Version);

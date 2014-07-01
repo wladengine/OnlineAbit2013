@@ -1469,7 +1469,7 @@ namespace OnlineAbit2013.Controllers
             List<AppendedFile> lst = new List<AppendedFile>();
 
             string query = @"
-SELECT PersonFile.Id, FileName, FileSize, Comment, IsApproved, LoadDate, ISNULL(PersonFileType.Name, 'нет') AS Name
+SELECT PersonFile.Id, FileName, FileSize, Comment, IsApproved, IsReadOnly, LoadDate, ISNULL(PersonFileType.Name, 'нет') AS Name
 FROM PersonFile 
 LEFT JOIN PersonFileType ON PersonFile.PersonFileTypeId = PersonFileType.Id 
 WHERE PersonId=@PersonId ";
@@ -1498,7 +1498,8 @@ WHERE PersonId=@PersonId ";
                          LoadDate = Convert.ToString(rw.Field<DateTime>("LoadDate")),
                          FileType = rw.Field<string>("Name"),
                          IsApproved = rw.Field<bool?>("IsApproved").HasValue ?
-                         rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet
+                         rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet,
+                         IsReadOnly = rw.Field<bool?>("IsReadOnly").HasValue ? rw.Field<bool?>("IsReadOnly").Value : false
                      }).ToList(); 
             }
             catch { }  

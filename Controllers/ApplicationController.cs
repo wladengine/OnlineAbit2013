@@ -267,10 +267,8 @@ namespace OnlineAbit2013.Controllers
                     case 18: abt = AbitType.FirstCourseBakSpec; break;
                     default: abt = AbitType.FirstCourseBakSpec; break;
                 }
-                int? c = (int?)Util.AbitDB.GetValue("SELECT top 1 SecondTypeId FROM Application WHERE Id=@Id AND PersonId=@PersonId", new SortedList<string, object>() { { "@PersonId", personId }, { "@Id", ApplicationId } });
-                if (c != null)
-                {
-                    if (c !=1)
+                int? c = (int?) Util.AbitDB.GetValue("SELECT top 1 SecondTypeId FROM Application WHERE Id=@Id AND PersonId=@PersonId", new SortedList<string, object>() { { "@PersonId", personId }, { "@Id", ApplicationId } }) ;
+                if (c !=1 ){
                         abt = AbitType.FirstCourseBakSpec; 
                 }
                 ExtApplicationModel model = new ExtApplicationModel()
@@ -673,9 +671,10 @@ namespace OnlineAbit2013.Controllers
 
                 try
                 {
+                    bool? result = null;
                     if (!isAg)
                     {
-                        byte[] bindata = PDFUtils.GetDisableApplicationPDF(CommitId, Server.MapPath("~/Templates/"), PersonId);
+                        result = PDFUtils.GetDisableApplicationPDF(CommitId, Server.MapPath("~/Templates/"), PersonId);
                     }
                     string query = string.Format("DELETE FROM [{0}Application] WHERE CommitId=@Id", isAg ? "AG_" : "");
                     SortedList<string, object> dic = new SortedList<string, object>();
@@ -683,7 +682,7 @@ namespace OnlineAbit2013.Controllers
 
                     Util.AbitDB.ExecuteQuery(query, dic);
 
-                    var res = new { IsOk = true, Enabled = false };
+                    var res = new { IsOk = true, Enabled = false};
                     return Json(res);
                 }
                 catch

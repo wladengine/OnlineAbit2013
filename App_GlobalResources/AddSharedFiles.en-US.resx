@@ -172,6 +172,9 @@
     <value>This is the &lt;b&gt;shared files&lt;/b&gt; folder. &lt;br /&gt;
     Here you can attach the documents that are required for all applications, for example, scans the passport, educational documents, translations, etc.</value>
   </data>
+  <data name="HideSomeFiles" xml:space="preserve">
+    <value>Hide all read-only files </value>
+  </data>
   <data name="LoadDate" xml:space="preserve">
     <value>Uploading date</value>
   </data>

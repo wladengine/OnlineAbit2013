@@ -131,7 +131,7 @@
 <h4><%= GetGlobalResourceObject("AddSharedFiles", "LoadedFiles")%></h4>
 <% if (Model.Files.Count > 0)
    { %>
-<input type="checkbox" id="HideSomeFiles" onClick="GetList();" >Не отображать отказы от конкурса и другие файлы, защищенный от удаления</input>
+<input type="checkbox" id="HideSomeFiles" onClick="GetList();"><%= GetGlobalResourceObject("AddSharedFiles", "HideSomeFiles") %></input>
 <table id="tblFiles" class="paginate" style="width:100%;">
     <thead>
         <tr>

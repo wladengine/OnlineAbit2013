@@ -579,6 +579,7 @@ namespace OnlineAbit2013.Models
         public string SecondTypeName { get; set; }
         public string StudyLevelGroupName { get; set; }
         public bool HasSeparateObrazPrograms { get; set; }
+        public DateTime? dateofClose { get; set; }
         public Guid? ObrazProgramInEntryId { get; set; }
     }
     public class SimpleApplicationPackage

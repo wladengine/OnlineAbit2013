@@ -425,6 +425,7 @@
                 $(currObrazProgramsErrors_Block).text(json_data.ErrorMessage).show();
             }
         }, 'json');
+        $('#Submit').removeAttr("disabled");
     }
 </script>
 <% using (Html.BeginForm("NewApp_1kurs", "AbiturientNew", FormMethod.Post))

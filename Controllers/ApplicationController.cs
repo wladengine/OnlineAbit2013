@@ -43,6 +43,7 @@ namespace OnlineAbit2013.Controllers
                         Priority = App.Priority,
                         IsGosLine = App.IsGosLine,
                         HasManualExams = false,
+                        dateofClose = Entry.DateOfClose,
                         Enabled = App.Enabled,
                         SemesterName = (Entry.SemesterId != 1) ? Semester.Name : "",
                         StudyLevelGroupName = (isEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +

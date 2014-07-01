@@ -75,7 +75,9 @@
                     buttons:
                     {
                         "Да (yes)": function () {
-                            window.open('<%= string.Format("https://cabinet.spbu.ru/Application/GetPrint/{0}", Model.Id.ToString("N")) %>', '');
+                            window.open('<%= string.Format("/Application/GetPrint/{0}", Model.Id.ToString("N")) %>', '');
+                            $(this).dialog("close");
+                            location.reload(true);
                         },
                         "Нет (no)": function () {
                             $(this).dialog("close");
@@ -179,17 +181,16 @@
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />
-<p class="message info">
-    <% if (Model.HasVersion)
+ <% if (Model.HasVersion)
        {%>
-       <%= GetGlobalResourceObject("ApplicationInfo", "AppLastChanges")%>  <% = Model.VersionDate %>
+       <p class="message info"><%= GetGlobalResourceObject("ApplicationInfo", "AppLastChanges")%> <% = Model.VersionDate %> </p>
     <% }
        else
-       { %>
-       <%= GetGlobalResourceObject("ApplicationInfo", "AppNoLastChanges")%> 
-    <%} %>
-</p>
-
+       {  
+           if (!Model.IsPrinted) { %>
+            <p class="message info"><%= GetGlobalResourceObject("ApplicationInfo", "AppNoLastChanges")%></p> 
+            <%} 
+ }%> 
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
 <table class="paginate" style="width: 659px;">

@@ -3580,6 +3580,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
+                bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
+                if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
+                
                 var apps =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id

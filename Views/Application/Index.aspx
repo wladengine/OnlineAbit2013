@@ -162,10 +162,10 @@
         <% } %>
     </tr>
 
-    <tr>
-        
+    <tr> 
     </tr>
 </table>
+
 <div id="dialog-form">
     <p class="errMessage"></p>
     <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></p>
@@ -175,10 +175,7 @@
 
 <div id="dialog-form-print-app">
     <p class="errMessage"></p>
-    <p>Вы собираетесь закончить формирование заявления и распечатать его.</p>
-    <p>Обращаем Ваше внимание!</p>
-    <p>После окончательного формирования Заявления внести изменения в список программ и изменить их приоритетность можно будет только путем  удаления данного заявления и формирования нового. Внести изменения в приоритетность профилей можно будет только путем личного обращения в Комиссию по приему документов.</p>
-    <p>Вы желаете закончить формирование заявления и распечатать его?</p>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "PrintApplicationWarning")%></p>
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />

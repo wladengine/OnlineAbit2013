@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Вы отозвали это заявление.
+        ///   Ищет локализованную строку, такую же, как Вы отозвали это заявление. Файл с заявлением об отказе был приложен в раздел &quot;Общие документы&quot;..
         /// </summary>
         internal static string ApplicationCanceled {
             get {
@@ -451,6 +451,15 @@ namespace Resources {
         internal static string ObrazProgram {
             get {
                 return ResourceManager.GetString("ObrazProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, такую же, как Вы собираетесь закончить формирование заявления и распечатать его.&lt;/br&gt;&lt;/br&gt;Обращаем Ваше внимание!&lt;/br&gt;&lt;/br&gt;После окончательного формирования Заявления внести изменения в список программ и изменить их приоритетность можно будет только путем  удаления данного заявления и формирования нового. Внести изменения в приоритетность профилей можно будет только путем личного обращения в Комиссию по приему документов.&lt;/br&gt;&lt;/br&gt;Вы желаете закончить формирование заявления и распечатать его?.
+        /// </summary>
+        internal static string PrintApplicationWarning {
+            get {
+                return ResourceManager.GetString("PrintApplicationWarning", resourceCulture);
             }
         }
         

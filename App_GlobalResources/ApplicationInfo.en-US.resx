@@ -280,4 +280,7 @@
   <data name="AppNoLastChanges" xml:space="preserve">
     <value>There is no information about the version of the application. We strongly recommend to go to the page &lt;b&gt;"Change prioritries"&lt;/b&gt; and save the priority sequence by pressing the button &lt;b&gt;"Save"&lt;/b&gt;.</value>
   </data>
+  <data name="PrintApplicationWarning" xml:space="preserve">
+    <value>Вы собираетесь закончить формирование заявления и распечатать его.&lt;/br&gt;&lt;/br&gt;Обращаем Ваше внимание!&lt;/br&gt;&lt;/br&gt;После окончательного формирования Заявления внести изменения в список программ и изменить их приоритетность можно будет только путем  удаления данного заявления и формирования нового. Внести изменения в приоритетность профилей можно будет только путем личного обращения в Комиссию по приему документов.&lt;/br&gt;&lt;/br&gt;Вы желаете закончить формирование заявления и распечатать его?</value>
+  </data>
 </root>

@@ -267,10 +267,10 @@
     <value>Внимание!</value>
   </data>
   <data name="DeleteApp_Warning2" xml:space="preserve">
-    <value>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить.</value>
+    <value>Вы собираетесь удалить данное заявление. Данное действие нельзя будет отменить. После удаления этого заявления, заявление об отказе от участия в конкурсе будет сформировано и сохранено в папку "Общие документы". </value>
   </data>
   <data name="DeleteApp_Warning3" xml:space="preserve">
-    <value>Вы хотите удалить заявление?</value>
+    <value>Вы действительно хотите удалить заявление?</value>
   </data>
   <data name="MotiveLetter_Link" xml:space="preserve">
     <value>&lt;a href ='http://abiturient.spbu.ru/index.php/russkij/informatsiya-dlya-inostrannykh-grazhdan/protsedura-podachi-dokumentov/kriterii-otsenivaniya-dokumentov'&gt;</value>

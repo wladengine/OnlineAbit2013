@@ -24,8 +24,13 @@
                 .click(function () {
                     $("#dialog-form").dialog("open");
                 });
+            $("#printBtn")
+                //.button()
+                .click(function () {
+                    $("#dialog-form-print-app").dialog("open");
+                });
             $("#dialog:ui-dialog").dialog("destroy");
-            $('#fileAttachment').change(ValidateInput);
+            $('#fileAttachment').change(ValidateInput); 
             $("#dialog-form").dialog(
                 {
                     autoOpen: false,
@@ -34,7 +39,7 @@
                     modal: true,
                     buttons:
                     {
-                        "Да (yes)": function () {
+                        "Да (yes)" : function () {
                             $.post('/Application/DisableFull', { id: '<%= Model.Id.ToString("N") %>' }, function (res) {
                                 if (res.IsOk) {
                                     if (!res.Enabled) {
@@ -128,7 +133,8 @@
 <% } else { %>
 <table>
     <tr>
-        <td><a href="<%= string.Format("../../Application/GetPrint/{0}", Model.Id.ToString("N")) %>"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
+        <td>
+            <a href="#" id="printBtn"><img src="../../Content/themes/base/images/PDF.png" alt="Скачать (PDF)" /></a></td>
         <td>
             <a href="#" id="rejectBtn">
                 <img  src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
@@ -162,17 +168,17 @@
 </table>
 <div id="dialog-form">
     <p class="errMessage"></p>
-    <h5><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></h5>
-    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning2")%>.</p>
-    <h4><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning3")%></h4>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></p>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning2")%></p>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning3")%></p>
 </div>
 
 <div id="dialog-form-print-app">
     <p class="errMessage"></p>
     <p>Вы собираетесь закончить формирование заявления и распечатать его.</p>
-    <h5>Обращаем Ваше внимание!</h5>
+    <p>Обращаем Ваше внимание!</p>
     <p>После окончательного формирования Заявления внести изменения в список программ и изменить их приоритетность можно будет только путем  удаления данного заявления и формирования нового. Внести изменения в приоритетность профилей можно будет только путем личного обращения в Комиссию по приему документов.</p>
-    <h4>Вы желаете закончить формирование заявления и распечатать его?</h4>
+    <p>Вы желаете закончить формирование заявления и распечатать его?</p>
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />

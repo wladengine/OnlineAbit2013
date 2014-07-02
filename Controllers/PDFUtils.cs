@@ -2953,6 +2953,7 @@ namespace OnlineAbit2013.Controllers
                                     x.IsGosLine,
                                     Entry.ComissionId,
                                     ComissionAddress = Entry.Address, 
+                                    x.SecondTypeId
                                 }).OrderBy(x => x.Priority).ToList();
 
 
@@ -3057,6 +3058,13 @@ namespace OnlineAbit2013.Controllers
                                                     @Comment, @LoadDate, @MimeType,
                                                     @IsReadOnly, 7)";
                 SortedList<string, object> prms = new SortedList<string, object>();
+                int ? SecTypeId = abitList.FirstOrDefault().SecondTypeId;
+                string SecondType = (SecTypeId.HasValue ?
+                                        ((SecTypeId == 3) ? (" (восстановление)") : 
+                                        ((SecTypeId == 2) ? (" (перевод)") :  
+                                        ((SecTypeId == 5) ? (" (смена основы обучения)") :
+                                        ((SecTypeId == 6) ? (" (смена образовательной программы)") : 
+                                        "")))) : "");
                 prms.Clear();
                 prms.Add("@Id", Guid.NewGuid());
                 prms.Add("@PersonId", PersonId);
@@ -3066,7 +3074,7 @@ namespace OnlineAbit2013.Controllers
                 prms.Add("@FileSize", pdfData.Length);
                 prms.Add("@IsReadOnly", true);
                 prms.Add("@LoadDate", dateTime);
-                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе (" + sVersion + ", "+ code+") " + abitList.FirstOrDefault().StudyLevelGroupName);
+                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе (" + sVersion + ", " + code + ") " + abitList.FirstOrDefault().StudyLevelGroupName + SecondType);
                 prms.Add("@MimeType", "[Application]/pdf");
                 Util.AbitDB.ExecuteQuery(query, prms);
                 bool result = true;

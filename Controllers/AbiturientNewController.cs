@@ -3140,7 +3140,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                         return View("NewApplication_Recover", model);
                     }
-                }
+                }/*
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.SecondTypeId == 3).Count() > 0)
                 {
                     model.SemestrList = Util.GetSemestrList();
@@ -3156,7 +3156,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     else
                         model.ErrorMessage = "To submit new application you should cancel your active application.";
                     return View("NewApplication_Recover", model);
-                }
+                }*/
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
                 {
                     model.SemestrList = Util.GetSemestrList();
@@ -3239,7 +3239,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                         return View("NewApplication_Transfer", model);
                     }
-                }
+                }/*
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.SecondTypeId == 2).Count() > 0)
                 {
                     model.SemestrList = Util.GetSemestrList();
@@ -3255,7 +3255,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     else
                         model.ErrorMessage = "To submit new application you should cancel your active application.";
                     return View("NewApplication_Transfer", model);
-                }
+                }*/
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
                 {
                     model.SemestrList = Util.GetSemestrList();
@@ -3429,7 +3429,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data";
                         return View("NewApplication_ChangeObrazProgram", model);
                     }
-                }
+                }/*
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.SecondTypeId == 6).Count() > 0)
                 {
                     model.SemestrList = Util.GetSemestrList();
@@ -3445,7 +3445,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     else
                         model.ErrorMessage = "To submit new application you should cancel your active application.";
                     return View("NewApplication_ChangeObrazProgram", model);
-                }
+                }*/
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId == CommitId && !x.IsDeleted).Select(x => x.Id).Count() == 0)
                 {
                     model.SemestrList = Util.GetSemestrList();

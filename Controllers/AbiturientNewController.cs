@@ -6179,15 +6179,20 @@ Order by cnt desc";
                         return Json(new { IsOk = false, ErrorMessage = Resources.NewApplication.NewApp_3MorePrograms });
                 }
 
-                int count = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.Priority == iPriority).Select(x => x.Id).Count();
-                if (count == 0)
+                int PriorMax = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => (int?)x.Priority).DefaultIfEmpty(0).Max() ?? 1;
+                if (PriorMax >= iPriority)
                 {
+                    int count = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId && x.Priority == iPriority).Select(x => x.Id).Count();
+                    if (count == 0)
+                    {
+                    }
+                    else
+                    {
+                        iPriority = PriorMax + 1;
+                    }
                 }
                 else
-                {
-                    int? PriorMax = context.Application.Where(x => x.PersonId == PersonId && x.Enabled == true && x.CommitId == gCommId).Select(x => x.Priority).DefaultIfEmpty(0).Max();
-                    iPriority = PriorMax ?? 1;
-                }
+                    iPriority = PriorMax + 1;
                 // если в коммите уже есть закоммиченные заявления, то добавляемое тоже считаем закоммиченным
 
                 bool isCommited = context.Application.Where(x => x.PersonId == PersonId && x.IsCommited == true && x.CommitId == gCommId).Count() > 0;
@@ -6209,23 +6214,22 @@ Order by cnt desc";
                 });
                 context.SaveChanges();
 
-                if (!String.IsNullOrEmpty(reason))
-                {
-                    Guid gCommitId = Guid.Parse(CommitId);
-                    string query = "Select COUNT(PersonId) from PersonChangeStudyFormReason where PersonId=@PersonId ";
-                    count = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@CommitId", gCommitId } });
-                    if (count > 0)
-                    {
-                        query = "Update PersonChangeStudyFormReason set Reason = @Reason, ApplicationId = @AppId, CommitId=@CommitId WHERE PersonId=@PersonId ";
-                        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@AppId", appId }, { "@CommitId", gCommitId }, { "@Reason", reason } });
-                    }
-                    else
-                    {
-                        query = "Insert into PersonChangeStudyFormReason (PersonId, ApplicationId, CommitId, Reason) VALUES (@PersonId, @AppId, @CommitId, @Reason)";
-                        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@AppId", appId }, { "@CommitId", gCommitId }, { "@Reason", reason } });
-                    }
-                }
-
+                //if (!String.IsNullOrEmpty(reason))
+                //{
+                //    Guid gCommitId = Guid.Parse(CommitId);
+                //    string query = "Select COUNT(PersonId) from PersonChangeStudyFormReason where PersonId=@PersonId ";
+                //    int count = (int)Util.AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@CommitId", gCommitId } });
+                //    if (count > 0)
+                //    {
+                //        query = "Update PersonChangeStudyFormReason set Reason = @Reason, ApplicationId = @AppId, CommitId=@CommitId WHERE PersonId=@PersonId ";
+                //        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@AppId", appId }, { "@CommitId", gCommitId }, { "@Reason", reason } });
+                //    }
+                //    else
+                //    {
+                //        query = "Insert into PersonChangeStudyFormReason (PersonId, ApplicationId, CommitId, Reason) VALUES (@PersonId, @AppId, @CommitId, @Reason)";
+                //        Util.AbitDB.ExecuteQuery(query, new SortedList<string, object>() { { "@PersonId", PersonId }, { "@AppId", appId }, { "@CommitId", gCommitId }, { "@Reason", reason } });
+                //    }
+                //}
 
                 var Applications = context.Abiturient.Where(x => x.PersonId == PersonId && x.CommitId == gCommId && x.IsCommited == isCommited)
                     .Select(x => new { x.StudyLevelGroupNameRus, x.StudyLevelGroupNameEng, x.SecondTypeId}).FirstOrDefault();

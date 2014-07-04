@@ -223,7 +223,7 @@
     <value>Graduate class</value>
   </data>
   <data name="SchoolExitYear" xml:space="preserve">
-    <value>Year of graduation</value>
+    <value>Graduating year</value>
   </data>
   <data name="SchoolExitYear_Message" xml:space="preserve">
     <value>Enter the year of graduation</value>
@@ -235,7 +235,7 @@
     <value>Number of School</value>
   </data>
   <data name="SchoolTypeId" xml:space="preserve">
-    <value>Type of Educational Institution</value>
+    <value>Level of education you have got</value>
   </data>
   <data name="SecondWave" xml:space="preserve">
     <value>Сдаю во "второй волне"</value>

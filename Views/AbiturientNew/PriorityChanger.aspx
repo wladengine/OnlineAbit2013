@@ -39,7 +39,7 @@
         <%= "obj['Id']='" + s.Id.ToString("N") + "';" %>
         <%= "obj['Val']='" + s.Priority + "';" %>
         childs.push(obj);
-    <% } %> 
+    <% }  %> 
     var changesAllowed = true;
     function JumpPriority(idSrc)
     {
@@ -79,7 +79,7 @@
     <ul id="sortable">
     <% foreach (var s in Model.Apps)
        { %>
-        <li class="message success">
+        <li class="message success" <% if (!s.Enabled){ %>style="opacity:0.5;" <%}%> >
             <table style="font-size:0.75em;" class="nopadding" cellspacing="0" cellpadding="0">
                 <tr>
                     <td style="width:12em"><%= GetGlobalResourceObject("NewApplication", "ApplicationLevel").ToString()%></td>

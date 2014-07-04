@@ -234,6 +234,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, такую же, как Внимание!&lt;/br&gt; Вы не можете удалить заявление, поскольку в нем существует конкурс, прием на который уже закрыт. Обратитесь в приемную комиссию СПбГУ.
+        /// </summary>
+        internal static string DeleteApp_Warning4 {
+            get {
+                return ResourceManager.GetString("DeleteApp_Warning4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, такую же, как Скачать заявление.
         /// </summary>
         internal static string Download {

@@ -136,7 +136,7 @@
     <value>Date of issue</value>
   </data>
   <data name="PassportExpire" xml:space="preserve">
-    <value>Period of validity</value>
+    <value>Valid till</value>
   </data>
   <data name="PassportExpireMessage" xml:space="preserve">
     <value />

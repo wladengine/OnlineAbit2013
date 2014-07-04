@@ -148,7 +148,7 @@
     <value>Building</value>
   </data>
   <data name="MainPhone" xml:space="preserve">
-    <value>Main Telephone Number</value>
+    <value>Mobile (cell) phone number</value>
   </data>
   <data name="MainPhone_Message" xml:space="preserve">
     <value>Enter main phone</value>
@@ -166,7 +166,7 @@
     <value>Region</value>
   </data>
   <data name="RegistrationHeader" xml:space="preserve">
-    <value>Registered Address</value>
+    <value>Permanent address</value>
   </data>
   <data name="SecondPhone" xml:space="preserve">
     <value>Additional Telephone Number</value>

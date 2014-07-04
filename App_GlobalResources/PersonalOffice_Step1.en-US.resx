@@ -148,7 +148,7 @@
     <value>Name</value>
   </data>
   <data name="Nationality" xml:space="preserve">
-    <value>Country of citizenship</value>
+    <value>Citizenship</value>
   </data>
   <data name="PersonInfo_BirthDate_Message" xml:space="preserve">
     <value>Enter date of birth</value>
@@ -166,7 +166,7 @@
     <value>Required field</value>
   </data>
   <data name="SecondName" xml:space="preserve">
-    <value>Second name</value>
+    <value>Father’s name (if available)</value>
   </data>
   <data name="Sex" xml:space="preserve">
     <value>Sex</value>

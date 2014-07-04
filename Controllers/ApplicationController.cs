@@ -114,9 +114,21 @@ namespace OnlineAbit2013.Controllers
                     Id = CommitId,
                     Applications = tblAppsMain,
                     Files = AllFiles,
-                    IsPrinted = bIsPrinted
+                    IsPrinted = bIsPrinted,
+                    Enabled = true
                     //StudyLevelId = tblAppsMain.First().StudyLevel,
                 };
+                foreach (SimpleApplication s in tblAppsMain)
+                {
+                    if (s.dateofClose != null)
+                        //if (s.dateofClose < DateTime.Now)
+                        if (s.dateofClose < DateTime.Parse("06.07.14"))
+
+                        {
+                            model.Enabled = false;
+                            break;
+                        }
+                }
                 var AppVers = context.ApplicationCommitVersion.Where(x => x.CommitId == CommitId).Select(x => x.VersionDate).FirstOrDefault();
                 if (AppVers == null)
                 {

@@ -22,12 +22,17 @@
             $("#rejectBtn")
             //.button()
                 .click(function () {
-                    $("#dialog-form").dialog("open");
+                    $("#dialog-form").dialog("open"); 
+                     
                 });
             $("#printBtn")
                 //.button()
                 .click(function () {
+                    <% if (!Model.IsPrinted) { %>
                     $("#dialog-form-print-app").dialog("open");
+                    <%} else {%>
+                    window.open('<%= string.Format("/Application/GetPrint/{0}", Model.Id.ToString("N")) %>', '');
+                    <%} %>
                 });
             $("#dialog:ui-dialog").dialog("destroy");
             $('#fileAttachment').change(ValidateInput); 
@@ -37,6 +42,7 @@
                     height: 400,
                     width: 350,
                     modal: true,
+                    <% if (Model.Enabled) { %>
                     buttons:
                     {
                         "Да (yes)" : function () {
@@ -65,6 +71,14 @@
                             $(this).dialog("close");
                         }
                     }
+                    <%}else{ %>
+                    buttons:
+                    { 
+                        "okay": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                    <%} %>
                 });
             $("#dialog-form-print-app").dialog(
                 {
@@ -142,7 +156,7 @@
                 <img  src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
             </a>
         </td>
-        <% if (!Model.IsPrinted) { %>
+        <% if ((!Model.IsPrinted)) { %>
         <td>
             <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
@@ -153,7 +167,7 @@
                 <img src="../../Content/themes/base/images/File_edit064.png" alt="Редактировать заявление" />
             </a>
         </td>
-        <% } %>
+        <% } %> 
     </tr>
     <tr>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "Download")%></td>
@@ -170,9 +184,16 @@
 
 <div id="dialog-form">
     <p class="errMessage"></p>
+       <% if (Model.Enabled)
+          { %>
     <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning1")%></p>
     <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning2")%></p>
     <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning3")%></p>
+    <% }
+          else
+          { %>
+    <p><%= GetGlobalResourceObject("ApplicationInfo", "DeleteApp_Warning4")%></p>
+    <%} %>
 </div>
 
 <div id="dialog-form-print-app">

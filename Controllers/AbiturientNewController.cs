@@ -3582,7 +3582,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
                 bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
                 if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
-                
+
+                DateTime temp = DateTime.Parse("06.07.14");
+
                 var apps =
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
@@ -3602,6 +3604,9 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          ObrazProgramInEntryId = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() == 1 ? context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Select(x => x.Id).FirstOrDefault() : Guid.Empty,
                          EntryId = App.EntryId,
                          IsGosLine = App.IsGosLine,
+                         dateofClose = Entry.DateOfClose,
+                         //Enabled = Entry.DateOfClose > DateTime.Now? true : false,
+                         Enabled = Entry.DateOfClose > temp ? true : false,
                          SemesterName = (Entry.SemesterId!=1)?Semester.Name:"",
                          SecondTypeName = "",
                          StudyLevelGroupName = (bisEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +
@@ -3634,6 +3639,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
                 MotivateMailModel mdl = new MotivateMailModel()
                 {
+                    
                     Apps = apps,
                     UILanguage = Util.GetUILang(PersonId),
                     VersionId = VersionId.ToString("N")

@@ -156,7 +156,7 @@
                 <img  src="../../Content/themes/base/images/Delete064.png" alt="Удалить" />
             </a>
         </td>
-        <% if ((!Model.IsPrinted)) { %>
+        <% if ((!Model.IsPrinted)||(!Model.Enabled)) { %>
         <td>
             <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
@@ -172,7 +172,7 @@
     <tr>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "Download")%></td>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationDelete")%></td>
-        <% if (!Model.IsPrinted) { %>
+        <% if ((!Model.IsPrinted)||(!Model.Enabled)) { %>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationPriorityChange")%></td>
         <td><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationChange")%></td>
         <% } %>

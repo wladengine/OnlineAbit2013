@@ -1613,7 +1613,8 @@ WHERE PersonId=@PersonId ";
                          App.HostelEduc,
                          App.IsGosLine,
                          Entry.StudyLevelGroupId,
-                         StudyLevelGrName = bisEng? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus
+                         StudyLevelGrName = bisEng? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
+                         DateOfClose = Entry.DateOfClose
                      }).ToList();
                 foreach (var App in AppList)
                 {
@@ -1638,6 +1639,7 @@ WHERE PersonId=@PersonId ";
                         SemestrName = App.SemestrName,
                         IsGosLine = App.IsGosLine,
                         StudyLevelGroupId = App.StudyLevelGroupId,
+                        DateOfClose = App.DateOfClose,
                         StudyLevelGroupName = App.StudyLevelGrName
                     };
                     string query = @"  Select SP_LicenseProgram.Id as Id, SP_LicenseProgram.Name as Name from Entry 
@@ -1876,6 +1878,60 @@ WHERE PersonId=@PersonId ";
             constant.Parents = 4000;
  
             return constant;
+        }
+
+        public static void CopyApplicationsInAnotherCommit(Guid CommitId, Guid gComm, Guid PersonId)
+        {
+ 
+            using (OnlinePriemEntities context = new OnlinePriemEntities()){
+
+                var abitList = (from x in context.Application
+                                join Commit in context.ApplicationCommit on x.CommitId equals Commit.Id
+                                join Entry in context.Entry on x.EntryId equals Entry.Id
+                                where x.CommitId == CommitId
+                                select new
+                                {
+                                    x.Id,
+                                    x.PersonId,
+                                    x.EntryId, 
+                                    x.HostelEduc,
+                                    x.Priority,
+                                    x.EntryType,
+                                    x.IsGosLine,
+                                    x.DateOfStart,
+                                    x.SecondTypeId,
+                                    x.IsImported,
+                                    x.CompetitionId, 
+                                    x.ApproverName, 
+                                    x.DocInsertDate, 
+                                    x.DateReviewDocs
+                                }).OrderBy(x => x.Priority).ToList();
+                foreach (var s in abitList)
+                {
+                    Guid appId = Guid.NewGuid();
+                    context.Application.AddObject(new Application()
+                    {
+                        Id = appId,
+                        PersonId = PersonId,
+                        EntryId = s.EntryId,
+                        HostelEduc = s.HostelEduc,
+                        Priority = s.Priority,
+                        Enabled = true,
+                        EntryType = s.EntryType,
+                        DateOfStart = DateTime.Now,
+                        CommitId = gComm,
+                        IsGosLine = s.IsGosLine,
+                        IsCommited = false,
+                        SecondTypeId = s.SecondTypeId,
+                        IsImported = s.IsImported,
+                        CompetitionId = s.CompetitionId, 
+                        ApproverName = s.ApproverName, 
+                        DocInsertDate =s.DocInsertDate, 
+                        DateReviewDocs=s.DateReviewDocs
+                    });
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }

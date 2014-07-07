@@ -854,6 +854,7 @@ namespace OnlineAbit2013.Models
     public class Mag_ApplicationModel
     {
         public bool Enabled { get; set; } // доступно?
+        public bool ProjectJuly { get; set; }
         public int MaxBlocks { get; set; } // макс количество блоков
         public string CommitId { get; set; } // коммит
         public bool HasError { get; set; }
@@ -895,6 +896,7 @@ namespace OnlineAbit2013.Models
         public int StudyLevelGroupId { get; set; }
         public string StudyLevelGroupName { get; set; }
         public bool? IsGosLine { get; set; }
+        public DateTime? DateOfClose { get; set; }
         public string ChangeStudyFormReason { get; set; }
     }
 

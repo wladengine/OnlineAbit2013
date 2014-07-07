@@ -1940,7 +1940,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
-
+            bool NewId = false;
             using (OnlinePriemEntities context = new OnlinePriemEntities())
             {
                 var PersonInfo = context.Person.Where(x => x.Id == PersonId).FirstOrDefault();
@@ -1948,8 +1948,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     return RedirectToAction("Index");
                 Guid gComm = Guid.Parse(Id);
                 bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gComm } });
-                if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", Guid.Parse(Id) } });
-                
+                if (isPrinted)
+                {
+                    int NotEnabledApplication = (int)Util.AbitDB.GetValue(@"select count (Application.Id) from Application
+                                         inner join Entry on Entry.Id = EntryId
+                                         where CommitId = @Id
+                                         and Entry.DateOfClose < GETDATE()", new SortedList<string, object>() { { "@Id", gComm } });
+                    if (NotEnabledApplication == 0)
+                        return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", Guid.Parse(Id) } });
+                    else
+                        NewId = true;
+                }
                 int? c = (int?)Util.AbitDB.GetValue("SELECT top 1 SecondTypeId FROM Application WHERE CommitId=@Id AND PersonId=@PersonId", new SortedList<string, object>() { { "@PersonId", PersonId }, { "@Id", Guid.Parse(Id) } });
                 if (c != null)
                 {
@@ -1988,7 +1997,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         if (CommId.Count() > 0)
                         {
                             model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
-                        }
+                        } 
                         if (c == 2)
                             return View("NewApplication_Transfer", model);
                         else if (c==4)
@@ -2044,7 +2053,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     Mag_ApplicationModel model = new Mag_ApplicationModel();
                     model.Applications = new List<Mag_ApplicationSipleEntity>();
                     model.CommitId = Id;
-
+                    
                     DataTable tbl;
                     model.Enabled = true;
                     int iAG_SchoolTypeId = (int)Util.AbitDB.GetValue("SELECT SchoolTypeId FROM PersonEducationDocument WHERE PersonId=@Id",
@@ -2092,8 +2101,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                 model.Enabled = false; 
                         }
                     }
-
-
                     model.StudyFormList = Util.GetStudyFormList();
                     model.StudyBasisList = Util.GetStudyBasisList();
                     Guid CommitId = Guid.Parse(Id);
@@ -2103,7 +2110,15 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     { 
                         model.Applications = Util.GetApplicationListInCommit(CommitId, PersonId);
                     }
-
+                    if (NewId)
+                    {
+                        gComm = Guid.NewGuid();
+                        model.CommitId = gComm.ToString();
+                        model.ProjectJuly = true;
+                        Util.CopyApplicationsInAnotherCommit(CommitId, gComm, PersonId);
+                    }
+                    else
+                        model.ProjectJuly = false;
                     if (c == 2)
                     {
                         model.MaxBlocks = maxBlockMag;
@@ -2124,7 +2139,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         model.MaxBlocks = maxBlockAspirant;
                         return View("NewApplication_Aspirant", model);
                     } 
-
                 }
                 else
                 {
@@ -3580,10 +3594,23 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
+                bool NewId = false;
                 bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
-                if (isPrinted) return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
-
-                DateTime temp = DateTime.Parse("06.07.14");
+                if (isPrinted)
+                {
+                    int NotEnabledApplication = (int)Util.AbitDB.GetValue(@"select count (Application.Id) from Application
+                                         inner join Entry on Entry.Id = EntryId
+                                         where CommitId = @Id
+                                         and Entry.DateOfClose < GETDATE()", new SortedList<string, object>() { { "@Id", gCommitId } });
+                    if (NotEnabledApplication == 0)
+                    {
+                        return RedirectToAction("Index", "Application", new RouteValueDictionary() { { "id", gCommitId } });
+                    }
+                    else
+                    {
+                        NewId = true;
+                    }
+                }
 
                 var apps =
                     (from App in context.Application
@@ -3605,8 +3632,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          EntryId = App.EntryId,
                          IsGosLine = App.IsGosLine,
                          dateofClose = Entry.DateOfClose,
-                         //Enabled = Entry.DateOfClose > DateTime.Now? true : false,
-                         Enabled = Entry.DateOfClose > temp ? true : false,
+                         Enabled = isPrinted ? (Entry.DateOfClose > DateTime.Now ? true : false) : true,
                          SemesterName = (Entry.SemesterId!=1)?Semester.Name:"",
                          SecondTypeName = "",
                          StudyLevelGroupName = (bisEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +
@@ -3636,10 +3662,15 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                           SecondTypeName = "",
                           StudyLevelGroupName = Resources.Common.AG
                       }).ToList()).OrderBy(x => x.Priority).ToList();
-
+                Guid gComm = gCommitId;
+                if (NewId)
+                {
+                    gComm = Guid.NewGuid();
+                    Util.CopyApplicationsInAnotherCommit(gCommitId, gComm, PersonId);
+                }
                 MotivateMailModel mdl = new MotivateMailModel()
                 {
-                    
+                    CommitId = gComm.ToString(),
                     Apps = apps,
                     UILanguage = Util.GetUILang(PersonId),
                     VersionId = VersionId.ToString("N")
@@ -3827,9 +3858,14 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Guid.TryParse(model.CommitId, out gCommId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+                Util.CommitApplication(gCommId, PersonId, context);
+            }
+
             //создаём новую версию изменений
             SortedList<string, object> slParams = new SortedList<string, object>();
-            slParams.Add("CommitId", gCommId);
+            slParams.Add("CommitId", gCommId); 
             slParams.Add("VersionDate", DateTime.Now);
             string val = Util.AbitDB.InsertRecordReturnValue("ApplicationCommitVersion", slParams);
             int iCommitVersionId = 0;
@@ -3842,12 +3878,20 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 Guid appId;
                 if (!Guid.TryParse(key, out appId))
                     continue;
-
-                string query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId;" +
-                    " INSERT INTO [ApplicationCommitVersonDetails] (ApplicationCommitVersionId, ApplicationId, Priority) VALUES (@ApplicationCommitVersionId, @Id, @Priority)";
-                SortedList<string, object> dic = new SortedList<string, object>();
-                dic.AddItem("@Priority", ++prior);
+                string query = "Select DateOfClose, Priority from Application inner join Entry on Entry.Id = EntryId where Application.Id = @Id";
+                SortedList<string, object> dic = new SortedList<string, object>(); 
                 dic.AddItem("@Id", appId);
+                DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
+                DataRow r = tbl.Rows[0];
+                int priority = r.Field<int>("Priority");
+                DateTime? dateofClose = r.Field<DateTime?>("DateOfClose");
+                if (dateofClose != null)
+                    if (dateofClose < DateTime.Now)
+                        prior = priority-1;
+
+                query = "UPDATE [Application] SET Priority=@Priority WHERE Id=@Id AND PersonId=@PersonId AND CommitId=@CommitId;" +
+                    " INSERT INTO [ApplicationCommitVersonDetails] (ApplicationCommitVersionId, ApplicationId, Priority) VALUES (@ApplicationCommitVersionId, @Id, @Priority)";
+                dic.AddItem("@Priority", ++prior);
                 dic.AddItem("@PersonId", PersonId);
                 dic.AddItem("@CommitId", gCommId);
                 dic.AddItem("@ApplicationCommitVersionId", iCommitVersionId);

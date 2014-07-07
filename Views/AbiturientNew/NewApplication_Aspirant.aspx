@@ -633,7 +633,7 @@
         </div>
     <%} %>
     <br />
-    <input id="Submit" type="submit" disabled value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%> class="button button-green"/>
+    <input id="Submit" type="submit" <% if (!Model.ProjectJuly){ %>disabled <%} %> value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%> class="button button-green"/>
 <% 
    }
    }

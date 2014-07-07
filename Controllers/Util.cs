@@ -1571,7 +1571,8 @@ WHERE PersonId=@PersonId ";
                 if (res_nat == true)
                     return -1; // есть выбор 
                 else
-                    return 1; // только по гослинии
+                    return -1; // есть выбор (раньше было только по гослинии)
+                //  return 1; //только по гослинии
             }
         }
 

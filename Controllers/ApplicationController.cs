@@ -120,16 +120,15 @@ namespace OnlineAbit2013.Controllers
                     Enabled = true,
                     StudyLevelGroupId = tblAppsMain.First().StudyLevelGroupId
                 };
-                if (model.IsPrinted)
-                    foreach (SimpleApplication s in tblAppsMain)
-                    {
-                        if (s.dateofClose != null)
-                            if (s.dateofClose < DateTime.Now)
-                            {
-                                model.Enabled = false;
-                                break;
-                            }
-                    }
+                foreach (SimpleApplication s in tblAppsMain)
+                {
+                    if (s.dateofClose != null)
+                        if (s.dateofClose < DateTime.Now)
+                        {
+                            model.Enabled = false;
+                            break;
+                        }
+                }
                 var AppVers = context.ApplicationCommitVersion.Where(x => x.CommitId == CommitId).Select(x => x.VersionDate).FirstOrDefault();
                 if (AppVers == null)
                 {

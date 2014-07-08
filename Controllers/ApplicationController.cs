@@ -46,6 +46,7 @@ namespace OnlineAbit2013.Controllers
                         dateofClose = Entry.DateOfClose,
                         Enabled = App.Enabled,
                         SemesterName = (Entry.SemesterId != 1) ? Semester.Name : "",
+                        StudyLevelGroupId = Entry.StudyLevelGroupId,
                         StudyLevelGroupName = (isEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +
                                     (App.SecondTypeId.HasValue ?
                                         ((App.SecondTypeId == 3) ? (isEng ? " (recovery)" : " (восстановление)") :
@@ -68,6 +69,7 @@ namespace OnlineAbit2013.Controllers
                         HasManualExams = x.ManualExamId.HasValue,
                         ManualExam = x.ManualExamId.HasValue ? x.AG_ManualExam.Name : "",
                         Enabled = x.Enabled,
+                        StudyLevelGroupId = 1,
                         StudyLevelGroupName = Resources.Common.AG,
                     }).ToList()).ToList();
 
@@ -115,8 +117,8 @@ namespace OnlineAbit2013.Controllers
                     Applications = tblAppsMain,
                     Files = AllFiles,
                     IsPrinted = bIsPrinted,
-                    Enabled = true
-                    //StudyLevelId = tblAppsMain.First().StudyLevel,
+                    Enabled = true,
+                    StudyLevelGroupId = tblAppsMain.First().StudyLevelGroupId
                 };
                 if (model.IsPrinted)
                     foreach (SimpleApplication s in tblAppsMain)

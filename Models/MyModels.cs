@@ -577,6 +577,7 @@ namespace OnlineAbit2013.Models
         //public bool NeedHostel { get; set; }
         public string SemesterName { get; set; }
         public string SecondTypeName { get; set; }
+        public int StudyLevelGroupId { get; set; }
         public string StudyLevelGroupName { get; set; }
         public bool HasSeparateObrazPrograms { get; set; }
         public DateTime? dateofClose { get; set; }
@@ -719,7 +720,7 @@ namespace OnlineAbit2013.Models
         public bool Enabled { get; set; }
         public string DateOfDisable { get; set; }
 
-        public string StudyLevelId { get; set; }
+        public int StudyLevelGroupId { get; set; }
         public int AbiturientTypeId { get; set; }
         public bool IsPrinted { get; set; }
 

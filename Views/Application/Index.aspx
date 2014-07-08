@@ -202,6 +202,15 @@
 </div>
 <h4><%= GetGlobalResourceObject("ApplicationInfo", "ApplicationInfoHeader")%> </h4>
 <hr />
+<%if (!Model.IsPrinted)
+  { 
+      if (Model.StudyLevelGroupId == 1)
+               { %>
+                <p class="message info">Распечатайте заявление и отнесите его в приемную комиссию, чтобы изменения вступили в силу</p> <%}
+               else
+               { %>
+                <p class="message info">Распечатайте заявление. Подписанное и отсканированное заявление загрузите в окне ниже. </p> <% }
+  }%>
  <% if (Model.HasVersion)
        {%>
        <p class="message info"><%= GetGlobalResourceObject("ApplicationInfo", "AppLastChanges")%> <% = Model.VersionDate %> </p>
@@ -214,7 +223,7 @@
  }%> 
 <% foreach (var Application in Model.Applications.OrderBy(x => x.Priority).ThenBy(x => x.ObrazProgram))
    { %>
-<table class="paginate" style="width: 659px;">
+<table class="paginate" style="width: 679px;">
     <% if (Application.Enabled) { %>
     <tr>
         <td width="30%" align="right"><abbr title="Наивысший приоритет равен 1"><%= GetGlobalResourceObject("PriorityChangerForeign", "Priority").ToString()%> </abbr></td>

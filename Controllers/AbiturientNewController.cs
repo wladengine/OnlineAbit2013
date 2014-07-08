@@ -2972,6 +2972,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         App.IsCommited = false;
                     }
                     context.SaveChanges();
+                    Util.DifferenceBetweenCommits(OldCommitId, CommitId, PersonId);
+                    bool? result = PDFUtils.GetDisableApplicationPDF(OldCommitId, Server.MapPath("~/Templates/"), PersonId);
                     // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
                     Util.CommitApplication(CommitId, PersonId, context);
                 }
@@ -3693,7 +3695,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 MotivateMailModel mdl = new MotivateMailModel()
                 {
                     CommitId = gComm.ToString(),
-                    OldCommitId = gCommitId.ToString(),
+                    OldCommitId = (gComm.Equals(gCommitId))?"": gCommitId.ToString(),
                     Apps = apps,
                     UILanguage = Util.GetUILang(PersonId),
                     VersionId = VersionId.ToString("N")
@@ -3898,7 +3900,6 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             App.IsCommited = false;
                         }
                         context.SaveChanges();
-                        // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
                         Util.CommitApplication(gCommId, PersonId, context);
                     }
             }

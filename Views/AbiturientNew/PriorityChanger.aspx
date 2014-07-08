@@ -14,10 +14,9 @@
 </p>
 
 <style>
-
-	.ui-sortable { list-style-type: decimal; margin-left: 10px; margin-right: 10px; padding-left: 10px; padding-right:10px; padding-top: 5px; width: 90%; cursor: move;  list-style-type: none; } 
+	.ui-sortable { list-style-type: none; margin-left: 10px; margin-right: 10px; padding-left: 10px; padding-right:10px; min-height: 15px; padding-top: 5px; width: 90%; cursor: move; } 
 	.ui-sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; /*height: 1.5em; */}
-    #sortable { list-style-type: decimal; margin-left: 10px; margin-right: 10px; padding-left: 10px; padding-right:10px; width: 90%; cursor: move;  list-style-type: none; } 
+    #sortable { list-style-type: none; margin-left: 10px; margin-right: 10px; padding-left: 10px; padding-right:10px; width: 90%; cursor: move; } 
 	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; /*height: 1.5em; */}
 	html>body #sortable li { /*height: 1.5em; */line-height: 1.2em; }
 	.ui-state-highlight { /*height: 1.5em; */line-height: 1.2em; }
@@ -182,7 +181,7 @@
     <%if (flag)
       {
           i++; %>
-          <ul id="sortable<%=i.ToString() %>"></ul>
+          <ul id="sortable<%=i.ToString() %>" style="min-height: 10px;"></ul>
     <%} %>
     <button id="btnSave" type="submit" class="button button-green"><%= GetGlobalResourceObject("PriorityChangerForeign", "BtnSave").ToString()%></button><br />
 </form>

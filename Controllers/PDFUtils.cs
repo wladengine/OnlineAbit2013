@@ -2956,7 +2956,8 @@ namespace OnlineAbit2013.Controllers
                                     ComissionAddress = Entry.Address, 
                                     x.SecondTypeId
                                 }).OrderBy(x => x.Priority).ToList();
-
+                if (abitList.Count == 0)
+                    return true;
 
                 string query = "SELECT Email, IsForeign FROM [User] WHERE Id=@Id";
                 DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Id", PersonId } });
@@ -3069,13 +3070,13 @@ namespace OnlineAbit2013.Controllers
                 prms.Clear();
                 prms.Add("@Id", Guid.NewGuid());
                 prms.Add("@PersonId", PersonId);
-                prms.Add("@FileName", person.Surname + " " + person.Name.FirstOrDefault() + "_Отказ от заявления (" + code + ").pdf");
+                prms.Add("@FileName", person.Surname + " " + person.Name.FirstOrDefault() + ". (Отказ от заявления штрих-код " + code + ").pdf");
                 prms.Add("@FileExtention", ".pdf");
                 prms.Add("@FileData", pdfData);
                 prms.Add("@FileSize", pdfData.Length);
                 prms.Add("@IsReadOnly", true);
                 prms.Add("@LoadDate", dateTime);
-                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе (" + sVersion + ", " + code + ") " + abitList.FirstOrDefault().StudyLevelGroupName + SecondType);
+                prms.Add("@Comment", "Заявление об отказе от участия в конкурсе (" + (String.IsNullOrEmpty(sVersion)?"":sVersion+", ")+ "штрих-код " + code + ") " + abitList.FirstOrDefault().StudyLevelGroupName + SecondType);
                 prms.Add("@MimeType", "[Application]/pdf");
                 Util.AbitDB.ExecuteQuery(query, prms);
                 bool result = true;

@@ -396,7 +396,7 @@
                         modal: true, 
                         buttons:
                         {
-                            "Да (yes)": function () { DeleteApp(I); },
+                            "Да (yes)": function () { $(this).dialog("close"); DeleteApp(I); },
                             "Нет (no)": function () { $(this).dialog("close"); }
                         } 
                     });

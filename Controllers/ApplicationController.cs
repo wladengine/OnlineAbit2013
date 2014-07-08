@@ -118,7 +118,7 @@ namespace OnlineAbit2013.Controllers
                     Files = AllFiles,
                     IsPrinted = bIsPrinted,
                     Enabled = true,
-                    StudyLevelGroupId = tblAppsMain.First().StudyLevelGroupId
+                    StudyLevelGroupId =(tblAppsMain.Count==0)?1:tblAppsMain.First().StudyLevelGroupId
                 };
                 foreach (SimpleApplication s in tblAppsMain)
                 {

@@ -32,13 +32,13 @@ namespace OnlineAbit2013.Controllers
         /// <summary>
         /// ADO-Powered
         /// </summary>
-        public static SQLClass AbitDB 
-        { 
-            get 
+        public static SQLClass AbitDB
+        {
+            get
             {
                 if (!_abitDB.IsOpen)
                     _abitDB.OpenDatabase(ConstClass.AbitDB);
-                return _abitDB; 
+                return _abitDB;
             }
         }
         /// <summary>
@@ -91,7 +91,7 @@ namespace OnlineAbit2013.Controllers
         //статический конструктор
         static Util()
         {
-            InitDB(); 
+            InitDB();
             string query = "SELECT Id, Name  FROM {0} WHERE 1=@x ORDER BY Id";
             SortedList<string, object> dic = new SortedList<string, object>() { { "@x", 1 } };
             DataTable tbl = _abitDB.GetDataTable(string.Format(query, "EgeExam"), dic);
@@ -141,7 +141,7 @@ namespace OnlineAbit2013.Controllers
             FileTypesAll =
                 (from DataRow rw in tbl.Rows
                  select new { Id = rw.Field<int>("Id"), Name = rw.Field<string>("Name") }).ToDictionary(x => x.Id, x => x.Name);
-           
+
             tbl = _abitDB.GetDataTable("SELECT Id, Name  FROM Region WHERE RegionNumber IS NOT NULL", dic);
             RegionsAll =
                 (from DataRow rw in tbl.Rows
@@ -382,7 +382,7 @@ namespace OnlineAbit2013.Controllers
 
             query = "SELECT Id FROM [Person] WHERE Id=@Id";
             string res = AbitDB.GetStringValue(query, new SortedList<string, object>() { { "@Id", PersonId } });
-            
+
             if (string.IsNullOrEmpty(res))
                 return true;
             else
@@ -405,7 +405,7 @@ namespace OnlineAbit2013.Controllers
 
             query = "SELECT COUNT(Id) FROM [AG_Application] WHERE PersonId=@PersonId AND Enabled=@Enabled AND IsCommited=1";
             res += (int)AbitDB.GetValue(query, dic);
-            
+
             if (res > 0)
                 return true;
             else
@@ -1368,7 +1368,7 @@ namespace OnlineAbit2013.Controllers
         public static List<SelectListItem> GetCountryList()
         {
             bool isEng = GetCurrentThreadLanguageIsEng();
-            string query = string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", isEng ? "NameEng" : "Name" );
+            string query = string.Format("SELECT Id, Name, NameEng FROM [Country] ORDER BY LevelOfUsing DESC, {0}", isEng ? "NameEng" : "Name");
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             List<SelectListItem> lst =
                 (from DataRow rw in tbl.Rows
@@ -1380,7 +1380,7 @@ namespace OnlineAbit2013.Controllers
 
             return lst;
         }
-         
+
         public static string GetMailBody(string path)
         {
             string rVal = null;
@@ -1482,7 +1482,7 @@ WHERE PersonId=@PersonId ";
             query = query + where + order;
             SortedList<string, object> dic = new SortedList<string, object>();
             dic.Add("@PersonId", PersonId);
-            
+
             try
             {
                 DataTable tbl = Util.AbitDB.GetDataTable(query, dic);
@@ -1500,20 +1500,20 @@ WHERE PersonId=@PersonId ";
                          IsApproved = rw.Field<bool?>("IsApproved").HasValue ?
                          rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected : ApprovalStatus.NotSet,
                          IsReadOnly = rw.Field<bool?>("IsReadOnly").HasValue ? rw.Field<bool?>("IsReadOnly").Value : false
-                     }).ToList(); 
+                     }).ToList();
             }
-            catch { }  
+            catch { }
             return lst;
         }
 
         public static int GetRess(Guid PersonId)
-        { 
+        {
             string query = "SELECT [NationalityId] FROM [Person] WHERE Id=@PersonId";
             int? res_nat = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
             query = "SELECT HasRussianNationality FROM [Person] WHERE Id=@PersonId";
             bool HasRussianNationality = (bool?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } }) ?? false;
-           
+
             query = "SELECT [CountryId] FROM [PersonContacts] WHERE PersonId=@PersonId";
             int? res_coun = (int?)AbitDB.GetValue(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
 
@@ -1542,7 +1542,7 @@ WHERE PersonId=@PersonId ";
                             return 3;
                         }
                         if (res_coun == 193)
-                        { return 2;  } // !193 - 193
+                        { return 2; } // !193 - 193
                         else
                         { return 4; } // !193-!193
                     }
@@ -1555,11 +1555,11 @@ WHERE PersonId=@PersonId ";
             else
             {
                 return 0;
-            } 
+            }
         }
         public static int IsGosLine(Guid PersonId)
         {
-            int result=GetRess(PersonId);
+            int result = GetRess(PersonId);
             if (result == 1) // Рф - Рф (всегда общий прием)
                 return 0; // только общий прием
             else if (result == 3) // рф -нерф (дог = общий прием, бюдж = выбор)
@@ -1609,12 +1609,12 @@ WHERE PersonId=@PersonId ";
                          Entry.ProfileId,
                          Entry.ObrazProgramNameEng,
                          Entry.ProfileName,
-                         Entry.ProfileNameEng, 
+                         Entry.ProfileNameEng,
                          SemestrName = Semester.Name,
                          App.HostelEduc,
                          App.IsGosLine,
                          Entry.StudyLevelGroupId,
-                         StudyLevelGrName = bisEng? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
+                         StudyLevelGrName = bisEng ? Entry.StudyLevelGroupNameEng : Entry.StudyLevelGroupNameRus,
                          DateOfClose = Entry.DateOfClose
                      }).ToList();
                 foreach (var App in AppList)
@@ -1625,17 +1625,17 @@ WHERE PersonId=@PersonId ";
                         StudyFormId = (App.StudyFormId),
                         StudyFormName = bisEng ? (String.IsNullOrEmpty(App.StudyFormNameEng) ? App.StudyFormName : App.StudyFormNameEng) : App.StudyFormName,
                         StudyBasisId = App.StudyBasisId,
-                        StudyBasisName = bisEng ? (String.IsNullOrEmpty(App.StudyBasisNameEng) ? App.StudyBasisName : App.StudyBasisNameEng) : App.StudyBasisName, 
+                        StudyBasisName = bisEng ? (String.IsNullOrEmpty(App.StudyBasisNameEng) ? App.StudyBasisName : App.StudyBasisNameEng) : App.StudyBasisName,
                         IsReduced = App.IsReduced,
                         IsParallel = App.IsParallel,
                         IsSecond = App.IsSecond,
                         FacultyName = App.FacultyName,
                         ProfessionId = App.LicenseProgramId,
-                        ProfessionName = bisEng ? (String.IsNullOrEmpty(App.LicenseProgramNameEng) ? App.LicenseProgramName : App.LicenseProgramNameEng) : App.LicenseProgramName, 
+                        ProfessionName = bisEng ? (String.IsNullOrEmpty(App.LicenseProgramNameEng) ? App.LicenseProgramName : App.LicenseProgramNameEng) : App.LicenseProgramName,
                         ObrazProgramId = App.ObrazProgramId,
-                        ObrazProgramName = bisEng ? (String.IsNullOrEmpty(App.ObrazProgramNameEng) ? App.ObrazProgramName : App.ObrazProgramNameEng) : App.ObrazProgramName, 
+                        ObrazProgramName = bisEng ? (String.IsNullOrEmpty(App.ObrazProgramNameEng) ? App.ObrazProgramName : App.ObrazProgramNameEng) : App.ObrazProgramName,
                         SpecializationId = (App.ProfileId == null ? Guid.Empty : App.ProfileId.Value),
-                        SpecializationName = bisEng ? (String.IsNullOrEmpty(App.ProfileNameEng) ? App.ProfileName : App.ProfileNameEng) : App.ProfileName, 
+                        SpecializationName = bisEng ? (String.IsNullOrEmpty(App.ProfileNameEng) ? App.ProfileName : App.ProfileNameEng) : App.ProfileName,
                         Hostel = App.HostelEduc,
                         SemestrName = App.SemestrName,
                         IsGosLine = App.IsGosLine,
@@ -1691,7 +1691,7 @@ WHERE PersonId=@PersonId ";
         public static List<SelectListItem> GetStudyBasisList()
         {
             bool isEng = GetCurrentThreadLanguageIsEng();
-            
+
             string query = "SELECT DISTINCT StudyBasisId, StudyBasisName, StudyBasisNameEng FROM Entry ORDER BY 1";
             DataTable tbl = Util.AbitDB.GetDataTable(query, null);
             return
@@ -1733,7 +1733,7 @@ WHERE PersonId=@PersonId ";
                  select new
                  {
                      Value = rw.Field<int>("StudyFormId"),
-                     Text = isEng ? 
+                     Text = isEng ?
                      (string.IsNullOrEmpty(rw.Field<string>("StudyFormNameEng")) ? rw.Field<string>("StudyFormName") : rw.Field<string>("StudyFormNameEng"))
                      : rw.Field<string>("StudyFormName")
                  }).AsEnumerable()
@@ -1749,7 +1749,7 @@ WHERE PersonId=@PersonId ";
             else
                 query += " AND Semester.IsIGA=0 ";
             */
-            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Date", DateTime.Now }});
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@Date", DateTime.Now } });
             return
                 (from DataRow rw in tbl.Rows
                  select new
@@ -1758,7 +1758,7 @@ WHERE PersonId=@PersonId ";
                      Text = rw.Field<string>("Name")
                  }).AsEnumerable()
                     .Select(x => new SelectListItem() { Text = x.Text, Value = x.Value.ToString() })
-                    .ToList(); 
+                    .ToList();
         }
 
         public static List<SelectListItem> GetLanguageList()
@@ -1877,24 +1877,24 @@ WHERE PersonId=@PersonId ";
 
             constant.AddInfo = 4000;
             constant.Parents = 4000;
- 
+
             return constant;
         }
 
         public static void CopyApplicationsInAnotherCommit(Guid CommitId, Guid gComm, Guid PersonId)
         {
- 
-            using (OnlinePriemEntities context = new OnlinePriemEntities()){
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
 
                 var abitList = (from x in context.Application
                                 join Commit in context.ApplicationCommit on x.CommitId equals Commit.Id
                                 join Entry in context.Entry on x.EntryId equals Entry.Id
-                                where x.CommitId == CommitId
+                                where (x.CommitId == CommitId) && (x.PersonId == PersonId)
                                 select new
                                 {
                                     x.Id,
                                     x.PersonId,
-                                    x.EntryId, 
+                                    x.EntryId,
                                     x.HostelEduc,
                                     x.Priority,
                                     x.EntryType,
@@ -1902,9 +1902,9 @@ WHERE PersonId=@PersonId ";
                                     x.DateOfStart,
                                     x.SecondTypeId,
                                     x.IsImported,
-                                    x.CompetitionId, 
-                                    x.ApproverName, 
-                                    x.DocInsertDate, 
+                                    x.CompetitionId,
+                                    x.ApproverName,
+                                    x.DocInsertDate,
                                     x.DateReviewDocs
                                 }).OrderBy(x => x.Priority).ToList();
                 foreach (var s in abitList)
@@ -1925,13 +1925,41 @@ WHERE PersonId=@PersonId ";
                         IsCommited = false,
                         SecondTypeId = s.SecondTypeId,
                         IsImported = s.IsImported,
-                        CompetitionId = s.CompetitionId, 
-                        ApproverName = s.ApproverName, 
-                        DocInsertDate =s.DocInsertDate, 
-                        DateReviewDocs=s.DateReviewDocs
+                        CompetitionId = s.CompetitionId,
+                        ApproverName = s.ApproverName,
+                        DocInsertDate = s.DocInsertDate,
+                        DateReviewDocs = s.DateReviewDocs
                     });
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public static void DifferenceBetweenCommits(Guid OldCommitId, Guid NewCommitId, Guid PersonId)
+        {
+            using (OnlinePriemEntities context = new OnlinePriemEntities())
+            {
+
+                var abitList = (from x in context.Application
+                                join Commit in context.ApplicationCommit on x.CommitId equals Commit.Id
+                                join Entry in context.Entry on x.EntryId equals Entry.Id
+                                where (x.CommitId == NewCommitId) && (x.PersonId == PersonId) && (!x.IsDeleted)
+                                select new
+                                { 
+                                    x.EntryId,
+                                    x.Priority,
+                                    x.IsGosLine
+                                }).OrderBy(x => x.Priority).ToList();
+                foreach (var s in abitList)
+                {
+                    var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && x.EntryId == s.EntryId && x.IsGosLine == s.IsGosLine).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        context.Application.DeleteObject(App);
+                    }
+                }
+                context.SaveChanges();
             }
         }
     }

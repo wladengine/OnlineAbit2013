@@ -1860,7 +1860,7 @@ WHERE PersonId=@PersonId ";
             {
                 var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
                 context.Application.DeleteObject(App);
-            } 
+            }
             context.SaveChanges();
         }
 

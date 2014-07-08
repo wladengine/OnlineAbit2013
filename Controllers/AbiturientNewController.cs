@@ -2117,6 +2117,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         model.CommitId = gComm.ToString();
                         model.ProjectJuly = true;
                         Util.CopyApplicationsInAnotherCommit(CommitId, gComm, PersonId);
+                        model.Applications = Util.GetApplicationListInCommit(gComm, PersonId); 
                     }
                     else
                         model.ProjectJuly = false;

@@ -158,7 +158,7 @@
         </td>
         <% if ((!Model.IsPrinted)||(!Model.Enabled)) { %>
         <td>
-            <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?CommitId={0}", Model.Id.ToString("N")) %>">
+            <a href="<%= string.Format("../../AbiturientNew/PriorityChanger?Id={0}", Model.Id.ToString("N")) %>">
                 <img src="../../Content/themes/base/images/transfer-down-up.png" alt="Изменить приоритеты" />
             </a>
         </td>

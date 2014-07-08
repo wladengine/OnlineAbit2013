@@ -735,6 +735,7 @@ namespace OnlineAbit2013.Models
     public class MotivateMailModel : BaseModel
     {
         public string CommitId { get; set; }
+        public string OldCommitId { get; set; }
         public string VersionId { get; set; }
         public List<SimpleApplication> Apps { get; set; }
         public List<string> lstApps { get; set; }
@@ -857,6 +858,7 @@ namespace OnlineAbit2013.Models
         public bool ProjectJuly { get; set; }
         public int MaxBlocks { get; set; } // макс количество блоков
         public string CommitId { get; set; } // коммит
+        public string OldCommitId { get; set; }
         public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
         public int SemestrId { get; set; }

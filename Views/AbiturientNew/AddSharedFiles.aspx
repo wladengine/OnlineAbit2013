@@ -132,6 +132,7 @@
 <% if (Model.Files.Count > 0)
    { %>
 <input type="checkbox" id="HideSomeFiles" onClick="GetList();"><%= GetGlobalResourceObject("AddSharedFiles", "HideSomeFiles") %></input>
+<div id = "divFiles" style="width: 664px; overflow-x: scroll; ">
 <table id="tblFiles" class="paginate" style="width:100%;">
     <thead>
         <tr>
@@ -178,6 +179,7 @@
 <% } %>
     </tbody>
 </table>
+</div>
 <% }
    else
    { %>

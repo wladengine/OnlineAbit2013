@@ -454,6 +454,7 @@
     <% } %>
     <%= Html.ValidationSummary()%>
     <%= Html.HiddenFor(x => x.CommitId)%>
+    <% if (!String.IsNullOrEmpty(Model.OldCommitId)){ %><%= Html.HiddenFor(x => x.OldCommitId)%><%} %>
     <% if (2 == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>

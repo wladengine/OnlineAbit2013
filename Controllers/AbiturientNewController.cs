@@ -2112,6 +2112,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     }
                     if (NewId)
                     {
+                        model.OldCommitId = CommitId.ToString();
                         gComm = Guid.NewGuid();
                         model.CommitId = gComm.ToString();
                         model.ProjectJuly = true;
@@ -2888,6 +2889,14 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             Guid CommitId;
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
+            string sOldCommitId = Request.Form["OldCommitId"];
+            Guid OldCommitId = Guid.Empty;
+            if (!String.IsNullOrEmpty(sOldCommitId))
+            {
+                if (!Guid.TryParse(sOldCommitId, out OldCommitId))
+                    return Json(Resources.ServerMessages.IncorrectGUID);
+            }
+
 
             bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
 
@@ -2951,6 +2960,21 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         return View("NewApplication_1kurs", model);
                     }
                 }
+                if (!OldCommitId.Equals(Guid.Empty))
+                {
+                    var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        if (App == null)
+                            continue;
+                        App.IsCommited = false;
+                    }
+                    context.SaveChanges();
+                    // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
+                    Util.CommitApplication(CommitId, PersonId, context);
+                }
+
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && (x.C_Entry.StudyLevelId == 16 || x.C_Entry.StudyLevelId == 18)).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();
@@ -2981,7 +3005,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_SPO(Mag_ApplicationModel model)
@@ -3576,16 +3600,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "CommitId", CommitId.ToString() } });
         }
 
-        public ActionResult PriorityChanger(string CommitId)
+        public ActionResult PriorityChanger(string Id)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
             Guid gCommitId;
-            if (!Guid.TryParse(CommitId, out gCommitId))
+            if (!Guid.TryParse(Id, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
+            Guid gComm = gCommitId;
             Guid VersionId = Guid.NewGuid();
             bool bisEng = Util.GetCurrentThreadLanguageIsEng();
             using (OnlinePriemEntities context = new OnlinePriemEntities())
@@ -3594,7 +3619,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 if (PersonInfo == null)//а что это могло бы значить???
                     return RedirectToAction("Index");
 
-                bool NewId = false;
+
                 bool isPrinted = (bool)Util.AbitDB.GetValue("SELECT IsPrinted FROM ApplicationCommit WHERE Id=@Id ", new SortedList<string, object>() { { "@Id", gCommitId } });
                 if (isPrinted)
                 {
@@ -3608,7 +3633,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     }
                     else
                     {
-                        NewId = true;
+                        gComm = Guid.NewGuid();
+                        Util.CopyApplicationsInAnotherCommit(gCommitId, gComm, PersonId);
                     }
                 }
 
@@ -3616,7 +3642,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     (from App in context.Application
                      join Entry in context.Entry on App.EntryId equals Entry.Id
                      join Semester in context.Semester on Entry.SemesterId equals Semester.Id
-                     where App.PersonId == PersonId && App.CommitId == gCommitId && App.IsCommited == true && App.Enabled == true
+                     where App.PersonId == PersonId && App.CommitId == gComm && App.Enabled == true
                      select new SimpleApplication()
                      {
                          Id = App.Id,
@@ -3632,7 +3658,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                          EntryId = App.EntryId,
                          IsGosLine = App.IsGosLine,
                          dateofClose = Entry.DateOfClose,
-                         Enabled = isPrinted ? (Entry.DateOfClose > DateTime.Now ? true : false) : true,
+                         Enabled = Entry.DateOfClose > DateTime.Now ? true : false,
                          SemesterName = (Entry.SemesterId!=1)?Semester.Name:"",
                          SecondTypeName = "",
                          StudyLevelGroupName = (bisEng ? ((String.IsNullOrEmpty(Entry.StudyLevelGroupNameEng)) ? Entry.StudyLevelGroupNameRus : Entry.StudyLevelGroupNameEng) : Entry.StudyLevelGroupNameRus) +
@@ -3645,7 +3671,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                                         ""))))) : "")
                      }).ToList().Union(
                      (from AG_App in context.AG_Application
-                      where AG_App.PersonId == PersonId && AG_App.CommitId == gCommitId && AG_App.IsCommited == true && AG_App.Enabled == true
+                      where AG_App.PersonId == PersonId && AG_App.CommitId == gComm && AG_App.IsCommited == true && AG_App.Enabled == true
                       select new SimpleApplication()
                       {
                           Id = AG_App.Id,
@@ -3662,15 +3688,11 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                           SecondTypeName = "",
                           StudyLevelGroupName = Resources.Common.AG
                       }).ToList()).OrderBy(x => x.Priority).ToList();
-                Guid gComm = gCommitId;
-                if (NewId)
-                {
-                    gComm = Guid.NewGuid();
-                    Util.CopyApplicationsInAnotherCommit(gCommitId, gComm, PersonId);
-                }
+
                 MotivateMailModel mdl = new MotivateMailModel()
                 {
                     CommitId = gComm.ToString(),
+                    OldCommitId = gCommitId.ToString(),
                     Apps = apps,
                     UILanguage = Util.GetUILang(PersonId),
                     VersionId = VersionId.ToString("N")
@@ -3856,11 +3878,28 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
 
             Guid gCommId;
             if (!Guid.TryParse(model.CommitId, out gCommId))
-                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
-
-            using (OnlinePriemEntities context = new OnlinePriemEntities())
+                return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet); 
+             
+            Guid OldCommitId = Guid.Empty;
+            if (!String.IsNullOrEmpty(model.OldCommitId))
             {
-                Util.CommitApplication(gCommId, PersonId, context);
+                if (!Guid.TryParse(model.OldCommitId, out OldCommitId))
+                    return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
+                else
+                    using (OnlinePriemEntities context = new OnlinePriemEntities())
+                    {
+                        var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+                        foreach (var AppId in Ids)
+                        {
+                            var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                            if (App == null)
+                                continue;
+                            App.IsCommited = false;
+                        }
+                        context.SaveChanges();
+                        // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
+                        Util.CommitApplication(gCommId, PersonId, context);
+                    }
             }
 
             //создаём новую версию изменений

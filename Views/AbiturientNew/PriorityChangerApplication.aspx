@@ -20,7 +20,7 @@
     });
 </script>
 <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
-    <a href="../AbiturientNew/PriorityChanger?Id=<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a>
+    <a href="../AbiturientNew/PriorityChanger?ComId=<%= Model.CommitId.ToString("N") %>"><%= Model.CommitName %></a>
     -> 
     <span><%= GetGlobalResourceObject("PriorityChangerForeign", "ObrazPr_Message1").ToString()%></span>
     <p class="message info">

@@ -2679,7 +2679,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
             }
 
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_Mag(Mag_ApplicationModel model)
@@ -2768,8 +2768,8 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                     return View("NewApplication_Mag", model);
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
-            } 
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            }
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_Asp(Mag_ApplicationModel model)
@@ -2874,7 +2874,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_1kurs(Mag_ApplicationModel model)
@@ -3008,7 +3008,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", "AbiturientNew", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_SPO(Mag_ApplicationModel model)
@@ -3120,7 +3120,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
 
         [HttpPost]
@@ -3216,7 +3216,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
 
         [HttpPost]
@@ -3315,7 +3315,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_ChangeStudyForm(Mag_ApplicationModel model)
@@ -3410,7 +3410,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_ChangeObrazProgram(Mag_ApplicationModel model)
@@ -3505,7 +3505,7 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
         [HttpPost]
         public ActionResult NewApp_ChangeStudyBasis(Mag_ApplicationModel model)
@@ -3600,17 +3600,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                 }
                 Util.CommitApplication(CommitId, PersonId, context);
             }
-            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "Id", CommitId.ToString() } });
+            return RedirectToAction("PriorityChanger", new RouteValueDictionary() { { "ComId", CommitId.ToString() } });
         }
-
-        public ActionResult PriorityChanger(string Id)
+        
+        public ActionResult PriorityChanger(string ComId)
         {
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
             Guid gCommitId;
-            if (!Guid.TryParse(Id, out gCommitId))
+            if (!Guid.TryParse(ComId, out gCommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID, JsonRequestBehavior.AllowGet);
 
             Guid gComm = gCommitId;

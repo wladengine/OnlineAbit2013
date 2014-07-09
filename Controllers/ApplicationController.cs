@@ -377,7 +377,7 @@ namespace OnlineAbit2013.Controllers
 
             Guid CommitId = new Guid();
             if (!Guid.TryParse(id, out CommitId))
-                return RedirectToAction("Main", "Abiturient");
+                return RedirectToAction("Main", "AbiturientNew");
 
             if (Request.Files["File"] == null || Request.Files["File"].ContentLength == 0 || string.IsNullOrEmpty(Request.Files["File"].FileName))
                 return Json(Resources.ServerMessages.EmptyFileError);
@@ -884,6 +884,55 @@ namespace OnlineAbit2013.Controllers
 
             var result = new { IsOk = true, ErrorMessage = "" };
             return Json(result);
+        }
+        [HttpPost]
+        public ActionResult GetFileList(string id)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+                return RedirectToAction("LogOn", "Account");
+
+            Guid CommitId = new Guid();
+            if (!Guid.TryParse(id, out CommitId))
+                return RedirectToAction("Main", "AbiturientNew");
+
+
+            string query = "SELECT Id, FileName, FileSize, Comment, IsApproved, IsReadOnly FROM ApplicationFile WHERE CommitId=@CommitId";
+            DataTable tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@CommitId", CommitId } });
+
+            List<AppendedFile> lFiles =
+                (from DataRow rw in tbl.Rows
+                 select new AppendedFile()
+                 {
+                     Id = rw.Field<Guid>("Id"),
+                     FileName = rw.Field<string>("FileName"),
+                     FileSize = rw.Field<int>("FileSize"),
+                     Comment = rw.Field<string>("Comment"),
+                     IsShared = false,
+                     IsReadOnly = rw.Field<bool>("IsReadOnly"),
+                     IsApproved = rw.Field<bool?>("IsApproved").HasValue ?
+                             (rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected) : ApprovalStatus.NotSet
+                 }).ToList();
+
+            query = "SELECT Id, FileName, FileSize, Comment, IsApproved, IsReadOnly FROM PersonFile WHERE PersonId=@PersonId";
+            tbl = Util.AbitDB.GetDataTable(query, new SortedList<string, object>() { { "@PersonId", PersonId } });
+            var lSharedFiles =
+                (from DataRow rw in tbl.Rows
+                 select new AppendedFile()
+                 {
+                     Id = rw.Field<Guid>("Id"),
+                     FileName = rw.Field<string>("FileName"),
+                     FileSize = rw.Field<int>("FileSize"),
+                     Comment = rw.Field<string>("Comment"),
+                     IsShared = true,
+                     IsReadOnly = rw.Field<bool>("IsReadOnly"),
+                     IsApproved = rw.Field<bool?>("IsApproved").HasValue ?
+                             (rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected) : ApprovalStatus.NotSet
+                 }).ToList();
+
+            var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
+            
+            return Json(new { IsOk = AllFiles.Count() > 0 ? true : false, Data = AllFiles });
         }
     }
 }

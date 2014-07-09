@@ -23,7 +23,6 @@
             //.button()
                 .click(function () {
                     $("#dialog-form").dialog("open"); 
-                     
                 });
             $("#printBtn")
                 //.button()
@@ -99,6 +98,53 @@
                     }
                 });
         }); 
+
+        function GetList() {
+        var HideSomeFiles = $('#HideSomeFiles').is(':checked');
+        $.post('/Application/GetFileList', { id: '<%= Model.Id.ToString("N") %>' }, function (res) {
+            if (res.IsOk) {
+                var tbody = '';
+                for (var i = 0; i < res.Data.length; i++) {
+                    if (!HideSomeFiles || !res.Data[i].IsReadOnly) {
+                        tbody += '<tr id="' + res.Data[i].Id + '">';
+                        tbody += '<td style="vertical-align:middle; text-align:center;"><a href="../../AbiturientNew/GetFile?id=' + res.Data[i].Id + '" target="_blank"><img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" /></a></td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">' + res.Data[i].FileName + '</td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;">';
+                        if (res.Data[i].FileSize > (2 * 1024 * 1024)) {
+                            tbody += " " + parseFloat(res.Data[i].FileSize / (1024.0 * 1024.0)).toFixed(2) + " Mb";
+                        }
+                        else {
+                            if (res.Data[i].FileSize > 1024)
+                                tbody += " " + parseFloat(res.Data[i].FileSize / 1024.0).toFixed(2) + " Kb";
+                            else tbody += res.Data[i].FileSize + '</td>';
+                        } 
+                        tbody += '<td style="vertical-align:middle; text-align:center;">' + res.Data[i].Comment + '</td>';
+                        tbody += '<td style="vertical-align:middle; text-align:center;"><span style="font-weight:bold" ';
+                        if (res.Data[i].IsApproved == 0) {
+                            tbody += ' class="Green" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Approved")%>';
+                        }
+                        else {
+                            if (res.Data[i].IsApproved == 1) {
+                                tbody += ' class="Red" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_Rejected")%>';
+                            }
+                            else
+                                tbody += ' class="Blue" >' + '<%=GetGlobalResourceObject("AddSharedFiles", "ApprovalStatus_NotSet")%>';
+                        }
+                        tbody += "</td>";
+                        tbody += '<td style="vertical-align:middle; text-align:center;">';
+                        if (!res.Data[i].IsShared){
+                            tbody += '<span class="link" onclick="DeleteFile(\'' + res.Data[i].Id + '\')"><img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить" /></span>';
+                        }
+                        else{
+                            tbody +='<span title="Данный файл можно удалить в разделе \'Общие файлы\'"><img src="../../Content/myimg/icon_shared3.png" /></span>';
+                        }
+                        tbody += '</tr>';
+                    }
+                }
+                $('#tblFiles tbody').html(tbody);
+            }
+        }, 'json');
+    }
     function ValidateInput() {
         var size = 0;
         if ($.browser.msie) {
@@ -295,7 +341,8 @@
         <hr />
     <% if (Model.Files.Count > 0)
         { %>
-        <table class="paginate" style="width:99%;">
+        <input type="checkbox" id="HideSomeFiles" onClick="GetList();"><%= GetGlobalResourceObject("AddSharedFiles", "HideSomeFiles") %></input>
+        <table id="tblFiles" class="paginate" style="width:99%;">
             <thead>
                 <th></th>
                 <th><%= GetGlobalResourceObject("AddSharedFiles", "FileName").ToString()%></th>
@@ -313,7 +360,7 @@
         <% foreach (var file in Model.Files)
             { %>
                 <tr id='<%= file.Id.ToString("N") %>'>
-                    <td>
+                    <td style="text-align:center; vertical-align:middle;">
                         <a href="<%= "../../Application/GetFile?id=" + file.Id.ToString("N") %>" target="_blank">
                             <img src="../../Content/themes/base/images/downl1.png" alt="Скачать файл" />
                         </a>

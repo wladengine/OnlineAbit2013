@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#"  MasterPageFile="~/Views/Shared/Site.Master"  Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.FileListChecker>" %>
+﻿<%@ Page Title="" Language="C#"  MasterPageFile="~/Views/AbiturientNew/PersonalOffice.Master"  Inherits="System.Web.Mvc.ViewPage<OnlineAbit2013.Models.FileListChecker>" %>
 
 <asp:Content ID="loginTitle" ContentPlaceHolderID="TitleContent" runat="server">
     <%//= GetGlobalResourceObject("ApplicationInfo", "Title")%>
     Проверка файлов: мотивационных писем и эссе
 </asp:Content>
 <asp:Content ID="SubheaderContent" ContentPlaceHolderID="Subheader" runat="server">
-     Журналистика
+    <h2>Журналистика</h2>
     <%//= GetGlobalResourceObject("ApplicationInfo", "Title")%> 
 </asp:Content>
  
@@ -18,11 +18,8 @@
 <% } %>
     <script type="text/javascript">
     </script>
-    <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
-<style>
-   td {
-    padding: 1px 10px 1px 10px; 
-   }
+    <script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script> 
+<style> 
    .grid_2
    {
        width: 0px;

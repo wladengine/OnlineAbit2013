@@ -1005,7 +1005,7 @@ namespace OnlineAbit2013.Controllers
                         LicenseProgramName = 'Журналистика' and 
                         ObrazProgramName = 'Журналистика (Глобальная коммуникация и международная журналистика)'
                         and IsCommited = 1 
-                        and  (qAbitFiles_OnlyEssayMotivLetter.ApplicationId is null or qAbitFiles_OnlyEssayMotivLetter.ApplicationId = Application.Id)
+                        and  ((qAbitFiles_OnlyEssayMotivLetter.ApplicationId is null and qAbitFiles_OnlyEssayMotivLetter.CommitId is null) or qAbitFiles_OnlyEssayMotivLetter.ApplicationId = Application.Id or qAbitFiles_OnlyEssayMotivLetter.CommitId = Application.CommitId )
                         order by FIO ";
 
                         DataTable tbl = Util.AbitDB.GetDataTable(query, null);

@@ -132,7 +132,8 @@
       [Abiturient].[CompetitionId] AS [CompetitionId], 
       [Abiturient].[ApproverName] AS [ApproverName], 
       [Abiturient].[DocInsertDate] AS [DocInsertDate], 
-      [Abiturient].[IsDeleted] AS [IsDeleted]
+      [Abiturient].[IsDeleted] AS [IsDeleted], 
+      [Abiturient].[IsCommonRussianCompetition] AS [IsCommonRussianCompetition]
       FROM [dbo].[Abiturient] AS [Abiturient]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Store.Entry" store:Type="Views" store:Schema="dbo" store:Name="Entry">
@@ -208,6 +209,21 @@
       [extDefaultEntryDetails].[ProfileInObrazProgramInEntryId] AS [ProfileInObrazProgramInEntryId], 
       [extDefaultEntryDetails].[ProfileInObrazProgramInEntryDefaultPriorityValue] AS [ProfileInObrazProgramInEntryDefaultPriorityValue]
       FROM [dbo].[extDefaultEntryDetails] AS [extDefaultEntryDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="qAbitFiles_OnlyEssayMotivLetter" EntityType="OnlinePriem2012Model.Store.qAbitFiles_OnlyEssayMotivLetter" store:Type="Views" store:Schema="dbo" store:Name="qAbitFiles_OnlyEssayMotivLetter">
+            <DefiningQuery>SELECT 
+      [qAbitFiles_OnlyEssayMotivLetter].[Id] AS [Id], 
+      [qAbitFiles_OnlyEssayMotivLetter].[PersonId] AS [PersonId], 
+      [qAbitFiles_OnlyEssayMotivLetter].[ApplicationId] AS [ApplicationId], 
+      [qAbitFiles_OnlyEssayMotivLetter].[CommitId] AS [CommitId], 
+      [qAbitFiles_OnlyEssayMotivLetter].[PersonBarcode] AS [PersonBarcode], 
+      [qAbitFiles_OnlyEssayMotivLetter].[ApplicationBarcode] AS [ApplicationBarcode], 
+      [qAbitFiles_OnlyEssayMotivLetter].[FileName] AS [FileName], 
+      [qAbitFiles_OnlyEssayMotivLetter].[Comment] AS [Comment], 
+      [qAbitFiles_OnlyEssayMotivLetter].[IsApproved] AS [IsApproved], 
+      [qAbitFiles_OnlyEssayMotivLetter].[IsReadOnly] AS [IsReadOnly], 
+      [qAbitFiles_OnlyEssayMotivLetter].[FileTypeId] AS [FileTypeId]
+      FROM [dbo].[qAbitFiles_OnlyEssayMotivLetter] AS [qAbitFiles_OnlyEssayMotivLetter]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AG_Application_AG_Entry" Association="OnlinePriem2012Model.Store.FK_AG_Application_AG_Entry">
             <End Role="AG_Entry" EntitySet="AG_Entry" />
@@ -504,6 +520,7 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="150" />
           <Property Name="Multiplier" Type="int" />
+          <Property Name="AppSecondTypeId" Type="int" />
         </EntityType>
         <EntityType Name="AG_Application">
           <Key>
@@ -626,6 +643,7 @@
           <Property Name="CompetitionId" Type="int" />
           <Property Name="ApproverName" Type="nvarchar" MaxLength="150" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
+          <Property Name="IsCommonRussianCompetition" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationCommit">
           <Key>
@@ -839,7 +857,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Number" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -849,7 +867,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -1285,8 +1303,8 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="150" />
           <Property Name="NameEng" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.Abiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Abiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Abiturient">
           <Key>
@@ -1319,6 +1337,7 @@
             <PropertyRef Name="ApplicationCommitNumber" />
             <PropertyRef Name="IsImported" />
             <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsCommonRussianCompetition" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -1375,9 +1394,10 @@
           <Property Name="ApproverName" Type="nvarchar" MaxLength="150" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsCommonRussianCompetition" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.Entry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.Entry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Entry">
           <Key>
@@ -1448,8 +1468,8 @@
           <Property Name="ComissionId" Type="int" />
           <Property Name="Address" Type="nvarchar" MaxLength="350" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.extApplicationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extApplicationDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extApplicationDetails">
           <Key>
@@ -1472,8 +1492,8 @@
           <Property Name="CurrDate" Type="datetime" />
           <Property Name="ObrazProgramCrypt" Type="nvarchar" Nullable="false" MaxLength="53" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'OnlinePriem2012.dbo.extDefaultEntryDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.extDefaultEntryDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extDefaultEntryDetails">
           <Key>
@@ -1486,6 +1506,29 @@
           <Property Name="DefaultPriorityValue" Type="int" Nullable="false" />
           <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
           <Property Name="ProfileInObrazProgramInEntryDefaultPriorityValue" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "OnlinePriem2012.dbo.qAbitFiles_OnlyEssayMotivLetter" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="qAbitFiles_OnlyEssayMotivLetter">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="PersonBarcode" />
+            <PropertyRef Name="FileName" />
+            <PropertyRef Name="FileTypeId" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
+          <Property Name="PersonBarcode" Type="int" Nullable="false" />
+          <Property Name="ApplicationBarcode" Type="int" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="IsReadOnly" Type="bit" />
+          <Property Name="FileTypeId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_AG_Application_AG_Entry">
           <End Role="AG_Entry" Type="OnlinePriem2012Model.Store.AG_Entry" Multiplicity="1" />
@@ -2527,6 +2570,7 @@
           <EntitySet Name="Entry" EntityType="OnlinePriem2012Model.Entry" />
           <EntitySet Name="extApplicationDetails" EntityType="OnlinePriem2012Model.extApplicationDetails" />
           <EntitySet Name="extDefaultEntryDetails" EntityType="OnlinePriem2012Model.extDefaultEntryDetails" />
+          <EntitySet Name="qAbitFiles_OnlyEssayMotivLetter" EntityType="OnlinePriem2012Model.qAbitFiles_OnlyEssayMotivLetter" />
           </EntityContainer>
         <EntityType Name="PassportType">
           <Key>
@@ -2642,6 +2686,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Description" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Multiplier" />
+          <Property Type="Int32" Name="AppSecondTypeId" />
         </EntityType>
         <EntityType Name="Application">
           <Key>
@@ -2672,6 +2717,7 @@
           <Property Type="Int32" Name="CompetitionId" />
           <Property Type="String" Name="ApproverName" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
+          <Property Type="Boolean" Name="IsCommonRussianCompetition" Nullable="false" />
         </EntityType>
         <EntityType Name="Semester">
           <Key>
@@ -2705,6 +2751,7 @@
             <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="ApplicationCommitNumber" />
             <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsCommonRussianCompetition" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="PersonId" Nullable="false" />
@@ -2761,6 +2808,7 @@
           <Property Type="String" Name="ApproverName" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Boolean" Name="IsCommonRussianCompetition" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonDisorderInfo">
           <Key>
@@ -4350,6 +4398,26 @@
           <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
           <Property Type="Int32" Name="ProfileInObrazProgramInEntryDefaultPriorityValue" />
         </EntityType>
+        <EntityType Name="qAbitFiles_OnlyEssayMotivLetter">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="PersonBarcode" />
+            <PropertyRef Name="FileName" />
+            <PropertyRef Name="FileTypeId" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="PersonId" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Int32" Name="PersonBarcode" Nullable="false" />
+          <Property Type="Int32" Name="ApplicationBarcode" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Comment" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsApproved" />
+          <Property Type="Boolean" Name="IsReadOnly" />
+          <Property Type="Int32" Name="FileTypeId" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4460,6 +4528,7 @@
           <EntitySetMapping Name="AbiturientType">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.AbiturientType">
               <MappingFragment StoreEntitySet="AbiturientType">
+                <ScalarProperty Name="AppSecondTypeId" ColumnName="AppSecondTypeId" />
                 <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -4469,6 +4538,7 @@
           <EntitySetMapping Name="Application">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Application">
               <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="IsCommonRussianCompetition" ColumnName="IsCommonRussianCompetition" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
@@ -4519,6 +4589,7 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="OnlinePriem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="IsCommonRussianCompetition" ColumnName="IsCommonRussianCompetition" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="ApproverName" ColumnName="ApproverName" />
@@ -5411,6 +5482,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="qAbitFiles_OnlyEssayMotivLetter">
+            <EntityTypeMapping TypeName="OnlinePriem2012Model.qAbitFiles_OnlyEssayMotivLetter">
+              <MappingFragment StoreEntitySet="qAbitFiles_OnlyEssayMotivLetter">
+                <ScalarProperty Name="FileTypeId" ColumnName="FileTypeId" />
+                <ScalarProperty Name="IsReadOnly" ColumnName="IsReadOnly" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="ApplicationBarcode" ColumnName="ApplicationBarcode" />
+                <ScalarProperty Name="PersonBarcode" ColumnName="PersonBarcode" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -5448,19 +5536,13 @@
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonChangeStudyFormReason" Width="1.5" PointX="8.25" PointY="67.75" Height="1.4279589843749996" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonContacts" Width="1.5" PointX="3" PointY="27.875" Height="4.3862109375000031" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonContacts_Region" >
-          <ConnectorPoint PointX="2.25" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="3.6666666666666665" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="3.8333333333333335" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="4.697916666666667" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="4.864583333333333" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="5" PointY="20.784545462218809" />
-          <ConnectorPoint PointX="5" PointY="17.8125" />
-          <ConnectorPoint PointX="7.1669244190470378" PointY="17.8125" />
-          <ConnectorPoint PointX="7.3335910857137039" PointY="17.8125" />
-          <ConnectorPoint PointX="7.791666666666667" PointY="17.8125" />
-          <ConnectorPoint PointX="7.958333333333333" PointY="17.8125" />
-          <ConnectorPoint PointX="9" PointY="17.8125" />
-          <ConnectorPoint PointX="9" PointY="18.25" />
+          <ConnectorPoint PointX="2.25" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="2.4479166666666665" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="2.6145833333333335" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="3.0416661666666664" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="3.2083328333333334" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="3.625" PointY="27.189392903645835" />
+          <ConnectorPoint PointX="3.625" PointY="27.875" />
         </AssociationConnector>
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonHighEducationInfo" Width="1.5" PointX="8.25" PointY="29.125" Height="2.2496956380208388" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.Country" Width="1.5" PointX="0.75" PointY="28.875" Height="2.2496956380208317" />
@@ -5476,8 +5558,20 @@
         <EntityTypeShape EntityType="OnlinePriem2012Model.Language" Width="1.5" PointX="9" PointY="19.125" Height="1.427958984374996" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.Person" Width="1.5" PointX="6" PointY="25.875" Height="6.1940315755208246" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_Application_Person" >
-          <ConnectorPoint PointX="11.25" PointY="15.719737141927084" />
-          <ConnectorPoint PointX="9.75" PointY="15.719737141927084" />
+          <ConnectorPoint PointX="7.5" PointY="28.3125" />
+          <ConnectorPoint PointX="7.666666666666667" PointY="28.3125" />
+          <ConnectorPoint PointX="7.833333333333333" PointY="28.3125" />
+          <ConnectorPoint PointX="7.916666666666667" PointY="28.3125" />
+          <ConnectorPoint PointX="8.0833333333333339" PointY="28.3125" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="28.3125" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="28.3125" />
+          <ConnectorPoint PointX="11.916666666666666" PointY="28.3125" />
+          <ConnectorPoint PointX="12.083333333333334" PointY="28.3125" />
+          <ConnectorPoint PointX="13.791666666666666" PointY="28.3125" />
+          <ConnectorPoint PointX="13.958333333333334" PointY="28.3125" />
+          <ConnectorPoint PointX="13.979166666666666" PointY="28.3125" />
+          <ConnectorPoint PointX="14.239583333333334" PointY="28.3125" />
+          <ConnectorPoint PointX="14.25" PointY="28.3125" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_Person_ForeignCountry" >
           <ConnectorPoint PointX="7.0001263761901855" PointY="11.78904296875" />
@@ -5489,21 +5583,12 @@
           <ConnectorPoint PointX="11.25" PointY="17.606076558517536" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_Person_PassportType" >
-          <ConnectorPoint PointX="1.5" PointY="17.631653645833332" />
-          <ConnectorPoint PointX="1.5" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="3.6666666666666665" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="3.8333333333333335" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="4.697916666666667" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="4.864583333333333" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="5.125" PointY="17.7972314453125" />
-          <ConnectorPoint PointX="5.125" PointY="17.625" />
-          <ConnectorPoint PointX="7.041666666666667" PointY="17.625" />
-          <ConnectorPoint PointX="7.3335910857137039" PointY="17.625" />
-          <ConnectorPoint PointX="7.791666666666667" PointY="17.625" />
-          <ConnectorPoint PointX="7.958333333333333" PointY="17.625" />
-          <ConnectorPoint PointX="10.875" PointY="17.625" />
-          <ConnectorPoint PointX="10.875" PointY="18.923648838512261" />
-          <ConnectorPoint PointX="11.25" PointY="18.923648838512261" />
+          <ConnectorPoint PointX="5.25" PointY="26.052643229166669" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="26.052643229166669" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="26.052643229166669" />
+          <ConnectorPoint PointX="5.604166666666667" PointY="26.052643229166669" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="26.052643229166669" />
+          <ConnectorPoint PointX="6" PointY="26.052643229166669" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_Person_User" >
           <ConnectorPoint PointX="2.25" PointY="23.916473795572919" />
@@ -5600,12 +5685,9 @@
           <ConnectorPoint PointX="13.5" PointY="17.335500488281248" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonSchoolInfo_SchoolExitClass" >
-          <ConnectorPoint PointX="12.75" PointY="13.052958984374996" />
-          <ConnectorPoint PointX="12.784824434901122" PointY="13.087783419276116" />
-          <ConnectorPoint PointX="12.902675565098878" PointY="13.205634549473874" />
-          <ConnectorPoint PointX="13.125" PointY="13.427958984374996" />
-          <ConnectorPoint PointX="13.125" PointY="16.823998244140633" />
-          <ConnectorPoint PointX="13.5" PointY="16.823998244140633" />
+          <ConnectorPoint PointX="10.500000499999999" PointY="24.355286458333335" />
+          <ConnectorPoint PointX="10.125" PointY="34.586293945312505" />
+          <ConnectorPoint PointX="10.500000499999999" PointY="34.586293945312505" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonWork_Person" >
           <ConnectorPoint PointX="11.25" PointY="17.71875" />
@@ -5637,11 +5719,9 @@
           <ConnectorPoint PointX="13.5" PointY="20.609731445312498" />
         </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonSportQualification_SportQualification" >
-          <ConnectorPoint PointX="12.75" PointY="23.671153157552084" />
-          <ConnectorPoint PointX="12.760416666666666" PointY="23.671153157552084" />
-          <ConnectorPoint PointX="12.927083333333334" PointY="23.671153157552084" />
-          <ConnectorPoint PointX="14.25" PointY="23.671153157552084" />
-          <ConnectorPoint PointX="14.25" PointY="21.6710009765625" />
+          <ConnectorPoint PointX="7.875" PointY="24.511536458333339" />
+          <ConnectorPoint PointX="8.59375" PointY="24.511536458333339" />
+          <ConnectorPoint PointX="8.59375" PointY="25.5" />
         </AssociationConnector>
         <EntityTypeShape EntityType="OnlinePriem2012Model.RectorScholarshipApplication" Width="1.5" PointX="7.75" PointY="3.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.RectorScholarshipApplicationFile" Width="1.5" PointX="12.75" PointY="0.75" />
@@ -5655,10 +5735,59 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_EgeMark_EgeExam" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.VuzAdditionalType" Width="1.5" PointX="4.75" PointY="12.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.PersonEducationDocument" Width="1.5" PointX="11.25" PointY="21.25" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Country" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Country" >
+          <ConnectorPoint PointX="2.25" PointY="29.723422479166672" />
+          <ConnectorPoint PointX="2.4479166666666665" PointY="29.723422479166672" />
+          <ConnectorPoint PointX="2.6145833333333335" PointY="29.723422479166672" />
+          <ConnectorPoint PointX="2.75" PointY="29.723422479166672" />
+          <ConnectorPoint PointX="2.75" PointY="27.625" />
+          <ConnectorPoint PointX="3.5416666666666665" PointY="27.625" />
+          <ConnectorPoint PointX="3.7083333333333335" PointY="27.625" />
+          <ConnectorPoint PointX="5.75" PointY="27.625" />
+          <ConnectorPoint PointX="5.75" PointY="25.625" />
+          <ConnectorPoint PointX="7.729166666666667" PointY="25.625" />
+          <ConnectorPoint PointX="7.895833333333333" PointY="25.625" />
+          <ConnectorPoint PointX="8" PointY="25.625" />
+          <ConnectorPoint PointX="8" PointY="28.5" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="28.5" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="28.5" />
+          <ConnectorPoint PointX="12" PointY="28.5" />
+          <ConnectorPoint PointX="12" PointY="27.845520833333335" />
+        </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Language" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Person" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Region" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Person" >
+          <ConnectorPoint PointX="7.5" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="7.729166666666667" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="7.895833333333333" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="7.916666666666667" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="8.0833333333333339" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="27.790304361979167" />
+          <ConnectorPoint PointX="11.25" PointY="27.790304361979167" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_Region" >
+          <ConnectorPoint PointX="1.5" PointY="27.316793619791667" />
+          <ConnectorPoint PointX="1.5" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="2.4479166666666665" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="2.6145833333333335" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="3.0416661666666664" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="3.2083328333333334" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="3.5416666666666665" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="3.7083333333333335" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="5.416666666666667" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="5.583333333333333" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="5.6875" PointY="27.504293619791667" />
+          <ConnectorPoint PointX="5.6875" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="8.5104166666666661" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="8.6770833333333339" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.599666666666666" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.766333333333334" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.875" PointY="24.855286458333339" />
+          <ConnectorPoint PointX="10.875" PointY="21.6249995" />
+          <ConnectorPoint PointX="11.25" PointY="21.6249995" />
+        </AssociationConnector>
         <EntityTypeShape EntityType="OnlinePriem2012Model.ReturnDocumentType" Width="1.5" PointX="9" PointY="36.75" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_PersonAddInfo_ReturnDocumentType" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.OlympBook" Width="1.5" PointX="17.25" PointY="23.75" />
@@ -5669,14 +5798,74 @@
         <EntityTypeShape EntityType="OnlinePriem2012Model.OlympValue" Width="1.5" PointX="12" PointY="40.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.OlympLevel" Width="1.5" PointX="15" PointY="20.375" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympLevel" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympName" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympSubject" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympType" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympName" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympSubject" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympType" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympValue" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_Person" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympName" >
+          <ConnectorPoint PointX="13.5" PointY="39.182444661458334" />
+          <ConnectorPoint PointX="13.854166666666666" PointY="39.182444661458334" />
+          <ConnectorPoint PointX="14.239583333333334" PointY="39.182444661458334" />
+          <ConnectorPoint PointX="18" PointY="39.182444661458334" />
+          <ConnectorPoint PointX="18" PointY="26.499492187500003" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympSubject" >
+          <ConnectorPoint PointX="13.5" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="14.307289166666665" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="14.473955833333333" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="14.510416666666666" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="14.677083333333334" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="18.307289166666667" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="18.473955833333331" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="18.53125" PointY="19.434591471354171" />
+          <ConnectorPoint PointX="18.53125" PointY="23.75" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_OlympBook_OlympType" >
+          <ConnectorPoint PointX="13.5" PointY="14.46875" />
+          <ConnectorPoint PointX="18.3906225" PointY="14.46875" />
+          <ConnectorPoint PointX="18.3906225" PointY="23.75" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympName" >
+          <ConnectorPoint PointX="13.500000000000002" PointY="38" />
+          <ConnectorPoint PointX="13.875" PointY="37.625" />
+          <ConnectorPoint PointX="13.875" PointY="24.480499674479169" />
+          <ConnectorPoint PointX="14.25" PointY="24.480499674479169" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympSubject" >
+          <ConnectorPoint PointX="13.5" PointY="18.56104323567709" />
+          <ConnectorPoint PointX="14.307289166666665" PointY="18.56104323567709" />
+          <ConnectorPoint PointX="14.473955833333333" PointY="18.56104323567709" />
+          <ConnectorPoint PointX="14.59375" PointY="18.56104323567709" />
+          <ConnectorPoint PointX="14.59375" PointY="22.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympType" >
+          <ConnectorPoint PointX="13.5" PointY="14.609377499999994" />
+          <ConnectorPoint PointX="14.3906225" PointY="14.609377499999994" />
+          <ConnectorPoint PointX="14.3906225" PointY="22.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_OlympValue" >
+          <ConnectorPoint PointX="13.5" PointY="40.812306692307693" />
+          <ConnectorPoint PointX="13.87857443490112" PointY="40.433732257406575" />
+          <ConnectorPoint PointX="13.996425565098878" PointY="40.315881127208812" />
+          <ConnectorPoint PointX="14.0625" PointY="40.249806692307693" />
+          <ConnectorPoint PointX="14.0625" PointY="25.439501511718746" />
+          <ConnectorPoint PointX="14.25" PointY="25.439501511718746" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Olympiads_Person" >
+          <ConnectorPoint PointX="7.5" PointY="29.390498046875" />
+          <ConnectorPoint PointX="7.75" PointY="29.390498046875" />
+          <ConnectorPoint PointX="7.75" PointY="28.125" />
+          <ConnectorPoint PointX="7.916666666666667" PointY="28.125" />
+          <ConnectorPoint PointX="8.0833333333333339" PointY="28.125" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="28.125" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="28.125" />
+          <ConnectorPoint PointX="11.916666666666666" PointY="28.125" />
+          <ConnectorPoint PointX="12.083333333333334" PointY="28.125" />
+          <ConnectorPoint PointX="13.75" PointY="28.125" />
+          <ConnectorPoint PointX="13.75" PointY="27.75" />
+          <ConnectorPoint PointX="13.791666666666666" PointY="27.75" />
+          <ConnectorPoint PointX="13.958333333333334" PointY="27.75" />
+          <ConnectorPoint PointX="13.979166666666666" PointY="27.75" />
+          <ConnectorPoint PointX="14.239583333333334" PointY="27.75" />
+          <ConnectorPoint PointX="15" PointY="27.75" />
+          <ConnectorPoint PointX="15" PointY="26.335999348958335" />
+        </AssociationConnector>
         <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Application" Width="1.5" PointX="5.25" PointY="1" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.AG_Entry" Width="1.5" PointX="3" PointY="1.25" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.AG_EntryClass" Width="1.5" PointX="0.75" PointY="1.875" />
@@ -5698,7 +5887,14 @@
         <EntityTypeShape EntityType="OnlinePriem2012Model.Comission" Width="1.5" PointX="9.75" PointY="47.125" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationFile" Width="1.5" PointX="14.75" PointY="5.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.C_Entry" Width="1.5" PointX="12" PointY="43.875" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_Application_Entry" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_Application_Entry" >
+          <ConnectorPoint PointX="13.5" PointY="43.937306692307693" />
+          <ConnectorPoint PointX="13.9375" PointY="43.499806692307693" />
+          <ConnectorPoint PointX="13.9375" PointY="31.85087890625" />
+          <ConnectorPoint PointX="13.979166666666666" PointY="31.85087890625" />
+          <ConnectorPoint PointX="14.239583333333334" PointY="31.85087890625" />
+          <ConnectorPoint PointX="14.25" PointY="31.85087890625" />
+        </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_Entry_Semester" />
         <AssociationConnector Association="OnlinePriem2012Model.ComissionInEntry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ObrazProgramInEntry" Width="1.5" PointX="14.25" PointY="48.5" />
@@ -5706,7 +5902,14 @@
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationCommit" Width="1.5" PointX="8.75" PointY="14.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationCommitVersion" Width="1.5" PointX="14.75" PointY="14.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationCommitVersonDetails" Width="1.5" PointX="2.75" PointY="15.75" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_SchoolExitClass" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_PersonEducationDocument_SchoolExitClass" >
+          <ConnectorPoint PointX="10.5" PointY="24.199036458333339" />
+          <ConnectorPoint PointX="10.599666666666666" PointY="24.199036458333339" />
+          <ConnectorPoint PointX="10.766333333333334" PointY="24.199036458333339" />
+          <ConnectorPoint PointX="10.791666666666666" PointY="24.199036458333339" />
+          <ConnectorPoint PointX="10.958333333333334" PointY="24.199036458333339" />
+          <ConnectorPoint PointX="11.25" PointY="24.199036458333339" />
+        </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_ObrazProgramInEntry__Entry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.SP_Faculty" Width="1.5" PointX="16.75" PointY="11.75" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.SP_LicenseProgram" Width="1.5" PointX="16.75" PointY="15.75" />
@@ -5715,18 +5918,83 @@
         <AssociationConnector Association="OnlinePriem2012Model.FK_ObrazProgramInEntry_SP_ObrazProgram" />
         <AssociationConnector Association="OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_Profile" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationDetails" Width="1.5" PointX="1.9617995479897594" PointY="24.274684410670158" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_Application" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_Application" >
+          <ConnectorPoint PointX="14.25" PointY="30.081689453125" />
+          <ConnectorPoint PointX="14.239583333333334" PointY="30.081689453125" />
+          <ConnectorPoint PointX="13.979166666666666" PointY="30.081689453125" />
+          <ConnectorPoint PointX="13.958333333333334" PointY="30.081689453125" />
+          <ConnectorPoint PointX="13.791666666666666" PointY="30.081689453125" />
+          <ConnectorPoint PointX="13" PointY="30.081689453125" />
+          <ConnectorPoint PointX="13" PointY="28.375" />
+          <ConnectorPoint PointX="12.083333333333334" PointY="28.375" />
+          <ConnectorPoint PointX="11.916666666666666" PointY="28.375" />
+          <ConnectorPoint PointX="10.583333833333333" PointY="28.375" />
+          <ConnectorPoint PointX="10.416667166666665" PointY="28.375" />
+          <ConnectorPoint PointX="8.0833333333333339" PointY="28.375" />
+          <ConnectorPoint PointX="7.916666666666667" PointY="28.375" />
+          <ConnectorPoint PointX="7.8125" PointY="28.375" />
+          <ConnectorPoint PointX="7.8125" PointY="25.375" />
+          <ConnectorPoint PointX="5.770833333333333" PointY="25.375" />
+          <ConnectorPoint PointX="5.604166666666667" PointY="25.375" />
+          <ConnectorPoint PointX="5.5" PointY="25.375" />
+          <ConnectorPoint PointX="5.5" PointY="27.609375" />
+          <ConnectorPoint PointX="3.7083333333333335" PointY="27.609375" />
+          <ConnectorPoint PointX="3.5416666666666665" PointY="27.609375" />
+          <ConnectorPoint PointX="3.1249995" PointY="27.609375" />
+          <ConnectorPoint PointX="3.1249995" PointY="26.999492187500003" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_ObrazProgramInEntry" >
+          <ConnectorPoint PointX="14.25" PointY="49.156121046875008" />
+          <ConnectorPoint PointX="13.75" PointY="49.156121046875008" />
+          <ConnectorPoint PointX="13.75" PointY="43.625" />
+          <ConnectorPoint PointX="11.833333333333334" PointY="43.625" />
+          <ConnectorPoint PointX="11.666666666666666" PointY="43.625" />
+          <ConnectorPoint PointX="8.2708333333333339" PointY="43.625" />
+          <ConnectorPoint PointX="7.822916666666667" PointY="43.625" />
+          <ConnectorPoint PointX="2.53125" PointY="43.625" />
+          <ConnectorPoint PointX="2.53125" PointY="26.999492187500003" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry" >
+          <ConnectorPoint PointX="21.875" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="18.614583333333332" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="18.307289166666667" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="14.677083333333334" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="14.510416666666666" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="14.473955833333333" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="14.307289166666665" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="10.5625" PointY="20.052643229166669" />
+          <ConnectorPoint PointX="10.5625" PointY="21.167786458333339" />
+          <ConnectorPoint PointX="2.8750005" PointY="21.167786458333339" />
+          <ConnectorPoint PointX="2.8750005" PointY="24.25" />
+        </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationVersion" Width="1.5" PointX="10.820592859210722" PointY="21.966591219402194" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.ApplicationVersionDetails" Width="1.5" PointX="11.75573957327555" PointY="24.812127050390526" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" />
-        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry" />
+        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" >
+          <ConnectorPoint PointX="10.875" PointY="22.990143229166669" />
+          <ConnectorPoint PointX="10.683" PointY="22.990143229166669" />
+          <ConnectorPoint PointX="10.683" PointY="27.873520833333338" />
+          <ConnectorPoint PointX="13.442" PointY="27.873520833333338" />
+          <ConnectorPoint PointX="13.442" PointY="26.12474609375" />
+          <ConnectorPoint PointX="13.25" PointY="26.12474609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry" >
+          <ConnectorPoint PointX="14.281152846153848" PointY="48.5" />
+          <ConnectorPoint PointX="14.15625" PointY="48.375097153846156" />
+          <ConnectorPoint PointX="14.15625" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="14.145833333333334" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.979166666666666" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.958333333333334" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.791666666666666" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.525333333333334" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.358666666666666" PointY="26.843371140624939" />
+          <ConnectorPoint PointX="13.25" PointY="26.843371140624939" />
+        </AssociationConnector>
         <AssociationConnector Association="OnlinePriem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.Entry" Width="2.375" PointX="17.375" PointY="0.75" Height="9.4800423177083317" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.extApplicationDetails" Width="1.5" PointX="3.5096489281904177" PointY="12.708090475158809" />
         <EntityTypeShape EntityType="OnlinePriem2012Model.extDefaultEntryDetails" Width="1.5" PointX="5.375" PointY="16.75" Height="1.9802864583333246" />
+        <EntityTypeShape EntityType="OnlinePriem2012Model.qAbitFiles_OnlyEssayMotivLetter" Width="1.5" PointX="0.75" PointY="18.75" Height="3.1340950520833246" />
         </Diagram>
     </Diagrams>
   </Designer>

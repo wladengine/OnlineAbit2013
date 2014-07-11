@@ -551,6 +551,7 @@ namespace OnlineAbit2013.Models
     //PERSON CLASS
     public class SimplePerson : BaseModel
     {
+        public Guid PersonId { get; set; }
         public string Surname { get; set; }
         public string Name { get; set; }
         public string SecondName { get; set; }
@@ -582,6 +583,7 @@ namespace OnlineAbit2013.Models
         public bool HasSeparateObrazPrograms { get; set; }
         public DateTime? dateofClose { get; set; }
         public Guid? ObrazProgramInEntryId { get; set; }
+        public List<string> InnerProfiles { get; set; }
     }
     public class SimpleApplicationPackage
     {
@@ -962,5 +964,21 @@ namespace OnlineAbit2013.Models
         public bool HasProfiles { get; set; }
         public int Priority { get; set; }
         public int DefaultPriority { get; set; }
+    }
+
+    public class FileListChecker 
+    {
+        public List<FileInfo> Files { get; set; }
+    }
+    public class FileInfo
+    {
+        public Guid Id { get; set; }
+        public string FileName { get; set; }
+        public string Comment { get; set; }
+        public ApprovalStatus IsApproved { get; set; }
+        public string FileType { get; set; }
+
+        public string Author { get; set; }
+        public string AddInfo { get; set; }
     }
 }

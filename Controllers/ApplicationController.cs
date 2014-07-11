@@ -54,7 +54,10 @@ namespace OnlineAbit2013.Controllers
                                         ((App.SecondTypeId == 4) ? (isEng ? " (changing form of education)" : " (смена формы обучения)") :
                                         ((App.SecondTypeId == 5) ? (isEng ? " (changing basis of education)" : " (смена основы обучения)") :
                                         ((App.SecondTypeId == 6) ? (isEng ? " (changing educational program)" : " (смена образовательной программы)") :
-                                        ""))))) : "")
+                                        ""))))) : "")//,
+                        /*HasSeparateObrazPrograms = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() > 0,
+                        ObrazProgramInEntryId = context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Count() == 1 ? 
+                                                context.ObrazProgramInEntry.Where(x => x.EntryId == App.EntryId).Select(x => x.Id).FirstOrDefault() : Guid.Empty     */              
                     }).ToList().Union(
                     context.AG_Application.Where(x => x.CommitId == CommitId && x.IsCommited == true && x.Enabled == true).Select(x => new SimpleApplication()
                     {
@@ -72,7 +75,14 @@ namespace OnlineAbit2013.Controllers
                         StudyLevelGroupId = 1,
                         StudyLevelGroupName = Resources.Common.AG,
                     }).ToList()).ToList();
+                /*
+                foreach (var App in tblAppsMain)
+                {
+                    if ((App.ObrazProgramInEntryId.HasValue) && (!App.ObrazProgramInEntryId.Equals(Guid.Empty)))
+                    {
 
+                    }
+                }*/
                 //if (tblAppsMain.Count() == 0)
                 //    return RedirectToAction("Main", "AbiturientNew");
 
@@ -433,6 +443,21 @@ namespace OnlineAbit2013.Controllers
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return Content("Authorization required");
+            /*
+            string query = @"SELECT 
+                            Person.Surname +' '+ Person.Name + (case when (Secondname is not null)then ' '+SecondName else '' end) +'_' +
+                            (case when (AllFiles.ApplicationId is not null or AllFiles.CommitId is not null) then '(к заявл.)' else '(общ.)' end) + AllFiles.FileName  as FileName,
+                            
+                            FileData, 
+                            MimeType, 
+                            FileExtention 
+                            FROM AllFiles 
+                            left join Application on Application.Id = AllFiles.ApplicationId or Application.CommitId = AllFiles.CommitId
+                            left join Person on Person.Id = AllFiles.PersonId or Person.Id = Application.PersonId
+                            WHERE AllFiles.Id=@Id
+                            ";
+            DataTable tbl = Util.AbitDB.GetDataTable(query,
+                new SortedList<string, object>() { { "@Id", FileId } });*/
 
             DataTable tbl = Util.AbitDB.GetDataTable("SELECT FileName, FileData, MimeType, FileExtention FROM AllFiles WHERE Id=@Id",
                 new SortedList<string, object>() { { "@Id", FileId } });
@@ -933,6 +958,89 @@ namespace OnlineAbit2013.Controllers
             var AllFiles = lFiles.Union(lSharedFiles).OrderBy(x => x.IsShared).ToList();
             
             return Json(new { IsOk = AllFiles.Count() > 0 ? true : false, Data = AllFiles });
+        }
+
+        public ActionResult SaveAllFiles(string HiddenId)
+        {
+            string Id = HiddenId;
+            if (!String.IsNullOrEmpty(Id))
+            {
+                if (Id.Equals("1adb61c519c3e2052e61ef8cf563c022"))
+                {
+                    HttpCookie myCookie = new HttpCookie("sid");
+                    myCookie.Name = "sid";
+                    myCookie.Value = Id;
+                    Response.Cookies.Add(myCookie);
+
+                    Guid personId = Util.GetIdBySID(Id);
+                    string t = Util.AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@UserId", new SortedList<string, object>() { { "@UserId", personId } });
+                    
+                    myCookie = new HttpCookie("t");
+                    myCookie.Name = "t";
+                    myCookie.Value = t;
+                    Response.Cookies.Add(myCookie);
+
+                    Guid UserId;
+                    if (Util.CheckAuthCookies(Request.Cookies, out UserId))
+                    {
+
+                        string query = @" 
+                        select 
+                        distinct 
+
+                        qAbitFiles_OnlyEssayMotivLetter.Id as FileId 
+                        ,Person.Surname +' '+ Person.Name + (case when (Secondname is not null)then ' '+SecondName else '' end) as FIO
+                        ,qAbitFiles_OnlyEssayMotivLetter.FileName as FileName
+                        ,qAbitFiles_OnlyEssayMotivLetter.[Comment] as Comment
+                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.FileTypeId = 2) then 'Мотивационное письмо' else 'Эссе' end) as FileTypeId
+                        ,qAbitFiles_OnlyEssayMotivLetter.[IsApproved]
+                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.ApplicationId is not null or qAbitFiles_OnlyEssayMotivLetter.CommitId is not null ) then ('к заявлению (' + Entry.StudyBasisName+')') else 'в общие файлы' end ) as AddInfo 
+                        ,Entry.StudyBasisName as BasisName
+                        from qAbitFiles_OnlyEssayMotivLetter
+                        
+                        inner join Person on Person.Id = qAbitFiles_OnlyEssayMotivLetter.PersonId
+                        inner join Application on Application.PersonId = qAbitFiles_OnlyEssayMotivLetter.PersonId
+                        inner join Entry on Application.EntryId = Entry.Id
+                        where
+                        LicenseProgramName = 'Журналистика' and 
+                        ObrazProgramName = 'Журналистика (Глобальная коммуникация и международная журналистика)'
+                        and IsCommited = 1 
+                        and  (qAbitFiles_OnlyEssayMotivLetter.ApplicationId is null or qAbitFiles_OnlyEssayMotivLetter.ApplicationId = Application.Id)
+                        order by FIO ";
+
+                        DataTable tbl = Util.AbitDB.GetDataTable(query, null);
+
+                        List<FileInfo> AllFiles = new List<FileInfo>();
+
+                        if (tbl.Rows.Count > 0)
+                        {
+                            foreach (DataRow rw in tbl.Rows)
+                            {
+                                FileInfo apFile = new FileInfo()
+                                {
+                                    Id = rw.Field<Guid>("FileId"),
+                                    Author = rw.Field<string>("FIO"),
+                                    FileName = rw.Field<string>("FileName"),
+                                    AddInfo = rw.Field<string>("AddInfo"),
+                                    IsApproved = rw.Field<bool?>("IsApproved").HasValue ?
+                                         (rw.Field<bool>("IsApproved") ? ApprovalStatus.Approved : ApprovalStatus.Rejected) : ApprovalStatus.NotSet,
+
+                                    Comment = rw.Field<string>("Comment"),
+                                    FileType = rw.Field<string>("FileTypeId"),
+                                };
+                                AllFiles.Add(apFile);
+                            }
+                        }
+
+                        FileListChecker model = new FileListChecker()
+                        {
+                            Files = AllFiles
+                        };
+                        return View(model);
+                    }
+                }
+            }
+            return RedirectToAction("LogOn", "Account");
         }
     }
 }

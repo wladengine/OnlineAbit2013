@@ -980,5 +980,6 @@ namespace OnlineAbit2013.Models
 
         public string Author { get; set; }
         public string AddInfo { get; set; }
+        public string Mark { get; set; }
     }
 }

@@ -117,46 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CampusLink" xml:space="preserve">
-    <value>Студгородок СПбГУ</value>
+  <data name="ApprovalStatus_Approved" xml:space="preserve">
+    <value>Approved</value>
   </data>
-  <data name="ForeigersInfoLink" xml:space="preserve">
-    <value>Информация для иностранцев</value>
+  <data name="ApprovalStatus_Header" xml:space="preserve">
+    <value>State</value>
   </data>
-  <data name="HeaderActiveApps" xml:space="preserve">
-    <value>Поданные заявления</value>
+  <data name="ApprovalStatus_NotSet" xml:space="preserve">
+    <value>Not reviewed</value>
   </data>
-  <data name="HeaderCancelledApps" xml:space="preserve">
-    <value>Отозванные заявления</value>
+  <data name="ApprovalStatus_Rejected" xml:space="preserve">
+    <value>Rejected</value>
   </data>
-  <data name="HeaderNoActiveApps" xml:space="preserve">
-    <value>- Нет поданных заявлений. &lt;a href="../../Abiturient/NewApplication"&gt;Подать заявление&lt;/a&gt;</value>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
   </data>
-  <data name="HeaderNoCancelledApps" xml:space="preserve">
-    <value>- Нет отозванных заявлений.</value>
+  <data name="FileAuthor" xml:space="preserve">
+    <value>Author</value>
   </data>
-  <data name="InformationHeader" xml:space="preserve">
-    <value>Информация</value>
+  <data name="FileLocation" xml:space="preserve">
+    <value>File location</value>
   </data>
-  <data name="LinkApplicationInfo" xml:space="preserve">
-    <value>Подробнее</value>
+  <data name="FileMark" xml:space="preserve">
+    <value>Mark</value>
   </data>
-  <data name="MagOpenDoorsDaysLink" xml:space="preserve">
-    <value>Дни открытых дверей образовательных программ магистратуры</value>
+  <data name="FileName" xml:space="preserve">
+    <value>File name</value>
   </data>
-  <data name="ObrazProgramCatalogLink" xml:space="preserve">
-    <value>Каталог образовательных программ</value>
+  <data name="FileType" xml:space="preserve">
+    <value>Type of the document</value>
   </data>
-  <data name="PageHeader" xml:space="preserve">
-    <value>Главная страница</value>
+  <data name="HeaderLoadFile" xml:space="preserve">
+    <value>Load file</value>
   </data>
-  <data name="PersonalOfficeHeader" xml:space="preserve">
-    <value>Личный кабинет</value>
+  <data name="SaveMark" xml:space="preserve">
+    <value>Save mark</value>
   </data>
-  <data name="ShowApplication" xml:space="preserve">
-    <value>Показать</value>
-  </data>
-  <data name="TitleInfo" xml:space="preserve">
-    <value>Это главная страница вашего &lt;b&gt;Личного Кабинета&lt;/b&gt;. Сейчас можете подать заявление, изменить приоритеты уже существующих. Перейдя на страницу заявления, вы можете добавить сканы документов в ваше портфолио, создать мотивационное письмо и отозвать заявление.</value>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
   </data>
 </root>

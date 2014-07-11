@@ -980,6 +980,16 @@ namespace OnlineAbit2013.Controllers
                     myCookie.Value = t;
                     Response.Cookies.Add(myCookie);
 
+                    bool isEng = Util.GetCurrentThreadLanguageIsEng();
+
+                    string MotiveMail = (isEng) ? "Motivation letter" : "Мотивационное письмо";
+                    string Essay = (isEng) ? "Essay" : "Эссе";
+
+                    string ApplicationFile = (isEng) ? "application file" : "к заявлению";
+                    string SharedFile = (isEng) ? "shared file" : "в общие файлы";
+
+                    string BasisName = (isEng) ? "Entry.StudyBasisNameEng":"Entry.StudyBasisName";
+
                     Guid UserId;
                     if (Util.CheckAuthCookies(Request.Cookies, out UserId))
                     {
@@ -988,19 +998,23 @@ namespace OnlineAbit2013.Controllers
                         select 
                         distinct 
 
-                        qAbitFiles_OnlyEssayMotivLetter.Id as FileId 
+                        qAbitFiles_OnlyEssayMotivLetter.Id as AbitFileId 
                         ,Person.Surname +' '+ Person.Name + (case when (Secondname is not null)then ' '+SecondName else '' end) as FIO
                         ,qAbitFiles_OnlyEssayMotivLetter.FileName as FileName
                         ,qAbitFiles_OnlyEssayMotivLetter.[Comment] as Comment
-                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.FileTypeId = 2) then 'Мотивационное письмо' else 'Эссе' end) as FileTypeId
+                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.FileTypeId = 2) then '" + MotiveMail + @"' else '"+Essay+@"' end) as FileTypeId
                         ,qAbitFiles_OnlyEssayMotivLetter.[IsApproved]
-                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.ApplicationId is not null or qAbitFiles_OnlyEssayMotivLetter.CommitId is not null ) then ('к заявлению (' + Entry.StudyBasisName+')') else 'в общие файлы' end ) as AddInfo 
+                        ,(case when (qAbitFiles_OnlyEssayMotivLetter.ApplicationId is not null or qAbitFiles_OnlyEssayMotivLetter.CommitId is not null ) then ('"+ApplicationFile+@" (' + "+BasisName+@" +')') else '"+SharedFile+@"' end ) as AddInfo 
                         ,Entry.StudyBasisName as BasisName
+                        ,PortfolioFilesMark.Mark
+                    
                         from qAbitFiles_OnlyEssayMotivLetter
                         
                         inner join Person on Person.Id = qAbitFiles_OnlyEssayMotivLetter.PersonId
                         inner join Application on Application.PersonId = qAbitFiles_OnlyEssayMotivLetter.PersonId
                         inner join Entry on Application.EntryId = Entry.Id
+                        left join PortfolioFilesMark on PortfolioFilesMark.FileId = qAbitFiles_OnlyEssayMotivLetter.Id                     
+
                         where
                         LicenseProgramName = 'Журналистика' and 
                         ObrazProgramName = 'Журналистика (Глобальная коммуникация и международная журналистика)'
@@ -1018,7 +1032,7 @@ namespace OnlineAbit2013.Controllers
                             {
                                 FileInfo apFile = new FileInfo()
                                 {
-                                    Id = rw.Field<Guid>("FileId"),
+                                    Id = rw.Field<Guid>("AbitFileId"),
                                     Author = rw.Field<string>("FIO"),
                                     FileName = rw.Field<string>("FileName"),
                                     AddInfo = rw.Field<string>("AddInfo"),
@@ -1027,6 +1041,7 @@ namespace OnlineAbit2013.Controllers
 
                                     Comment = rw.Field<string>("Comment"),
                                     FileType = rw.Field<string>("FileTypeId"),
+                                    Mark = rw.Field<int?>("Mark").ToString(),
                                 };
                                 AllFiles.Add(apFile);
                             }
@@ -1041,6 +1056,47 @@ namespace OnlineAbit2013.Controllers
                 }
             }
             return RedirectToAction("LogOn", "Account");
+        }
+
+        [HttpPost]
+        public JsonResult AddMark(string FileId, string Mark)
+        {
+            Guid PersonId;
+            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
+            {    
+                return Json(new { IsOk = false, ErrorMessage = Resources.ServerMessages.AuthorizationRequired });
+            }
+
+            Guid gFileId;
+            if (!Guid.TryParse(FileId, out gFileId))
+            {
+                return Json(new { IsOk = false, ErrorMessage = "incorrect File Id" });
+            };
+
+            int imark = 0;
+            if (!int.TryParse(Mark, out imark))
+            { 
+                return Json(new { IsOk = false, ErrorMessage = "Can not parse the mark" }); 
+            }
+
+            try
+            {
+                int count = (int)Util.AbitDB.GetValue("select count(FileId) from PortfolioFilesMark where FileId = @Id", new SortedList<string, object>() { { "Id", gFileId }, { "Mark", imark } });
+                if (count == 0)
+                {
+                    Util.AbitDB.ExecuteQuery(@"INSERT INTO PortfolioFilesMark (FileId, Mark) VALUES (@Id, @Mark)", new SortedList<string, object>() { { "Id", gFileId }, { "Mark", imark } });
+                }
+                else
+                {
+                    Util.AbitDB.ExecuteQuery(@"Update PortfolioFilesMark set Mark=@Mark where FileId=@Id", new SortedList<string, object>() { { "Id", gFileId }, { "Mark", imark } });
+                } 
+            }
+            catch
+            {
+                return Json(new { IsOk = false, ErrorMessage ="Error in process updating/inserting the mark"});
+            }
+
+            return Json(new { IsOk = true });
         }
     }
 }

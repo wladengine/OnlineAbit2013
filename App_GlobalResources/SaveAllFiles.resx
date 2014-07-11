@@ -117,127 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnCreateApp" xml:space="preserve">
-    <value>Создать заявление</value>
+  <data name="ApprovalStatus_Approved" xml:space="preserve">
+    <value>Проверено</value>
   </data>
-  <data name="chbNeedHostel" xml:space="preserve">
-    <value>Нуждаюсь в общежитии на время обучения</value>
+  <data name="ApprovalStatus_Header" xml:space="preserve">
+    <value>Cтатус</value>
   </data>
-  <data name="ErrorHasApplication" xml:space="preserve">
-    <value>Заявление уже подавалось</value>
+  <data name="ApprovalStatus_NotSet" xml:space="preserve">
+    <value>Не проверялось</value>
   </data>
-  <data name="HeaderFaculty" xml:space="preserve">
-    <value>Выберите факультет</value>
+  <data name="ApprovalStatus_Rejected" xml:space="preserve">
+    <value>Отбраковано</value>
   </data>
-  <data name="HeaderObrazProgram" xml:space="preserve">
-    <value>Выберите образовательную программу</value>
+  <data name="Comment" xml:space="preserve">
+    <value>Комментарий</value>
   </data>
-  <data name="HeaderObtainingLevel" xml:space="preserve">
-    <value>Уровень, который вы желаете получить:</value>
+  <data name="FileAuthor" xml:space="preserve">
+    <value>Автор файла</value>
   </data>
-  <data name="HeaderProfession" xml:space="preserve">
-    <value>Выберите направление</value>
+  <data name="FileLocation" xml:space="preserve">
+    <value>Файл приложен</value>
   </data>
-  <data name="HeaderProfile" xml:space="preserve">
-    <value>Выберите профиль</value>
+  <data name="FileMark" xml:space="preserve">
+    <value>Оценка</value>
   </data>
-  <data name="PageSubheader" xml:space="preserve">
-    <value>Новое заявление</value>
+  <data name="FileName" xml:space="preserve">
+    <value>Имя файла</value>
   </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Создание нового заявления</value>
+  <data name="FileType" xml:space="preserve">
+    <value>Тип файла</value>
   </data>
-  <data name="Select_FirstCourse" xml:space="preserve">
-    <value>Первый курс</value>
+  <data name="HeaderLoadFile" xml:space="preserve">
+    <value>Загрузить файл</value>
   </data>
-  <data name="Select_Magistery" xml:space="preserve">
-    <value>Магистратура</value>
+  <data name="SaveMark" xml:space="preserve">
+    <value>Сохранить оценку</value>
   </data>
-  <data name="HeaderFirstCourse_1" xml:space="preserve">
-    <value>Согласно данным анкеты, вы поступаете на</value>
-  </data>
-  <data name="HeaderFirstCourse_2" xml:space="preserve">
-    <value>первый курс</value>
-  </data>
-  <data name="IsParallel" xml:space="preserve">
-    <value>Параллельное обучение</value>
-  </data>
-  <data name="IsReduced" xml:space="preserve">
-    <value>Второе высшее</value>
-  </data>
-  <data name="IsSecond" xml:space="preserve">
-    <value>Для лиц, имеющих ВО</value>
-  </data>
-  <data name="Select_StudyBasis1" xml:space="preserve">
-    <value>Госбюджетная</value>
-  </data>
-  <data name="Select_StudyBasis2" xml:space="preserve">
-    <value>Договорная</value>
-  </data>
-  <data name="Select_StudyForm1" xml:space="preserve">
-    <value>Дневная</value>
-  </data>
-  <data name="Select_StudyForm2" xml:space="preserve">
-    <value>Вечерняя</value>
-  </data>
-  <data name="StudyBasis" xml:space="preserve">
-    <value>Выберите основу обучения</value>
-  </data>
-  <data name="StudyForm" xml:space="preserve">
-    <value>Выберите форму обучения</value>
-  </data>
-  <data name="AG_PriemClosed" xml:space="preserve">
-    <value>Приём в АГ закрыт</value>
-  </data>
-  <data name="NewApp_2MoreEntry" xml:space="preserve">
-    <value>Неоднозначный выбор учебного плана</value>
-  </data>
-  <data name="NewApp_NoEntry" xml:space="preserve">
-    <value>Не найден учебный план</value>
-  </data>
-  <data name="NewApp_ClosedEntry" xml:space="preserve">
-    <value>Приём заявлений на данное направление закрыт.</value>
-  </data>
-  <data name="NewApp_HasApplicationOnEntry" xml:space="preserve">
-    <value>Заявление на данную программу уже подано</value>
-  </data>
-  <data name="NewApp_NotOpenedEntry" xml:space="preserve">
-    <value>Приём заявлений на данное направление ещё не открыт.</value>
-  </data>
-  <data name="NewApp_NoFreeEntries" xml:space="preserve">
-    <value>Нет доступных направлений для подачи заявления</value>
-  </data>
-  <data name="NewApp_FailDeleteApp_IsCommited" xml:space="preserve">
-    <value>Нельзя удалить уже подтверждённое заявление!</value>
-  </data>
-  <data name="NewApp_DeleteApp_Fail" xml:space="preserve">
-    <value>Ошибка при удалении заявления</value>
-  </data>
-  <data name="BlockData_LicenseProgram" xml:space="preserve">
-    <value>Направление</value>
-  </data>
-  <data name="BlockData_MagSpecialization" xml:space="preserve">
-    <value>Профиль</value>
-  </data>
-  <data name="BlockData_ObrazProgram" xml:space="preserve">
-    <value>Образовательная программа</value>
-  </data>
-  <data name="BlockData_StudyBasis" xml:space="preserve">
-    <value>Основа обучения</value>
-  </data>
-  <data name="BlockData_StudyForm" xml:space="preserve">
-    <value>Форма обучения</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="HeaderMagProfile" xml:space="preserve">
-    <value>Выберите магистерскую программу</value>
-  </data>
-  <data name="Select_Aspirantura" xml:space="preserve">
-    <value>Аспирантура</value>
-  </data>
-  <data name="BlockData_GosLine" xml:space="preserve">
-    <value>Гослиния</value>
+  <data name="View" xml:space="preserve">
+    <value>Просмотр</value>
   </data>
 </root>

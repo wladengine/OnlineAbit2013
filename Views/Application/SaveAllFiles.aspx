@@ -61,7 +61,7 @@
    }
 </style>
      <h3>Журналистика (Глобальная коммуникация и международная журналистика)</h3>
-    <div class="panel">
+    <div class="panel" style="background:#eaeaea !important;">
     <% if (Model.Files.Count > 0)
         { %>
         <table id="tblFiles" class="paginate" style="width:99%;">

@@ -1930,6 +1930,33 @@ WHERE PersonId=@PersonId ";
                         DocInsertDate = s.DocInsertDate,
                         DateReviewDocs = s.DateReviewDocs
                     });
+
+                    var innerPriorList =
+                        (
+                        from appDet in context.ApplicationDetails
+                        where appDet.ApplicationId == s.Id
+                        select new
+                            {
+                                appDet.ApplicationId,
+                                appDet.ObrazProgramInEntryId,
+                                appDet.ObrazProgramInEntryPriority,
+                                appDet.ProfileInObrazProgramInEntryId,
+                                appDet.ProfileInObrazProgramInEntryPriority
+                            }).ToList();
+
+                    foreach (var inner in innerPriorList)
+                    {
+                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                        {
+                            Id = Guid.NewGuid(),
+                            ApplicationId = appId,
+                            ObrazProgramInEntryId = inner.ObrazProgramInEntryId,
+                            ObrazProgramInEntryPriority = inner.ObrazProgramInEntryPriority,
+                            ProfileInObrazProgramInEntryId = inner.ProfileInObrazProgramInEntryId,
+                            ProfileInObrazProgramInEntryPriority = inner.ProfileInObrazProgramInEntryPriority,
+                        });
+                    }
+
                     context.SaveChanges();
                 }
             }

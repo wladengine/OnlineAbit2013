@@ -2688,13 +2688,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
-            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
-
             string sCommitId = Request.Form["CommitId"];
             Guid CommitId;
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
+            string sOldCommitId = Request.Form["OldCommitId"];
+            Guid OldCommitId = Guid.Empty;
+            if (!String.IsNullOrEmpty(sOldCommitId))
+            {
+                if (!Guid.TryParse(sOldCommitId, out OldCommitId))
+                    return Json(Resources.ServerMessages.IncorrectGUID);
+            } 
 
             bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
 
@@ -2739,6 +2743,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                         return View("NewApplication_Mag", model);
                     } 
                 }
+                if (!OldCommitId.Equals(Guid.Empty))
+                {
+                    var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        if (App == null)
+                            continue;
+                        App.IsCommited = false;
+                    }
+                    context.SaveChanges();
+                    Util.DifferenceBetweenCommits(OldCommitId, CommitId, PersonId);
+                    bool? result = PDFUtils.GetDisableApplicationPDF(OldCommitId, Server.MapPath("~/Templates/"), PersonId);
+                    // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
+                    Util.CommitApplication(CommitId, PersonId, context);
+                }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 17).Count() > 0)
                 {
                     model.StudyFormList = Util.GetStudyFormList();
@@ -2778,13 +2798,17 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
-            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
-
             string sCommitId = Request.Form["CommitId"];
             Guid CommitId;
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
+            string sOldCommitId = Request.Form["OldCommitId"];
+            Guid OldCommitId = Guid.Empty;
+            if (!String.IsNullOrEmpty(sOldCommitId))
+            {
+                if (!Guid.TryParse(sOldCommitId, out OldCommitId))
+                    return Json(Resources.ServerMessages.IncorrectGUID);
+            }
 
             bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
 
@@ -2843,6 +2867,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_Aspirant", model);
                     } 
+                }
+                if (!OldCommitId.Equals(Guid.Empty))
+                {
+                    var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        if (App == null)
+                            continue;
+                        App.IsCommited = false;
+                    }
+                    context.SaveChanges();
+                    Util.DifferenceBetweenCommits(OldCommitId, CommitId, PersonId);
+                    bool? result = PDFUtils.GetDisableApplicationPDF(OldCommitId, Server.MapPath("~/Templates/"), PersonId);
+                    // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
+                    Util.CommitApplication(CommitId, PersonId, context);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && x.C_Entry.StudyLevelId == 15).Count() > 0)
                 {
@@ -3017,13 +3057,18 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
 
-            //if (DateTime.Now >= new DateTime(2014, 6, 23, 0, 0, 0))
-            //    return RedirectToAction("NewApplication_AG", new RouteValueDictionary() { { "errors", "Приём документов в АГ СПбГУ ЗАКРЫТ" } });
-
             string sCommitId = Request.Form["CommitId"];
             Guid CommitId;
             if (!Guid.TryParse(sCommitId, out CommitId))
                 return Json(Resources.ServerMessages.IncorrectGUID);
+            string sOldCommitId = Request.Form["OldCommitId"];
+            Guid OldCommitId = Guid.Empty;
+            if (!String.IsNullOrEmpty(sOldCommitId))
+            {
+                if (!Guid.TryParse(sOldCommitId, out OldCommitId))
+                    return Json(Resources.ServerMessages.IncorrectGUID);
+            }
+
 
             bool bIsEng = Util.GetCurrentThreadLanguageIsEng();
 
@@ -3089,6 +3134,22 @@ INNER JOIN SchoolExitClass ON SchoolExitClass.Id = PersonEducationDocument.Schoo
                             model.ErrorMessage = "Change your Entry Type in Questionnaire Data"; 
                         return View("NewApplication_SPO", model);
                     }
+                }
+                if (!OldCommitId.Equals(Guid.Empty))
+                {
+                    var Ids = context.Application.Where(x => x.PersonId == PersonId && x.CommitId == OldCommitId && !x.IsDeleted).Select(x => x.Id).ToList();
+                    foreach (var AppId in Ids)
+                    {
+                        var App = context.Application.Where(x => x.Id == AppId).FirstOrDefault();
+                        if (App == null)
+                            continue;
+                        App.IsCommited = false;
+                    }
+                    context.SaveChanges();
+                    Util.DifferenceBetweenCommits(OldCommitId, CommitId, PersonId);
+                    bool? result = PDFUtils.GetDisableApplicationPDF(OldCommitId, Server.MapPath("~/Templates/"), PersonId);
+                    // печать заявления об отзыве (проверить isDeleted и возможно переставить код выше)
+                    Util.CommitApplication(CommitId, PersonId, context);
                 }
                 if (context.Application.Where(x => x.PersonId == PersonId && x.CommitId != CommitId && x.IsCommited == true && (x.C_Entry.StudyLevelId == 10 || x.C_Entry.StudyLevelId == 8)).Count() > 0)
                 {

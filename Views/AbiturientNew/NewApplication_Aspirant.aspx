@@ -384,7 +384,29 @@
         }
         GetProfessions(i);
     }
-     
+function DeleteMsg(i)
+    {
+        var I = i;
+        if (1!=2){
+            $("#dialog-form").dialog(
+                    {
+                        autoOpen: false,
+                        height: 400,
+                        width: 350,
+                        modal: true, 
+                        buttons:
+                        {
+                            "Да (yes)": function () { $(this).dialog("close"); DeleteApp(I); },
+                            "Нет (no)": function () { $(this).dialog("close"); }
+                        } 
+                    });
+            $("#dialog-form").dialog("open");
+        }
+        else
+        {
+            DeleteApp(I); 
+        }
+    }     
     function DeleteApp(i) {
         var appId = BlockIds[i];
         nextBlock = '#Block' + i;
@@ -422,6 +444,7 @@
         $('#Submit').removeAttr("disabled");
     }
 </script>
+<script type="text/javascript" src="../../Scripts/jquery-ui-1.8.11.js"></script>
 <% using (Html.BeginForm("NewApp_Asp", "AbiturientNew", FormMethod.Post))
    { 
 %> 
@@ -430,7 +453,8 @@
         <div class="error message"><%= Model.ErrorMessage%></div>
     <% } %>
      <%= Html.ValidationSummary()%>
-     <%= Html.HiddenFor(x => x.CommitId)%>
+    <%= Html.HiddenFor(x => x.CommitId)%>
+    <% if (!String.IsNullOrEmpty(Model.OldCommitId)){ %><%= Html.HiddenFor(x => x.OldCommitId)%><%} %>
     <% if (2 == 1 && DateTime.Now < new DateTime(2012, 6, 20, 0, 0, 0))
        { %>
        <div class="message warning">Внимание! Подача заявлений на <strong style="font-size:10pt">первый курс</strong> начнётся с <strong style="font-size:11pt">20 июня 2012 года</strong></div>
@@ -485,7 +509,9 @@
             <%       }
                }%>
         </table>
-        <button type="button" onclick="DeleteApp(<%= i.ToString()%>)" class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
+         <button type="button" 
+                <% if (Model.Applications[i-1].DateOfClose < DateTime.Now) { %>onclick="DeleteMsg(<%= i.ToString()%>)" <% } else { %> onclick="DeleteApp(<%= i.ToString()%>)" <% } %>
+                class="error"><%= GetGlobalResourceObject("NewApplication", "Delete")%></button>
         <div id="ObrazProgramsErrors_Block<%= i.ToString()%>" class="message error" style="display:none; width:450px;">
         </div>
     </div>
@@ -633,10 +659,13 @@
         </div>
     <%} %>
     <br />
-    <input id="Submit" type="submit" <% if (!Model.ProjectJuly){ %>disabled <%} %> value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%> class="button button-green"/>
+    <input id="Submit" type="submit" <% if (!Model.ProjectJuly){ %>disabled <%} %> value=<%=GetGlobalResourceObject("NewApplication", "btnSubmit").ToString()%>  class="button button-green"/>
 <% 
    }
    }
 %>
-
+<div id="dialog-form" style="display:none;">
+    <p class="errMessage"></p>
+    <p>Так как прием на данное направление закрыт, то конкурс нельзя будет добавить снова. Вы хотите удалить заявление?</p>
+</div>
 </asp:Content>

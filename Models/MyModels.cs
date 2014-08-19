@@ -72,6 +72,7 @@ namespace OnlineAbit2013.Models
         public PersonPrivileges PrivelegeInfo { get; set; }
         public Constants ConstInfo { get; set; }
         public PersonChangeStudyFormReason ChangeStudyFormReason { get; set; }
+        public List<PersonalMessage> Messages { get; set; }
     }
 
     public class PersonalOfficeRecover

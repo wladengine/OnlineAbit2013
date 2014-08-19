@@ -619,7 +619,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, такую же, как Выберите тип поступления.
+        ///   Ищет локализованную строку, такую же, как Тип поступления.
         /// </summary>
         internal static string VuzAdditionalTypeId {
             get {

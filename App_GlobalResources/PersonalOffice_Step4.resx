@@ -235,7 +235,7 @@
     <value>Номер сертификата ТРКИ</value>
   </data>
   <data name="VuzAdditionalTypeId" xml:space="preserve">
-    <value>Выберите тип поступления</value>
+    <value>Тип поступления</value>
   </data>
   <data name="CurrentYear" xml:space="preserve">
     <value>2014 год</value>

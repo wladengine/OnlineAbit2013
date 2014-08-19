@@ -244,7 +244,7 @@
     <value>TORFL Certificate Number</value>
   </data>
   <data name="VuzAdditionalTypeId" xml:space="preserve">
-    <value>Select entry type</value>
+    <value>Entry type</value>
   </data>
   <data name="EnglishNull" xml:space="preserve">
     <value>I would like to learn Enlish from "zero" level</value>

@@ -715,6 +715,22 @@
                 }, 'json');
             } 
 	</script>
+    <script type="text/javascript">
+        function DeleteMsg(id) {
+            var p = new Object();
+            p["id"] = id;
+            $.post('/Abiturient/DeleteMsg', p, function (res) {
+                if (res.IsOk) {
+                    $('#' + id).hide(250).html("");
+                }
+                else {
+                    if (res != undefined) {
+                        alert(res.ErrorMessage);
+                    }
+                }
+            }, 'json');
+        }  
+</script>
         <div class="grid">
             <div class="wrapper">
                 <div class="grid_4 first">
@@ -722,6 +738,13 @@
                        { %>
                         <div id="Message" class="message warning">
                             <span class="ui-icon ui-icon-alert"></span><%= GetGlobalResourceObject("PersonInfo", "WarningMessagePersonLocked").ToString()%>
+                        </div>
+                    <% } %>
+                    <% foreach (var msg in Model.Messages)
+                       { %>
+                        <div id="<%= msg.Id %>" class="message info" style="padding:5px">
+                            <span class="ui-icon ui-icon-alert"></span><%= msg.Text %>
+                            <div style="float:right;"><span class="link" onclick="DeleteMsg('<%= msg.Id %>')"><img src="../../Content/themes/base/images/delete-icon.png" alt="Удалить" /></span></div>
                         </div>
                     <% } %>
                     <form id="form" class="form panel" action="AbiturientNew/NextStep" method="post" onsubmit="return CheckForm();">

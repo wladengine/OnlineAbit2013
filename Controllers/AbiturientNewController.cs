@@ -239,6 +239,16 @@ namespace OnlineAbit2013.Controllers
                /////////////////////////////////////////////////////////////////////////////////////////////
                 else if (model.Stage == 4)
                 {
+                    string temp_str;
+                    if (!isEng)
+                    {
+                        temp_str = "<li>Для <b>перевода в СПбГУ</b> выберите 'ВУЗ' в поле 'Тип образовательного учреждения' и 'Перевод в СПбГУ' в поле 'Тип поступления'<br>"
+                                        + "<br><li>Для <b>восстановления в СПбГУ</b> выберите 'ВУЗ' в поле 'Тип образовательного учреждения' и 'Восстановление в СПбГУ' в поле 'Тип поступления'<br>"
+                                         + "<br><li>Для <b>смены образовательной программы, формы и основы обучения</b> выберите 'ВУЗ' в поле 'Тип образовательного учреждения' и 'Перевод внутри СПбГУ' в поле 'Тип поступления'<br>"
+                                         + "<br>В остальных случаях выбирайте  'тип образовательного учреждения' в соответствии с имеющимся у вас образованием.";
+                        model.Messages = new List<PersonalMessage>();
+                        model.Messages.Add(new PersonalMessage() { Id = "0", Type = MessageType.TipMessage, Text = temp_str });
+                    }
                     model.EducationInfo = new EducationPerson();
                     var PersonEducationDocument = Person.PersonEducationDocument;
                     var PersonHighEducationInfo = Person.PersonHighEducationInfo;

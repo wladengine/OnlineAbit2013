@@ -6684,7 +6684,7 @@ Order by cnt desc";
                             foreach (var s in Sert)
                             {
                                 string FullNum = s.SertificateNumber.ToString();
-                                if (FullNum.Length < 7)
+                                while (FullNum.Length < 7)
                                     FullNum = "0" + FullNum;
                                 model.PersonList.Add(new RuslangExamModelPerson() { Id = s.SertificateId, Name = s.FIO + "(" + FullNum + ")" });
                             }

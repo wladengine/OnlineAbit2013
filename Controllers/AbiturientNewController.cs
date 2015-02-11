@@ -6248,7 +6248,6 @@ Order by cnt desc";
                 bool bisEng = Util.GetCurrentThreadLanguageIsEng();
 
                 //------------------Проверка на дублирование заявлений---------------------------------------------------------------------
-
                 var EntryList =
                      (from Ent in context.Entry
                       join SPStudyLevel in context.SP_StudyLevel on Ent.StudyLevelId equals SPStudyLevel.Id

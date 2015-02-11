@@ -75,7 +75,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -86,6 +85,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -222,51 +222,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewApplication.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldContactsInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldContactsInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldContactsInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldContactsInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldEducationInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldEducationInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldEducationInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldEducationInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPassportInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPassportInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPassportInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPassportInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -560,6 +515,7 @@
     <Content Include="Views\AG\PriorityChanger.aspx" />
     <Content Include="Views\Application\AppIndex.aspx" />
     <Content Include="Views\Application\Index.aspx" />
+    <Content Include="Views\Application\SaveAllFiles.aspx" />
     <Content Include="Views\Aspirant\AddFiles.aspx" />
     <Content Include="Views\Aspirant\AddSharedFiles.aspx" />
     <Content Include="Views\Aspirant\Main.aspx" />
@@ -928,42 +884,6 @@
     <Content Include="Views\AbiturientNew\PersonalOffice.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\oldContactsInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldContactsInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldContactsInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldContactsInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldEducationInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldEducationInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldEducationInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldEducationInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPassportInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPassportInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPassportInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPassportInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.ru-RU.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\PersonalOffice_Step2.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOffice_Step2.en-US.designer.cs</LastGenOutput>

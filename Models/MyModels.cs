@@ -983,4 +983,15 @@ namespace OnlineAbit2013.Models
         public string AddInfo { get; set; }
         public string Mark { get; set; }
     }
+
+    public class RuslangExamModelPerson
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
+    public class RuslangExamModelPersonList
+    {
+        public string findstring { get; set; }
+        public List<RuslangExamModelPerson> PersonList { get; set; }
+    }
 }

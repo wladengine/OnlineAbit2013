@@ -7,8 +7,8 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E083211C-E1CF-45DD-8E88-34449A4657C5}</ProjectGuid>
-    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{036BF1AB-55A7-4FDF-990F-3DBEBF4EFB4D}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OnlineAbit2013</RootNamespace>
@@ -63,6 +63,9 @@
       <HintPath>bin\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OlympOnline\OlympOnline\bin\NHibernate.dll</HintPath>
@@ -75,8 +78,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -86,6 +87,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -222,51 +225,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewApplication.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldContactsInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldContactsInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldContactsInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldContactsInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldEducationInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldEducationInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldEducationInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldEducationInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPassportInfo.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPassportInfo.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPassportInfo.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPassportInfo.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>oldPersonalOfficeForeign.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PersonalOffice_Step1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -436,6 +394,11 @@
       <DependentUpon>OnlineAbit.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuslangExam.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RuslangExam.edmx</DependentUpon>
+    </Compile>
     <Compile Include="SQLClass.cs" />
     <Compile Include="Views\Shared\SiteForeign.Master.cs">
       <DependentUpon>SiteForeign.Master</DependentUpon>
@@ -495,13 +458,9 @@
     <Content Include="Views\AbiturientNew\NewApplication_1kurs.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_AG.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Aspirant.aspx" />
-    <Content Include="Views\AbiturientNew\NewApplication_ChangeObrazProgram.aspx" />
-    <Content Include="Views\AbiturientNew\NewApplication_ChangeStudyBasis.aspx" />
-    <Content Include="Views\AbiturientNew\NewApplication_ChangeStudyForm.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Mag.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_Recover.aspx" />
     <Content Include="Views\AbiturientNew\NewApplication_SPO.aspx" />
-    <Content Include="Views\AbiturientNew\NewApplication_Transfer.aspx" />
     <Content Include="Views\AbiturientNew\NotOpened.aspx" />
     <Content Include="Views\AbiturientNew\page404.aspx" />
     <Content Include="Views\AbiturientNew\PersonalOffice.aspx" />
@@ -515,6 +474,7 @@
     <Content Include="Views\AbiturientNew\PriorityChanger.aspx" />
     <Content Include="Views\AbiturientNew\PriorityChangerApplication.aspx" />
     <Content Include="Views\AbiturientNew\PriorityChangerProfile.aspx" />
+    <Content Include="Views\AbiturientNew\RusLangExam_ufms.aspx" />
     <Content Include="Views\AbiturientNew\SetEqualWithRussia_Success.aspx" />
     <Content Include="Views\Abiturient\AddFiles.aspx" />
     <Content Include="Views\Abiturient\AddSharedFiles.aspx" />
@@ -687,6 +647,7 @@
     <Content Include="App_GlobalResources\ApplicationInfo.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ApplicationInfo.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\ChangePassword.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -703,6 +664,7 @@
     <Content Include="App_GlobalResources\Common.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Common.en-US.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\Common.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -867,6 +829,7 @@
     <Content Include="App_GlobalResources\PersonalOffice_Step1.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOffice_Step1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -928,42 +891,6 @@
     <Content Include="Views\AbiturientNew\PersonalOffice.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\oldContactsInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldContactsInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldContactsInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldContactsInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldEducationInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldEducationInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldEducationInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldEducationInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPassportInfo.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPassportInfo.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPassportInfo.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPassportInfo.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.en-US.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.en-US.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\oldPersonalOfficeForeign.ru-RU.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>oldPersonalOfficeForeign.ru-RU.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="App_GlobalResources\PersonalOffice_Step2.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOffice_Step2.en-US.designer.cs</LastGenOutput>
@@ -980,6 +907,15 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PersonalOffice_Step5.en-US.designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="RuslangExam.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RuslangExam.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

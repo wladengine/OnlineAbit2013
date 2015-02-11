@@ -1,0 +1,758 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RuslangExamModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="RuslangExamModelStoreContainer">
+          <EntitySet Name="Additional" EntityType="RuslangExamModel.Store.Additional" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Level" EntityType="RuslangExamModel.Store.Level" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LevelName" EntityType="RuslangExamModel.Store.LevelName" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Nationality" EntityType="RuslangExamModel.Store.Nationality" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Passport" EntityType="RuslangExamModel.Store.Passport" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PassportType" EntityType="RuslangExamModel.Store.PassportType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Person" EntityType="RuslangExamModel.Store.Person" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sertificate" EntityType="RuslangExamModel.Store.Sertificate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sex" EntityType="RuslangExamModel.Store.Sex" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="extPersonSertificate" EntityType="RuslangExamModel.Store.extPersonSertificate" store:Type="Views" store:Schema="dbo" store:Name="extPersonSertificate">
+            <DefiningQuery>SELECT 
+      [extPersonSertificate].[Id] AS [Id], 
+      [extPersonSertificate].[FIO] AS [FIO], 
+      [extPersonSertificate].[PublicLevelName] AS [PublicLevelName], 
+      [extPersonSertificate].[LevelNameId] AS [LevelNameId], 
+      [extPersonSertificate].[SertificateNumber2014] AS [SertificateNumber2014], 
+      [extPersonSertificate].[Name] AS [Name]
+      FROM [dbo].[extPersonSertificate] AS [extPersonSertificate]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PrintViewSertificate" EntityType="RuslangExamModel.Store.PrintViewSertificate" store:Type="Views" store:Schema="dbo" store:Name="PrintViewSertificate">
+            <DefiningQuery>SELECT 
+      [PrintViewSertificate].[PersonId] AS [PersonId], 
+      [PrintViewSertificate].[FIO] AS [FIO], 
+      [PrintViewSertificate].[nationality] AS [nationality], 
+      [PrintViewSertificate].[SertificateId] AS [SertificateId], 
+      [PrintViewSertificate].[PublicLevelName] AS [PublicLevelName], 
+      [PrintViewSertificate].[ExamenDate] AS [ExamenDate], 
+      [PrintViewSertificate].[FIOEng] AS [FIOEng], 
+      [PrintViewSertificate].[NameForSertificate] AS [NameForSertificate], 
+      [PrintViewSertificate].[SertificateStatusName] AS [SertificateStatusName], 
+      [PrintViewSertificate].[ContrAgentName] AS [ContrAgentName], 
+      [PrintViewSertificate].[SertificateNumber] AS [SertificateNumber], 
+      [PrintViewSertificate].[SertificateNumber2014] AS [SertificateNumber2014], 
+      [PrintViewSertificate].[SertificateNumber2014Complex] AS [SertificateNumber2014Complex], 
+      [PrintViewSertificate].[RegNumId] AS [RegNumId], 
+      [PrintViewSertificate].[NameEng] AS [NameEng]
+      FROM [dbo].[PrintViewSertificate] AS [PrintViewSertificate]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK497BA9A228765FEA" Association="RuslangExamModel.Store.FK497BA9A228765FEA">
+            <End Role="LevelName" EntitySet="LevelName" />
+            <End Role="Level" EntitySet="Level" />
+          </AssociationSet>
+          <AssociationSet Name="FKA88822D54AA13261" Association="RuslangExamModel.Store.FKA88822D54AA13261">
+            <End Role="Nationality" EntitySet="Nationality" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <AssociationSet Name="FKA88822D5671423C2" Association="RuslangExamModel.Store.FKA88822D5671423C2">
+            <End Role="Sex" EntitySet="Sex" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <AssociationSet Name="FKA88822D5D2F12766" Association="RuslangExamModel.Store.FKA88822D5D2F12766">
+            <End Role="PassportType" EntitySet="PassportType" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <AssociationSet Name="FKD6BDFFFA31C8D929" Association="RuslangExamModel.Store.FKD6BDFFFA31C8D929">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="Sertificate" EntitySet="Sertificate" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Additional">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="language_id" Type="bigint" />
+          <Property Name="FIOEng" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="ParentId" Type="bigint" />
+          <Property Name="migration_card_series" Type="nvarchar" MaxLength="255" />
+          <Property Name="migration_card_number" Type="nvarchar" MaxLength="255" />
+          <Property Name="passport_date" Type="datetime" />
+          <Property Name="passport_department" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LevelName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LevelNameEng" Type="nvarchar" MaxLength="255" />
+          <Property Name="Author" Type="nvarchar" MaxLength="255" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="LevelPriceId" Type="bigint" />
+          <Property Name="StudentInventoryId" Type="bigint" />
+          <Property Name="DanilId" Type="nvarchar" MaxLength="255" />
+          <Property Name="ContrAgent" Type="bigint" />
+          <Property Name="RealLevel" Type="bigint" />
+        </EntityType>
+        <EntityType Name="LevelName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PublicLevelName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PublicLevelNameEng" Type="nvarchar" MaxLength="255" />
+          <Property Name="TRKI" Type="int" />
+          <Property Name="DanilId" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameForProtocol" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameForAkt" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameForSertificate" Type="nvarchar" MaxLength="255" />
+          <Property Name="PrefixSertificate" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameForSpravka" Type="nvarchar" MaxLength="255" />
+          <Property Name="IdRUDN" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameEng" Type="nvarchar" MaxLength="255" />
+          <Property Name="Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsVisible" Type="nvarchar" MaxLength="255" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="NameRod" Type="nvarchar" MaxLength="255" />
+          <Property Name="IdRUDN" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Passport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Seria" Type="nvarchar" MaxLength="255" />
+          <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="SerNum" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="FIO" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="sex_id" Type="bigint" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="nationality_id" Type="bigint" />
+          <Property Name="passporttype_id" Type="bigint" />
+          <Property Name="ParentId" Type="bigint" />
+          <Property Name="FIOCountryBirthDate" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="PassportType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Sertificate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SertificateNumber" Type="bigint" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Author" Type="nvarchar" MaxLength="255" />
+          <Property Name="SertificateStatusId" Type="bigint" />
+          <Property Name="Level_id" Type="bigint" />
+          <Property Name="ContrAgent" Type="bigint" />
+          <Property Name="ParentId" Type="bigint" />
+          <Property Name="SertificateNumber2014" Type="bigint" />
+          <Property Name="SertificateNumber2014Complex" Type="bigint" />
+          <Property Name="RegNumId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Sex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="NameEng" Type="nvarchar" MaxLength="255" />
+          <Property Name="Obrashenie" Type="nvarchar" MaxLength="255" />
+          <Property Name="ObrashenieEng" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "RuslangExam.dbo.extPersonSertificate" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="extPersonSertificate">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="LevelNameId" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="PublicLevelName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LevelNameId" Type="bigint" Nullable="false" />
+          <Property Name="SertificateNumber2014" Type="bigint" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "RuslangExam.dbo.PrintViewSertificate" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="PrintViewSertificate">
+          <Key>
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="SertificateId" />
+            <PropertyRef Name="FIOEng" />
+          </Key>
+          <Property Name="PersonId" Type="bigint" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="nationality" Type="nvarchar" MaxLength="255" />
+          <Property Name="SertificateId" Type="bigint" Nullable="false" />
+          <Property Name="PublicLevelName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExamenDate" Type="datetime" />
+          <Property Name="FIOEng" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="NameForSertificate" Type="nvarchar" MaxLength="255" />
+          <Property Name="SertificateStatusName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ContrAgentName" Type="nvarchar" MaxLength="255" />
+          <Property Name="SertificateNumber" Type="bigint" />
+          <Property Name="SertificateNumber2014" Type="bigint" />
+          <Property Name="SertificateNumber2014Complex" Type="bigint" />
+          <Property Name="RegNumId" Type="bigint" />
+          <Property Name="NameEng" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK497BA9A228765FEA">
+          <End Role="LevelName" Type="RuslangExamModel.Store.LevelName" Multiplicity="0..1" />
+          <End Role="Level" Type="RuslangExamModel.Store.Level" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelName">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Level">
+              <PropertyRef Name="RealLevel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA88822D54AA13261">
+          <End Role="Nationality" Type="RuslangExamModel.Store.Nationality" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.Store.Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nationality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="nationality_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA88822D5671423C2">
+          <End Role="Sex" Type="RuslangExamModel.Store.Sex" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.Store.Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sex">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="sex_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA88822D5D2F12766">
+          <End Role="PassportType" Type="RuslangExamModel.Store.PassportType" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.Store.Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PassportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="passporttype_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKD6BDFFFA31C8D929">
+          <End Role="Level" Type="RuslangExamModel.Store.Level" Multiplicity="0..1" />
+          <End Role="Sertificate" Type="RuslangExamModel.Store.Sertificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sertificate">
+              <PropertyRef Name="Level_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RuslangExamModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RuslangExamEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Additional" EntityType="RuslangExamModel.ruslang_Additional" />
+          <EntitySet Name="Nationality" EntityType="RuslangExamModel.ruslang_Nationality" />
+          <EntitySet Name="Passport" EntityType="RuslangExamModel.ruslang_Passport" />
+          <EntitySet Name="PassportType" EntityType="RuslangExamModel.ruslang_PassportType" />
+          <EntitySet Name="Person" EntityType="RuslangExamModel.ruslang_Person" />
+          <EntitySet Name="Sertificate" EntityType="RuslangExamModel.ruslang_Sertificate" />
+          <EntitySet Name="Sex" EntityType="RuslangExamModel.ruslang_Sex" />
+          <EntitySet Name="extPersonSertificate" EntityType="RuslangExamModel.ruslang_extPersonSertificate" />
+          <AssociationSet Name="FKA88822D54AA13261" Association="RuslangExamModel.FKA88822D54AA13261">
+            <End Role="Nationality" EntitySet="Nationality" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <AssociationSet Name="FKA88822D5671423C2" Association="RuslangExamModel.FKA88822D5671423C2">
+            <End Role="Sex" EntitySet="Sex" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <AssociationSet Name="FKA88822D5D2F12766" Association="RuslangExamModel.FKA88822D5D2F12766">
+            <End Role="PassportType" EntitySet="PassportType" />
+            <End Role="Passport" EntitySet="Passport" />
+          </AssociationSet>
+          <EntitySet Name="Level" EntityType="RuslangExamModel.ruslang_Level" />
+          <EntitySet Name="LevelName" EntityType="RuslangExamModel.ruslang_LevelName" />
+          <AssociationSet Name="FK497BA9A228765FEA" Association="RuslangExamModel.FK497BA9A228765FEA">
+            <End Role="LevelName" EntitySet="LevelName" />
+            <End Role="Level" EntitySet="Level" />
+          </AssociationSet>
+          <AssociationSet Name="FKD6BDFFFA31C8D929" Association="RuslangExamModel.FKD6BDFFFA31C8D929">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="ruslang_Sertificate" EntitySet="Sertificate" />
+          </AssociationSet>
+          <EntitySet Name="PrintViewSertificate" EntityType="RuslangExamModel.PrintViewSertificate" />
+        </EntityContainer>
+        <EntityType Name="ruslang_Additional">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="language_id" Type="Int64" />
+          <Property Name="FIOEng" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ParentId" Type="Int64" />
+          <Property Name="migration_card_series" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="migration_card_number" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="passport_date" Type="DateTime" />
+          <Property Name="passport_department" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ruslang_Nationality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="NameEng" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Code" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="IsVisible" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="NameRod" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="IdRUDN" Type="Int64" />
+          <NavigationProperty Name="Passport" Relationship="RuslangExamModel.FKA88822D54AA13261" FromRole="Nationality" ToRole="Passport" />
+        </EntityType>
+        <EntityType Name="ruslang_Passport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Seria" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SerNum" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="FIO" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="sex_id" Type="Int64" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" />
+          <Property Name="nationality_id" Type="Int64" />
+          <Property Name="passporttype_id" Type="Int64" />
+          <Property Name="ParentId" Type="Int64" />
+          <Property Name="FIOCountryBirthDate" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Nationality" Relationship="RuslangExamModel.FKA88822D54AA13261" FromRole="Passport" ToRole="Nationality" />
+          <NavigationProperty Name="Sex" Relationship="RuslangExamModel.FKA88822D5671423C2" FromRole="Passport" ToRole="Sex" />
+          <NavigationProperty Name="PassportType" Relationship="RuslangExamModel.FKA88822D5D2F12766" FromRole="Passport" ToRole="PassportType" />
+        </EntityType>
+        <EntityType Name="ruslang_PassportType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Passport" Relationship="RuslangExamModel.FKA88822D5D2F12766" FromRole="PassportType" ToRole="Passport" />
+        </EntityType>
+        <EntityType Name="ruslang_Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="ruslang_Sertificate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SertificateNumber" Type="Int64" />
+          <Property Name="Timestamp" Type="DateTime" />
+          <Property Name="Author" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SertificateStatusId" Type="Int64" />
+          <Property Name="Level_id" Type="Int64" />
+          <Property Name="ContrAgent" Type="Int64" />
+          <Property Name="ParentId" Type="Int64" />
+          <Property Name="SertificateNumber2014" Type="Int64" />
+          <Property Name="SertificateNumber2014Complex" Type="Int64" />
+          <Property Name="RegNumId" Type="Int64" />
+          <NavigationProperty Name="Level" Relationship="RuslangExamModel.FKD6BDFFFA31C8D929" FromRole="ruslang_Sertificate" ToRole="Level" />
+        </EntityType>
+        <EntityType Name="ruslang_Sex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="NameEng" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Obrashenie" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ObrashenieEng" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Passport" Relationship="RuslangExamModel.FKA88822D5671423C2" FromRole="Sex" ToRole="Passport" />
+        </EntityType>
+        <EntityType Name="ruslang_extPersonSertificate">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="LevelNameId" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="FIO" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="PublicLevelName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LevelNameId" Type="Int64" Nullable="false" />
+          <Property Name="SertificateNumber2014" Type="Int64" />
+          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <Association Name="FKA88822D54AA13261">
+          <End Role="Nationality" Type="RuslangExamModel.ruslang_Nationality" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.ruslang_Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nationality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="nationality_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA88822D5671423C2">
+          <End Role="Sex" Type="RuslangExamModel.ruslang_Sex" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.ruslang_Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sex">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="sex_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKA88822D5D2F12766">
+          <End Role="PassportType" Type="RuslangExamModel.ruslang_PassportType" Multiplicity="0..1" />
+          <End Role="Passport" Type="RuslangExamModel.ruslang_Passport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PassportType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Passport">
+              <PropertyRef Name="passporttype_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ruslang_Level">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="LevelName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LevelNameEng" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Author" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="Timestamp" />
+          <Property Type="Int64" Name="LevelPriceId" />
+          <Property Type="Int64" Name="StudentInventoryId" />
+          <Property Type="String" Name="DanilId" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="ContrAgent" />
+          <Property Type="Int64" Name="RealLevel" />
+          <NavigationProperty Name="LevelName1" Relationship="RuslangExamModel.FK497BA9A228765FEA" FromRole="Level" ToRole="LevelName" />
+          <NavigationProperty Name="Sertificate" Relationship="RuslangExamModel.FKD6BDFFFA31C8D929" FromRole="Level" ToRole="ruslang_Sertificate" />
+        </EntityType>
+        <EntityType Name="ruslang_LevelName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="PublicLevelName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PublicLevelNameEng" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="TRKI" />
+          <Property Type="String" Name="DanilId" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameForProtocol" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameForAkt" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameForSertificate" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PrefixSertificate" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameForSpravka" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="IdRUDN" />
+          <NavigationProperty Name="Level" Relationship="RuslangExamModel.FK497BA9A228765FEA" FromRole="LevelName" ToRole="Level" />
+        </EntityType>
+        <Association Name="FK497BA9A228765FEA">
+          <End Type="RuslangExamModel.ruslang_LevelName" Role="LevelName" Multiplicity="0..1" />
+          <End Type="RuslangExamModel.ruslang_Level" Role="Level" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelName">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Level">
+              <PropertyRef Name="RealLevel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKD6BDFFFA31C8D929">
+          <End Type="RuslangExamModel.ruslang_Level" Role="Level" Multiplicity="0..1" />
+          <End Type="RuslangExamModel.ruslang_Sertificate" Role="ruslang_Sertificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ruslang_Sertificate">
+              <PropertyRef Name="Level_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PrintViewSertificate">
+          <Key>
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="SertificateId" />
+            <PropertyRef Name="FIOEng" />
+          </Key>
+          <Property Type="Int64" Name="PersonId" Nullable="false" />
+          <Property Type="String" Name="FIO" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="nationality" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="SertificateId" Nullable="false" />
+          <Property Type="String" Name="PublicLevelName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ExamenDate" />
+          <Property Type="String" Name="FIOEng" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="NameForSertificate" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SertificateStatusName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContrAgentName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="SertificateNumber" />
+          <Property Type="Int64" Name="SertificateNumber2014" />
+          <Property Type="Int64" Name="SertificateNumber2014Complex" />
+          <Property Type="Int64" Name="RegNumId" />
+          <Property Type="String" Name="NameEng" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RuslangExamModelStoreContainer" CdmEntityContainer="RuslangExamEntities">
+          <EntitySetMapping Name="Additional">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Additional">
+              <MappingFragment StoreEntitySet="Additional">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="language_id" ColumnName="language_id" />
+                <ScalarProperty Name="FIOEng" ColumnName="FIOEng" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="migration_card_series" ColumnName="migration_card_series" />
+                <ScalarProperty Name="migration_card_number" ColumnName="migration_card_number" />
+                <ScalarProperty Name="passport_date" ColumnName="passport_date" />
+                <ScalarProperty Name="passport_department" ColumnName="passport_department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nationality">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Nationality">
+              <MappingFragment StoreEntitySet="Nationality">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NameEng" ColumnName="NameEng" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="NameRod" ColumnName="NameRod" />
+                <ScalarProperty Name="IdRUDN" ColumnName="IdRUDN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passport">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Passport">
+              <MappingFragment StoreEntitySet="Passport">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Seria" ColumnName="Seria" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="SerNum" ColumnName="SerNum" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="sex_id" ColumnName="sex_id" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="nationality_id" ColumnName="nationality_id" />
+                <ScalarProperty Name="passporttype_id" ColumnName="passporttype_id" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="FIOCountryBirthDate" ColumnName="FIOCountryBirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PassportType">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_PassportType">
+              <MappingFragment StoreEntitySet="PassportType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sertificate">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Sertificate">
+              <MappingFragment StoreEntitySet="Sertificate">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SertificateNumber" ColumnName="SertificateNumber" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="SertificateStatusId" ColumnName="SertificateStatusId" />
+                <ScalarProperty Name="Level_id" ColumnName="Level_id" />
+                <ScalarProperty Name="ContrAgent" ColumnName="ContrAgent" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="SertificateNumber2014" ColumnName="SertificateNumber2014" />
+                <ScalarProperty Name="SertificateNumber2014Complex" ColumnName="SertificateNumber2014Complex" />
+                <ScalarProperty Name="RegNumId" ColumnName="RegNumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sex">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Sex">
+              <MappingFragment StoreEntitySet="Sex">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NameEng" ColumnName="NameEng" />
+                <ScalarProperty Name="Obrashenie" ColumnName="Obrashenie" />
+                <ScalarProperty Name="ObrashenieEng" ColumnName="ObrashenieEng" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="extPersonSertificate">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_extPersonSertificate">
+              <MappingFragment StoreEntitySet="extPersonSertificate">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="PublicLevelName" ColumnName="PublicLevelName" />
+                <ScalarProperty Name="LevelNameId" ColumnName="LevelNameId" />
+                <ScalarProperty Name="SertificateNumber2014" ColumnName="SertificateNumber2014" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Level">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_Level">
+              <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="RealLevel" ColumnName="RealLevel" />
+                <ScalarProperty Name="ContrAgent" ColumnName="ContrAgent" />
+                <ScalarProperty Name="DanilId" ColumnName="DanilId" />
+                <ScalarProperty Name="StudentInventoryId" ColumnName="StudentInventoryId" />
+                <ScalarProperty Name="LevelPriceId" ColumnName="LevelPriceId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="LevelNameEng" ColumnName="LevelNameEng" />
+                <ScalarProperty Name="LevelName" ColumnName="LevelName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LevelName">
+            <EntityTypeMapping TypeName="RuslangExamModel.ruslang_LevelName">
+              <MappingFragment StoreEntitySet="LevelName">
+                <ScalarProperty Name="IdRUDN" ColumnName="IdRUDN" />
+                <ScalarProperty Name="NameForSpravka" ColumnName="NameForSpravka" />
+                <ScalarProperty Name="PrefixSertificate" ColumnName="PrefixSertificate" />
+                <ScalarProperty Name="NameForSertificate" ColumnName="NameForSertificate" />
+                <ScalarProperty Name="NameForAkt" ColumnName="NameForAkt" />
+                <ScalarProperty Name="NameForProtocol" ColumnName="NameForProtocol" />
+                <ScalarProperty Name="DanilId" ColumnName="DanilId" />
+                <ScalarProperty Name="TRKI" ColumnName="TRKI" />
+                <ScalarProperty Name="PublicLevelNameEng" ColumnName="PublicLevelNameEng" />
+                <ScalarProperty Name="PublicLevelName" ColumnName="PublicLevelName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrintViewSertificate">
+            <EntityTypeMapping TypeName="RuslangExamModel.PrintViewSertificate">
+              <MappingFragment StoreEntitySet="PrintViewSertificate">
+                <ScalarProperty Name="NameEng" ColumnName="NameEng" />
+                <ScalarProperty Name="RegNumId" ColumnName="RegNumId" />
+                <ScalarProperty Name="SertificateNumber2014Complex" ColumnName="SertificateNumber2014Complex" />
+                <ScalarProperty Name="SertificateNumber2014" ColumnName="SertificateNumber2014" />
+                <ScalarProperty Name="SertificateNumber" ColumnName="SertificateNumber" />
+                <ScalarProperty Name="ContrAgentName" ColumnName="ContrAgentName" />
+                <ScalarProperty Name="SertificateStatusName" ColumnName="SertificateStatusName" />
+                <ScalarProperty Name="NameForSertificate" ColumnName="NameForSertificate" />
+                <ScalarProperty Name="FIOEng" ColumnName="FIOEng" />
+                <ScalarProperty Name="ExamenDate" ColumnName="ExamenDate" />
+                <ScalarProperty Name="PublicLevelName" ColumnName="PublicLevelName" />
+                <ScalarProperty Name="SertificateId" ColumnName="SertificateId" />
+                <ScalarProperty Name="nationality" ColumnName="nationality" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="RuslangExam">
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Additional" Width="1.5" PointX="5.75" PointY="0.75" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Nationality" Width="1.5" PointX="0.75" PointY="1.625" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Passport" Width="1.5" PointX="3" PointY="1" Height="3.9033007812499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_PassportType" Width="1.5" PointX="0.75" PointY="5.375" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Person" Width="1.5" PointX="2.75" PointY="5.75" Height="1.2110807291666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Sertificate" Width="1.5" PointX="5.75" PointY="4.75" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Sex" Width="1.5" PointX="0.75" PointY="7.625" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_extPersonSertificate" Width="1.5" PointX="7.75" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
+        <AssociationConnector Association="RuslangExamModel.FKA88822D54AA13261" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.99974609375" />
+          <ConnectorPoint PointX="3" PointY="2.99974609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="RuslangExamModel.FKA88822D5671423C2" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="8.7112939453125" />
+          <ConnectorPoint PointX="4.40625" PointY="8.7112939453125" />
+          <ConnectorPoint PointX="4.40625" PointY="4.90330078125" />
+        </AssociationConnector>
+        <AssociationConnector Association="RuslangExamModel.FKA88822D5D2F12766" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.53125" />
+          <ConnectorPoint PointX="4.3749975" PointY="5.53125" />
+          <ConnectorPoint PointX="4.3749975" PointY="4.90330078125" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_Level" Width="1.5" PointX="3.5" PointY="10.75" Height="3.3263964843749996" />
+        <EntityTypeShape EntityType="RuslangExamModel.ruslang_LevelName" Width="1.5" PointX="1.125" PointY="10.75" Height="3.3263964843750031" />
+        <AssociationConnector Association="RuslangExamModel.FK497BA9A228765FEA" >
+          <ConnectorPoint PointX="2.625" PointY="12.4131982421875" />
+          <ConnectorPoint PointX="3.5" PointY="12.4131982421875" />
+        </AssociationConnector>
+        <AssociationConnector Association="RuslangExamModel.FKD6BDFFFA31C8D929" >
+          <ConnectorPoint PointX="4.78125" PointY="10.75" />
+          <ConnectorPoint PointX="4.78125" PointY="7.5499886067708335" />
+          <ConnectorPoint PointX="5.75" PointY="7.5499886067708335" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="RuslangExamModel.PrintViewSertificate" Width="1.5" PointX="8.375" PointY="3.75" Height="3.9033007812500031" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

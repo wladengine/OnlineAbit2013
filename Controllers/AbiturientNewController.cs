@@ -6604,6 +6604,11 @@ Order by cnt desc";
             Guid PersonId;
             if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
                 return RedirectToAction("LogOn", "Account");
+
+            if (Request.Cookies["sid"].Value.ToString().ToLower() != "0ceebbda2bee50e227710e7322152ef2")
+            {
+                return RedirectToAction("LogOn", "Account");
+            }
             
             model.PersonList = new List<RuslangExamModelPerson>();
             if (!string.IsNullOrEmpty(model.findstring))
@@ -6798,6 +6803,11 @@ Order by cnt desc";
         {
             Guid PersonId;
             Util.CheckAuthCookies(Request.Cookies, out PersonId);
+
+            if (Request.Cookies["sid"].Value.ToString().ToLower() != "0ceebbda2bee50e227710e7322152ef2")
+            {
+                return Json(new { NoFree = true });
+            }
 
             long _sertId = long.Parse(sertId);
 

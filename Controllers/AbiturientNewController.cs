@@ -6601,15 +6601,6 @@ Order by cnt desc";
 
         public ActionResult RusLangExam_ufms(RuslangExamModelPersonList model)
         { 
-            Guid PersonId;
-            if (!Util.CheckAuthCookies(Request.Cookies, out PersonId))
-                return RedirectToAction("LogOn", "Account");
-
-            if (Request.Cookies["sid"].Value.ToString().ToLower() != "0ceebbda2bee50e227710e7322152ef2")
-            {
-                return RedirectToAction("LogOn", "Account");
-            }
-            
             model.PersonList = new List<RuslangExamModelPerson>();
             if (!string.IsNullOrEmpty(model.findstring))
             {
@@ -6773,25 +6764,8 @@ Order by cnt desc";
             if (!String.IsNullOrEmpty(Id))
             {
                 if (Id.Equals("0ceebbda2bee50e227710e7322152ef2"))
-                {
-                    HttpCookie myCookie = new HttpCookie("sid");
-                    myCookie.Name = "sid";
-                    myCookie.Value = Id;
-                    Response.Cookies.Add(myCookie);
-
-                    Guid personId = Util.GetIdBySID(Id);
-                    string t = Util.AbitDB.GetStringValue("SELECT Ticket FROM AuthTicket WHERE UserId=@UserId", new SortedList<string, object>() { { "@UserId", personId } });
-
-                    myCookie = new HttpCookie("t");
-                    myCookie.Name = "t";
-                    myCookie.Value = t;
-                    Response.Cookies.Add(myCookie);
-
-                    Guid UserId;
-                    if (Util.CheckAuthCookies(Request.Cookies, out UserId))
-                    {
-                        return RedirectToAction( "RusLangExam_ufms", "AbiturientNew");
-                    }
+                { 
+                    return RedirectToAction( "RusLangExam_ufms", "AbiturientNew");
                 }
             }
             return RedirectToAction("LogOn", "Account");
@@ -6801,14 +6775,6 @@ Order by cnt desc";
         [OutputCache(NoStore = true, Duration = 0)]
         public ActionResult GetUFMS(string sertId)
         {
-            Guid PersonId;
-            Util.CheckAuthCookies(Request.Cookies, out PersonId);
-
-            if (Request.Cookies["sid"].Value.ToString().ToLower() != "0ceebbda2bee50e227710e7322152ef2")
-            {
-                return Json(new { NoFree = true });
-            }
-
             long _sertId = long.Parse(sertId);
 
             using (RuslangExamEntities context = new RuslangExamEntities())
